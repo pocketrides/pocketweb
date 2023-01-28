@@ -1,0 +1,134 @@
+:root {
+  --allblack: 0, 0, 0;
+  --allwhite: 255, 255, 255;
+
+  --black: 16, 14, 14;
+  --white: 255, 253, 240;
+}
+
+$theme-system: (
+  "base": "252, 104, 45",
+  "dark": "82, 24, 0",
+  "light": "255, 247, 235",
+  "superdark": "41, 12, 0",
+  "superlight": "255, 241, 216",
+);
+
+$theme-lilac: (
+  "base": "201, 148, 242",
+  "dark": "51, 30, 51",
+  "light": "253, 246, 253",
+  "superdark": "25, 16, 25",
+  "superlight": "247, 212, 247",
+);
+
+$theme-gold: (
+  "base": "252, 186, 5",
+  "dark": "66, 46, 9",
+  "light": "255, 247, 225",
+  "superdark": "36, 25, 5",
+  "superlight": "254, 222, 134",
+);
+
+$theme-teal: (
+  "base": "57, 185, 162",
+  "dark": "10, 31, 27",
+  "light": "236, 249, 247",
+  "superdark": "5, 15, 13",
+  "superlight": "177, 231, 223",
+);
+
+$theme-pink: (
+  "base": "254, 69, 91",
+  "dark": "61, 0, 8",
+  "light": "255, 240, 242",
+  "superdark": "41, 0, 5",
+  "superlight": "255, 184, 192",
+);
+
+$theme-sky: (
+  "base": "5, 163, 252",
+  "dark": "1, 36, 55",
+  "light": "240, 249, 255",
+  "superdark": "1, 23, 35",
+  "superlight": "134, 211, 254",
+);
+
+:root {
+  @each $name, $value in $theme-system {
+    --system-#{$name}: #{$value};
+  }
+}
+
+@each $name, $value in $theme-system {
+  [data-fill="#{$name}"] {
+    background-color: rgb(var(--#{$name}));
+    transition: background-color 0.1s ease-in-out;
+    @if $name == "dark" {
+      color: rgb(var(--allwhite));
+    } @else if $name == "base" {
+      color: rgb(var(--allwhite));
+    } @else {
+      color: rgb(var(--black));
+    }
+  }
+
+  @media (max-width: 640px) {
+    html[data-shade="system-#{$name}"] {
+      background-color: rgb(var(--system-#{$name}));
+    }
+
+    html[data-shade="#{$name}"] {
+      background-color: rgb(var(--#{$name}));
+    }
+  }
+
+  [data-fill="system-#{$name}"] {
+    background-color: rgb(var(--system-#{$name}));
+    transition: background-color 0.1s ease-in-out;
+
+    @if $name == "dark" {
+      color: rgb(var(--allwhite));
+    } @else if $name == "base" {
+      color: rgb(var(--allwhite));
+    } @else {
+      color: rgb(var(--black));
+    }
+  }
+}
+
+[data-theme="system"] {
+  @each $name, $value in $theme-system {
+    --#{$name}: #{$value};
+  }
+}
+
+[data-theme="lilac"] {
+  @each $name, $value in $theme-lilac {
+    --#{$name}: #{$value};
+  }
+}
+
+[data-theme="gold"] {
+  @each $name, $value in $theme-gold {
+    --#{$name}: #{$value};
+  }
+}
+
+[data-theme="teal"] {
+  @each $name, $value in $theme-teal {
+    --#{$name}: #{$value};
+  }
+}
+
+[data-theme="pink"] {
+  @each $name, $value in $theme-pink {
+    --#{$name}: #{$value};
+  }
+}
+
+[data-theme="sky"] {
+  @each $name, $value in $theme-sky {
+    --#{$name}: #{$value};
+  }
+}

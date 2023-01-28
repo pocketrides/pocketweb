@@ -1,0 +1,56 @@
+@import "@fontsource/dm-sans/400.css";
+@import "@fontsource/dm-sans/400-italic.css";
+@import "@fontsource/dm-sans/500.css";
+@import "@fontsource/dm-sans/500-italic.css";
+@import "@fontsource/dm-sans/700.css";
+@import "@fontsource/dm-sans/700-italic.css";
+@import "@fontsource/material-icons/400.css";
+@import "@fontsource/material-icons-outlined/400.css";
+
+html,
+body {
+  font-family: "DM Sans", sans-serif;
+}
+
+h1,
+.h1 {
+  font-size: 1.5rem;
+  font-weight: bold;
+
+  &.jumbo {
+    font-size: 2.25rem;
+  }
+}
+
+h2,
+.h2 {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+h3,
+.h3 {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+h4,
+.h4 {
+  font-size: 1rem;
+  font-weight: normal;
+  opacity: 0.5;
+}
+
+[class*="material"] {
+  font-size: 1.25em;
+}
+
+*:has(> [class*="material"]) {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.half {
+  opacity: 0.5;
+}
