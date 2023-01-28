@@ -33,6 +33,9 @@
   },
   "type": "module",
   "dependencies": {
-    "faunadb": "^4.7.1"
+    "faunadb": "^4.7.1",
+    "@fontsource/dm-sans": "^4.5.9",
+    "@fontsource/material-icons": "^4.5.4",
+    "@fontsource/material-icons-outlined": "^4.5.4"
   }
 }
