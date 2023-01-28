@@ -1,0 +1,12 @@
+name="pocketweb"
+usage_model="bundled"
+account_id="ea5be13caa5185905117f5da671915ac"
+
+workers_dev=true
+main="cloudflare/worker.js"
+
+node_compat=true
+compatibility_date="2022-12-22"
+
+[site]
+  bucket="cloudflare/public"
