@@ -36,7 +36,10 @@
     "@fontsource/dm-sans": "^4.5.9",
     "@fontsource/material-icons": "^4.5.4",
     "@fontsource/material-icons-outlined": "^4.5.4",
+    "awesome-phonenumber": "^4.4.0",
     "faunadb": "^4.7.1",
+    "nanoid": "^4.0.0",
+    "stytch": "^5.18.1",
     "zod": "^3.20.2"
   }
 }
