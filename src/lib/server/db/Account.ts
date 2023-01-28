@@ -1,10 +1,5 @@
+import type { DraftAccount, ServerAccount } from '$lib/zod/Account';
 import { Fauna } from './Fauna';
-
-export interface AccountData {
-  id: string;
-  stytch_id: string;
-  terms_version?: string;
-}
 
 export class Account {
   static collection: string = 'accounts';
@@ -25,23 +20,27 @@ export class Account {
   }
 
   static async getByStytchId(stytch_id: string) {
-    return await Fauna.one<AccountData>(
+    return await Fauna.one<ServerAccount>(
       'accounts_by_stytch_id',
       stytch_id,
       Account.parseFQL
     );
   }
 
-  static async create(data: Omit<AccountData, 'id'>) {
-    return await Fauna.create<AccountData>(
+  static async create(data: DraftAccount) {
+    return await Fauna.create<ServerAccount>(
       Account.collection,
       data,
       Account.parseFQL
     );
   }
 
-  static async update(id: string, data: Omit<AccountData, 'id'>) {
-    return await Fauna.update<AccountData>(Account.toRef(id), data);
+  static async update(id: string, data: DraftAccount) {
+    return await Fauna.update<ServerAccount>(
+      Account.toRef(id),
+      data,
+      Account.parseFQL
+    );
   }
 
   static async delete(id: string) {
@@ -49,7 +48,7 @@ export class Account {
   }
 
   static parseFQL(fql: any) {
-    return Fauna.parseFQL<AccountData>(fql);
+    return Fauna.parseFQL<ServerAccount>(fql);
   }
 
   static toRef(id: string) {

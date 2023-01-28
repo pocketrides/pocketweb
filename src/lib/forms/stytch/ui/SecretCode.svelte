@@ -3,7 +3,7 @@
   import Button from '$lib/components/Button.svelte';
   import { createEventDispatcher } from 'svelte';
   import { writable } from 'svelte/store';
-  import { z } from 'zod';
+  import { secret_code_validator } from '$lib/zod/Stytch';
 
   const dispatch = createEventDispatcher();
   const submitting = writable(false);
@@ -11,9 +11,8 @@
   export let method_id: string | undefined;
 
   let code: string = '';
-  const validator = z.string().regex(/(^\d{6}$)/g);
 
-  $: valid = validator.safeParse(code).success;
+  $: valid = secret_code_validator.safeParse(code).success;
 
   const handleSubmit = async () => {
     if (valid && code && method_id) {

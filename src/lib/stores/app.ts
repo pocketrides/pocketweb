@@ -6,10 +6,12 @@ export interface AppStore {
   theme: ThemeAnyValue;
   fill: Fill;
   sheet_id: string;
+  loading: boolean;
 }
 
 export const App = writable<AppStore>({
   theme: 'system',
   fill: 'superlight',
-  sheet_id: ''
+  sheet_id: '',
+  loading: false
 });

@@ -1,6 +1,8 @@
 <script lang="ts">
   import { browser } from '$app/environment';
   import { page } from '$app/stores';
+  import SiteFooter from '$lib/components/SiteFooter.svelte';
+  import SiteLoader from '$lib/components/SiteLoader.svelte';
   import { App } from '$lib/stores/app';
   import '$lib/styles/global.scss';
 
@@ -18,3 +20,5 @@
 </script>
 
 <slot />
+<SiteFooter />
+<SiteLoader />

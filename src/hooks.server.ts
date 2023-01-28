@@ -1,4 +1,3 @@
-import { destroyNametagCookie } from './lib/server/cookies';
 import { json, type Handle, redirect } from '@sveltejs/kit';
 import { env } from '$env/dynamic/private';
 import { Fauna } from '$lib/server/db/Fauna';
@@ -6,11 +5,12 @@ import { Stytch } from '$lib/server/Stytch';
 import {
   MAX_AGE_MINUTES,
   createNametagCookie,
+  destroyNametagCookie,
   createSessionCookie,
   destroySessionCookie,
   getNametagCookie,
   getSessionCookie
-} from '$lib/server/cookies';
+} from '$lib/server/Cookies';
 import { Account } from '$lib/server/db/Account';
 import { Nametag } from '$lib/server/db/Nametag';
 

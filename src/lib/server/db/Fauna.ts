@@ -2,7 +2,7 @@ import * as faunadb from 'faunadb';
 
 const q = faunadb.query;
 
-export type Ref = faunadb.Expr;
+export type FaunaRef = faunadb.Expr;
 
 export class Fauna {
   static FAUNA_SECRET: string;
@@ -71,10 +71,11 @@ export class Fauna {
 
   static async update<T = object>(
     ref: faunadb.ExprArg,
-    data: object
+    data: object,
+    parser: Function
   ): Promise<T | undefined> {
     try {
-      return await Fauna.client().query(q.Update(ref, { data }));
+      return parser(await Fauna.client().query(q.Update(ref, { data })));
     } catch (e) {
       return undefined;
     }
