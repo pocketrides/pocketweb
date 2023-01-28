@@ -1,17 +1,21 @@
 <script lang="ts">
+  import { StytchChallenge } from '$lib/api/stytch/challenge';
+  import { StytchVerify } from '$lib/api/stytch/verify';
   import Button from '$lib/components/Button.svelte';
   import { AVAILABLE_COUNTRIES } from '$lib/zod/Stytch';
   import { parsePhoneNumber } from 'awesome-phonenumber';
   import { afterUpdate, createEventDispatcher } from 'svelte';
+  import { writable } from 'svelte/store';
 
   const dispatch = createEventDispatcher();
+  const submitting = writable(false);
 
   let regionCode: string = AVAILABLE_COUNTRIES[0].value;
   let phoneNumber: string = '';
   let valid = false;
 
-  export let e164: string | undefined;
-  export let type: 'sms' | 'whatsapp' = 'sms';
+  let e164: string | undefined;
+  let type: 'sms' | 'whatsapp' = 'sms';
 
   afterUpdate(() => {
     const parsed = parsePhoneNumber(phoneNumber, { regionCode });
@@ -21,7 +25,20 @@
   });
 
   const handleSubmit = async () => {
-    if (!valid) return;
+    if (valid && e164) {
+      $submitting = true;
+
+      const res = await StytchChallenge.post({
+        phone_number: e164,
+        challenge_type: type
+      });
+
+      if (res.success) {
+        dispatch('complete', { method_id: res.method_id });
+      } else {
+        $submitting = false;
+      }
+    }
   };
 </script>
 
@@ -55,20 +72,20 @@
   <div data-flex data-gap>
     <Button
       type="submit"
-      label="Send SMS"
+      label={$submitting && type === 'sms' ? 'One sec!' : 'Send SMS'}
       on:click={() => {
         type = 'sms';
       }}
-      disabled={!valid}
+      disabled={!valid || $submitting}
       system={true}
     />
     <Button
       type="submit"
-      label="Send WhatsApp"
+      label={$submitting && type === 'whatsapp' ? 'One sec!' : 'Send WhatsApp'}
       on:click={() => {
         type = 'whatsapp';
       }}
-      disabled={!valid}
+      disabled={$submitting || !valid}
       system={true}
     />
   </div>

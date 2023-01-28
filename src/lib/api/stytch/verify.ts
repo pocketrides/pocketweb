@@ -10,6 +10,14 @@ export class StytchVerify {
   });
 
   static response = Api.generic_response;
+
+  static async post(payload: StytchVerifyPayload) {
+    return await Api.post<StytchVerifyResponse>(
+      StytchVerify.endpoint,
+      payload,
+      StytchVerify.response
+    );
+  }
 }
 
 export type StytchVerifyPayload = z.infer<typeof StytchVerify.payload>;

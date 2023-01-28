@@ -14,9 +14,11 @@
     }
   }
 
-  &:is(input):focus-within,
-  &:active {
-    box-shadow: none;
-    transform: translate(-1px, 1px);
+  &:not([disabled]) {
+    &:is(input):focus-within,
+    &:active {
+      box-shadow: none;
+      transform: translate(-1px, 1px);
+    }
   }
 }

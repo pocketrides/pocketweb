@@ -16,6 +16,14 @@ export class StytchChallenge {
     }),
     Api.generic_failure_validator
   ]);
+
+  static async post(payload: StytchChallengePayload) {
+    return await Api.post<StytchChallengeResponse>(
+      StytchChallenge.endpoint,
+      payload,
+      StytchChallenge.response
+    );
+  }
 }
 
 export type StytchChallengePayload = z.infer<typeof StytchChallenge.payload>;

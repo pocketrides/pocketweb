@@ -15,10 +15,10 @@ export class Api {
   ]);
 
   static get = async <T>(
-    href: string,
+    endpoint: string,
     validator: z.ZodTypeAny
   ): Promise<T | ApiGenericFailureResponse> => {
-    const req = await fetch(href);
+    const req = await fetch(endpoint);
     const res = validator.safeParse(await req.json());
 
     if (res.success) return res.data as T;
@@ -26,11 +26,11 @@ export class Api {
   };
 
   static post = async <T>(
-    href: string,
+    endpoint: string,
     payload: object,
     validator: z.ZodTypeAny
   ): Promise<T | ApiGenericFailureResponse> => {
-    const req = await fetch(href, {
+    const req = await fetch(endpoint, {
       method: 'post',
       body: JSON.stringify(payload)
     });

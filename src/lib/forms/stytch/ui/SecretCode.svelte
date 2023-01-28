@@ -1,17 +1,35 @@
 <script lang="ts">
+  import { StytchVerify } from '$lib/api/stytch/verify';
   import Button from '$lib/components/Button.svelte';
   import { createEventDispatcher } from 'svelte';
+  import { writable } from 'svelte/store';
   import { z } from 'zod';
 
   const dispatch = createEventDispatcher();
+  const submitting = writable(false);
 
-  export let code: string = '';
+  export let method_id: string | undefined;
+
+  let code: string = '';
   const validator = z.string().regex(/(^\d{6}$)/g);
 
   $: valid = validator.safeParse(code).success;
 
-  const handleSubmit = () => {
-    dispatch('submit');
+  const handleSubmit = async () => {
+    if (valid && code && method_id) {
+      $submitting = true;
+
+      const res = await StytchVerify.post({
+        method_id,
+        code
+      });
+
+      if (res.success) {
+        dispatch('complete');
+      } else {
+        $submitting = false;
+      }
+    }
   };
 </script>
 
@@ -31,6 +49,11 @@
     {/if}
   </div>
   <div data-flex data-gap>
-    <Button type="submit" label="Continue…" system={true} disabled={!valid} />
+    <Button
+      type="submit"
+      label={$submitting ? 'One sec!' : 'Continue…'}
+      disabled={$submitting || !valid}
+      system={true}
+    />
   </div>
 </form>

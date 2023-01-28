@@ -5,28 +5,27 @@
   import { slide } from 'svelte/transition';
 
   const stage = writable<'challenge' | 'verify'>('challenge');
+  let method_id: string | undefined;
 
-  let phone_number: string = '';
-  let challenge_type: 'sms' | 'whatsapp' = 'sms';
-  let secret_code: string = '';
+  const challengeComplete = (e: CustomEvent<{ method_id: string }>) => {
+    method_id = e.detail.method_id;
+    console.log('> got method_id', method_id);
+    $stage = 'verify';
+  };
 
-  const handleChallenge = async () => {};
-
-  const handleVerify = async () => {};
+  const verifyComplete = async () => {
+    console.log('> verifyComplete');
+  };
 </script>
 
 {#if $stage === 'challenge'}
   <div out:slide|local>
-    <PhoneNumber
-      bind:e164={phone_number}
-      bind:type={challenge_type}
-      on:submit={handleChallenge}
-    />
+    <PhoneNumber on:complete={challengeComplete} />
   </div>
 {/if}
 
 {#if $stage === 'verify'}
-  <div in:slide|local out:slide|local>
-    <SecretCode bind:code={secret_code} on:submit={handleVerify} />
+  <div in:slide|local={{ delay: 250 }} out:slide|local>
+    <SecretCode {method_id} on:complete={verifyComplete} />
   </div>
 {/if}
