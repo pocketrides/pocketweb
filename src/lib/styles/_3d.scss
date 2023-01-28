@@ -1,0 +1,22 @@
+[data-3d] {
+  border-radius: 0.25rem;
+  border: 1px solid rgb(var(--dark));
+  box-shadow: -1px 1px rgb(var(--dark));
+
+  height: 42px;
+  padding: 0 0.5rem;
+
+  &:not([data-fill]) {
+    background: rgb(var(--system-light));
+
+    &.filled {
+      background: rgb(var(--system-superlight));
+    }
+  }
+
+  &:is(input):focus-within,
+  &:active {
+    box-shadow: none;
+    transform: translate(-1px, 1px);
+  }
+}

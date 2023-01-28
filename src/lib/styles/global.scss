@@ -2,6 +2,11 @@
 @import "reset";
 @import "fonts";
 
+@import "3d";
+@import "flex";
+@import "gap";
+@import "button-row";
+
 [data-locked="true"] {
   overflow: hidden;
 }

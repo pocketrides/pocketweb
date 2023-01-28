@@ -1,0 +1,53 @@
+import { z } from 'zod';
+
+export class Api {
+  static generic_success_validator = z.object({
+    success: z.literal(true)
+  });
+
+  static generic_failure_validator = z.object({
+    success: z.literal(false)
+  });
+
+  static generic_response = z.discriminatedUnion('success', [
+    Api.generic_success_validator,
+    Api.generic_failure_validator
+  ]);
+
+  static get = async <T>(
+    href: string,
+    validator: z.ZodTypeAny
+  ): Promise<T | ApiGenericFailureResponse> => {
+    const req = await fetch(href);
+    const res = validator.safeParse(await req.json());
+
+    if (res.success) return res.data as T;
+    return { success: false } as T;
+  };
+
+  static post = async <T>(
+    href: string,
+    payload: object,
+    validator: z.ZodTypeAny
+  ): Promise<T | ApiGenericFailureResponse> => {
+    const req = await fetch(href, {
+      method: 'post',
+      body: JSON.stringify(payload)
+    });
+
+    const res = validator.safeParse(await req.json());
+
+    if (res.success) return res.data as T;
+    return { success: false } as T;
+  };
+}
+
+export type ApiGenericResponse = z.infer<typeof Api.generic_response>;
+
+export type ApiGenericSuccessResponse = z.infer<
+  typeof Api.generic_success_validator
+>;
+
+export type ApiGenericFailureResponse = z.infer<
+  typeof Api.generic_failure_validator
+>;

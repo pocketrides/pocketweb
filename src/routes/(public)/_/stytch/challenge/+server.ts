@@ -1,0 +1,36 @@
+import { json } from '@sveltejs/kit';
+import type { RequestHandler } from './$types';
+import {
+  StytchChallenge,
+  type StytchChallengeResponse
+} from '$lib/api/stytch/challenge';
+import { Stytch } from '$lib/server/Stytch';
+import type {
+  OTPWhatsAppSendResponse,
+  SendOTPBySMSResponse
+} from 'stytch/types/lib/otps';
+
+export const POST = (async (event) => {
+  const payload = StytchChallenge.payload.safeParse(await event.request.json());
+  let response: StytchChallengeResponse = { success: false };
+
+  if (payload.success) {
+    const stytch_response: SendOTPBySMSResponse | OTPWhatsAppSendResponse =
+      payload.data.challenge_type === 'sms'
+        ? await Stytch.client().otps.sms.send({
+            phone_number: payload.data.phone_number
+          })
+        : await Stytch.client().otps.whatsapp.send({
+            phone_number: payload.data.phone_number
+          });
+
+    if (stytch_response.status_code === 200) {
+      response = {
+        success: true,
+        method_id: stytch_response.phone_id
+      };
+    }
+  }
+
+  return json(response);
+}) satisfies RequestHandler;

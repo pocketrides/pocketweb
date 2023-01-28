@@ -1,0 +1,8 @@
+[data-flex] {
+  display: flex;
+  align-items: flex-start;
+}
+
+[data-flex="v"] {
+  flex-direction: column;
+}
