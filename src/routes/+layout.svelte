@@ -33,6 +33,10 @@
   });
 </script>
 
+<svelte:head>
+  <title>Pocketrides!</title>
+</svelte:head>
+
 <slot />
 <SiteFooter />
 <SiteLoader />

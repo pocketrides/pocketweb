@@ -1,12 +1,16 @@
 <script lang="ts">
   import { StytchVerify } from '$lib/api/stytch/verify';
   import Button from '$lib/components/Button.svelte';
-  import { createEventDispatcher } from 'svelte';
+  import { createEventDispatcher, getContext } from 'svelte';
   import { writable } from 'svelte/store';
   import { secret_code_validator } from '$lib/zod/Stytch';
+  import { type SheetContext, SHEET_CONTEXT_ID } from '$lib/contexts/Sheet';
 
   const dispatch = createEventDispatcher();
   const submitting = writable(false);
+  const context = getContext<SheetContext>(SHEET_CONTEXT_ID);
+
+  $context.dismissable = false;
 
   export let method_id: string | undefined;
 

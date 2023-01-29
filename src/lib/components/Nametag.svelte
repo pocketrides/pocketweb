@@ -28,6 +28,7 @@
     display: inline-flex;
     font-weight: bold;
     align-items: center;
+    user-select: none;
   }
 
   .normal,

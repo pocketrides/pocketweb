@@ -105,6 +105,7 @@
       position: sticky;
       top: 0;
       z-index: 1;
+      border-bottom: 1px solid rgba(var(--dark), 0.25);
     }
 
     article {

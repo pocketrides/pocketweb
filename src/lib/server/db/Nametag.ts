@@ -24,7 +24,19 @@ export class Nametag {
     );
   }
 
-  static async create(data: DraftNametag) {
+  static async getById(nametag_id: string) {
+    return await Fauna.one<ServerNametag>(
+      'nametags_by_id',
+      nametag_id,
+      Nametag.parseFQL
+    );
+  }
+
+  static async create(account_id: string, draft: DraftNametag) {
+    const data = Object.assign(draft, {
+      account_ref: Account.toRef(account_id)
+    });
+
     return await Fauna.create<ServerNametag>(
       Nametag.collection,
       data,

@@ -80,6 +80,12 @@
       <label for="phone" data-error>That doesn't look like a valid number!</label>
     {/if}
   </div>
+  <p class="half">
+    <small>
+      By continuing, you agree to the Pocketrides
+      <strong><a href="/privacy-policy" target="_blank">Privacy Policy</a></strong>.
+    </small>
+  </p>
   <div data-flex data-gap>
     <Button
       type="submit"
@@ -100,20 +106,10 @@
       system={true}
     />
   </div>
-  <p class="half">
-    (<strong>Privacy note:</strong> we don't store your number on our servers, and we
-    certainly don't sell it to spammers. Please read our
-    <strong><a href="/privacy-policy" target="_blank">privacy policy</a></strong> for
-    more information on our committment to your safety, security, and privacy.)
-  </p>
 </form>
 
 <style lang="scss">
   select {
     text-align: center;
-  }
-
-  .half {
-    margin-top: 3rem;
   }
 </style>
