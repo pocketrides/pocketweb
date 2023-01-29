@@ -1,23 +1,26 @@
 <script lang="ts">
   import type { ServerNametag } from '$lib/zod/Nametag';
 
-  export let nametag: ServerNametag;
+  export let nametag: Partial<ServerNametag>;
   export let style: 'normal' | 'small' | 'jumbo' = 'normal';
 </script>
 
-<div style="display:contents" data-theme={nametag.theme}>
-  <a
-    href={`/profile/${nametag.id}`}
-    class:normal={style === 'normal'}
-    class:small={style === 'small'}
-    class:jumbo={style === 'jumbo'}
-    class:h2={style === 'jumbo'}
-    class:h3={style !== 'jumbo'}
-    data-fill="base"
-  >
-    {nametag.nametag}
-  </a>
-</div>
+{#if nametag.nametag}
+  <div style="display:contents" data-theme={nametag.theme}>
+    <a
+      href={nametag.id ? `/profile/${nametag.id}` : undefined}
+      on:click
+      class:normal={style === 'normal'}
+      class:small={style === 'small'}
+      class:jumbo={style === 'jumbo'}
+      class:h2={style === 'jumbo'}
+      class:h3={style !== 'jumbo'}
+      data-fill={nametag.theme ? 'base' : 'system-superlight'}
+    >
+      {nametag.nametag}
+    </a>
+  </div>
+{/if}
 
 <style lang="scss">
   a {

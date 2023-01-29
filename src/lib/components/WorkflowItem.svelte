@@ -28,3 +28,9 @@
     <svelte:component this={component} on:complete={complete} />
   </div>
 {/if}
+
+<style lang="scss">
+  div {
+    width: 100%;
+  }
+</style>

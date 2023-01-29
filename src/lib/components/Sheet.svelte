@@ -56,7 +56,7 @@
     in:slide|local
     out:slide|local
   >
-    <header data-fill="system-superlight">
+    <header data-fill="superlight">
       <Container>
         <Row>
           <h2 slot="left">
@@ -104,6 +104,7 @@
     header {
       position: sticky;
       top: 0;
+      z-index: 1;
     }
 
     article {

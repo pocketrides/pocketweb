@@ -1,6 +1,6 @@
 import * as faunadb from 'faunadb';
 
-const q = faunadb.query;
+export const q = faunadb.query;
 
 export type FaunaRef = faunadb.Expr;
 
@@ -24,12 +24,12 @@ export class Fauna {
 
   static async one<T = object>(
     index: string,
-    param: faunadb.ExprArg,
+    param: faunadb.ExprArg | undefined,
     parser: Function
   ): Promise<T | undefined> {
     try {
       return parser(
-        await Fauna.client().query(q.Get(q.Match(q.Index(index), param)))
+        await Fauna.client().query(q.Get(q.Match(q.Index(index), param || [])))
       );
     } catch (e) {
       return undefined;

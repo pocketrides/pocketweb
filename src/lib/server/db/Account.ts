@@ -19,6 +19,14 @@ export class Account {
     }
   }
 
+  static async getByFaunaId(fauna_id: string) {
+    return await Fauna.one<ServerAccount>(
+      'accounts_by_fauna_id',
+      fauna_id,
+      Account.parseFQL
+    );
+  }
+
   static async getByStytchId(stytch_id: string) {
     return await Fauna.one<ServerAccount>(
       'accounts_by_stytch_id',
@@ -35,7 +43,7 @@ export class Account {
     );
   }
 
-  static async update(id: string, data: DraftAccount) {
+  static async update(id: string, data: Partial<DraftAccount>) {
     return await Fauna.update<ServerAccount>(
       Account.toRef(id),
       data,
