@@ -1,14 +1,15 @@
 <script lang="ts">
   import { StytchChallenge } from '$lib/api/stytch/challenge';
-  import { StytchVerify } from '$lib/api/stytch/verify';
   import Button from '$lib/components/Button.svelte';
+  import { type SheetContext, SHEET_CONTEXT_ID } from '$lib/contexts/Sheet';
   import { AVAILABLE_COUNTRIES } from '$lib/zod/Stytch';
   import { parsePhoneNumber } from 'awesome-phonenumber';
-  import { afterUpdate, createEventDispatcher } from 'svelte';
+  import { afterUpdate, createEventDispatcher, getContext, onMount } from 'svelte';
   import { writable } from 'svelte/store';
 
   const dispatch = createEventDispatcher();
   const submitting = writable(false);
+  const context = getContext<SheetContext>(SHEET_CONTEXT_ID);
 
   let regionCode: string = AVAILABLE_COUNTRIES[0].value;
   let phoneNumber: string = '';
@@ -16,6 +17,11 @@
 
   let e164: string | undefined;
   let type: 'sms' | 'whatsapp' = 'sms';
+
+  onMount(() => {
+    $context.icon = 'hail';
+    $context.header = 'Hello!';
+  });
 
   afterUpdate(() => {
     const parsed = parsePhoneNumber(phoneNumber, { regionCode });
@@ -43,6 +49,11 @@
 </script>
 
 <form on:submit|preventDefault={handleSubmit} data-flex="v" data-gap>
+  <div>
+    <p class="h2">Use your phone number to get an account.</p>
+    <p>We'll text you a secret code to make sure it's you.</p>
+  </div>
+
   <div data-flex="v">
     <label class="h2" for="phone">Phone number:</label>
     <div data-button-row>
@@ -89,10 +100,20 @@
       system={true}
     />
   </div>
+  <p class="half">
+    (<strong>Privacy note:</strong> we don't store your number on our servers, and we
+    certainly don't sell it to spammers. Please read our
+    <strong><a href="/privacy-policy" target="_blank">privacy policy</a></strong> for
+    more information on our committment to your safety, security, and privacy.)
+  </p>
 </form>
 
 <style lang="scss">
   select {
     text-align: center;
+  }
+
+  .half {
+    margin-top: 3rem;
   }
 </style>

@@ -6,20 +6,26 @@
 
 <footer>
   <Container>
-    <p class="h1">
-      <span class="half">
-        Plan anything.<br />
-        Share everything.<br />
-      </span>
-      Be safe online.
-    </p>
-    <p class="half">
-      <small>&copy; {year} Pocketrides, Inc.</small>
-    </p>
+    <div data-flex="v" data-gap>
+      <p class="h1">
+        <span class="half">
+          Plan anything.<br />
+          Share everything.<br />
+        </span>
+        Be safe online.
+      </p>
+      <p class="half">
+        <a href="/privacy-policy">Privacy Policy</a> •
+        <a href="/terms-of-use">Terms of Use</a>
+      </p>
+      <p class="half">
+        <small>&copy; {year} Pocketrides, Inc.</small>
+      </p>
+    </div>
   </Container>
 </footer>
 
-<style>
+<style lang="scss">
   footer {
     width: 100%;
     background: rgb(var(--dark));
@@ -28,5 +34,10 @@
 
   .half {
     color: rgba(var(--light), 0.5);
+
+    a:hover,
+    a:active {
+      color: rgb(var(--light));
+    }
   }
 </style>

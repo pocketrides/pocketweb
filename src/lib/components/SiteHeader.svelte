@@ -23,9 +23,7 @@
           {:else}
             <Button
               label="Join pocketrides!"
-              on:click={() => {
-                $App.sheet_id = 'onboarding';
-              }}
+              on:click={() => ($App.sheet_id = 'onboarding')}
             />
           {/if}
         </slot>

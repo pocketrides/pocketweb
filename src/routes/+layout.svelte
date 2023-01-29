@@ -1,8 +1,10 @@
 <script lang="ts">
   import { browser } from '$app/environment';
+  import { afterNavigate, beforeNavigate } from '$app/navigation';
   import { page } from '$app/stores';
   import SiteFooter from '$lib/components/SiteFooter.svelte';
   import SiteLoader from '$lib/components/SiteLoader.svelte';
+  import Onboarding from '$lib/sheets/Onboarding.svelte';
   import { App } from '$lib/stores/app';
   import '$lib/styles/global.scss';
 
@@ -17,8 +19,21 @@
       $App.sheet_id === '' ? 'false' : 'true'
     );
   }
+
+  beforeNavigate(async () => {
+    $App.loading = true;
+
+    setTimeout(() => {
+      $App.loading = false;
+    }, 2000);
+  });
+
+  afterNavigate(() => {
+    $App.loading = false;
+  });
 </script>
 
 <slot />
 <SiteFooter />
 <SiteLoader />
+<Onboarding />
