@@ -7,7 +7,6 @@ declare global {
     }
     interface PageData {
       page_theme?: import('$lib/zod/Theme').ThemeAnyValue;
-      page_fill?: import('$lib/zod/Fill').Fill;
       my_nametag?: import('$lib/zod/Nametag').ServerNametag;
     }
     interface Platform {
