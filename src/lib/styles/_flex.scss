@@ -1,8 +1,16 @@
 [data-flex] {
   display: flex;
-  align-items: flex-start;
 }
 
-[data-flex="v"] {
+[data-flex*="v"] {
   flex-direction: column;
+}
+
+[data-flex*="sb"] {
+  justify-content: space-between;
+}
+
+[data-flex*="cc"] {
+  align-items: center;
+  justify-content: center;
 }

@@ -10,10 +10,11 @@
 
   export let utility: boolean = false;
   export let outer_fill: Fill | 'none' = 'light';
+  export let fill: Fill = $App.fill;
 </script>
 
 <div data-fill={outer_fill} class:utility>
-  <header data-fill={$App.fill}>
+  <header data-fill={fill}>
     <Container>
       <Row>
         <slot name="left" slot="left"><Logo /></slot>
@@ -28,6 +29,7 @@
           {/if}
         </slot>
       </Row>
+      <slot />
     </Container>
   </header>
 </div>

@@ -42,8 +42,4 @@
   article:not(:last-child) {
     margin-bottom: 1.5rem;
   }
-
-  ul {
-    margin: 1rem;
-  }
 </style>
