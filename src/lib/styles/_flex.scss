@@ -2,6 +2,10 @@
   display: flex;
 }
 
+[data-flex*="as"] {
+  align-items: flex-start;
+}
+
 [data-flex*="v"] {
   flex-direction: column;
 }

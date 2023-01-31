@@ -14,15 +14,19 @@ export class NametagStats {
   }
 
   static async create(nametag_id: string, draft: DraftNametagStats) {
-    const data = Object.assign(draft, {
-      nametag_ref: Nametag.toRef(nametag_id)
-    });
+    const exists = await NametagStats.getByNametagRef(nametag_id);
 
-    return await Fauna.create<ServerNametagStats>(
-      NametagStats.collection,
-      data,
-      NametagStats.parseFQL
-    );
+    if (exists === undefined) {
+      const data = Object.assign(draft, {
+        nametag_ref: Nametag.toRef(nametag_id)
+      });
+
+      return await Fauna.create<ServerNametagStats>(
+        NametagStats.collection,
+        data,
+        NametagStats.parseFQL
+      );
+    } else return exists;
   }
 
   static async update(id: string, data: Partial<DraftNametagStats>) {

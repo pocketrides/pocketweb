@@ -3,16 +3,20 @@
   import PhoneNumber from './ui/PhoneNumber.svelte';
   import SecretCode from './ui/SecretCode.svelte';
   import { slide } from 'svelte/transition';
-  import { createEventDispatcher } from 'svelte';
+  import { createEventDispatcher, setContext } from 'svelte';
+  import { type StytchContext, STYTCH_CONTEXT_ID } from '$lib/contexts/Stytch';
 
   const dispatch = createEventDispatcher();
-  const stage = writable<'challenge' | 'verify'>('challenge');
+  const context = setContext<StytchContext>(
+    STYTCH_CONTEXT_ID,
+    writable('challenge')
+  );
 
   let method_id: string | undefined;
 
   const challengeComplete = (e: CustomEvent<{ method_id: string }>) => {
     method_id = e.detail.method_id;
-    $stage = 'verify';
+    $context = 'verify';
   };
 
   const verifyComplete = async () => {
@@ -20,13 +24,13 @@
   };
 </script>
 
-{#if $stage === 'challenge'}
-  <div out:slide|local>
+{#if $context === 'challenge'}
+  <div in:slide|local={{ delay: 250 }} out:slide|local>
     <PhoneNumber on:complete={challengeComplete} />
   </div>
 {/if}
 
-{#if $stage === 'verify'}
+{#if $context === 'verify'}
   <div in:slide|local={{ delay: 250 }} out:slide|local>
     <SecretCode {method_id} on:complete={verifyComplete} />
   </div>

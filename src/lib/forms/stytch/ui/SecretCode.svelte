@@ -5,10 +5,13 @@
   import { writable } from 'svelte/store';
   import { secret_code_validator } from '$lib/zod/Stytch';
   import { type SheetContext, SHEET_CONTEXT_ID } from '$lib/contexts/Sheet';
+  import { STYTCH_CONTEXT_ID, type StytchContext } from '$lib/contexts/Stytch';
 
   const dispatch = createEventDispatcher();
   const submitting = writable(false);
+  const api_error = writable(false);
   const context = getContext<SheetContext>(SHEET_CONTEXT_ID);
+  const stytch_context = getContext<StytchContext>(STYTCH_CONTEXT_ID);
 
   $context.dismissable = false;
 
@@ -31,24 +34,41 @@
         dispatch('complete');
       } else {
         $submitting = false;
+        $api_error = true;
       }
     }
+  };
+
+  const startOverClick = () => {
+    $stytch_context = 'challenge';
   };
 </script>
 
 <form data-flex="v" data-gap on:submit|preventDefault={handleSubmit}>
-  <div data-flex="v">
-    <label class="h2" for="secret-code">Secret code:</label>
-    <input
-      id="secret-code"
-      class="h3"
-      autocomplete="one-time-code"
-      bind:value={code}
-      class:filled={valid}
-      data-3d
-    />
+  <div>
+    <p class="h2">We sent you a secret code.</p>
+    <p>Enter it now to confirm it's really you.</p>
+  </div>
+  <div data-flex="v as" data-gap>
+    <div data-flex="v as">
+      <label class="h2" for="secret-code">Secret code:</label>
+      <input
+        id="secret-code"
+        class="h3"
+        autocomplete="one-time-code"
+        bind:value={code}
+        class:filled={valid}
+        data-3d
+      />
+    </div>
     {#if valid === false && code !== ''}
       <label for="secret-code" data-error>That doesn't look right.</label>
+    {/if}
+    {#if $api_error === true}
+      <label for="secret-code" data-error data-flex="v as" data-gap>
+        <p>Something went wrong.</p>
+        <Button label="Start over" on:click={startOverClick} />
+      </label>
     {/if}
   </div>
   <div data-flex data-gap>

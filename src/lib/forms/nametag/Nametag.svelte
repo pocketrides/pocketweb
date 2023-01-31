@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { invalidateAll } from '$app/navigation';
   import { NametagCreate } from '$lib/api/nametag/create';
   import { NametagList } from '$lib/api/nametag/list';
   import { NametagUse } from '$lib/api/nametag/use';
@@ -36,8 +37,10 @@
         nametag_id: list_result.nametags[0].id
       });
 
-      if (use_result.success) dispatch('complete');
-      else needsInput();
+      if (use_result.success) {
+        dispatch('complete');
+        await invalidateAll();
+      } else needsInput();
     } else needsInput();
   });
 

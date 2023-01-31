@@ -48,10 +48,10 @@
 {#if $loading === false && $data.success === true && $data.accepted === false}
   <form on:submit|preventDefault={handleSubmit} data-flex="v" data-gap>
     <div>
-      <h2>Accept the terms of use to continue.</h2>
+      <h2>Accept the terms to continue.</h2>
       <article>{@html $data.latest_version.summary}</article>
     </div>
-    <div>
+    <div class="wrapper">
       <Checkbox bind:checked label="I accept" />
     </div>
     <div>
@@ -64,3 +64,9 @@
     </div>
   </form>
 {/if}
+
+<style lang="scss">
+  .wrapper {
+    margin-top: 3rem;
+  }
+</style>

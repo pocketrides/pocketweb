@@ -56,7 +56,7 @@
     in:slide|local
     out:slide|local
   >
-    <header data-fill="superlight">
+    <header data-fill="system-superlight">
       <Container>
         <Row>
           <h2 slot="left">

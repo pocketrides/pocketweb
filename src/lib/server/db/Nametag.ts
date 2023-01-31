@@ -1,6 +1,8 @@
 import { Fauna, type FaunaRef } from './Fauna';
 import { Account } from './Account';
 import type { DraftNametag, ServerNametag } from '$lib/zod/Nametag';
+import { NametagStats } from './NametagStats';
+import { blankNametagStats } from '$lib/zod/NametagStats';
 
 export class Nametag {
   static collection = 'nametags';
@@ -37,11 +39,17 @@ export class Nametag {
       account_ref: Account.toRef(account_id)
     });
 
-    return await Fauna.create<ServerNametag>(
+    const nametag = await Fauna.create<ServerNametag>(
       Nametag.collection,
       data,
       Nametag.parseFQL
     );
+
+    if (nametag) {
+      await NametagStats.create(nametag.id, blankNametagStats());
+    }
+
+    return nametag;
   }
 
   static async update(id: string, data: DraftNametag) {

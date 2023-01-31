@@ -50,8 +50,11 @@
 
 <form on:submit|preventDefault={handleSubmit} data-flex="v" data-gap>
   <div>
-    <p class="h2">Use your phone number to get an account.</p>
-    <p>We'll text you a secret code to make sure it's you.</p>
+    <p class="h2">Join the experiment.</p>
+    <p>
+      No ads, no BS, just you, your friends, and a like button that earns you cash.
+      Use your phone number to get an account.
+    </p>
   </div>
 
   <div data-flex="v">
