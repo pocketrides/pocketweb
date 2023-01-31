@@ -16,6 +16,9 @@ declare global {
         STYTCH_PROJECT_ID: string;
         STYTCH_PROJECT_SECRET: string;
         STYTCH_ENV: 'test' | 'live';
+
+        STRIPE_KEY: string;
+        STRIPE_SIGNING_SECRET: string;
       };
     }
   }

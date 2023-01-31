@@ -2,6 +2,7 @@ import { json, type Handle, redirect } from '@sveltejs/kit';
 import { env } from '$env/dynamic/private';
 import { Fauna } from '$lib/server/db/Fauna';
 import { Stytch } from '$lib/server/Stytch';
+import { StripeClient } from '$lib/server/StripeClient';
 import {
   MAX_AGE_MINUTES,
   createNametagCookie,
@@ -21,6 +22,10 @@ export const handle = (async ({ event, resolve }) => {
     event.platform?.env.STYTCH_PROJECT_SECRET || env.STYTCH_PROJECT_SECRET;
   Stytch.PROJECT_ID = event.platform?.env.STYTCH_PROJECT_ID || env.STYTCH_PROJECT_ID;
   Stytch.ENV = event.platform?.env.STYTCH_ENV || env.STYTCH_ENV;
+
+  StripeClient.STRIPE_KEY = event.platform?.env.STRIPE_KEY || env.STRIPE_KEY;
+  StripeClient.STRIPE_SIGNING_SECRET =
+    event.platform?.env.STRIPE_SIGNING_SECRET || env.STRIPE_SIGNING_SECRET;
 
   const session_cookie = getSessionCookie(event.cookies);
 
@@ -50,6 +55,7 @@ export const handle = (async ({ event, resolve }) => {
             createNametagCookie(event.cookies, verified.id);
           } else {
             event.locals.nametag_id = undefined;
+            destroySessionCookie(event.cookies);
             destroyNametagCookie(event.cookies);
           }
         }
