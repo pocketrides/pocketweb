@@ -50,7 +50,7 @@
 
 <form on:submit|preventDefault={handleSubmit} data-flex="v" data-gap>
   <div>
-    <p class="h2">Join the experiment.</p>
+    <h2>Join the experiment.</h2>
     <p>
       No ads, no BS, just you, your friends, and a like button that earns you cash.
       Use your phone number to get an account.

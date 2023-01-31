@@ -46,7 +46,7 @@
 
 <form data-flex="v" data-gap on:submit|preventDefault={handleSubmit}>
   <div>
-    <p class="h2">We sent you a secret code.</p>
+    <h2>We sent you a secret code.</h2>
     <p>Enter it now to confirm it's really you.</p>
   </div>
   <div data-flex="v as" data-gap>

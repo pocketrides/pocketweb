@@ -65,14 +65,18 @@ export const handle = (async ({ event, resolve }) => {
       }
     } else {
       destroySessionCookie(event.cookies);
+      destroyNametagCookie(event.cookies);
     }
+  } else {
+    destroySessionCookie(event.cookies);
+    destroyNametagCookie(event.cookies);
   }
 
   if (
-    event.route.id?.startsWith('(private)') &&
+    event.route.id?.startsWith('/(private)') &&
     event.locals.fauna_account_id === undefined
   ) {
-    if (event.route.id.startsWith('(private)/_')) return json({ success: false });
+    if (event.route.id?.startsWith('/(private)/_')) return json({ success: false });
     else throw redirect(301, '/');
   }
 

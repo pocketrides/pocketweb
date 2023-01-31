@@ -15,9 +15,9 @@ export const POST = (async (event) => {
     );
 
     if (nametag) {
-      response = { success: true, nametag_id: nametag.id };
       event.locals.nametag_id = nametag.id;
       createNametagCookie(event.cookies, nametag.id);
+      response = { success: true, nametag_id: nametag.id };
     }
   }
 

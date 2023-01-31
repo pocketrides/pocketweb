@@ -17,7 +17,12 @@ export const POST = (async (event) => {
     StripeClient.crypto()
   );
 
+  console.log('> event:', webhook_event);
+
   switch (webhook_event.type) {
+    case 'checkout.session.completed':
+      await StripeClient.handleCheckoutSessionCompleted(webhook_event);
+      break;
   }
 
   return json({});

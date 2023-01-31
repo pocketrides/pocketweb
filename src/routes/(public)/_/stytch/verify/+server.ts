@@ -25,9 +25,8 @@ export const POST = (async (event) => {
         stytch_response.user.user_id
       );
 
-      event.locals.fauna_account_id = fauna_account_id;
-
       if (fauna_account_id) {
+        event.locals.fauna_account_id = fauna_account_id;
         createSessionCookie(event.cookies, stytch_response.session_token);
       }
 
