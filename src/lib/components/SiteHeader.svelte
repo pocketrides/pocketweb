@@ -20,7 +20,11 @@
         <slot name="left" slot="left"><Logo /></slot>
         <slot name="right" slot="right">
           {#if $page.data.my_nametag}
-            <Nametag nametag={$page.data.my_nametag} />
+            {#if $page.url.pathname === `/profile/${$page.data.my_nametag.id}`}
+              <Button href="/account" label="Settings" icon="settings_suggest" />
+            {:else}
+              <Nametag nametag={$page.data.my_nametag} />
+            {/if}
           {:else}
             <Button
               label="Join pocketrides!"

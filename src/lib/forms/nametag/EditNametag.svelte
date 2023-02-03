@@ -1,0 +1,68 @@
+<script lang="ts">
+  import { invalidateAll } from '$app/navigation';
+  import { page } from '$app/stores';
+  import { NametagUpdate } from '$lib/api/nametag/update';
+  import Button from '$lib/components/Button.svelte';
+  import { App } from '$lib/stores/app';
+  import { draft_nametag_validator } from '$lib/zod/Nametag';
+  import { THEME_NAMES, THEME_VALUES } from '$lib/zod/Theme';
+  import { writable } from 'svelte/store';
+
+  const submitting = writable(false);
+
+  let nametag = $page.data.my_nametag!.nametag;
+  let theme = $page.data.my_nametag!.theme;
+  let error = false;
+
+  $: valid = draft_nametag_validator.safeParse({ nametag, theme }).success;
+
+  const handleSubmit = async () => {
+    $submitting = true;
+
+    const res = await NametagUpdate.post({ nametag, theme });
+
+    if (res.success) {
+      await invalidateAll();
+      $App.sheet_id = '';
+    } else {
+      error = true;
+    }
+
+    $submitting = false;
+  };
+</script>
+
+<form on:submit={handleSubmit} data-flex="v" data-gap="1">
+  <div data-flex="v as">
+    <label for="nametag" class="h2">Nametag:</label>
+    <input
+      id="nametag"
+      type="text"
+      bind:value={nametag}
+      class="h3"
+      class:filled={nametag && nametag.length}
+      data-3d
+    />
+  </div>
+  <div data-flex="v as">
+    <label for="theme" class="h2">Theme:</label>
+    <select bind:value={theme} data-3d class="h3 filled">
+      {#each THEME_VALUES as value, i}
+        <option {value}>{THEME_NAMES[i]}</option>
+      {/each}
+    </select>
+  </div>
+  {#if error}
+    <div data-flex="v as">
+      <p data-error>Something went wrong, try again.</p>
+    </div>
+  {/if}
+  <div data-flex data-theme={theme}>
+    <Button
+      type="submit"
+      label={$submitting ? 'One sec!' : 'Save'}
+      primary
+      disabled={!valid || $submitting}
+    />
+  </div>
+</form>

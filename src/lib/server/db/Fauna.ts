@@ -14,7 +14,7 @@ export class Fauna {
   static parseFQL<T = object>(fql: any, ref_keys: string[] = []) {
     const { data } = fql;
     data.id = fql.ref.id;
-    ref_keys.forEach((k) => (data[k] = { id: data[k].id }));
+    ref_keys.forEach((k) => (data[k] = data[k] ? { id: data[k].id } : undefined));
     return data as T;
   }
 
@@ -31,6 +31,17 @@ export class Fauna {
       return parser(
         await Fauna.client().query(q.Get(q.Match(q.Index(index), param || [])))
       );
+    } catch (e) {
+      return undefined;
+    }
+  }
+
+  static async get<T = object>(
+    ref: faunadb.ExprArg,
+    parser: Function
+  ): Promise<T | undefined> {
+    try {
+      return parser(await Fauna.client().query(q.Get(ref)));
     } catch (e) {
       return undefined;
     }

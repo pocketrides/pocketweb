@@ -9,7 +9,7 @@
 </script>
 
 <svelte:head>
-  <title>welcome to the experiment! | pocketrides</title>
+  <title>welcome to the experiment | pocketrides!</title>
 </svelte:head>
 
 <SiteHeader />

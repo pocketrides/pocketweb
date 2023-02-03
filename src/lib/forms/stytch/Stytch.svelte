@@ -2,7 +2,6 @@
   import { writable } from 'svelte/store';
   import PhoneNumber from './ui/PhoneNumber.svelte';
   import SecretCode from './ui/SecretCode.svelte';
-  import { slide } from 'svelte/transition';
   import { createEventDispatcher, setContext } from 'svelte';
   import { type StytchContext, STYTCH_CONTEXT_ID } from '$lib/contexts/Stytch';
 
@@ -25,13 +24,13 @@
 </script>
 
 {#if $context === 'challenge'}
-  <div in:slide|local={{ delay: 250 }} out:slide|local>
+  <div>
     <PhoneNumber on:complete={challengeComplete} />
   </div>
 {/if}
 
 {#if $context === 'verify'}
-  <div in:slide|local={{ delay: 250 }} out:slide|local>
+  <div>
     <SecretCode {method_id} on:complete={verifyComplete} />
   </div>
 {/if}

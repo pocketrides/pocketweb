@@ -4,17 +4,21 @@
   import Button from '$lib/components/Button.svelte';
   import Checkbox from '$lib/components/Checkbox.svelte';
   import { type SheetContext, SHEET_CONTEXT_ID } from '$lib/contexts/Sheet';
+  import { type WorkflowContext, WORKFLOW_CONTEXT_ID } from '$lib/contexts/Workflow';
   import { createEventDispatcher, getContext, onMount } from 'svelte';
   import { writable } from 'svelte/store';
 
   const dispatch = createEventDispatcher();
   const context = getContext<SheetContext>(SHEET_CONTEXT_ID);
+  const workflow_context = getContext<WorkflowContext>(WORKFLOW_CONTEXT_ID);
   const loading = writable(true);
   const submitting = writable(false);
   const data = writable<TermsStatusResponse>();
 
   let checked = false;
   let version: string;
+
+  $workflow_context.loading = true;
 
   onMount(async () => {
     const result = await TermsStatus.get();
@@ -31,6 +35,7 @@
       $context.header = 'Terms of Use';
       $context.icon = 'done';
       $context.dismissable = false;
+      $workflow_context.loading = false;
 
       $loading = false;
     }

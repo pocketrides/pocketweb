@@ -13,6 +13,7 @@
   export let id: string;
   export let icon: string | undefined = undefined;
   export let header: string | undefined = undefined;
+  export let close: string = 'Close';
   export let dismissable: boolean = true;
 
   const context = setContext<SheetContext>(
@@ -66,7 +67,7 @@
           <div slot="right">
             <slot name="header-action">
               {#if $context.dismissable === true}
-                <Button label="Close" on:click={dismiss} />
+                <Button label={close} on:click={dismiss} />
               {/if}
             </slot>
           </div>

@@ -24,7 +24,7 @@ export const createSessionCookie = (cookies: Cookies, val: string) => {
 };
 
 export const destroySessionCookie = (cookies: Cookies) => {
-  cookies.delete(COOKIE_NAME_SESSION, { path: opts.path });
+  cookies.delete(COOKIE_NAME_SESSION, opts);
 };
 
 export const getNametagCookie = (cookies: Cookies) => {
@@ -36,5 +36,5 @@ export const createNametagCookie = (cookies: Cookies, val: string) => {
 };
 
 export const destroyNametagCookie = (cookies: Cookies) => {
-  cookies.delete(COOKIE_NAME_NAMETAG, { path: opts.path });
+  cookies.delete(COOKIE_NAME_NAMETAG, opts);
 };

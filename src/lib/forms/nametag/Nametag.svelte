@@ -7,6 +7,7 @@
   import Container from '$lib/components/Container.svelte';
   import Nametag from '$lib/components/Nametag.svelte';
   import { type SheetContext, SHEET_CONTEXT_ID } from '$lib/contexts/Sheet';
+  import { type WorkflowContext, WORKFLOW_CONTEXT_ID } from '$lib/contexts/Workflow';
   import { App } from '$lib/stores/app';
   import { draft_nametag_validator } from '$lib/zod/Nametag';
   import { THEME_NAMES, THEME_VALUES, type ThemeValue } from '$lib/zod/Theme';
@@ -21,8 +22,11 @@
 
   const dispatch = createEventDispatcher();
   const context = getContext<SheetContext>(SHEET_CONTEXT_ID);
+  const workflow_context = getContext<WorkflowContext>(WORKFLOW_CONTEXT_ID);
   const loading = writable(true);
   const submitting = writable(false);
+
+  $workflow_context.loading = true;
 
   const themeChange = () => {
     if (theme !== '') $App.theme = theme;
@@ -45,10 +49,11 @@
   });
 
   const needsInput = () => {
-    $loading = false;
     $context.header = 'Create your nametag';
     $context.icon = 'face';
     $context.dismissable = false;
+    $workflow_context.loading = false;
+    $loading = false;
   };
 
   const handleSubmit = async () => {
@@ -128,10 +133,6 @@
 {/if}
 
 <style lang="scss">
-  select {
-    appearance: auto;
-  }
-
   .preview {
     padding: 0 1.5rem;
     display: flex;
