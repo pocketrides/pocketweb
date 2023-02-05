@@ -51,7 +51,8 @@
     <div slot="left">
       <Button
         label="Get an account!"
-        system={true}
+        icon="hail"
+        system
         on:click={() => ($App.sheet_id = 'onboarding')}
       />
     </div>

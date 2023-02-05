@@ -3,20 +3,49 @@ import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { NametagStats } from '$lib/server/db/NametagStats';
 import { blankNametagStats } from '$lib/zod/NametagStats';
+import { Relationship } from '$lib/server/db/Relationship';
 
 export const load = (async (event) => {
-  const nametag = await Nametag.getById(event.params.nametag_id);
-
-  if (!nametag) throw error(404);
-
-  const nametag_stats = await NametagStats.getByNametagRef(nametag.id);
+  const page_nametag = await Nametag.getById(event.params.nametag_id);
+  if (!page_nametag) throw error(404);
 
   const parent = await event.parent();
+  if (
+    parent.my_nametag &&
+    (await Relationship.isBlocking(page_nametag.id, parent.my_nametag.id))
+  )
+    throw error(404);
+
+  const page_nametag_stats = await NametagStats.getByNametagRef(page_nametag.id);
+
+  const relationship = {
+    is_following: false,
+    is_blocking: false,
+    is_close_friend: false
+  };
+
+  if (parent.my_nametag && parent.my_nametag.id !== page_nametag.id) {
+    relationship.is_following = await Relationship.isFollowing(
+      parent.my_nametag.id,
+      page_nametag.id
+    );
+
+    relationship.is_close_friend = await Relationship.isCloseFriend(
+      parent.my_nametag.id,
+      page_nametag.id
+    );
+
+    relationship.is_blocking = await Relationship.isBlocking(
+      parent.my_nametag.id,
+      page_nametag.id
+    );
+  }
 
   return {
     my_nametag: parent.my_nametag,
-    page_theme: nametag.theme,
-    page_nametag: nametag,
-    page_nametag_stats: nametag_stats || blankNametagStats()
+    page_theme: page_nametag.theme,
+    page_nametag: page_nametag,
+    page_nametag_stats: page_nametag_stats || blankNametagStats(),
+    relationship
   };
 }) satisfies PageServerLoad;

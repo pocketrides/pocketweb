@@ -9,9 +9,13 @@
   $App.loading = false;
 </script>
 
+<svelte:head>
+  <title>Something broke! | pocketrides</title>
+</svelte:head>
+
 <SiteHeader />
 <Main>
-  <Container fill="dark" rounded={true}>
+  <Container fill="dark" rounded>
     <h1 class="h2">Something broke!</h1>
     <p>We'll try and fix it.</p>
     <Button href="/" label="Back home" />

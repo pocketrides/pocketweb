@@ -97,7 +97,7 @@
         type = 'sms';
       }}
       disabled={!valid || $submitting}
-      system={true}
+      system
     />
     <Button
       type="submit"
@@ -106,7 +106,7 @@
         type = 'whatsapp';
       }}
       disabled={$submitting || !valid}
-      system={true}
+      system
     />
   </div>
 </form>

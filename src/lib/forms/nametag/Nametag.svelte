@@ -76,7 +76,7 @@
       <p>Add some emojis, pick your favorite color, have fun with it.</p>
     </div>
     {#if nametag !== ''}
-      <Container rounded={true} fill="superlight">
+      <Container rounded fill="superlight">
         <div class="preview" data-flex="v" data-gap in:slide out:slide>
           <Nametag
             style="jumbo"
@@ -124,7 +124,7 @@
     <div data-flex>
       <Button
         type="submit"
-        primary={true}
+        primary
         disabled={!valid || $submitting}
         label={$submitting ? 'One sec!' : 'Continue…'}
       />

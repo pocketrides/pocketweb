@@ -1,5 +1,5 @@
 import type { DraftNametagStats, ServerNametagStats } from '$lib/zod/NametagStats';
-import { Fauna } from './Fauna';
+import { Fauna, q } from './Fauna';
 import { Nametag } from './Nametag';
 
 export class NametagStats {
@@ -11,6 +11,11 @@ export class NametagStats {
       Nametag.toRef(nametag_id),
       NametagStats.parseFQL
     );
+  }
+
+  static async isPrivate(nametag_id: string): Promise<boolean> {
+    const stats = await NametagStats.getByNametagRef(nametag_id);
+    return stats?.private === true;
   }
 
   static async create(nametag_id: string, draft: DraftNametagStats) {
@@ -27,6 +32,54 @@ export class NametagStats {
         NametagStats.parseFQL
       );
     } else return exists;
+  }
+
+  static async addFollower(nametag_id: string) {
+    const stats = await NametagStats.getByNametagRef(nametag_id);
+
+    if (stats) {
+      await NametagStats.update(stats.id, { followers: stats.followers + 1 });
+    }
+  }
+
+  static async substractFollower(nametag_id: string) {
+    const stats = await NametagStats.getByNametagRef(nametag_id);
+
+    if (stats) {
+      await NametagStats.update(stats.id, { followers: stats.followers - 1 });
+    }
+  }
+
+  static async addFriend(nametag_id: string) {
+    const stats = await NametagStats.getByNametagRef(nametag_id);
+
+    if (stats) {
+      await NametagStats.update(stats.id, { friends: stats.friends + 1 });
+    }
+  }
+
+  static async subtractFriend(nametag_id: string) {
+    const stats = await NametagStats.getByNametagRef(nametag_id);
+
+    if (stats) {
+      await NametagStats.update(stats.id, { friends: stats.friends - 1 });
+    }
+  }
+
+  static async addPost(nametag_id: string) {
+    const stats = await NametagStats.getByNametagRef(nametag_id);
+
+    if (stats) {
+      await NametagStats.update(stats.id, { posts: stats.posts + 1 });
+    }
+  }
+
+  static async subtractPost(nametag_id: string) {
+    const stats = await NametagStats.getByNametagRef(nametag_id);
+
+    if (stats) {
+      await NametagStats.update(stats.id, { posts: stats.posts - 1 });
+    }
   }
 
   static async update(id: string, data: Partial<DraftNametagStats>) {

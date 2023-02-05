@@ -76,7 +76,7 @@
       type="submit"
       label={$submitting ? 'One sec!' : 'Continue…'}
       disabled={$submitting || !valid}
-      system={true}
+      system
     />
   </div>
 </form>

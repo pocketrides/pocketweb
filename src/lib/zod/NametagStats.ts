@@ -5,7 +5,8 @@ export const draft_nametag_stats_validator = z.object({
   profile_pic: z.string().optional(),
   friends: z.number(),
   followers: z.number(),
-  posts: z.number()
+  posts: z.number(),
+  private: z.boolean().optional()
 });
 
 export const server_nametag_stats_validator = draft_nametag_stats_validator.extend({

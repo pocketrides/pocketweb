@@ -46,7 +46,7 @@
 
 {#if !$loading}
   <div data-flex="v" data-gap>
-    <Container rounded={true} fill="superlight">
+    <Container rounded fill="superlight">
       <div data-flex="v cc" data-gap="1">
         <div data-flex="v as" data-gap>
           <h2>Everybody earns money here.</h2>
@@ -56,7 +56,7 @@
           </p>
         </div>
         <div class="wrapper">
-          <Button label="Subscribe for $5/mo" href={payment_link} primary={true} />
+          <Button label="Subscribe for $5/mo" href={payment_link} primary />
         </div>
         <Button
           label="No thanks!"

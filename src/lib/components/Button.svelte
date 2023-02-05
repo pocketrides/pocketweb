@@ -17,6 +17,7 @@
 
   export let primary: boolean = false;
   export let system: boolean = false;
+  export let large: boolean = false;
   export let jumbo: boolean = false;
 
   export let id: string = nanoid();
@@ -43,6 +44,7 @@
   {value}
   class:primary
   class:system
+  class:large
   class:jumbo
   data-fill={primary ? 'base' : system ? 'system-base' : 'system-superlight'}
   data-3d
@@ -69,6 +71,7 @@
     opacity: 0.5;
   }
 
+  button.large,
   button.primary,
   button.system {
     padding: 0 0.85rem;

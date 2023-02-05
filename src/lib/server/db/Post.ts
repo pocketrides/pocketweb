@@ -15,10 +15,10 @@ export class Post {
       stats: blankPostStats()
     });
 
-    return await Fauna.create(Post.collection, data, Post.parseFQL);
+    return await Fauna.create<ServerPost>(Post.collection, data, Post.parseFQL);
   }
 
-  static async update(post_id: string, draft: DraftPost) {
+  static async update(post_id: string, draft: Partial<DraftPost>) {
     return await Fauna.update<ServerPost>(Post.toRef(post_id), draft, Post.parseFQL);
   }
 

@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { client_ref_validator } from './Fauna';
+import { server_post_stats_validator } from './PostStats';
 
 export const draft_post_photo_validator = z.object({
   public_id: z.string(),
@@ -27,11 +28,9 @@ export const draft_post_validator = z.object({
 export const server_post_validator = draft_post_validator.extend({
   id: z.string(),
   nametag_ref: client_ref_validator,
-  stats: z.object({
-    likes: z.number(),
-    quarantines: z.number(),
-    replies: z.number()
-  })
+
+  // stats is bolted-on (but is separate so that post's `ts` can be used)
+  stats: server_post_stats_validator.optional()
 });
 
 export type DraftPost = z.infer<typeof draft_post_validator>;
@@ -39,10 +38,11 @@ export type DraftPostPhoto = z.infer<typeof draft_post_photo_validator>;
 export type DraftPostAttachment = z.infer<typeof draft_post_attachment_validator>;
 export type ServerPost = z.infer<typeof server_post_validator>;
 
-export const blankPostStats = () => {
+export const blankPost = (thread_id?: string): DraftPost => {
   return {
-    likes: 0,
-    quarantines: 0,
-    replies: 0
+    content: '',
+    thread_id,
+    photos: [],
+    attachments: []
   };
 };

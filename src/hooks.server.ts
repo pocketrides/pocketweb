@@ -14,18 +14,10 @@ import {
 } from '$lib/server/Cookies';
 import { Account } from '$lib/server/db/Account';
 import { Nametag } from '$lib/server/db/Nametag';
+import { MagicBellClient } from '$lib/server/MagicBellClient';
 
 export const handle = (async ({ event, resolve }) => {
-  Fauna.FAUNA_SECRET = event.platform?.env.FAUNA_SECRET || env.FAUNA_SECRET;
-
-  Stytch.SECRET =
-    event.platform?.env.STYTCH_PROJECT_SECRET || env.STYTCH_PROJECT_SECRET;
-  Stytch.PROJECT_ID = event.platform?.env.STYTCH_PROJECT_ID || env.STYTCH_PROJECT_ID;
-  Stytch.ENV = event.platform?.env.STYTCH_ENV || env.STYTCH_ENV;
-
-  StripeClient.STRIPE_KEY = event.platform?.env.STRIPE_KEY || env.STRIPE_KEY;
-  StripeClient.STRIPE_SIGNING_SECRET =
-    event.platform?.env.STRIPE_SIGNING_SECRET || env.STRIPE_SIGNING_SECRET;
+  loadSecrets(event.platform && event.platform.env ? event.platform.env : env);
 
   const session_cookie = getSessionCookie(event.cookies);
 
@@ -82,3 +74,28 @@ export const handle = (async ({ event, resolve }) => {
 
   return await resolve(event);
 }) satisfies Handle;
+
+type AppSecrets = {
+  FAUNA_SECRET: string;
+  STYTCH_PROJECT_ID: string;
+  STYTCH_PROJECT_SECRET: string;
+  STYTCH_ENV: string;
+  STRIPE_KEY: string;
+  STRIPE_SIGNING_SECRET: string;
+  MAGICBELL_KEY: string;
+  MAGICBELL_SECRET: string;
+};
+
+const loadSecrets = (env: AppSecrets) => {
+  Fauna.FAUNA_SECRET = env.FAUNA_SECRET;
+
+  Stytch.SECRET = env.STYTCH_PROJECT_SECRET;
+  Stytch.PROJECT_ID = env.STYTCH_PROJECT_ID;
+  Stytch.ENV = env.STYTCH_ENV;
+
+  StripeClient.STRIPE_KEY = env.STRIPE_KEY;
+  StripeClient.STRIPE_SIGNING_SECRET = env.STRIPE_SIGNING_SECRET;
+
+  MagicBellClient.API_KEY = env.MAGICBELL_KEY;
+  MagicBellClient.API_SECRET = env.MAGICBELL_SECRET;
+};

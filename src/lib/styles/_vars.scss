@@ -132,3 +132,7 @@ $theme-sky: (
     --#{$name}: #{$value};
   }
 }
+
+[data-color="base"] {
+  color: rgb(var(--base));
+}

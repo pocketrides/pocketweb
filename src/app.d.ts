@@ -19,6 +19,9 @@ declare global {
 
         STRIPE_KEY: string;
         STRIPE_SIGNING_SECRET: string;
+
+        MAGICBELL_KEY: string;
+        MAGICBELL_SECRET: string;
       };
     }
   }

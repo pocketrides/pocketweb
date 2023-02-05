@@ -62,7 +62,7 @@
     <div>
       <Button
         type="submit"
-        system={true}
+        system
         disabled={!checked || $submitting}
         label={$submitting ? 'One sec!' : 'Continue…'}
       />
