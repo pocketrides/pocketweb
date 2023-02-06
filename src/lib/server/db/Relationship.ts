@@ -4,9 +4,11 @@ import type {
   ServerFriend,
   ServerBlocked
 } from '$lib/zod/Relationships';
+import { Notification } from '@magicbell/core';
 import { Fauna } from './Fauna';
 import { Nametag } from './Nametag';
 import { NametagStats } from './NametagStats';
+import type { ServerNametag } from '$lib/zod/Nametag';
 
 export class Relationship {
   static collection_friends = 'friends';
@@ -43,6 +45,18 @@ export class Relationship {
     );
 
     await NametagStats.addFollower(target_nametag_id);
+
+    const who_followed = await Fauna.get<ServerNametag>(
+      Nametag.toRef(my_nametag_id),
+      Nametag.parseFQL
+    );
+
+    if (who_followed)
+      await Notification.create({
+        title: `New follower`,
+        content: `${who_followed.nametag} started following you!`,
+        recipients: [{ external_id: target_nametag_id }]
+      });
   }
 
   static async isFollowing(
@@ -83,6 +97,8 @@ export class Relationship {
 
       await NametagStats.substractFollower(target_nametag_id);
     }
+
+    await Relationship.removeFromCloseFriends(my_nametag_id, target_nametag_id);
   }
 
   static async addToCloseFriends(my_nametag_id: string, target_nametag_id: string) {

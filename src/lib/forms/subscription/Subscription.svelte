@@ -55,14 +55,10 @@
             you where to donate 100% of the profits.
           </p>
         </div>
-        <div class="wrapper">
-          <Button label="Subscribe for $5/mo" href={payment_link} primary />
+        <div class="wrapper" data-flex="v cc" data-gap="1">
+          <Button label="Subscribe for $5/mo" href={payment_link} primary xlarge />
+          <Button label="No thanks!" on:click={noThanksClick} />
         </div>
-        <Button
-          label="No thanks!"
-          href={`/profile/${$page.data.my_nametag?.id}`}
-          on:click={noThanksClick}
-        />
       </div>
     </Container>
   </div>
@@ -70,6 +66,6 @@
 
 <style lang="scss">
   .wrapper {
-    margin-top: 3rem;
+    margin: 3rem 0;
   }
 </style>

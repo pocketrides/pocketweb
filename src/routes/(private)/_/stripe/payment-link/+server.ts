@@ -7,7 +7,7 @@ export const GET = (async (event) => {
   let response: StripePaymentLinkResponse = { success: false };
 
   const request_url = new URL(event.request.url);
-  const redirect_url = `https://${request_url.host}/profile/${event.locals.nametag_id}`;
+  const redirect_url = `https://${request_url.host}/profile/${event.locals.nametag_id}?subscribed=1`;
 
   const url = await StripeClient.createPaymentLink(
     event.locals.fauna_account_id as string,

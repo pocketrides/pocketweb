@@ -19,6 +19,7 @@
   export let system: boolean = false;
   export let large: boolean = false;
   export let jumbo: boolean = false;
+  export let xlarge: boolean = false;
 
   export let id: string = nanoid();
   export let controller: Writable<string> = writable(id);
@@ -35,8 +36,8 @@
 </script>
 
 <button
-  class:h2={jumbo}
-  class:h3={!jumbo}
+  class:h2={jumbo || xlarge}
+  class:h3={!jumbo && !xlarge}
   {id}
   {type}
   {disabled}
@@ -46,6 +47,7 @@
   class:system
   class:large
   class:jumbo
+  class:xlarge
   data-fill={primary ? 'base' : system ? 'system-base' : 'system-superlight'}
   data-3d
   on:click|capture={controllerClick}
@@ -73,12 +75,18 @@
 
   button.large,
   button.primary,
-  button.system {
+  button.system,
+  button.xlarge {
     padding: 0 0.85rem;
     height: 42px;
     display: inline-flex;
     justify-content: center;
     align-items: center;
+  }
+
+  button.xlarge {
+    padding: 0 2rem;
+    height: 54px;
   }
 
   button.jumbo {

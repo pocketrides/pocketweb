@@ -43,7 +43,6 @@
 
       if (use_result.success) {
         dispatch('complete');
-        await invalidateAll();
       } else needsInput();
     } else needsInput();
   });
@@ -79,7 +78,7 @@
       <Container rounded fill="superlight">
         <div class="preview" data-flex="v" data-gap in:slide out:slide>
           <Nametag
-            style="jumbo"
+            large
             nametag={{ nametag, theme: theme === '' ? undefined : theme }}
             on:click={(e) => {
               e.preventDefault();

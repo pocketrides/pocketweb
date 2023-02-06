@@ -4,6 +4,8 @@ declare global {
     interface Locals {
       fauna_account_id?: string;
       nametag_id?: string;
+      mb_api_key: string;
+      mb_api_secret: string;
     }
     interface PageData {
       page_theme?: import('$lib/zod/Theme').ThemeAnyValue;

@@ -7,6 +7,7 @@
   import Nametag from './Nametag.svelte';
   import Row from './Row.svelte';
   import type { Fill } from '$lib/zod/Fill';
+  import { Notifications } from '$lib/stores/notifications';
 
   export let utility: boolean = false;
   export let outer_fill: Fill | 'none' = 'light';
@@ -19,18 +20,27 @@
       <Row>
         <slot name="left" slot="left"><Logo /></slot>
         <slot name="right" slot="right">
-          {#if $page.data.my_nametag}
-            {#if $page.url.pathname === `/profile/${$page.data.my_nametag.id}`}
-              <Button href="/account" label="Settings" icon="settings_suggest" />
+          <div data-flex data-button-row>
+            {#if $page.data.my_nametag}
+              <Button
+                icon={$Notifications.unread_count === 0
+                  ? 'notifications'
+                  : 'notifications_active'}
+                label=""
+                count={$Notifications.unread_count}
+              />
+              {#if $page.url.pathname === `/profile/${$page.data.my_nametag.id}`}
+                <Button href="/account" label="Settings" icon="settings_suggest" />
+              {:else}
+                <Nametag nametag={$page.data.my_nametag} />
+              {/if}
             {:else}
-              <Nametag nametag={$page.data.my_nametag} />
+              <Button
+                label="Sign in"
+                on:click={() => ($App.sheet_id = 'onboarding')}
+              />
             {/if}
-          {:else}
-            <Button
-              label="Join pocketrides!"
-              on:click={() => ($App.sheet_id = 'onboarding')}
-            />
-          {/if}
+          </div>
         </slot>
       </Row>
       <slot />

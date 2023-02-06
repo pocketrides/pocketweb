@@ -1,4 +1,4 @@
-import { json, type Handle, redirect } from '@sveltejs/kit';
+import { json, type Handle, redirect, type RequestEvent } from '@sveltejs/kit';
 import { env } from '$env/dynamic/private';
 import { Fauna } from '$lib/server/db/Fauna';
 import { Stytch } from '$lib/server/Stytch';
@@ -17,7 +17,10 @@ import { Nametag } from '$lib/server/db/Nametag';
 import MagicBellClient from '@magicbell/core';
 
 export const handle = (async ({ event, resolve }) => {
-  loadSecrets(event.platform && event.platform.env ? event.platform.env : env);
+  loadSecrets(
+    event,
+    event.platform && event.platform.env ? event.platform.env : env
+  );
 
   const session_cookie = getSessionCookie(event.cookies);
 
@@ -86,18 +89,28 @@ type AppSecrets = {
   MAGICBELL_SECRET: string;
 };
 
-const loadSecrets = (env: AppSecrets) => {
+const loadSecrets = (event: RequestEvent, env: AppSecrets) => {
+  // fauna
   Fauna.FAUNA_SECRET = env.FAUNA_SECRET;
 
+  // stytch
   Stytch.SECRET = env.STYTCH_PROJECT_SECRET;
   Stytch.PROJECT_ID = env.STYTCH_PROJECT_ID;
   Stytch.ENV = env.STYTCH_ENV;
 
+  // stripe
   StripeClient.STRIPE_KEY = env.STRIPE_KEY;
   StripeClient.STRIPE_SIGNING_SECRET = env.STRIPE_SIGNING_SECRET;
 
+  // magicbell client
   MagicBellClient.configure({
     apiKey: env.MAGICBELL_KEY,
     apiSecret: env.MAGICBELL_SECRET
   });
+
+  // this gets passed to the frontend intentionally
+  event.locals.mb_api_key = env.MAGICBELL_KEY;
+
+  // this is used for signing the user id in +layout.server.ts
+  event.locals.mb_api_secret = env.MAGICBELL_SECRET;
 };

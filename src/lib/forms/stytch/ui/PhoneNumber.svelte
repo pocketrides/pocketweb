@@ -57,7 +57,7 @@
     </p>
   </div>
 
-  <div data-flex="v">
+  <div data-flex="v as">
     <label class="h2" for="phone">Phone number:</label>
     <div data-button-row>
       <select

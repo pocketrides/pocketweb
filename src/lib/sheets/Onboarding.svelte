@@ -20,8 +20,8 @@
       name="subscription"
       component={Subscription}
       on:complete={async () => {
-        if ($page.url.pathname === '/') await goto('/home');
-        else await invalidateAll();
+        // done is dispatched when 'no thanks' is clicked
+        await invalidateAll();
 
         $App.sheet_id = '';
       }}

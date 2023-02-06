@@ -7,20 +7,13 @@
   import { UnfollowRequest } from '$lib/api/relationships/unfollow';
   import Button from '$lib/components/Button.svelte';
   import ButtonRow from '$lib/components/ButtonRow.svelte';
+  import UtilityNav from '$lib/components/UtilityNav.svelte';
   import { writable, type Writable } from 'svelte/store';
   import type { PageData } from '../$types';
 
   export let page_controller: Writable<PageData>;
 
-  const controller: Writable<string> = writable(
-    $page_controller.relationship.is_blocking
-      ? 'unblock'
-      : $page_controller.relationship.is_following
-      ? $page_controller.relationship.is_close_friend
-        ? 'remove_close_friend'
-        : ''
-      : 'follow'
-  );
+  const controller: Writable<string> = writable('follow');
 
   const followClick = async () => {
     $page_controller.relationship.is_following = true;
@@ -46,7 +39,6 @@
   const blockClick = async () => {
     if ($page_controller.relationship.is_following) {
       $page_controller.page_nametag_stats.followers -= 1;
-      $page_controller.page_nametag_stats.friends -= 1;
     }
 
     $page_controller.relationship.is_blocking = true;
@@ -61,7 +53,7 @@
 
   const unblockClick = async () => {
     $page_controller.relationship.is_blocking = false;
-    $controller = 'block';
+    $controller = 'follow';
 
     await UnblockRequest.post({
       target_nametag_id: $page_controller.page_nametag.id
@@ -87,62 +79,70 @@
   };
 </script>
 
-<ButtonRow initial={$controller}>
-  {#if $page_controller.relationship.is_blocking}
-    <Button
-      {controller}
-      id="unblock"
-      label="Unblock"
-      icon="block"
-      large
-      on:click={unblockClick}
-    />
-  {:else}
-    {#if $page_controller.relationship.is_following === false}
-      <Button
-        {controller}
-        id="follow"
-        label="Follow"
-        icon="person_add"
-        primary
-        on:click={followClick}
-      />
-    {:else}
-      {#if $page_controller.relationship.is_close_friend}
+<UtilityNav>
+  <div slot="left">
+    <ButtonRow initial={$controller}>
+      {#if $page_controller.relationship.is_blocking}
         <Button
           {controller}
-          id="remove_close_friend"
-          label="Remove from close friends"
-          icon="heart_broken"
+          id="unblock"
+          label="Unblock"
+          icon="block"
           large
-          on:click={removeFromCloseFriendsClick}
+          on:click={unblockClick}
+        />
+      {:else if $page_controller.relationship.is_following === false}
+        <Button
+          {controller}
+          id="follow"
+          label="Follow"
+          icon="person_add"
+          primary
+          on:click={followClick}
         />
       {:else}
+        {#if $page_controller.relationship.is_close_friend}
+          <Button
+            {controller}
+            id="remove_close_friend"
+            label="Remove close friend"
+            icon="heart_broken"
+            large
+            on:click={removeFromCloseFriendsClick}
+          />
+        {:else}
+          <Button
+            {controller}
+            id="add_close_friend"
+            label="Make close friend"
+            icon="favorite_border"
+            primary
+            on:click={addToCloseFriendsClick}
+          />
+        {/if}
         <Button
           {controller}
-          id="add_close_friend"
-          label="Add to close friends"
-          icon="favorite_border"
-          primary
-          on:click={addToCloseFriendsClick}
+          id="unfollow"
+          label="Unfollow"
+          icon="person_remove"
+          large
+          on:click={unfollowClick}
         />
       {/if}
-      <Button
-        {controller}
-        id="unfollow"
-        label="Unfollow"
-        icon="person_remove"
-        large
-        on:click={unfollowClick}
-      />
+    </ButtonRow>
+  </div>
+  <svelte:fragment slot="right">
+    {#if !$page_controller.relationship.is_blocking}
+      <ButtonRow>
+        <Button
+          {controller}
+          id="block"
+          label="Block"
+          icon="block"
+          large
+          on:click={blockClick}
+        />
+      </ButtonRow>
     {/if}
-    <Button
-      {controller}
-      id="block"
-      label="Block"
-      icon="block"
-      large
-      on:click={blockClick}
-    />
-  {/if}
-</ButtonRow>
+  </svelte:fragment>
+</UtilityNav>
