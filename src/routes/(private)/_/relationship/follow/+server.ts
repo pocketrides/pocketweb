@@ -5,6 +5,7 @@ import {
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { Relationship } from '$lib/server/db/Relationship';
+import { notify } from './notify';
 
 export const POST = (async (event) => {
   const payload = FollowRequest.payload.safeParse(await event.request.json());
@@ -15,6 +16,8 @@ export const POST = (async (event) => {
       event.locals.nametag_id,
       payload.data.target_nametag_id
     );
+
+    await notify(payload.data, event);
 
     response = { success: true };
   }

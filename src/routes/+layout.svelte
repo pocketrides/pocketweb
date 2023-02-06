@@ -13,11 +13,12 @@
     pushEventAggregator
   } from '@magicbell/core';
   import { onDestroy, onMount } from 'svelte';
-  import { Notifications } from '$lib/stores/notifications';
+  import { Notifications, reloadNotifications } from '$lib/stores/notifications';
+  import MyNotifications from '$lib/sheets/MyNotifications.svelte';
 
   export let data: LayoutData;
 
-  let dispose: Function;
+  let dispose: Function | undefined;
 
   $: if (browser) {
     document.documentElement.setAttribute(
@@ -34,24 +35,23 @@
   onMount(async () => {
     if (browser && data.mb_config) {
       const client = await MagicBellClient.createInstance(data.mb_config);
-      const store = new NotificationStore();
-      await store.fetch({});
+      $Notifications.instance = new NotificationStore();
 
-      $Notifications.unread_count = store.unreadCount;
-      $Notifications.items = store.notifications;
+      await reloadNotifications();
 
       dispose = client.startRealTimeListener();
 
-      pushEventAggregator.on('notifications.new', async () => {
-        await store.fetch({});
-        $Notifications.unread_count = store.unreadCount;
-        $Notifications.items = store.notifications;
-      });
+      pushEventAggregator.on('notifications.new', reloadNotifications);
+      pushEventAggregator.on('notifications.read.all', reloadNotifications);
+      pushEventAggregator.on('notifications.delete', reloadNotifications);
     }
   });
 
   onDestroy(async () => {
-    if (dispose) dispose();
+    if (dispose) {
+      dispose();
+      dispose = undefined;
+    }
   });
 
   beforeNavigate(async () => {
@@ -71,3 +71,6 @@
 <SiteFooter />
 <SiteLoader />
 <Onboarding />
+{#if $page.data.my_nametag}
+  <MyNotifications />
+{/if}
