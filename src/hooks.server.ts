@@ -14,7 +14,7 @@ import {
 } from '$lib/server/Cookies';
 import { Account } from '$lib/server/db/Account';
 import { Nametag } from '$lib/server/db/Nametag';
-import { MagicBellClient } from '$lib/server/MagicBellClient';
+import MagicBellClient from '@magicbell/core';
 
 export const handle = (async ({ event, resolve }) => {
   loadSecrets(event.platform && event.platform.env ? event.platform.env : env);
@@ -96,6 +96,8 @@ const loadSecrets = (env: AppSecrets) => {
   StripeClient.STRIPE_KEY = env.STRIPE_KEY;
   StripeClient.STRIPE_SIGNING_SECRET = env.STRIPE_SIGNING_SECRET;
 
-  MagicBellClient.API_KEY = env.MAGICBELL_KEY;
-  MagicBellClient.API_SECRET = env.MAGICBELL_SECRET;
+  MagicBellClient.configure({
+    apiKey: env.MAGICBELL_KEY,
+    apiSecret: env.MAGICBELL_SECRET
+  });
 };
