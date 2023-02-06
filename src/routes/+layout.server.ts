@@ -1,6 +1,6 @@
 import { Nametag } from '$lib/server/db/Nametag';
 import type { LayoutServerLoad } from './$types';
-import { getConfig } from '$lib/util/magicbell';
+import { getConfig } from '$lib/server/util/magicbell';
 
 export const load = (async (event) => {
   return {
