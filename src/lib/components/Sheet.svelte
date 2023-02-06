@@ -4,7 +4,7 @@
   import Icon from './Icon.svelte';
   import { App } from '$lib/stores/app';
   import Container from './Container.svelte';
-  import { onDestroy, onMount, setContext } from 'svelte';
+  import { afterUpdate, onDestroy, onMount, setContext } from 'svelte';
   import { browser } from '$app/environment';
   import { writable } from 'svelte/store';
   import type { SheetContext } from '$lib/contexts/Sheet';
@@ -39,6 +39,13 @@
   onDestroy(() => {
     if (browser) window.removeEventListener('keyup', keyboardDismiss);
     $App.sheet_id = '';
+  });
+
+  afterUpdate(() => {
+    if (icon && $context.icon !== icon) $context.icon = icon;
+    if (header && $context.header !== header) $context.header = header;
+    if (dismissable && $context.dismissable !== dismissable)
+      $context.dismissable = dismissable;
   });
 </script>
 

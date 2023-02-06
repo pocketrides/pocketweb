@@ -30,14 +30,16 @@
 >
   <div slot="header-action">
     <ButtonRow>
-      <Button
-        {controller}
-        id="mark"
-        label={$marking_as_read ? 'One sec!' : 'Mark as read'}
-        disabled={$marking_as_read}
-        icon="done"
-        on:click={markAllRead}
-      />
+      {#if $Notifications.items.length && $Notifications.items.filter((n) => !n.isRead).length}
+        <Button
+          {controller}
+          id="mark"
+          label={$marking_as_read ? 'One sec!' : 'Mark as read'}
+          disabled={$marking_as_read}
+          icon="done"
+          on:click={markAllRead}
+        />
+      {/if}
       <Button
         {controller}
         id="close"

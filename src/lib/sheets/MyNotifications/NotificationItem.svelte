@@ -5,11 +5,14 @@
   import type { Notification } from '@magicbell/core';
   import { afterUpdate } from 'svelte';
   import { writable } from 'svelte/store';
+  import { slide } from 'svelte/transition';
 
   export let notif: Notification;
 
   let notif_store = writable(notif);
   let selection: 'read' | 'unread' | 'delete' | '' = '';
+
+  const is_deleting = writable(false);
 
   afterUpdate(() => {
     $notif_store = notif;
@@ -26,7 +29,10 @@
         await notif.markAsUnread();
         break;
       case 'delete':
-        await notif.delete();
+        try {
+          $is_deleting = true;
+          await notif.delete();
+        } catch (e) {}
         break;
     }
 
@@ -41,53 +47,61 @@
   };
 </script>
 
-<li
-  data-fill={$notif_store.isRead
-    ? undefined
-    : $notif_store.actionUrl
-    ? 'system-superlight'
-    : undefined}
-  data-3d={$notif_store.isRead ? undefined : $notif_store.actionUrl ? '' : undefined}
-  data-flex="sb"
-  class:half={$notif_store.isRead}
->
-  <div
-    class="wrapper"
-    data-flex="v"
-    data-unread={$notif_store.isRead ? undefined : ''}
+{#if $is_deleting === false}
+  <li
+    in:slide|local
+    out:slide|local
+    data-fill={$notif_store.isRead
+      ? undefined
+      : $notif_store.actionUrl
+      ? 'system-superlight'
+      : undefined}
+    data-3d={$notif_store.isRead
+      ? undefined
+      : $notif_store.actionUrl
+      ? ''
+      : undefined}
+    data-flex="sb"
+    class:half={$notif_store.isRead}
   >
-    {#if $notif_store.actionUrl && !$notif_store.isRead}
-      <a href={$notif_store.actionUrl} data-unstyle on:click={actionClick}>
+    <div
+      class="wrapper"
+      data-flex="v"
+      data-unread={$notif_store.isRead ? undefined : ''}
+    >
+      {#if $notif_store.actionUrl && !$notif_store.isRead}
+        <a href={$notif_store.actionUrl} data-unstyle on:click={actionClick}>
+          <h3 class="half">{$notif_store.title}</h3>
+          {#if $notif_store.content}
+            <p>{$notif_store.content}</p>
+          {/if}
+        </a>
+      {:else}
         <h3 class="half">{$notif_store.title}</h3>
         {#if $notif_store.content}
           <p>{$notif_store.content}</p>
         {/if}
-      </a>
-    {:else}
-      <h3 class="half">{$notif_store.title}</h3>
-      {#if $notif_store.content}
-        <p>{$notif_store.content}</p>
       {/if}
-    {/if}
-  </div>
-  <div data-flex="cc" class="action">
-    <Button
-      icon="more_horiz"
-      label=""
-      transparent={$notif_store.isRead ? false : true}
-    />
-    <select bind:value={selection} on:change={handleSelection}>
-      <optgroup label="Options">
-        {#if $notif_store.isRead}
-          <option value="unread">Mark as unread</option>
-        {:else}
-          <option value="read">Mark as read</option>
-        {/if}
-        <option value="delete">Delete</option>
-      </optgroup>
-    </select>
-  </div>
-</li>
+    </div>
+    <div data-flex="cc" class="action">
+      <Button
+        icon="more_horiz"
+        label=""
+        transparent={$notif_store.isRead ? false : true}
+      />
+      <select bind:value={selection} on:change={handleSelection}>
+        <optgroup label="Options">
+          {#if $notif_store.isRead}
+            <option value="unread">Mark as unread</option>
+          {:else}
+            <option value="read">Mark as read</option>
+          {/if}
+          <option value="delete">Delete</option>
+        </optgroup>
+      </select>
+    </div>
+  </li>
+{/if}
 
 <style lang="scss">
   li {

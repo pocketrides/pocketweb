@@ -17,7 +17,7 @@
 
   onMount(() => {
     if (new URLSearchParams(location.search).has('subscribed')) {
-      $App.sheet_id = 'enable-notifications';
+      // $App.sheet_id = 'enable-notifications';
       history.replaceState({}, '', location.toString().replace('?subscribed=1', ''));
     }
   });
