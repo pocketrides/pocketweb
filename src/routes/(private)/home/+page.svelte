@@ -6,6 +6,10 @@
   $App.fill = 'superlight';
 </script>
 
+<svelte:head>
+  <title>pocketrides!</title>
+</svelte:head>
+
 <SiteHeader />
 <Main>
   <h1>Welcome home!</h1>
