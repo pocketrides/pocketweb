@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { page } from '$app/stores';
   import WorkflowItem from '$lib/components/WorkflowItem.svelte';
   import Workflow from '$lib/components/Workflow.svelte';
   import Sheet from '$lib/components/Sheet.svelte';
@@ -8,7 +7,7 @@
   import Subscription from '$lib/forms/subscription/Subscription.svelte';
   import Terms from '$lib/forms/terms/Terms.svelte';
   import { App } from '$lib/stores/app';
-  import { goto, invalidateAll } from '$app/navigation';
+  import { invalidateAll } from '$app/navigation';
 </script>
 
 <Sheet id="onboarding">

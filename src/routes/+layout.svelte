@@ -1,4 +1,6 @@
 <script lang="ts">
+  import '$lib/styles/global.scss';
+
   import { browser } from '$app/environment';
   import { afterNavigate, beforeNavigate } from '$app/navigation';
   import { page } from '$app/stores';
@@ -6,18 +8,13 @@
   import SiteLoader from '$lib/components/SiteLoader.svelte';
   import Onboarding from '$lib/sheets/Onboarding.svelte';
   import { App } from '$lib/stores/app';
-  import '$lib/styles/global.scss';
-  import type { LayoutData } from './$types';
-  import MagicBellClient, {
-    NotificationStore,
-    pushEventAggregator
-  } from '@magicbell/core';
-  import { onDestroy, onMount } from 'svelte';
+  import { afterUpdate, onDestroy } from 'svelte';
   import { Notifications, reloadNotifications } from '$lib/stores/notifications';
   import MyNotifications from '$lib/sheets/MyNotifications.svelte';
+  import type MagicBellClient from '@magicbell/core';
 
-  export let data: LayoutData;
-
+  let started: boolean = false;
+  let client: MagicBellClient;
   let dispose: Function | undefined;
 
   $: if (browser) {
@@ -32,18 +29,28 @@
     );
   }
 
-  onMount(async () => {
-    if (browser && data.mb_config) {
-      const client = await MagicBellClient.createInstance(data.mb_config);
-      $Notifications.instance = new NotificationStore();
+  // boots up MagicBell to avoid exploding Workers. (The ably library has a `window` check in it)
+  afterUpdate(async () => {
+    if (
+      browser &&
+      $page.data.mb_config &&
+      client === undefined &&
+      started === false
+    ) {
+      started = true;
+
+      const lib = await import('@magicbell/core');
+
+      client = await lib.default.createInstance($page.data.mb_config);
+      $Notifications.instance = new lib.NotificationStore();
 
       await reloadNotifications();
 
       dispose = client.startRealTimeListener();
 
-      pushEventAggregator.on('notifications.new', reloadNotifications);
-      pushEventAggregator.on('notifications.read.all', reloadNotifications);
-      pushEventAggregator.on('notifications.delete', reloadNotifications);
+      lib.pushEventAggregator.on('notifications.new', reloadNotifications);
+      lib.pushEventAggregator.on('notifications.read.all', reloadNotifications);
+      lib.pushEventAggregator.on('notifications.delete', reloadNotifications);
     }
   });
 
@@ -70,7 +77,8 @@
 <slot />
 <SiteFooter />
 <SiteLoader />
-<Onboarding />
 {#if $page.data.my_nametag}
   <MyNotifications />
+{:else}
+  <Onboarding />
 {/if}

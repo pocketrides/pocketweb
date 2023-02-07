@@ -33,7 +33,7 @@
   };
 
   onMount(() => {
-    window.addEventListener('keyup', keyboardDismiss);
+    if (browser) window.addEventListener('keyup', keyboardDismiss);
   });
 
   onDestroy(() => {

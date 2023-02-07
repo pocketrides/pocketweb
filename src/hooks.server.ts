@@ -3,6 +3,8 @@ import { env } from '$env/dynamic/private';
 import { Fauna } from '$lib/server/db/Fauna';
 import { Stytch } from '$lib/server/Stytch';
 import { StripeClient } from '$lib/server/StripeClient';
+import { Account } from '$lib/server/db/Account';
+import { Nametag } from '$lib/server/db/Nametag';
 import {
   MAX_AGE_MINUTES,
   createNametagCookie,
@@ -12,9 +14,6 @@ import {
   getNametagCookie,
   getSessionCookie
 } from '$lib/server/Cookies';
-import { Account } from '$lib/server/db/Account';
-import { Nametag } from '$lib/server/db/Nametag';
-import MagicBellClient from '@magicbell/core';
 
 export const handle = (async ({ event, resolve }) => {
   loadSecrets(
@@ -101,12 +100,6 @@ const loadSecrets = (event: RequestEvent, env: AppSecrets) => {
   // stripe
   StripeClient.STRIPE_KEY = env.STRIPE_KEY;
   StripeClient.STRIPE_SIGNING_SECRET = env.STRIPE_SIGNING_SECRET;
-
-  // magicbell client
-  MagicBellClient.configure({
-    apiKey: env.MAGICBELL_KEY,
-    apiSecret: env.MAGICBELL_SECRET
-  });
 
   // this gets passed to the frontend intentionally
   event.locals.mb_api_key = env.MAGICBELL_KEY;
