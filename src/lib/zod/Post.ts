@@ -18,12 +18,16 @@ export const draft_post_attachment_validator = z.object({
   disabled: z.boolean().optional()
 });
 
+export const MAX_POST_CONTENT_LENGTH = 720;
+
 export const draft_post_validator = z.object({
-  content: z.string().min(1),
+  content: z.string().min(1).max(MAX_POST_CONTENT_LENGTH),
   thread_id: z.string().optional(),
   photos: z.array(draft_post_photo_validator),
   attachments: z.array(draft_post_attachment_validator)
 });
+
+export const draft_posts_validator = z.array(draft_post_validator);
 
 export const server_post_validator = draft_post_validator.extend({
   id: z.string(),

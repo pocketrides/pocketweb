@@ -52,6 +52,16 @@
 </div>
 
 <style lang="scss">
+  div {
+    position: relative;
+    top: 0;
+    z-index: 15;
+
+    &.utility {
+      position: sticky;
+    }
+  }
+
   header {
     border-bottom-left-radius: 1rem;
     border-bottom-right-radius: 1rem;

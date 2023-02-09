@@ -1,0 +1,18 @@
+*:has([data-sham]) {
+  position: relative;
+}
+
+[data-sham] {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  z-index: 1;
+
+  &:active + [data-3d] {
+    box-shadow: none;
+    transform: translate(-1px, 1px);
+  }
+}

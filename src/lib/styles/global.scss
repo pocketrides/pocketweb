@@ -6,6 +6,8 @@
 @import "flex";
 @import "gap";
 @import "button-row";
+@import "sham";
+@import "richtext";
 
 [data-locked="true"] {
   overflow: hidden;

@@ -22,7 +22,7 @@
     position: sticky;
     bottom: -1rem;
     background: rgb(var(--dark));
-    z-index: 9;
+    z-index: 15;
   }
 
   nav {

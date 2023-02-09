@@ -96,7 +96,7 @@
     width: 100vw;
     height: 100vh;
     background: rgba(var(--allblack), 0.85);
-    z-index: 10;
+    z-index: 20;
   }
 
   .sheet {
@@ -107,7 +107,7 @@
     overflow-y: auto;
     border-top-right-radius: 1rem;
     border-top-left-radius: 1rem;
-    z-index: 12;
+    z-index: 22;
 
     header {
       position: sticky;
