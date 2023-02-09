@@ -44,6 +44,7 @@
   const actionClick = async () => {
     $App.sheet_id = '';
     await notif.markAsRead();
+    await reloadNotifications();
   };
 </script>
 
@@ -83,13 +84,8 @@
         {/if}
       {/if}
     </div>
-    <div data-flex="cc" class="action">
-      <Button
-        icon="more_horiz"
-        label=""
-        transparent={$notif_store.isRead ? false : true}
-      />
-      <select bind:value={selection} on:change={handleSelection}>
+    <div data-flex="cc">
+      <select bind:value={selection} on:change={handleSelection} data-sham>
         <optgroup label="Options">
           {#if $notif_store.isRead}
             <option value="unread">Mark as unread</option>
@@ -99,6 +95,11 @@
           <option value="delete">Delete</option>
         </optgroup>
       </select>
+      <Button
+        icon="more_horiz"
+        label=""
+        transparent={$notif_store.isRead ? false : true}
+      />
     </div>
   </li>
 {/if}
@@ -113,21 +114,6 @@
       &[data-unread] {
         padding: 0.5rem;
       }
-    }
-  }
-
-  .action {
-    position: relative;
-
-    select {
-      position: absolute;
-      left: 0;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      width: 100%;
-      height: 100%;
-      opacity: 0;
     }
   }
 </style>

@@ -1,6 +1,7 @@
 <script lang="ts">
   import { StytchChallenge } from '$lib/api/stytch/challenge';
   import Button from '$lib/components/Button.svelte';
+  import Select from '$lib/components/Select.svelte';
   import { type SheetContext, SHEET_CONTEXT_ID } from '$lib/contexts/Sheet';
   import { AVAILABLE_COUNTRIES } from '$lib/zod/Stytch';
   import { parsePhoneNumber } from 'awesome-phonenumber';
@@ -60,16 +61,11 @@
   <div data-flex="v as">
     <label class="h2" for="phone">Phone number:</label>
     <div data-button-row>
-      <select
-        bind:value={regionCode}
-        data-3d
-        autocomplete="tel-country-code"
-        class="filled h3"
-      >
+      <Select bind:value={regionCode} autocomplete="tel-country-code" collapse>
         {#each AVAILABLE_COUNTRIES as country}
           <option value={country.value}>{country.display}</option>
         {/each}
-      </select>
+      </Select>
       <input
         id="phone"
         autocomplete="tel-national"

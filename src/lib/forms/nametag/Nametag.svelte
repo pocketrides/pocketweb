@@ -6,6 +6,7 @@
   import Button from '$lib/components/Button.svelte';
   import Container from '$lib/components/Container.svelte';
   import Nametag from '$lib/components/Nametag.svelte';
+  import Select from '$lib/components/Select.svelte';
   import { type SheetContext, SHEET_CONTEXT_ID } from '$lib/contexts/Sheet';
   import { type WorkflowContext, WORKFLOW_CONTEXT_ID } from '$lib/contexts/Workflow';
   import { App } from '$lib/stores/app';
@@ -85,7 +86,7 @@
             }}
           />
           {#if theme === ''}
-            <p class="half">Add some color,<br />pick a theme!</p>
+            <p class="half">Add some color, pick a theme!</p>
           {:else}
             <p class="h3"><em>It's you!</em></p>
           {/if}
@@ -106,18 +107,12 @@
 
       <div data-flex="v">
         <label for="theme" class="h3">Theme:</label>
-        <select
-          bind:value={theme}
-          data-3d
-          class="h3"
-          class:filled={theme !== ''}
-          on:change={themeChange}
-        >
+        <Select id="theme" bind:value={theme} on:change={themeChange}>
           <option value="">Pick!</option>
           {#each THEME_NAMES as name, i}
             <option value={THEME_VALUES[i]}>{name}</option>
           {/each}
-        </select>
+        </Select>
       </div>
     </div>
     <div data-flex>

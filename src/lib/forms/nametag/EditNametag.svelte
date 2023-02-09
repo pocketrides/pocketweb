@@ -3,6 +3,7 @@
   import { page } from '$app/stores';
   import { NametagUpdate } from '$lib/api/nametag/update';
   import Button from '$lib/components/Button.svelte';
+  import Select from '$lib/components/Select.svelte';
   import { App } from '$lib/stores/app';
   import { draft_nametag_validator } from '$lib/zod/Nametag';
   import { THEME_NAMES, THEME_VALUES } from '$lib/zod/Theme';
@@ -46,11 +47,11 @@
   </div>
   <div data-flex="v as">
     <label for="theme" class="h2">Theme:</label>
-    <select bind:value={theme} data-3d class="h3 filled">
+    <Select id="theme" bind:value={theme}>
       {#each THEME_VALUES as value, i}
         <option {value}>{THEME_NAMES[i]}</option>
       {/each}
-    </select>
+    </Select>
   </div>
   {#if error}
     <div data-flex="v as">
