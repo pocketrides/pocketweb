@@ -1,22 +1,10 @@
-import { z } from 'zod';
-
-const shape = z.object({
-  post_id: z.string().optional(),
-  notification_id: z.string().optional()
-});
+import { publisher_payload } from '$lib/zod/Publisher';
+import type { z } from 'zod';
 
 export class Publisher {
   static endpoint = '/_/publish';
 
-  static payload = z.discriminatedUnion('target', [
-    shape.extend({
-      target: z.enum(['followers', 'close_friends'])
-    }),
-    shape.extend({
-      target: z.literal('pocket'),
-      pocket_id: z.string()
-    })
-  ]);
+  static payload = publisher_payload;
 }
 
 export type PublisherPayload = z.infer<typeof Publisher.payload>;

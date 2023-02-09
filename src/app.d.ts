@@ -1,3 +1,5 @@
+/// <reference types="@cloudflare/workers-types"/>
+
 declare global {
   namespace App {
     // interface Error {}
@@ -24,6 +26,8 @@ declare global {
 
         MAGICBELL_KEY: string;
         MAGICBELL_SECRET: string;
+
+        POCKETQUEUE: Queue<import('$lib/zod/Publisher').PublisherQueuePayload>;
       };
     }
   }
