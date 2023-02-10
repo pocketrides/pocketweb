@@ -1,5 +1,6 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
+  import { typewriter } from '$lib/util/transition';
   import { nanoid } from 'nanoid';
   import { writable, type Writable } from 'svelte/store';
   import Icon from './Icon.svelte';
@@ -56,7 +57,7 @@
 >
   <Icon {icon} />
   {#if count !== undefined}<span>{count}</span>{/if}
-  {#if $controller === id}<span>{label}</span>{/if}
+  {#if $controller === id}<span in:typewriter|local>{label}</span>{/if}
 </button>
 
 <style lang="scss">

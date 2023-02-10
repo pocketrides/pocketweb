@@ -1,5 +1,7 @@
 <script lang="ts">
+  import { dompurify_config } from '$lib/util/dompurify';
   import { MAX_POST_CONTENT_LENGTH } from '$lib/zod/Post';
+  import type DOMPurify from 'dompurify';
   import { marked } from 'marked';
   import { onMount } from 'svelte';
 
@@ -9,7 +11,7 @@
   export let too_long = 'Too long!';
   export let max_len: number = MAX_POST_CONTENT_LENGTH;
 
-  let sanitize: Function;
+  let sanitize: DOMPurify.DOMPurifyI['sanitize'];
   let raw: string = '';
   let editing = false;
 
@@ -21,8 +23,9 @@
 
   $: if (sanitize) {
     value = sanitize(
-      marked.parse(raw, { breaks: true, silent: true, smartypants: true })
-    );
+      marked.parse(raw, { breaks: true, silent: true, smartypants: true }),
+      dompurify_config
+    ) as string;
   }
 
   const focus = () => {
