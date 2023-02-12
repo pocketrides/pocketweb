@@ -57,7 +57,11 @@
 >
   <Icon {icon} />
   {#if count !== undefined}<span>{count}</span>{/if}
-  {#if $controller === id}<span in:typewriter|local>{label}</span>{/if}
+  {#if $controller === id}
+    <span in:typewriter|local out:typewriter|local>
+      {label}
+    </span>
+  {/if}
 </button>
 
 <style lang="scss">
@@ -68,10 +72,6 @@
     span:empty {
       display: none;
     }
-  }
-
-  button[disabled] {
-    opacity: 0.5;
   }
 
   button.large,

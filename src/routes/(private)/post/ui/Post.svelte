@@ -1,13 +1,17 @@
 <script lang="ts">
   import Button from '$lib/components/Button.svelte';
   import MarkdownEditor from '$lib/components/MarkdownEditor.svelte';
-  import { blankPost, MAX_POST_CONTENT_LENGTH, type DraftPost } from '$lib/zod/Post';
+  import {
+    blankPostContent,
+    MAX_POST_CONTENT_LENGTH,
+    type DraftPostContent
+  } from '$lib/zod/Post';
   import { nanoid } from 'nanoid';
   import { writable } from 'svelte/store';
   import type { PageControllerStore } from './types';
 
   export let store: PageControllerStore;
-  export let post: DraftPost;
+  export let post: DraftPostContent;
   export let index: number;
 
   const label_id = nanoid();
@@ -15,10 +19,7 @@
 
   const addPost = () => {
     store.update((prev) => {
-      const thread_id = nanoid();
-
-      prev.posts.forEach((p) => (p.thread_id = thread_id));
-      prev.posts.splice(index + 1, 0, blankPost(thread_id));
+      prev.contents.splice(index + 1, 0, blankPostContent());
 
       return prev;
     });
@@ -28,7 +29,7 @@
 
   const discard = () => {
     store.update((prev) => {
-      prev.posts.splice(index, 1);
+      prev.contents.splice(index, 1);
       return prev;
     });
   };
@@ -46,6 +47,7 @@
     <MarkdownEditor
       id={label_id}
       bind:value={post.content}
+      bind:raw={post.content_raw}
       too_long="Too long! Say more in another post."
       placeholder={index === 0 ? 'Tell everyone' : 'Keep writing!'}
     />
@@ -78,7 +80,7 @@
       />
     </div>
     <div data-button-row>
-      {#if $store.posts.length > 1}
+      {#if $store.contents.length > 1}
         <Button
           id="discard"
           label="Discard"

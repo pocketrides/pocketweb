@@ -7,12 +7,12 @@
 
   export let id: string;
   export let value: string = '';
+  export let raw: string = '';
   export let placeholder = 'Tell everyone';
   export let too_long = 'Too long!';
   export let max_len: number = MAX_POST_CONTENT_LENGTH;
 
   let sanitize: DOMPurify.DOMPurifyI['sanitize'];
-  let raw: string = '';
   let editing = false;
 
   onMount(async () => {
@@ -89,9 +89,9 @@
     opacity: 0;
   }
 
-  article {
-    // padding-bottom: 1.5rem;
-  }
+  // article {
+  // padding-bottom: 1.5rem;
+  // }
 
   article,
   textarea {

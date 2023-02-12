@@ -4,4 +4,9 @@
   &[data-gap="1"] {
     gap: 1rem;
   }
+
+  &[data-gap="0"] {
+    gap: 0;
+    line-height: 1;
+  }
 }

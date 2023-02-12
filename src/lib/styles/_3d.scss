@@ -14,7 +14,8 @@
     }
   }
 
-  &:not([disabled]) {
+  &:not([disabled]),
+  &:not([aria-disabled="true"]) {
     &:is(input):focus-within,
     &:is(select):focus,
     &:active {
@@ -22,4 +23,15 @@
       transform: translate(-1px, 1px);
     }
   }
+
+  &[disabled],
+  &[aria-disabled="true"] {
+    opacity: 0.5;
+    box-shadow: none;
+    transform: translate(-1px, 1px);
+  }
+}
+
+[data-3d*="ah"] {
+  height: auto;
 }

@@ -106,9 +106,3 @@
     />
   </div>
 </form>
-
-<style lang="scss">
-  select {
-    text-align: center;
-  }
-</style>

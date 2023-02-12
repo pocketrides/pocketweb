@@ -1,52 +1,83 @@
+import { link_validator } from './Link';
+import { cloudinary_photo_validator } from './CloudinaryPhoto';
 import { z } from 'zod';
-import { client_ref_validator } from './Fauna';
+import { server_nametag_validator } from './Nametag';
 import { server_post_stats_validator } from './PostStats';
-
-export const draft_post_photo_validator = z.object({
-  public_id: z.string(),
-  version: z.number().optional(),
-  aws_rek_status: z.enum(['approved', 'rejected', 'unknown']).optional(),
-  alt_text: z.string().optional()
-});
-
-export const draft_post_attachment_validator = z.object({
-  link: z.string(),
-  attempted: z.boolean().optional(),
-  og_image: z.string().optional(),
-  og_title: z.string().optional(),
-  og_desc: z.string().optional(),
-  disabled: z.boolean().optional()
-});
+import { client_ref_validator } from './Fauna';
 
 export const MAX_POST_CONTENT_LENGTH = 720;
 
-export const draft_post_validator = z.object({
-  content: z.string().min(1).max(MAX_POST_CONTENT_LENGTH),
-  thread_id: z.string().optional(),
-  photos: z.array(draft_post_photo_validator),
-  attachments: z.array(draft_post_attachment_validator)
+export const post_audience_validator = z.enum([
+  'friends',
+  'close_friends',
+  'pocket'
+]);
+
+export const post_settings = z.object({
+  is_nsfw: z.boolean(),
+  enable_likes: z.boolean(),
+  enable_replies: z.boolean()
 });
 
-export const draft_posts_validator = z.array(draft_post_validator);
+export const draft_post_content_validator = z.object({
+  content: z.string().min(1).max(MAX_POST_CONTENT_LENGTH),
+  content_raw: z.string(),
+  photos: z.array(cloudinary_photo_validator),
+  links: z.array(link_validator)
+});
 
-export const server_post_validator = draft_post_validator.extend({
+export const draft_post_validator = z.object({
+  audience: post_audience_validator,
+  pocket_id: z.string().optional(),
+  settings: post_settings,
+  contents: z.array(draft_post_content_validator).min(1)
+});
+
+export const server_post_shape = z.object({
   id: z.string(),
   nametag_ref: client_ref_validator,
-
-  // stats is bolted-on (but is separate so that post's `ts` can be used)
-  stats: server_post_stats_validator.optional()
+  nametag: server_nametag_validator,
+  settings: post_settings,
+  contents: z.array(draft_post_content_validator).min(1),
+  stats_ref: client_ref_validator,
+  stats: server_post_stats_validator
 });
 
+export const server_post_validator = z.discriminatedUnion('audience', [
+  server_post_shape.extend({
+    audience: z.literal('pocket'),
+    pocket: z.object({
+      id: z.string(),
+      name: z.string()
+    })
+  }),
+  server_post_shape.extend({
+    audience: z.enum(['friends', 'close_friends'])
+  })
+]);
+
+export type DraftPostContent = z.infer<typeof draft_post_content_validator>;
 export type DraftPost = z.infer<typeof draft_post_validator>;
-export type DraftPostPhoto = z.infer<typeof draft_post_photo_validator>;
-export type DraftPostAttachment = z.infer<typeof draft_post_attachment_validator>;
 export type ServerPost = z.infer<typeof server_post_validator>;
 
-export const blankPost = (thread_id?: string): DraftPost => {
+export const blankPostContent = (): DraftPostContent => {
   return {
     content: '',
-    thread_id,
+    content_raw: '',
     photos: [],
-    attachments: []
+    links: []
+  };
+};
+
+export const blankPost = (): DraftPost => {
+  return {
+    audience: 'friends',
+    pocket_id: undefined,
+    settings: {
+      is_nsfw: false,
+      enable_likes: true,
+      enable_replies: true
+    },
+    contents: [blankPostContent()]
   };
 };

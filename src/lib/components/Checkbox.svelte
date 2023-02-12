@@ -6,6 +6,7 @@
   export let labelled_by: string | undefined = undefined;
   export let icon: string | undefined = undefined;
   export let xlarge: boolean = false;
+  export let disabled: boolean = false;
 </script>
 
 <label
@@ -14,8 +15,9 @@
   class:filled={checked}
   class:xlarge
   aria-labelledby={labelled_by}
+  aria-disabled={disabled}
 >
-  <input type="checkbox" bind:checked />
+  <input type="checkbox" bind:checked {disabled} on:change />
   <Icon filled={checked} icon={checked ? 'check_box' : 'check_box_outline_blank'} />
   <Icon {icon} />
   {label}
@@ -25,6 +27,7 @@
   label {
     position: relative;
     height: 32px;
+    user-select: none;
 
     &.xlarge {
       height: 54px;

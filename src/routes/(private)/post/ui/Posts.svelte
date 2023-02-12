@@ -6,7 +6,7 @@
 </script>
 
 <div data-flex="v" data-gap="1">
-  {#each $store.posts as post, index (post)}
+  {#each $store.contents as post, index (post)}
     <Post {store} {index} bind:post />
   {/each}
 </div>

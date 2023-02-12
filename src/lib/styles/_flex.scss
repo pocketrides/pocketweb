@@ -6,6 +6,14 @@
   align-items: flex-start;
 }
 
+[data-flex*="ab"] {
+  align-items: baseline;
+}
+
+[data-flex*="ac"] {
+  align-items: center;
+}
+
 [data-flex*="v"] {
   flex-direction: column;
 }

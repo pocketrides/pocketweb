@@ -20,7 +20,7 @@
 <SiteHeader />
 <Main>
   <div data-flex="v" data-gap="1">
-    <h1>
+    <h1 data-ph>
       <Icon icon="settings_suggest" />
       Settings
     </h1>
@@ -35,7 +35,7 @@
             $App.sheet_id = 'edit_nametag';
           }}
         />
-        <Button label="Get paid" icon="attach_money" jumbo />
+        <Button label="Get paid" icon="attach_money" jumbo href="/account/payouts" />
         <Button label="Notifications" icon="campaign" jumbo />
         <Button label="Enable 2FA" icon="fingerprint" jumbo />
       </div>
@@ -75,10 +75,3 @@
 <Sheet header="Edit nametag" icon="face" id="edit_nametag" close="Cancel">
   <EditNametag />
 </Sheet>
-
-<style lang="scss">
-  h1 {
-    margin: 1rem 0 0;
-    align-items: normal;
-  }
-</style>
