@@ -35,12 +35,17 @@ export const draft_post_validator = z.object({
 
 export const server_post_shape = z.object({
   id: z.string(),
+  ts: z.number(),
   nametag_ref: client_ref_validator,
   nametag: server_nametag_validator,
   settings: post_settings,
   contents: z.array(draft_post_content_validator).min(1),
   stats_ref: client_ref_validator,
-  stats: server_post_stats_validator
+  stats: server_post_stats_validator,
+
+  // these are bolted on by Like.isPostLiked()
+  is_liked: z.boolean().optional(),
+  is_quarantined: z.boolean().optional()
 });
 
 export const server_post_validator = z.discriminatedUnion('audience', [

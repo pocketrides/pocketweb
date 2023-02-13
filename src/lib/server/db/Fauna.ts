@@ -14,6 +14,7 @@ export class Fauna {
   static parseFQL<T = object>(fql: any, ref_keys: string[] = []) {
     const { data } = fql;
     data.id = fql.ref.id;
+    data.ts = fql.ts;
     ref_keys.forEach((k) => (data[k] = data[k] ? { id: data[k].id } : undefined));
     return data as T;
   }
@@ -68,7 +69,7 @@ export class Fauna {
 
   static async create<T = object>(
     collection: string,
-    data: object,
+    data: Partial<T>,
     parser: Function
   ): Promise<T | undefined> {
     try {
@@ -82,7 +83,7 @@ export class Fauna {
 
   static async update<T = object>(
     ref: faunadb.ExprArg,
-    data: object,
+    data: Partial<T>,
     parser: Function
   ): Promise<T | undefined> {
     try {

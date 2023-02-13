@@ -6,6 +6,11 @@
   height: 42px;
   padding: 0 0.5rem;
 
+  &[data-fill="superdark"] {
+    box-shadow: -1px 1px rgba(var(--base), 0.25);
+    border-color: rgba(var(--base), 0.5);
+  }
+
   &:not([data-fill]) {
     background: rgb(var(--system-light));
 

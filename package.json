@@ -44,6 +44,7 @@
     "dompurify": "^2.4.3",
     "events": "^3.3.0",
     "faunadb": "^4.7.1",
+    "javascript-time-ago": "^2.5.9",
     "marked": "^4.2.12",
     "nanoid": "^4.0.0",
     "stripe": "^11.8.0",

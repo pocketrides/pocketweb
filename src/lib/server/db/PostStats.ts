@@ -27,6 +27,54 @@ export class PostStats {
     );
   }
 
+  static async addLike(post_id: string) {
+    const stats = await this.getByPostId(post_id);
+    if (stats) {
+      await Fauna.update<ServerPostStats>(
+        this.toRef(stats.id),
+        {
+          likes: stats.likes + 1
+        },
+        this.parseFQL
+      );
+    }
+  }
+
+  static async removeLike(post_id: string) {
+    const stats = await this.getByPostId(post_id);
+    if (stats) {
+      await Fauna.update<ServerPostStats>(
+        this.toRef(stats.id),
+        {
+          likes: stats.likes - 1
+        },
+        this.parseFQL
+      );
+    }
+  }
+
+  static async addQuarantine(post_id: string) {
+    const stats = await this.getByPostId(post_id);
+    if (stats) {
+      await Fauna.update<ServerPostStats>(
+        this.toRef(stats.id),
+        { quarantines: stats.quarantines + 1 },
+        this.parseFQL
+      );
+    }
+  }
+
+  static async removeQuarantine(post_id: string) {
+    const stats = await this.getByPostId(post_id);
+    if (stats) {
+      await Fauna.update<ServerPostStats>(
+        this.toRef(stats.id),
+        { quarantines: stats.quarantines - 1 },
+        this.parseFQL
+      );
+    }
+  }
+
   static toRef(id: string) {
     return Fauna.toRef(PostStats.collection, id);
   }

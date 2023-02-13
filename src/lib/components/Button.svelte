@@ -15,12 +15,14 @@
   export let value: string = '';
   export let href: string | undefined = undefined;
 
+  export let small: boolean = false;
   export let primary: boolean = false;
   export let system: boolean = false;
   export let large: boolean = false;
   export let jumbo: boolean = false;
   export let xlarge: boolean = false;
   export let transparent: boolean = false;
+  export let superdark: boolean = false;
 
   export let id: string = nanoid();
   export let controller: Writable<string> = writable(id);
@@ -49,7 +51,14 @@
   class:large
   class:jumbo
   class:xlarge
-  data-fill={primary ? 'base' : system ? 'system-base' : 'system-superlight'}
+  class:small
+  data-fill={primary
+    ? 'base'
+    : system
+    ? 'system-base'
+    : superdark
+    ? 'superdark'
+    : 'system-superlight'}
   data-3d={transparent ? undefined : ''}
   on:click|capture={controllerClick}
   on:click
@@ -72,6 +81,10 @@
     span:empty {
       display: none;
     }
+  }
+
+  .small {
+    height: 32px !important;
   }
 
   button.large,

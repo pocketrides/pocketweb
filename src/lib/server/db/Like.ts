@@ -2,6 +2,9 @@ import type { DraftLike, ServerLike } from '$lib/zod/Like';
 import { Account } from './Account';
 import { Fauna, q } from './Fauna';
 import { Invoice } from './Invoice';
+import { Nametag } from './Nametag';
+import { Post } from './Post';
+import { PostStats } from './PostStats';
 
 export class Like {
   static mint_count = 250;
@@ -15,12 +18,72 @@ export class Like {
     );
   }
 
+  static async doesLikePost(nametag_id: string, post_id: string) {
+    const exists = await Fauna.one(
+      'is_post_liked',
+      [Nametag.toRef(nametag_id), Post.toRef(post_id)],
+      Like.parseFQL
+    );
+
+    if (exists) return true;
+    return false;
+  }
+
   static async assign(account_id: string, draft: DraftLike) {
     const next_available = await Like.nextAvailable(account_id);
 
     if (next_available) {
-      const data = {};
+      let data: Partial<ServerLike> = {
+        nametag_ref: Nametag.toRef(draft.nametag_id),
+        available: false
+      };
+
+      if (draft.post_id) {
+        data.post_ref = Post.toRef(draft.post_id);
+
+        await PostStats.addLike(draft.post_id);
+      }
+      // if (draft.chat_id) data.chat_ref =
+      // if (draft.reply_id) data.reply_ref =
+
+      await Fauna.update<ServerLike>(
+        this.toRef(next_available.id),
+        data,
+        this.parseFQL
+      );
+
+      return true;
     }
+
+    return false;
+  }
+
+  static async unassign(draft: DraftLike) {
+    let query: ServerLike | undefined;
+
+    if (draft.post_id) {
+      query = await Fauna.one<ServerLike>(
+        'is_post_liked',
+        [Nametag.toRef(draft.nametag_id), Post.toRef(draft.post_id)],
+        this.parseFQL
+      );
+
+      if (query) await PostStats.removeLike(draft.post_id);
+    }
+
+    if (query) {
+      let data: Partial<ServerLike> = { nametag_ref: null, available: true };
+
+      if (draft.post_id) data.post_ref = null;
+      if (draft.chat_id) data.chat_ref = null;
+      if (draft.reply_id) data.reply_ref = null;
+
+      await Fauna.update<ServerLike>(this.toRef(query.id), data, this.parseFQL);
+
+      return true;
+    }
+
+    return false;
   }
 
   static async mint(account_id: string, invoice_id: string) {
@@ -34,7 +97,7 @@ export class Like {
       return true;
     }
 
-    const likes_to_mint = [];
+    const likes_to_mint: Partial<ServerLike>[] = [];
 
     for (let i = 0; i < Like.mint_count; i++) {
       likes_to_mint.push({
@@ -71,6 +134,7 @@ export class Like {
     return Fauna.parseFQL(fql, [
       'account_ref',
       'invoice_ref',
+      'nametag_ref',
       'post_ref',
       'reply_ref',
       'chat_ref'

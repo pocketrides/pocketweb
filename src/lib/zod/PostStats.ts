@@ -1,6 +1,10 @@
 import { z } from 'zod';
-import { client_ref_validator } from './Fauna';
-import { server_moderation_result_validator } from './ModerationResult';
+import { client_ref_validator, type ClientRef } from './Fauna';
+import {
+  server_moderation_result_validator,
+  type ServerModerationResult
+} from './ModerationResult';
+import type { Expr } from 'faunadb';
 
 export const draft_post_stats_validator = z.object({
   likes: z.number(),
@@ -22,7 +26,13 @@ export const server_post_stats_validator = draft_post_stats_validator.extend({
 });
 
 export type DraftPostStats = z.infer<typeof draft_post_stats_validator>;
-export type ServerPostStats = z.infer<typeof server_post_stats_validator>;
+export type ServerPostStats = DraftPostStats & {
+  id: string;
+  post_ref: ClientRef | Expr;
+
+  moderation_result_ref?: ClientRef | Expr;
+  moderation_result?: ServerModerationResult;
+};
 
 export const blankPostStats = (): DraftPostStats => {
   return {

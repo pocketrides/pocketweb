@@ -1,28 +1,18 @@
-import { z } from 'zod';
+import type { z } from 'zod';
 import { Api } from '../api';
+import { draft_like_payload } from '$lib/zod/Like';
 
-export class LikeCreate {
-  static endpoint = '/_/like';
+export class LikeCreateRequest {
+  static endpoint = '/_/like/create';
 
-  static payload = z.object({
-    post_id: z.string().optional(),
-    reply_id: z.string().optional(),
-    chat_id: z.string().optional()
-  });
+  static payload = draft_like_payload;
 
-  static response = z.discriminatedUnion('success', [
-    z.object({
-      success: z.literal(true)
-    }),
-    z.object({
-      success: z.literal(false)
-    })
-  ]);
+  static response = Api.generic_response;
 
   static async post(payload: LikeCreatePayload) {
-    return await Api.post(LikeCreate.endpoint, payload, LikeCreate.response);
+    return await Api.post<LikeCreateResponse>(this.endpoint, payload, this.response);
   }
 }
 
-export type LikeCreatePayload = z.infer<typeof LikeCreate.payload>;
-export type LikeCreateResponse = z.infer<typeof LikeCreate.response>;
+export type LikeCreatePayload = z.infer<typeof LikeCreateRequest.payload>;
+export type LikeCreateResponse = z.infer<typeof LikeCreateRequest.response>;

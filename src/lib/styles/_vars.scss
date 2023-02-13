@@ -68,6 +68,8 @@ $theme-sky: (
       color: rgb(var(--allwhite));
     } @else if $name == "base" {
       color: rgb(var(--allwhite));
+    } @else if $name == "superdark" {
+      color: rgba(var(--base), 1);
     } @else {
       color: rgb(var(--black));
     }
