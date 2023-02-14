@@ -2,6 +2,7 @@
   import { goto } from '$app/navigation';
   import { typewriter } from '$lib/util/transition';
   import { nanoid } from 'nanoid';
+  import { afterUpdate } from 'svelte';
   import { writable, type Writable } from 'svelte/store';
   import Icon from './Icon.svelte';
 
@@ -27,6 +28,8 @@
   export let id: string = nanoid();
   export let controller: Writable<string> = writable(id);
 
+  const label_store = writable(label);
+
   const controllerClick = (e: MouseEvent) => {
     if ($controller !== id) e.stopPropagation();
 
@@ -36,6 +39,10 @@
   const hrefClick = async () => {
     if (href) await goto(href);
   };
+
+  afterUpdate(() => {
+    $label_store = label;
+  });
 </script>
 
 <button
@@ -52,7 +59,10 @@
   class:jumbo
   class:xlarge
   class:small
-  data-fill={primary
+  class:transparent
+  data-fill={transparent
+    ? ''
+    : primary
     ? 'base'
     : system
     ? 'system-base'
@@ -68,7 +78,7 @@
   {#if count !== undefined}<span>{count}</span>{/if}
   {#if $controller === id}
     <span in:typewriter|local out:typewriter|local>
-      {label}
+      {$label_store}
     </span>
   {/if}
 </button>

@@ -70,6 +70,7 @@ a {
 
   &[role="button"] {
     text-decoration: none;
+    user-select: none;
   }
 }
 
@@ -91,6 +92,7 @@ select {
   padding: 0;
   background: transparent;
   color: rgb(var(--black));
+  user-select: none;
 
   &:focus {
     outline: 0 none;

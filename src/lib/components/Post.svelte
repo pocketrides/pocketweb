@@ -13,6 +13,7 @@
   import Container from './Container.svelte';
   import Icon from './Icon.svelte';
   import Nametag from './Nametag.svelte';
+  import Replies from './Replies.svelte';
   import Row from './Row.svelte';
 
   export let post: ServerPost;
@@ -165,6 +166,7 @@
       </div>
     </Container>
   {/if}
+  <Replies {post} initial="preview" />
 </div>
 
 <style lang="scss">
