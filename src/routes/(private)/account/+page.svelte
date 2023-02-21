@@ -1,10 +1,12 @@
 <script lang="ts">
   import Button from '$lib/components/Button.svelte';
+  import Container from '$lib/components/Container.svelte';
   import Icon from '$lib/components/Icon.svelte';
   import Main from '$lib/components/Main.svelte';
   import Sheet from '$lib/components/Sheet.svelte';
   import SiteHeader from '$lib/components/SiteHeader.svelte';
   import EditNametag from '$lib/forms/nametag/EditNametag.svelte';
+  import EnablePayouts from '$lib/sheets/account/EnablePayouts.svelte';
   import { App } from '$lib/stores/app';
   import type { PageData } from './$types';
 
@@ -35,24 +37,45 @@
             $App.sheet_id = 'edit_nametag';
           }}
         />
-        <Button label="Get paid" icon="attach_money" jumbo href="/account/payouts" />
-        <Button label="Notifications" icon="campaign" jumbo />
-        <Button label="Enable 2FA" icon="fingerprint" jumbo />
+        {#if data.account.charges_enabled}
+          <Button
+            label="Get paid"
+            icon="attach_money"
+            jumbo
+            href="/account/payouts"
+          />
+          <Button
+            label="Stripe dashboard"
+            icon="account_balance"
+            jumbo
+            on:click={() => {
+              window.open('/_/stripe/account/link');
+            }}
+          />
+        {:else}
+          <Button
+            label="Enable payouts"
+            icon="account_balance"
+            jumbo
+            on:click={() => {
+              $App.sheet_id = 'enable_payouts';
+            }}
+          />
+        {/if}
+        {#if data.account.stripe_subscription_status === 'subscribed'}
+          <Button label="Cancel subscription" icon="cancel" jumbo />
+        {:else}
+          <Button label="Subscribe" icon="favorite" jumbo />
+        {/if}
       </div>
     </div>
 
     <div data-flex="v" data-gap>
-      <h2 class="h3 half">Your subscription</h2>
-      {#if data.account?.stripe_subscription_status === 'subscribed'}
-        <div data-flex="vs" data-gap>
-          <Button label="Stripe dashboard" icon="account_balance" jumbo />
-          <Button label="Cancel subscription" icon="cancel" jumbo />
-        </div>
-      {:else}
-        <div data-flex="vs" data-gap>
-          <Button label="Subscribe" icon="favorite" jumbo />
-        </div>
-      {/if}
+      <h2 class="h3 half">Settings</h2>
+      <div data-flex="vs" data-gap>
+        <Button label="Notifications" icon="campaign" jumbo />
+        <Button label="Enable 2FA" icon="fingerprint" jumbo />
+      </div>
     </div>
     <div data-flex="v" data-gap>
       <h2 class="h3 half">Your account</h2>
@@ -72,6 +95,8 @@
   </div>
 </Main>
 
-<Sheet header="Edit nametag" icon="face" id="edit_nametag" close="Cancel">
+<Sheet id="edit_nametag" header="Edit nametag" icon="face" close="Cancel">
   <EditNametag />
 </Sheet>
+
+<EnablePayouts />

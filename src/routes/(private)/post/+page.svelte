@@ -15,6 +15,7 @@
   import ButtonRow from '$lib/components/ButtonRow.svelte';
   import { NewPostRequest } from '$lib/api/post/new';
   import { goto } from '$app/navigation';
+  import Container from '$lib/components/Container.svelte';
 
   const page_controller = writable<PageController>(blankPost());
   const is_publishing = writable(false);
@@ -36,11 +37,17 @@
       await goto(`/post/${post.post_id}`);
       $is_publishing = false;
     }
+
+    if (post.success === false && post.reason) {
+      console.log(post.flags);
+      $App.sheet_id = 'post_moderated';
+      $is_publishing = false;
+    }
   };
 
   $: valid = draft_post_validator.safeParse($page_controller).success;
 
-  $: console.log($page_controller);
+  // $: console.log($page_controller);
 </script>
 
 <svelte:head>
@@ -153,4 +160,9 @@
       on:click={publishClick}
     />
   </div>
+</Sheet>
+<Sheet id="post_moderated" header="Hang on!" icon="signpost">
+  <Container rounded fill="superlight">
+    <h2>We found something wrong.</h2>
+  </Container>
 </Sheet>

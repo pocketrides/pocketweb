@@ -1,5 +1,6 @@
 import { z } from 'zod';
-import { client_ref_validator } from './Fauna';
+import { client_ref_validator, type ClientRef } from './Fauna';
+import type { Expr } from 'faunadb';
 
 export const draft_invoice_validator = z.object({
   stripe_invoice_id: z.string(),
@@ -12,4 +13,7 @@ export const server_invoice_validator = draft_invoice_validator.extend({
 });
 
 export type DraftInvoice = z.infer<typeof draft_invoice_validator>;
-export type ServerInvoice = z.infer<typeof server_invoice_validator>;
+export type ServerInvoice = DraftInvoice & {
+  id: string;
+  account_ref: ClientRef | Expr;
+};

@@ -8,6 +8,8 @@ export const load = (async (event) => {
     event.locals.fauna_account_id as string
   );
 
+  if (!account) throw new Error();
+
   return {
     my_nametag: parent.my_nametag,
     page_theme: parent.my_nametag?.theme,

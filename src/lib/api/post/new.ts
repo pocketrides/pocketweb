@@ -7,15 +7,14 @@ export class NewPostRequest {
 
   static payload = draft_post_validator;
 
-  static response = z.discriminatedUnion('success', [
-    z.object({
-      success: z.literal(true),
-      post_id: z.string()
-    }),
-    Api.generic_failure_validator
-  ]);
+  static response = z.object({
+    success: z.boolean(),
+    post_id: z.string().optional(),
+    reason: z.enum(['failed_moderation']).optional(),
+    flags: z.array(z.string()).optional()
+  });
 
-  static async post(payload: NewPostPayload) {
+  static async post(payload: NewPostPayload): Promise<NewPostResponse> {
     return await Api.post<NewPostResponse>(
       NewPostRequest.endpoint,
       payload,

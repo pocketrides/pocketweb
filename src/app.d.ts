@@ -27,6 +27,8 @@ declare global {
         MAGICBELL_KEY: string;
         MAGICBELL_SECRET: string;
 
+        OPEN_AI_KEY: string;
+
         POCKETQUEUE: Queue<import('$lib/zod/Publisher').PublisherQueuePayload>;
       };
     }

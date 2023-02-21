@@ -14,6 +14,7 @@ import {
   getNametagCookie,
   getSessionCookie
 } from '$lib/server/Cookies';
+import { OpenAI } from '$lib/server/OpenAI';
 
 export const handle = (async ({ event, resolve }) => {
   loadSecrets(
@@ -86,6 +87,7 @@ type AppSecrets = {
   STRIPE_SIGNING_SECRET: string;
   MAGICBELL_KEY: string;
   MAGICBELL_SECRET: string;
+  OPEN_AI_KEY: string;
 };
 
 const loadSecrets = (event: RequestEvent, env: AppSecrets) => {
@@ -100,6 +102,9 @@ const loadSecrets = (event: RequestEvent, env: AppSecrets) => {
   // stripe
   StripeClient.STRIPE_KEY = env.STRIPE_KEY;
   StripeClient.STRIPE_SIGNING_SECRET = env.STRIPE_SIGNING_SECRET;
+
+  // openai
+  OpenAI.API_KEY = env.OPEN_AI_KEY;
 
   // this gets passed to the frontend intentionally
   event.locals.mb_api_key = env.MAGICBELL_KEY;

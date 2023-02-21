@@ -5,8 +5,13 @@
   import Main from '$lib/components/Main.svelte';
   import Row from '$lib/components/Row.svelte';
   import SiteHeader from '$lib/components/SiteHeader.svelte';
+  import type { PageData } from './$types';
   import HowPayoutsWork from './ui/HowPayoutsWork.svelte';
 </script>
+
+<svelte:head>
+  <title>your payouts | pocketrides!</title>
+</svelte:head>
 
 <SiteHeader utility>
   <div slot="left">
@@ -30,6 +35,9 @@
               icon="account_balance"
               label="Stripe dash"
               {controller}
+              on:click={() => {
+                window.open('/_/stripe/account/link');
+              }}
             />
             <Button
               id="new_payout"

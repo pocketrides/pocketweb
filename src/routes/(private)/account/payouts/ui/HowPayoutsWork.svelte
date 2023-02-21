@@ -19,8 +19,14 @@
         your bank account and start the deposit to your bank account.
       </p>
     </div>
-    <div data-flex="v cc" data-gap="1">
+    <div data-flex="v cc" data-gap="1" class="wrapper">
       <slot />
     </div>
   </div>
 </Container>
+
+<style lang="scss">
+  .wrapper {
+    margin-top: 3rem;
+  }
+</style>

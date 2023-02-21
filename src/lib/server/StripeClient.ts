@@ -4,7 +4,7 @@ import { Invoice } from './db/Invoice';
 import { Like } from './db/Like';
 import type { ServerAccount } from '$lib/zod/Account';
 
-type StripeClientCustomMetadata = {
+export type StripeClientCustomMetadata = {
   fauna_account_id: string;
 };
 

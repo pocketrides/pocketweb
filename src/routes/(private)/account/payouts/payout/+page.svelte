@@ -10,7 +10,6 @@
 
   onMount(() => {
     if (new URLSearchParams(location.search).has('quickstart')) {
-      // $App.sheet_id = 'enable-notifications';
       history.replaceState({}, '', location.toString().replace('?quickstart=1', ''));
       quickstart();
     }

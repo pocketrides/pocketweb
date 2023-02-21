@@ -1,3 +1,4 @@
+import type { ClientRef } from '$lib/zod/Fauna';
 import type { DraftPost, ServerPost } from '$lib/zod/Post';
 import { Fauna } from './Fauna';
 import { Nametag } from './Nametag';
@@ -17,7 +18,7 @@ export class Post {
         post.stats = stats;
       }
 
-      const nametag = await Nametag.getById(post.nametag_ref.id);
+      const nametag = await Nametag.getById((post.nametag_ref as ClientRef).id);
 
       if (nametag) {
         post.nametag = nametag;

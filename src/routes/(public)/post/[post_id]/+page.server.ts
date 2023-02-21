@@ -2,6 +2,7 @@ import { Like } from '$lib/server/db/Like';
 import { Post } from '$lib/server/db/Post';
 import { Quarantine } from '$lib/server/db/Quarantine';
 import { Relationship } from '$lib/server/db/Relationship';
+import type { ClientRef } from '$lib/zod/Fauna';
 import type { PageServerLoad } from './$types';
 
 export const load = (async (event) => {
@@ -12,7 +13,7 @@ export const load = (async (event) => {
   if (post.audience === 'close_friends') {
     if (event.locals.nametag_id) {
       const is_close_friend = await Relationship.isCloseFriend(
-        post.nametag_ref.id,
+        (post.nametag_ref as ClientRef).id,
         event.locals.nametag_id as string
       );
 

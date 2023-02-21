@@ -38,7 +38,7 @@ export class Api {
     const res = validator.safeParse(await req.json());
 
     if (res.success) return res.data as T;
-    return { success: false } as T;
+    return { success: false };
   };
 }
 

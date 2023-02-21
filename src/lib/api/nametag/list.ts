@@ -1,4 +1,4 @@
-import { server_nametag_validator } from '$lib/zod/Nametag';
+import { server_nametag_validator, type ServerNametag } from '$lib/zod/Nametag';
 import { z } from 'zod';
 import { Api } from '../api';
 
@@ -21,4 +21,6 @@ export class NametagList {
   }
 }
 
-export type NametagListResponse = z.infer<typeof NametagList.response>;
+export type NametagListResponse =
+  | { success: false }
+  | { success: true; nametags: ServerNametag[] };

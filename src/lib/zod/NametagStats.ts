@@ -1,5 +1,6 @@
 import { z } from 'zod';
-import { client_ref_validator } from './Fauna';
+import { client_ref_validator, type ClientRef } from './Fauna';
+import type { Expr } from 'faunadb';
 
 export const draft_nametag_stats_validator = z.object({
   profile_pic: z.string().optional(),
@@ -16,7 +17,12 @@ export const server_nametag_stats_validator = draft_nametag_stats_validator.exte
 });
 
 export type DraftNametagStats = z.infer<typeof draft_nametag_stats_validator>;
-export type ServerNametagStats = z.infer<typeof server_nametag_stats_validator>;
+
+export type ServerNametagStats = DraftNametagStats & {
+  id: string;
+  ref: ClientRef | Expr;
+  nametag_ref: ClientRef | Expr;
+};
 
 export const blankNametagStats = (): DraftNametagStats => {
   return {
