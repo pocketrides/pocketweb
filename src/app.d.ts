@@ -14,6 +14,7 @@ declare global {
       my_nametag?: import('$lib/zod/Nametag').ServerNametag;
     }
     interface Platform {
+      context?: ExecutionContext;
       env: {
         FAUNA_SECRET: string;
 

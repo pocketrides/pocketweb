@@ -75,7 +75,9 @@
 </script>
 
 <slot />
-<SiteFooter />
+{#if $page.data.footer_disabled === undefined}
+  <SiteFooter />
+{/if}
 <SiteLoader />
 {#if $page.data.my_nametag}
   <MyNotifications />
