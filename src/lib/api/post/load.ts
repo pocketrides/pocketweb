@@ -1,0 +1,34 @@
+import type { ServerPost } from '$lib/zod/Post';
+import { z } from 'zod';
+import { PostStatsRequest } from './stats';
+import { IDBCache } from '$lib/util/idb-cache';
+
+export class LoadPostRequest {
+  static validator = z.object({ id: z.string() });
+
+  static async load(
+    post_id: string,
+    _fetch = fetch
+  ): Promise<ServerPost | undefined> {
+    let post = await IDBCache.get<ServerPost>(post_id);
+
+    if (!post) {
+      const req = await _fetch(`/_/post/${post_id}`);
+
+      if (req.status !== 200) return undefined;
+
+      post = await req.json<ServerPost>();
+      await IDBCache.put(post);
+    }
+
+    if (post.is_liked === undefined) {
+      const stats = await PostStatsRequest.load(post.id, _fetch);
+
+      post.is_liked = stats.is_liked;
+      post.is_quarantined = stats.is_quarantined;
+      await IDBCache.put(post);
+    }
+
+    return post;
+  }
+}

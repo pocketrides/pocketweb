@@ -2,11 +2,17 @@
   import Button from '$lib/components/Button.svelte';
   import ButtonRow from '$lib/components/ButtonRow.svelte';
   import Main from '$lib/components/Main.svelte';
+  import Post from '$lib/components/Post.svelte';
+  import ScrollList from '$lib/components/ScrollList.svelte';
   import SiteHeader from '$lib/components/SiteHeader.svelte';
   import UtilityNav from '$lib/components/UtilityNav.svelte';
   import { App } from '$lib/stores/app';
   import { writable } from 'svelte/store';
+  import type { PageData } from './$types';
 
+  export let data: PageData;
+
+  if (data.page_theme) $App.theme = data.page_theme;
   $App.fill = 'superlight';
 
   const button_row = writable('');
@@ -17,9 +23,12 @@
 </svelte:head>
 
 <SiteHeader />
-<Main>
-  <h1>Welcome home!</h1>
-
+<Main padded={false}>
+  <ScrollList>
+    {#each data.post_ids as post_id}
+      <Post {post_id} />
+    {/each}
+  </ScrollList>
   <UtilityNav slot="utility-nav">
     <div slot="left">
       <ButtonRow>

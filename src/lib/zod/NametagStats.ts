@@ -22,6 +22,7 @@ export type ServerNametagStats = DraftNametagStats & {
   id: string;
   ref: ClientRef | Expr;
   nametag_ref: ClientRef | Expr;
+  last_seen?: { [k: string]: string };
 };
 
 export const blankNametagStats = (): DraftNametagStats => {
