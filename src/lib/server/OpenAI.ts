@@ -1,7 +1,13 @@
-import {
-  openai_moderation_result_parser,
-  type OpenAIModerationResult
-} from '$lib/zod/OpenAI';
+import type { OpenAIModResult } from '$lib/zod/OpenAI';
+
+type APIResponse = {
+  choices?: { text: string }[];
+  usage?: {
+    total_tokens: number;
+  };
+};
+
+const leading_newlines = /^(\n+)?/g;
 
 export class OpenAI {
   static MODERATIONS_ENDPOINT = 'https://api.openai.com/v1/completions';
@@ -9,9 +15,10 @@ export class OpenAI {
 
   static API_KEY: string;
 
-  static async moderate(
-    input: string[]
-  ): Promise<OpenAIModerationResult | undefined> {
+  static async moderate(input: string[]): Promise<OpenAIModResult> {
+    // console.log('> input:', input);
+    // console.log('>> getprompt', this.getPrompt(input));
+
     const req = await fetch(this.MODERATIONS_ENDPOINT, {
       method: 'POST',
       headers: {
@@ -20,50 +27,66 @@ export class OpenAI {
       },
       body: JSON.stringify({
         model: this.MODEL_ID,
-        prompt: this.getPrompt(input)
+        prompt: this.getPrompt(input),
+        temperature: 0.2,
+        max_tokens: 256,
+        frequency_penalty: 1.0
       })
     });
 
-    const json: Partial<OpenAIModerationResult> = await req.json();
+    const json = await req.json<APIResponse | undefined>();
+    let result = this.getResult(json);
 
-    console.log('>> json:', JSON.stringify(json));
+    result.total_tokens ||= json?.usage?.total_tokens;
 
-    const parsed = openai_moderation_result_parser.safeParse(json);
+    console.log('>> json', json);
+    console.log('>> result:', result);
 
-    console.log('>> parsed:', JSON.stringify(parsed));
-
-    if (parsed.success) {
-      const result: OpenAIModerationResult = Object.assign(parsed.data, {
-        flags: this.humanize(parsed.data)
-      });
-
-      console.log('>>>', result);
-
-      return result;
-    }
+    return result;
   }
 
   static getPrompt(input: string[]) {
-    return `Test the following items based on this policy.`;
+    const prompt = `Pocketrides is a social media platform that moderates content explicitely mentioned in its rules. Illegal activities such as providing fake IDs or reference services, trafficking drugs, or promoting violence are against its rules. Additionally, content that infringes intellectual property rights, promotes counterfeit goods, and any content deemed unfair, predatory, deceptive or intending to spread disinformation is against its rules. Additionally, graphically explicit adult content or gore, political speech, hate speech, and adult activities such as explicit pornography, prostitution, and gambling are against its rules. Content not specifically mentioned by these rules is okay, even if it's inappropriate. Analyze the following content to find out if it's covered by the rules of Pocketrides. If against the rules, reply "yes" and how it is against the rules. If no, reply "no".\n\n`;
+
+    return [
+      prompt,
+      ...input.map((v) => ` ${v.length > 220 ? v.substring(0, 220) + '…' : v}\n\n`)
+    ].join('');
   }
 
-  static humanize(res: OpenAIModerationResult) {
-    let flags: string[] = [];
+  static getResult(json?: APIResponse): OpenAIModResult {
+    if (json && json.choices && json.choices[0] && json.choices[0].text) {
+      const parsed = this.parseResponseText(json.choices[0].text);
 
-    res.results.forEach((result) => {
-      for (let key of Object.keys(result.categories)) {
-        if (result.categories[key] === true) {
-          flags.push(key);
-        }
-      }
+      if (parsed) return parsed;
+    }
 
-      for (let key of Object.keys(result.category_scores)) {
-        if (result.category_scores[key] > 50) {
-          flags.push(key);
-        }
-      }
-    });
+    return {
+      allow_likes: false,
+      response_text: `We had a problem moderating this and have disabled likes out of an abundance of caution.`
+    };
+  }
 
-    return Array.from(new Set(flags));
+  static parseResponseText(text: string): OpenAIModResult | undefined {
+    const yesish = text.match(/^(\n+)?(yes)/i);
+    const noish = text.match(/^(\n+)?(no)/i);
+
+    if (yesish) {
+      return {
+        allow_likes: false,
+        response_text: text.replace(leading_newlines, '')
+      };
+    }
+
+    if (noish) {
+      return {
+        allow_likes: true,
+        response_text: text.replace(leading_newlines, '')
+      };
+    }
+
+    console.warn(`[OpenAI] > couldn't match API response:`, text);
+
+    return undefined;
   }
 }

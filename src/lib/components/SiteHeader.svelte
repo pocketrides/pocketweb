@@ -14,7 +14,7 @@
   export let fill: Fill = $App.fill;
 </script>
 
-<div data-fill={outer_fill} class:utility>
+<div class="wrapper" data-fill={outer_fill} class:utility>
   <header data-fill={fill}>
     <Container>
       <Row>
@@ -52,13 +52,19 @@
 </div>
 
 <style lang="scss">
-  div {
+  .wrapper {
     position: relative;
     top: 0;
     z-index: 15;
 
     &.utility {
       position: sticky;
+    }
+  }
+
+  @media (min-width: 640px) {
+    .wrapper[data-fill] {
+      background-color: rgb(var(--light));
     }
   }
 

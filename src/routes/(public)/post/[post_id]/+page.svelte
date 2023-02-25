@@ -5,7 +5,14 @@
   import type { PageData } from './$types';
 
   export let data: PageData;
+
+  let page_title = data.post.contents[0].content_raw;
+  if (page_title.length > 40) page_title = page_title.substring(0, 40) + '…';
 </script>
+
+<svelte:head>
+  <title>{page_title} | pocketrides!</title>
+</svelte:head>
 
 <SiteHeader />
 <Main padded={false}>

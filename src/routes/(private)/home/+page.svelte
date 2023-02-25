@@ -22,7 +22,7 @@
   <title>pocketrides!</title>
 </svelte:head>
 
-<SiteHeader />
+<SiteHeader outer_fill="system-superlight" />
 <Main padded={false}>
   <ScrollList>
     {#each data.post_ids as post_id}

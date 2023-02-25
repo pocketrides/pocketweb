@@ -1,0 +1,52 @@
+@keyframes loading-pulse {
+  0%,
+  100% {
+    background-color: rgb(var(--light));
+  }
+
+  50% {
+    background-color: rgba(var(--superlight), 0.25);
+  }
+}
+
+@keyframes loading-flash {
+  0%,
+  100% {
+    background-position: 0 0;
+  }
+
+  50% {
+    background-position: 640px 0;
+  }
+}
+
+[data-loading] {
+  animation: loading-pulse 1s ease-in-out 0s infinite;
+  padding-bottom: 1rem;
+
+  div {
+    animation: loading-flash 2.5s ease-in-out 0s infinite;
+    height: 40px;
+
+    background-image: linear-gradient(90deg, transparent, rgba(var(--base), 0.05), transparent);
+  }
+
+  div:not([data-fill]) {
+    background-color: rgba(var(--dark), 0.15);
+    height: 220px;
+    border-radius: 5px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+
+  p {
+    margin: 1rem;
+    height: 10px;
+    background: rgba(var(--dark), 0.25);
+    border-radius: 5px;
+
+    &:not(:first-child) {
+      margin-top: 1rem;
+    }
+  }
+}

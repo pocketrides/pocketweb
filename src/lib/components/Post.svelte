@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { page } from '$app/stores';
   import { LikeCreateRequest } from '$lib/api/like/create';
   import { LikeDestroyRequest } from '$lib/api/like/destroy';
   import { LoadPostRequest } from '$lib/api/post/load';
@@ -31,6 +32,7 @@
     ? $post_controller.is_quarantined || $post_controller.settings.is_nsfw
     : false;
   $: post_hidden = should_be_hidden && $showing_post === false;
+  $: is_my_post = $page.data.my_nametag?.id === $post_controller?.nametag?.id;
 
   onMount(async () => {
     if (post_id) {
@@ -109,17 +111,24 @@
           </div>
           <Row>
             <ButtonRow slot="left">
-              <Button
-                controller={button_controller}
-                id="likes"
-                icon="favorite_border"
-                disabled={$is_liking}
-                small
-                primary={$post_controller.is_liked}
-                count={$post_controller.stats.likes}
-                label={plural($post_controller.stats.likes, 'like', 'likes', false)}
-                on:click={likeClick}
-              />
+              {#if $post_controller.settings.enable_likes === true}
+                <Button
+                  controller={button_controller}
+                  id="likes"
+                  icon="favorite_border"
+                  disabled={$is_liking}
+                  small
+                  primary={$post_controller.is_liked}
+                  count={$post_controller.stats.likes}
+                  label={plural(
+                    $post_controller.stats.likes,
+                    'like',
+                    'likes',
+                    false
+                  )}
+                  on:click={likeClick}
+                />
+              {/if}
               <Button
                 controller={button_controller}
                 id="replies"
@@ -179,6 +188,40 @@
         </div>
       </Container>
     {/if}
+    {#if is_my_post && $post_controller?.settings?.mod_result?.allow_likes === false}
+      <Container fill="superlight">
+        <div data-flex="v as" data-gap>
+          <div>
+            <h3>Heads up!</h3>
+            <p>
+              Your post failed our automatic checks, so likes have been turned off.
+              Think we got it wrong? <Button
+                label="Dispute"
+                on:click={() => {
+                  window.open(
+                    `mailto:hello@pocketrides.cc?subject=dispute&body=` +
+                      encodeURIComponent(
+                        `Hello, I think my post was incorrectly moderated. It says:\n\n\t\t${$post_controller.contents[0].content_raw}\n\nThe moderator said the following:\n\n\t\t${$post_controller.settings.mod_result?.response_text}\n\nLink to the post: https://pocketrides.com/post/${$post_controller.id}\n\nThanks!`
+                      )
+                  );
+                }}
+              />
+            </p>
+          </div>
+          <small class="half">
+            <Icon icon="visibility_off" /> Only you can see this.
+          </small>
+        </div>
+      </Container>
+    {/if}
+  </div>
+{:else}
+  <div data-loading>
+    <div data-fill="system-superlight" />
+    <div />
+    <p />
+    <p />
+    <p />
   </div>
 {/if}
 

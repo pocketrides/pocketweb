@@ -9,24 +9,18 @@ export const POST = (async (event) => {
   let res: NewPostResponse = { success: false };
 
   if (payload.success) {
-    const moderation_result = await OpenAI.moderate(
-      payload.data.contents.map((c) => {
-        return c.content_raw;
-      })
-    );
+    if (payload.data.settings.enable_likes === true) {
+      const mod_result = await OpenAI.moderate(
+        payload.data.contents.map((c) => c.content_raw)
+      );
 
-    if (
-      moderation_result &&
-      moderation_result.flags &&
-      moderation_result.flags.length
-    ) {
-      res = {
-        success: false,
-        reason: 'failed_moderation',
-        flags: moderation_result.flags
-      };
+      if (mod_result) {
+        payload.data.settings.mod_result = mod_result;
+      }
 
-      return json(res);
+      if (mod_result && mod_result.allow_likes === false) {
+        payload.data.settings.enable_likes = false;
+      }
     }
 
     const post = await Post.create(event.locals.nametag_id as string, payload.data);

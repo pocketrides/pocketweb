@@ -5,6 +5,7 @@ import { server_nametag_validator, type ServerNametag } from './Nametag';
 import { server_post_stats_validator, type ServerPostStats } from './PostStats';
 import { client_ref_validator, type ClientRef } from './Fauna';
 import type { Expr } from 'faunadb';
+import { openai_mod_result_validator } from './OpenAI';
 
 export const MAX_POST_CONTENT_LENGTH = 720;
 
@@ -17,7 +18,8 @@ export const post_audience_validator = z.enum([
 export const post_settings = z.object({
   is_nsfw: z.boolean(),
   enable_likes: z.boolean(),
-  enable_replies: z.boolean()
+  enable_replies: z.boolean(),
+  mod_result: openai_mod_result_validator.optional()
 });
 
 export const draft_post_content_validator = z.object({
