@@ -29,7 +29,7 @@
       const cached_ids = await IDBFeedCache.getFeed();
       $page_controller.post_ids = cached_ids;
 
-      loadMore().then(() => {});
+      if ($page_controller.post_ids.length === 0) loadMore().then(() => {});
 
       if (cached_seen) {
         setTimeout(() => {

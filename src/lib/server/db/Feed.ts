@@ -17,7 +17,7 @@ export class Feed {
     nametag_id: string,
     after_id?: string
   ): Promise<FeedResponse> {
-    let paginate_opts: any = { size: 20 };
+    let paginate_opts: any = { size: 60 };
 
     if (after_id) {
       paginate_opts.after = [Post.toRef(after_id)];
