@@ -1,3 +1,4 @@
+import { Feed } from '$lib/server/db/Feed';
 import { Nametag } from '$lib/server/db/Nametag';
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
@@ -41,11 +42,17 @@ export const load = (async (event) => {
     );
   }
 
+  const feed = await Feed.getNametagFeed(page_nametag.id);
+
   return {
     my_nametag: parent.my_nametag,
+    is_my_profile_page: page_nametag.id === event.locals.nametag_id,
     page_theme: page_nametag.theme,
     page_nametag: page_nametag,
     page_nametag_stats: page_nametag_stats || blankNametagStats(),
-    relationship
+    relationship,
+    nametag_id: page_nametag.id,
+    post_ids: feed.post_ids,
+    after_id: feed.after_id
   };
 }) satisfies PageServerLoad;

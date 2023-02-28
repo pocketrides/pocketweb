@@ -82,7 +82,7 @@ export class NametagStats {
     }
   }
 
-  static async update(id: string, data: Partial<DraftNametagStats>) {
+  static async update(id: string, data: Partial<ServerNametagStats>) {
     return await Fauna.update(NametagStats.toRef(id), data, NametagStats.parseFQL);
   }
 

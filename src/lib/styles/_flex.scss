@@ -14,12 +14,20 @@
   align-items: center;
 }
 
+[data-flex*="ae"] {
+  align-items: flex-end;
+}
+
 [data-flex*="v"] {
   flex-direction: column;
 }
 
 [data-flex*="sb"] {
   justify-content: space-between;
+}
+
+[data-flex*="je"] {
+  justify-content: flex-end;
 }
 
 [data-flex*="cc"] {

@@ -77,7 +77,7 @@ export type ServerPost = {
   settings: PostSettings;
   contents: PostContent[];
   stats_ref: ClientRef | Expr;
-  stats: ServerPostStats;
+  stats?: ServerPostStats;
 
   is_liked?: boolean;
   is_quarantined?: boolean;

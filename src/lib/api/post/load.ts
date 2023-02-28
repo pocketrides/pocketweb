@@ -31,4 +31,9 @@ export class LoadPostRequest {
 
     return post;
   }
+
+  static async reload(post_id: string) {
+    await IDBCache.delete(post_id);
+    return await this.load(post_id);
+  }
 }

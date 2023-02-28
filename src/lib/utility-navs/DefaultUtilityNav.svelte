@@ -6,9 +6,19 @@
 </script>
 
 <UtilityNav>
-  <p class="h3" slot="left">Pocketrides: it's a brave new world bb</p>
+  <div class="h3" slot="left"><p>Pocketrides is<br />better social media.</p></div>
   <div slot="right">
     <ButtonRow initial="learn_more" let:controller>
+      <Button
+        id="get_account"
+        {controller}
+        label="Join now"
+        icon="hail"
+        large
+        on:click={() => {
+          $App.sheet_id = 'onboarding';
+        }}
+      />
       <Button
         id="learn_more"
         {controller}
@@ -16,16 +26,6 @@
         label="Learn more"
         icon="help_outline"
         primary
-      />
-      <Button
-        id="get_account"
-        {controller}
-        label="Get an account"
-        icon="hail"
-        large
-        on:click={() => {
-          $App.sheet_id = 'onboarding';
-        }}
       />
     </ButtonRow>
   </div>

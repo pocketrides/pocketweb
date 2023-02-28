@@ -9,7 +9,7 @@
   import { plural } from '$lib/util/plural';
   import { getTimeAgo } from '$lib/util/time-ago';
   import type { ServerPost } from '$lib/zod/Post';
-  import { onMount } from 'svelte';
+  import { createEventDispatcher, onMount } from 'svelte';
   import { writable } from 'svelte/store';
   import Button from './Button.svelte';
   import ButtonRow from './ButtonRow.svelte';
@@ -21,6 +21,11 @@
 
   export let post_id: string | undefined = undefined;
   export let post: ServerPost | undefined = undefined;
+
+  let wrapper: HTMLDivElement | undefined;
+
+  const dispatch = createEventDispatcher();
+  let _seen = false;
 
   const post_controller = writable(post);
   const button_controller = writable('');
@@ -43,51 +48,80 @@
     }
   });
 
+  const reload = async () => {
+    const id = post ? post.id : post_id ? post_id : undefined;
+
+    if (id) {
+      const post = await LoadPostRequest.reload(id);
+      if (post) $post_controller = post;
+    }
+  };
+
   const likeClick = async () => {
+    if (!$post_controller.stats) return;
+
     $is_liking = true;
 
     if ($post_controller.is_liked) {
-      await LikeDestroyRequest.post({ post_id: $post_controller.id });
       $post_controller.stats.likes = $post_controller.stats.likes - 1;
       $post_controller.is_liked = false;
+      await LikeDestroyRequest.post({ post_id: $post_controller.id });
       $is_liking = false;
     } else {
       const res = await LikeCreateRequest.post({ post_id: $post_controller.id });
+      $post_controller.is_liked = true;
+      $post_controller.stats.likes = $post_controller.stats.likes + 1;
       if (res.success) {
-        $post_controller.is_liked = true;
-        $post_controller.stats.likes = $post_controller.stats.likes + 1;
         $is_liking = false;
       } else {
         $App.sheet_id = 'out_of_likes';
         $is_liking = false;
       }
     }
+
+    await reload();
   };
 
   const quarantineClick = async () => {
+    if (!$post_controller.stats) return;
+
     $is_quarantining = true;
 
     if ($post_controller.is_quarantined) {
-      await QuarantineDestroyRequest.post({ post_id: $post_controller.id });
       $post_controller.is_quarantined = false;
       $post_controller.stats.quarantines = $post_controller.stats.quarantines - 1;
+      await QuarantineDestroyRequest.post({ post_id: $post_controller.id });
       $is_quarantining = false;
     } else {
-      await QuarantineCreateRequest.post({ post_id: $post_controller.id });
       $post_controller.is_quarantined = true;
       $post_controller.stats.quarantines = $post_controller.stats.quarantines + 1;
+      await QuarantineCreateRequest.post({ post_id: $post_controller.id });
       $is_quarantining = false;
       $showing_post = false;
     }
+
+    await reload();
   };
 
   const showPost = () => {
     $showing_post = true;
   };
+
+  const checkBounds = () => {
+    if (wrapper && !_seen) {
+      const bounds = wrapper.getBoundingClientRect();
+      if (bounds.bottom < 0) {
+        _seen = true;
+        dispatch('seen');
+      }
+    }
+  };
 </script>
 
+<svelte:window on:scroll={checkBounds} />
+
 {#if $post_controller !== undefined}
-  <div>
+  <div bind:this={wrapper} data-post={$post_controller.id}>
     <Row sticky padded bordered fill="system-superlight">
       <div slot="left">
         <Nametag small nametag={$post_controller.nametag} />
@@ -109,69 +143,52 @@
           <div class="summary">
             {@html $post_controller.contents[0].content}
           </div>
-          <Row>
-            <ButtonRow slot="left">
-              {#if $post_controller.settings.enable_likes === true}
-                <Button
-                  controller={button_controller}
-                  id="likes"
-                  icon="favorite_border"
-                  disabled={$is_liking}
-                  small
-                  primary={$post_controller.is_liked}
-                  count={$post_controller.stats.likes}
-                  label={plural(
-                    $post_controller.stats.likes,
-                    'like',
-                    'likes',
-                    false
-                  )}
-                  on:click={likeClick}
-                />
-              {/if}
-              <Button
-                controller={button_controller}
+          {#if $post_controller.stats}
+            <Row>
+              <ButtonRow slot="left">
+                {#if $post_controller.settings.enable_likes === true}
+                  <Button
+                    id="likes"
+                    icon="favorite_border"
+                    disabled={$is_liking}
+                    small
+                    primary={$post_controller.is_liked}
+                    count={$post_controller.stats.likes}
+                    label=""
+                    on:click={likeClick}
+                  />
+                {/if}
+                <!-- <Button
                 id="replies"
                 icon="reply"
                 count={$post_controller.stats.replies}
-                label={plural(
-                  $post_controller.stats.replies,
-                  'reply',
-                  'replies',
-                  false
-                )}
-              />
-            </ButtonRow>
-            <ButtonRow slot="right">
-              {#if $post_controller.is_quarantined}
+              /> -->
+              </ButtonRow>
+              <ButtonRow slot="right" initial="hide">
+                {#if $post_controller.is_quarantined}
+                  <Button
+                    controller={button_controller}
+                    id="hide"
+                    icon="visibility_off"
+                    label="Hide post"
+                    on:click={() => {
+                      $showing_post = false;
+                    }}
+                  />
+                {/if}
                 <Button
-                  controller={button_controller}
-                  id="hide"
-                  icon="visibility_off"
-                  label="Hide post"
-                  on:click={() => {
-                    $showing_post = false;
-                  }}
+                  id="quarantines"
+                  icon="support"
+                  disabled={$is_quarantining}
+                  count={$post_controller.stats.quarantines}
+                  small
+                  primary={$post_controller.is_quarantined}
+                  label=""
+                  on:click={quarantineClick}
                 />
-              {/if}
-              <Button
-                controller={button_controller}
-                id="quarantines"
-                icon="support"
-                disabled={$is_quarantining}
-                count={$post_controller.stats.quarantines}
-                small
-                primary={$post_controller.is_quarantined}
-                label={plural(
-                  $post_controller.stats.quarantines,
-                  'quarantine',
-                  'quarantines',
-                  false
-                )}
-                on:click={quarantineClick}
-              />
-            </ButtonRow>
-          </Row>
+              </ButtonRow>
+            </Row>
+          {/if}
         </div>
       </Container>
     {:else}
@@ -188,7 +205,7 @@
         </div>
       </Container>
     {/if}
-    {#if is_my_post && $post_controller?.settings?.mod_result?.allow_likes === false}
+    {#if is_my_post && $post_controller?.settings?.mod_result?.allow_likes === false && post_hidden === false}
       <Container fill="superlight">
         <div data-flex="v as" data-gap>
           <div>
@@ -236,6 +253,5 @@
 
   .quarantined {
     min-height: 220px;
-    aspect-ratio: 16 / 9;
   }
 </style>

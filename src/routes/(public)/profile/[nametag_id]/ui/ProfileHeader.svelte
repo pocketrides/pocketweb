@@ -12,7 +12,7 @@
 </script>
 
 <div class="header" data-flex data-gap="1">
-  {#if $page.data.my_nametag?.id === $page_controller.page_nametag.id}
+  {#if $page_controller.is_my_profile_page}
     <ProfilePicUpload profile_pic={$page.data.page_nametag_stats.profile_pic} />
   {:else}
     <ProfilePic profile_pic={$page.data.page_nametag_stats.profile_pic} />

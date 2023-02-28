@@ -7,7 +7,14 @@
   export let bordered: boolean = false;
 </script>
 
-<div data-flex="sb ac" class:sticky class:padded class:bordered data-fill={fill}>
+<div
+  data-flex="sb ac"
+  class:sticky
+  class:padded
+  class:bordered
+  data-fill={fill}
+  data-gap
+>
   <slot name="left">&nbsp;</slot>
   <slot name="right">&nbsp;</slot>
 </div>

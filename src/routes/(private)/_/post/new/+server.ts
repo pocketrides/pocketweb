@@ -25,11 +25,16 @@ export const POST = (async (event) => {
 
     const post = await Post.create(event.locals.nametag_id as string, payload.data);
 
-    if (post)
+    if (post) {
       res = {
         success: true,
         post_id: post.id
       };
+    } else {
+      res = {
+        success: false
+      };
+    }
   }
 
   return json(res);

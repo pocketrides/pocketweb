@@ -1,21 +1,32 @@
+import type { ClientRef } from '$lib/zod/Fauna';
+import type { FeedResponse } from '$lib/zod/Feed';
 import { Fauna, q } from './Fauna';
 import { Nametag } from './Nametag';
 import { NametagStats } from './NametagStats';
 import { Post } from './Post';
 
+type FaunaQueryResponse = {
+  data: string[];
+  before?: ClientRef[];
+  after?: ClientRef[];
+};
+
 export class Feed {
-  static async getHomeFeed(nametag_id: string): Promise<string[]> {
-    const stats = await NametagStats.getByNametagRef(nametag_id);
+  // returns a list of post IDs for the nametag_id
+  static async getHomeFeed(
+    nametag_id: string,
+    after_id?: string
+  ): Promise<FeedResponse> {
+    let paginate_opts: any = { size: 20 };
 
-    let paginate_opts: any = { size: 10 };
-
-    if (stats && stats.last_seen && stats.last_seen.home) {
-      // stats.last_seen.home will be the last post ID they saw
-      paginate_opts.after = Post.toRef(stats.last_seen.home);
+    if (after_id) {
+      paginate_opts.after = [Post.toRef(after_id)];
+    } else {
+      paginate_opts.before = null; // get the last page of results
     }
 
     try {
-      const res = await Fauna.client().query<{ data: string[] }>(
+      const res = await Fauna.client().query<FaunaQueryResponse>(
         q.Map(
           q.Paginate(
             q.Union(
@@ -31,10 +42,52 @@ export class Feed {
         )
       );
 
-      if (res && res.data) return res.data;
-      else return [];
+      if (res && res.data) {
+        if (res.data[0] === after_id) res.data.shift();
+
+        return {
+          post_ids: res.data,
+          after_id: res.after && res.after[0] ? res.after[0].id : undefined,
+          has_more: res.after && res.after[0] ? true : false
+        };
+      } else return { post_ids: [], has_more: false };
     } catch (e) {
-      return [];
+      return { post_ids: [], has_more: false };
+    }
+  }
+
+  static async getNametagFeed(
+    nametag_id: string,
+    after_id?: string
+  ): Promise<FeedResponse> {
+    try {
+      let paginate_opts: any = { size: 20 };
+
+      if (after_id) {
+        paginate_opts.after = [Post.toRef(after_id)];
+      }
+
+      const res = await Fauna.client().query<FaunaQueryResponse>(
+        q.Map(
+          q.Paginate(
+            q.Match(q.Index('feed_posts_ts_reverse'), [Nametag.toRef(nametag_id)]),
+            paginate_opts
+          ),
+          q.Lambda('x', q.Select([0, 'id'], q.Var('x')))
+        )
+      );
+
+      if (res && res.data) {
+        if (res.data[0] === after_id) res.data.shift();
+
+        return {
+          post_ids: res.data,
+          after_id: res.after && res.after[0] ? res.after[0].id : undefined,
+          has_more: res.after && res.after[0] ? true : false
+        };
+      } else return { post_ids: [], has_more: false };
+    } catch (e) {
+      return { post_ids: [] };
     }
   }
 }

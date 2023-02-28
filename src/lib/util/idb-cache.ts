@@ -29,6 +29,8 @@ export class IDBCache {
       const store = transaction.objectStore('cache');
       const request = store.get(id);
 
+      request.onerror = () => resolve(undefined);
+
       request.onsuccess = (e: any) => {
         if (e.target.result) resolve(e.target.result as T);
         else resolve(undefined);
@@ -44,11 +46,34 @@ export class IDBCache {
       const transaction = IDBCache.#db.transaction('cache', 'readwrite');
       const store = transaction.objectStore('cache');
 
+      transaction.onerror = () => {
+        resolve(undefined);
+      };
+
       transaction.oncomplete = () => {
         resolve(undefined);
       };
 
       store.put(obj);
+    });
+  }
+
+  static async delete(id: string): Promise<true | false> {
+    return new Promise(async (resolve) => {
+      if (typeof indexedDB === 'undefined') return resolve(false);
+
+      await IDBCache.#open();
+      const transaction = IDBCache.#db.transaction('cache', 'readwrite');
+      const store = transaction.objectStore('cache');
+      const request = store.delete(id);
+
+      request.onerror = () => {
+        resolve(false);
+      };
+
+      request.onsuccess = () => {
+        resolve(true);
+      };
     });
   }
 }

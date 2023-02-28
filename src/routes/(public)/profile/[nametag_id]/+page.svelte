@@ -10,10 +10,20 @@
   import type { PageData } from './$types';
   import ProfileHeader from './ui/ProfileHeader.svelte';
   import ProfileUtilityNav from './ui/ProfileUtilityNav.svelte';
+  import ScrollList from '$lib/components/ScrollList.svelte';
+  import Post from '$lib/components/Post.svelte';
+  import Row from '$lib/components/Row.svelte';
+  import Icon from '$lib/components/Icon.svelte';
+  import CreateContentUtilityNav from '$lib/utility-navs/CreateContentUtilityNav.svelte';
+  import { LoadNametagFeedRequest } from '$lib/api/feed/nametag';
+
+  $App.fill = 'system-superlight';
 
   export let data: PageData;
 
-  $: page_controller = writable(data);
+  const page_controller = writable(data);
+
+  let has_more = true;
 
   onMount(() => {
     if (new URLSearchParams(location.search).has('subscribed')) {
@@ -22,21 +32,56 @@
     }
   });
 
-  $App.fill = 'system-superlight';
+  const loadMore = async () => {
+    const feed = await LoadNametagFeedRequest.load(
+      data.nametag_id,
+      $page_controller.after_id
+    );
+
+    page_controller.update((prev) => {
+      if (feed.post_ids) prev.post_ids.push.apply(prev.post_ids, feed.post_ids);
+
+      prev.after_id = feed.after_id;
+      has_more = feed.has_more ? true : false;
+
+      return prev;
+    });
+  };
 </script>
 
 <svelte:head>
   <title>{data.page_nametag.nametag} is on pocketrides!</title>
 </svelte:head>
 
-<SiteHeader>
+<SiteHeader outer_fill="system-light">
   <ProfileHeader {page_controller} />
 </SiteHeader>
-<Main>
+<Main
+  padded={false}
+  minheight={$page_controller.post_ids.length === 0 ? false : true}
+>
+  <Row padded bordered fill="system-light">
+    <h2 slot="left">
+      <Icon icon="signpost" />
+      Posts
+    </h2>
+  </Row>
+  <ScrollList
+    has_none={$page_controller.post_ids.length === 0}
+    {has_more}
+    no_more={has_more === false}
+    on:loadmore={loadMore}
+  >
+    {#each $page_controller.post_ids as post_id (post_id)}
+      <Post {post_id} />
+    {/each}
+  </ScrollList>
   <svelte:fragment slot="utility-nav">
     {#if $page.data.my_nametag}
-      {#if $page.data.my_nametag.id !== $page.data.page_nametag?.id}
+      {#if $page_controller.is_my_profile_page === false}
         <ProfileUtilityNav {page_controller} />
+      {:else}
+        <CreateContentUtilityNav />
       {/if}
     {:else}
       <DefaultUtilityNav />

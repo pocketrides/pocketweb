@@ -39,8 +39,8 @@ export class OpenAI {
 
     result.total_tokens ||= json?.usage?.total_tokens;
 
-    console.log('>> json', json);
-    console.log('>> result:', result);
+    // console.log('>> json', json);
+    // console.log('>> result:', result);
 
     return result;
   }
