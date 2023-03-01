@@ -15,21 +15,23 @@ export const POST = (async (event) => {
   let response: StytchChallengeResponse = { success: false };
 
   if (payload.success) {
-    const stytch_response: SendOTPBySMSResponse | OTPWhatsAppSendResponse =
-      payload.data.challenge_type === 'sms'
-        ? await Stytch.client().otps.sms.send({
-            phone_number: payload.data.phone_number
-          })
-        : await Stytch.client().otps.whatsapp.send({
-            phone_number: payload.data.phone_number
-          });
+    try {
+      const stytch_response: SendOTPBySMSResponse | OTPWhatsAppSendResponse =
+        payload.data.challenge_type === 'sms'
+          ? await Stytch.client().otps.sms.send({
+              phone_number: payload.data.phone_number
+            })
+          : await Stytch.client().otps.whatsapp.send({
+              phone_number: payload.data.phone_number
+            });
 
-    if (stytch_response.status_code === 200) {
-      response = {
-        success: true,
-        method_id: stytch_response.phone_id
-      };
-    }
+      if (stytch_response.status_code === 200) {
+        response = {
+          success: true,
+          method_id: stytch_response.phone_id
+        };
+      }
+    } catch (e) {}
   }
 
   return json(response);

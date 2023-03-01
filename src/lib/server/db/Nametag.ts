@@ -27,9 +27,8 @@ export class Nametag {
   }
 
   static async getById(nametag_id: string) {
-    return await Fauna.one<ServerNametag>(
-      'nametags_by_id',
-      nametag_id,
+    return await Fauna.get<ServerNametag>(
+      Nametag.toRef(nametag_id),
       Nametag.parseFQL
     );
   }

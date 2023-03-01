@@ -120,7 +120,7 @@ export class StripeClient {
     });
   }
 
-  static async handleInvoicePaid(event: Stripe.Event) {
+  static async handleInvoicePaidEvent(event: Stripe.Event) {
     const invoice = event.data.object as Stripe.Invoice;
     const customer_id = invoice.customer as string;
     const customer = await StripeClient.client().customers.retrieve(customer_id);
@@ -144,6 +144,17 @@ export class StripeClient {
           await Like.mint(customer_metadata.fauna_account_id, invoice_record.id);
         }
       }
+    }
+  }
+
+  static async handleAccountUpdatedEvent(event: Stripe.Event) {
+    const account = event.data.object as Stripe.Account;
+    const account_metadata = account.metadata as StripeClientCustomMetadata;
+
+    if (account_metadata && account_metadata.fauna_account_id) {
+      await Account.update(account_metadata.fauna_account_id, {
+        charges_enabled: account.charges_enabled === true
+      });
     }
   }
 }

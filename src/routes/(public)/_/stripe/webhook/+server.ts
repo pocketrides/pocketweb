@@ -32,7 +32,10 @@ export const POST = (async (event) => {
       await StripeClient.handleCustomerSubscriptionEvent(webhook_event);
       break;
     case 'invoice.paid':
-      await StripeClient.handleInvoicePaid(webhook_event);
+      await StripeClient.handleInvoicePaidEvent(webhook_event);
+      break;
+    case 'account.updated':
+      await StripeClient.handleAccountUpdatedEvent(webhook_event);
       break;
   }
 

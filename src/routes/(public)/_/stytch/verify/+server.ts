@@ -10,30 +10,32 @@ export const POST = (async (event) => {
   let response: StytchVerifyResponse = { success: false };
 
   if (payload.success) {
-    const stytch_response = await Stytch.client().otps.authenticate({
-      method_id: payload.data.method_id,
-      code: payload.data.code,
-      session_duration_minutes: MAX_AGE_MINUTES
-    });
+    try {
+      const stytch_response = await Stytch.client().otps.authenticate({
+        method_id: payload.data.method_id,
+        code: payload.data.code,
+        session_duration_minutes: MAX_AGE_MINUTES
+      });
 
-    if (
-      stytch_response.status_code === 200 &&
-      stytch_response.user &&
-      stytch_response.session_token
-    ) {
-      const fauna_account_id = await Account.createIfNeeded(
-        stytch_response.user.user_id
-      );
+      if (
+        stytch_response.status_code === 200 &&
+        stytch_response.user &&
+        stytch_response.session_token
+      ) {
+        const fauna_account_id = await Account.createIfNeeded(
+          stytch_response.user.user_id
+        );
 
-      if (fauna_account_id) {
-        event.locals.fauna_account_id = fauna_account_id;
-        createSessionCookie(event.cookies, stytch_response.session_token);
+        if (fauna_account_id) {
+          event.locals.fauna_account_id = fauna_account_id;
+          createSessionCookie(event.cookies, stytch_response.session_token);
+        }
+
+        response = {
+          success: fauna_account_id !== undefined
+        };
       }
-
-      response = {
-        success: fauna_account_id !== undefined
-      };
-    }
+    } catch (e) {}
   }
 
   return json(response);

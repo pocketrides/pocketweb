@@ -5,17 +5,22 @@ import type { PageServerLoad } from './$types';
 import { NametagStats } from '$lib/server/db/NametagStats';
 import { blankNametagStats } from '$lib/zod/NametagStats';
 import { Relationship } from '$lib/server/db/Relationship';
+import { Account } from '$lib/server/db/Account';
 
 export const load = (async (event) => {
   const page_nametag = await Nametag.getById(event.params.nametag_id);
+
   if (!page_nametag) throw error(404);
 
   const parent = await event.parent();
+
   if (
     parent.my_nametag &&
     (await Relationship.isBlocking(page_nametag.id, parent.my_nametag.id))
   )
     throw error(404);
+
+  const is_my_profile_page = event.locals.nametag_id === page_nametag.id;
 
   const page_nametag_stats = await NametagStats.getByNametagRef(page_nametag.id);
 
@@ -25,7 +30,7 @@ export const load = (async (event) => {
     is_close_friend: false
   };
 
-  if (parent.my_nametag && parent.my_nametag.id !== page_nametag.id) {
+  if (parent.my_nametag && !is_my_profile_page) {
     relationship.is_following = await Relationship.isFollowing(
       parent.my_nametag.id,
       page_nametag.id
@@ -44,9 +49,17 @@ export const load = (async (event) => {
 
   const feed = await Feed.getNametagFeed(page_nametag.id);
 
+  let charges_enabled = undefined;
+
+  if (is_my_profile_page)
+    charges_enabled = (
+      await Account.getByFaunaId(event.locals.fauna_account_id as string)
+    )?.charges_enabled;
+
   return {
     my_nametag: parent.my_nametag,
-    is_my_profile_page: page_nametag.id === event.locals.nametag_id,
+    is_my_profile_page,
+    charges_enabled,
     page_theme: page_nametag.theme,
     page_nametag: page_nametag,
     page_nametag_stats: page_nametag_stats || blankNametagStats(),
