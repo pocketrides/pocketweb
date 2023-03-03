@@ -1,6 +1,6 @@
 import type { OpenAIModResult } from '$lib/zod/OpenAI';
 
-type ChatRole = 'server' | 'user' | 'agent';
+type ChatRole = 'system' | 'user' | 'assistant';
 
 type APIChoice = {
   message: {
@@ -63,7 +63,7 @@ export class OpenAI {
     const messages: ChatCompletionMessage[] = [];
 
     messages.push({
-      role: 'server',
+      role: 'system',
       content: `Pocketrides is a social media platform that moderates content explicitly mentioned in its rules. Illegal activities such as providing fake IDs or reference services, trafficking drugs, or promoting violence are against its rules. Additionally, content that infringes intellectual property rights, promotes counterfeit goods, and any content deemed unfair, predatory, deceptive or intending to spread disinformation is against its rules. Additionally, graphically explicit adult content or gore, political speech, hate speech, and adult activities such as explicit pornography, prostitution, and gambling are against its rules. Content not specifically mentioned by these rules is okay, even if it's inappropriate. Analyze the following content to find out if it's covered by the rules of Pocketrides. If against the rules, reply "yes" and how it is against the rules. If no, reply "no".`
     });
 
