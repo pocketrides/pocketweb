@@ -63,10 +63,10 @@ export class IDBFeedCache {
         const cursor: IDBCursorWithValue | undefined = e.target.result;
 
         if (cursor && post_ids.length >= 80) {
-          store.delete(cursor.value);
+          store.delete(cursor.key);
           cursor.continue();
         } else if (cursor) {
-          post_ids.unshift(cursor.value);
+          post_ids.unshift(cursor.key.toString());
           cursor.continue();
         } else {
           resolve(post_ids);
