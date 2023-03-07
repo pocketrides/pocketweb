@@ -18,5 +18,5 @@ export const GET = (async (event) => {
     if (link) redirect_url = link;
   }
 
-  throw redirect(301, redirect_url);
+  throw redirect(302, redirect_url);
 }) satisfies RequestHandler;

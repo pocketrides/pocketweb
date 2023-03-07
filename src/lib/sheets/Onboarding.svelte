@@ -7,14 +7,19 @@
   // import Subscription from '$lib/forms/subscription/Subscription.svelte';
   import Terms from '$lib/forms/terms/Terms.svelte';
   import { App } from '$lib/stores/app';
-  import { goto, invalidateAll } from '$app/navigation';
+  import { invalidateAll } from '$app/navigation';
+  import { IDBCache } from '$lib/util/idb-cache';
+  import { IDBFeedCache } from '$lib/util/idb-feed-cache';
 
   const nametagComplete = async (
     e: CustomEvent<{ first_time: boolean; nametag_id: string }>
   ) => {
+    await IDBCache.clear();
+    await IDBFeedCache.clear();
+
     if (e.detail.first_time === true) {
       $App.sheet_id = '';
-      await goto(`/profile/${e.detail.nametag_id}`);
+      location.href = `/profile/${e.detail.nametag_id}`;
     } else {
       await invalidateAll();
       $App.sheet_id = '';

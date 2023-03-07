@@ -9,8 +9,8 @@ export const GET = (async (event) => {
       `https://${event.url.host}/profile/${event.locals.nametag_id}?subscribed=1`
     );
 
-    if (link) throw redirect(301, link);
+    if (link) throw redirect(302, link);
   }
 
-  throw redirect(301, `/profile/${event.locals.nametag_id}`);
+  throw redirect(302, `/profile/${event.locals.nametag_id}`);
 }) satisfies RequestHandler;

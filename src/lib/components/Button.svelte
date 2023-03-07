@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { goto } from '$app/navigation';
   import { typewriter } from '$lib/util/transition';
   import { nanoid } from 'nanoid';
   import { afterUpdate } from 'svelte';
@@ -37,7 +36,7 @@
   };
 
   const hrefClick = async () => {
-    if (href) await goto(href);
+    if (href) location.href = href;
   };
 
   afterUpdate(() => {

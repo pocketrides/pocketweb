@@ -9,8 +9,8 @@ export const GET = (async (event) => {
       `https://${event.url.host}/settings`
     );
 
-    if (url) throw redirect(301, url);
+    if (url) throw redirect(302, url);
   }
 
-  throw redirect(301, '/settings');
+  throw redirect(302, '/settings');
 }) satisfies RequestHandler;

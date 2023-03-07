@@ -3,7 +3,6 @@
   import Container from '$lib/components/Container.svelte';
   import Button from '$lib/components/Button.svelte';
   import { StripeCreateAccountRequest } from '$lib/api/stripe/create_account';
-  import { goto } from '$app/navigation';
   import { writable } from 'svelte/store';
 
   const busy = writable(false);
@@ -17,7 +16,7 @@
 
     if (create_request.success === true) {
       $current_label = 'Sending you to Stripe…';
-      await goto('/_/stripe/account/onboard');
+      location.href = '/_/stripe/account/onboard';
     } else {
       $current_label = 'Get started';
       $error = true;

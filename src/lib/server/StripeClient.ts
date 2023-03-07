@@ -147,6 +147,7 @@ export class StripeClient {
       return link.url;
     } catch (e) {
       console.error(e);
+      return undefined;
     }
   }
 

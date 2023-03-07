@@ -14,7 +14,6 @@
   import Checkbox from '$lib/components/Checkbox.svelte';
   import ButtonRow from '$lib/components/ButtonRow.svelte';
   import { NewPostRequest } from '$lib/api/post/new';
-  import { goto } from '$app/navigation';
 
   const page_controller = writable<PageController>(blankPost());
   const is_publishing = writable(false);
@@ -34,7 +33,7 @@
     const post = await NewPostRequest.post($page_controller);
 
     if (post.success) {
-      await goto(`/post/${post.post_id}`);
+      location.href = `/post/${post.post_id}`;
       $is_publishing = false;
     }
 

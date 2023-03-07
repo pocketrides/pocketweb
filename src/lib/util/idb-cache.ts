@@ -76,4 +76,19 @@ export class IDBCache {
       };
     });
   }
+
+  static async clear() {
+    return new Promise(async (resolve) => {
+      if (typeof indexedDB === 'undefined') return resolve(undefined);
+
+      await this.#open();
+      const transaction = this.#db.transaction('cache', 'readwrite');
+      const store = transaction.objectStore('cache');
+
+      transaction.oncomplete = () => resolve(undefined);
+      transaction.onerror = () => resolve(undefined);
+
+      store.clear();
+    });
+  }
 }
