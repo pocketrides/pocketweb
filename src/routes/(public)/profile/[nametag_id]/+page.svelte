@@ -16,6 +16,8 @@
   import Icon from '$lib/components/Icon.svelte';
   import CreateContentUtilityNav from '$lib/utility-navs/CreateContentUtilityNav.svelte';
   import { LoadNametagFeedRequest } from '$lib/api/feed/nametag';
+  import Container from '$lib/components/Container.svelte';
+  import ProfileFreeModeHeader from './ui/ProfileFreeModeHeader.svelte';
 
   $App.fill = 'system-superlight';
 
@@ -56,26 +58,27 @@
 <SiteHeader outer_fill="system-light">
   <ProfileHeader {page_controller} />
 </SiteHeader>
-<Main
-  padded={false}
-  minheight={$page_controller.post_ids.length === 0 ? false : true}
->
-  <Row padded bordered fill="system-light">
-    <h2 slot="left">
-      <Icon icon="signpost" />
-      Posts
-    </h2>
-  </Row>
-  <ScrollList
-    has_none={$page_controller.post_ids.length === 0}
-    {has_more}
-    no_more={has_more === false}
-    on:loadmore={loadMore}
-  >
-    {#each $page_controller.post_ids as post_id (post_id)}
-      <Post {post_id} />
-    {/each}
-  </ScrollList>
+<Main padded={false}>
+  {#if $page_controller.is_my_profile_page && $page.data.my_nametag?.stripe?.free_mode}
+    <ProfileFreeModeHeader />
+  {:else}
+    <Row padded bordered fill="system-light">
+      <h2 slot="left">
+        <Icon icon="signpost" />
+        Posts
+      </h2>
+    </Row>
+    <ScrollList
+      has_none={$page_controller.post_ids.length === 0}
+      {has_more}
+      no_more={has_more === false}
+      on:loadmore={loadMore}
+    >
+      {#each $page_controller.post_ids as post_id (post_id)}
+        <Post {post_id} />
+      {/each}
+    </ScrollList>
+  {/if}
   <svelte:fragment slot="utility-nav">
     {#if $page.data.my_nametag}
       {#if $page_controller.is_my_profile_page === false}

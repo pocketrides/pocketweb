@@ -1,15 +1,15 @@
+import { MagicbellConfig } from './MagicbellConfig';
 import type { NewNotification } from '@magicbell/core/dist/models/Notification/NewNotification';
-import type { RequestEvent } from '@sveltejs/kit';
 
 /**
  * MagicBell API wrapper
  */
-export const Notify = async (event: RequestEvent, notification: NewNotification) => {
+export const Notify = async (notification: NewNotification) => {
   await fetch('https://api.magicbell.com/notifications', {
     method: 'POST',
     headers: {
-      'x-magicbell-api-key': event.locals.mb_api_key,
-      'x-magicbell-api-secret': event.locals.mb_api_secret
+      'x-magicbell-api-key': MagicbellConfig.MAGICBELL_KEY,
+      'x-magicbell-api-secret': MagicbellConfig.MAGICBELL_SECRET
     },
     body: JSON.stringify({
       notification: notification

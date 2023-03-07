@@ -12,6 +12,7 @@
   import { Notifications, reloadNotifications } from '$lib/stores/notifications';
   import MyNotifications from '$lib/sheets/MyNotifications.svelte';
   import type MagicBellClient from '@magicbell/core';
+  import Subscribe from '$lib/sheets/Subscribe.svelte';
 
   let started: boolean = false;
   let client: MagicBellClient;
@@ -81,6 +82,7 @@
 <SiteLoader />
 {#if $page.data.my_nametag}
   <MyNotifications />
+  <Subscribe />
 {:else}
   <Onboarding />
 {/if}

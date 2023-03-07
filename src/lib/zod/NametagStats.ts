@@ -7,7 +7,8 @@ export const draft_nametag_stats_validator = z.object({
   friends: z.number(),
   followers: z.number(),
   posts: z.number(),
-  private: z.boolean().optional()
+  private: z.boolean().optional(),
+  likes_received: z.number().optional()
 });
 
 export const server_nametag_stats_validator = draft_nametag_stats_validator.extend({
@@ -29,6 +30,7 @@ export const blankNametagStats = (): DraftNametagStats => {
   return {
     friends: 0,
     followers: 0,
-    posts: 0
+    posts: 0,
+    likes_received: 0
   };
 };

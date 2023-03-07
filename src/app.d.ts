@@ -5,13 +5,14 @@ declare global {
     // interface Error {}
     interface Locals {
       fauna_account_id?: string;
+      fauna_account?: import('$lib/zod/Account').ServerAccount;
       nametag_id?: string;
-      mb_api_key: string;
-      mb_api_secret: string;
+      nametag?: import('$lib/zod/Nametag').ServerNametag;
     }
     interface PageData {
       page_theme?: import('$lib/zod/Theme').ThemeAnyValue;
       my_nametag?: import('$lib/zod/Nametag').ServerNametag;
+      mb_config?: import('@magicbell/core/dist/MagicBellClient').MagicBellConfigOptions;
     }
     interface Platform {
       context?: ExecutionContext;
@@ -24,6 +25,7 @@ declare global {
 
         STRIPE_KEY: string;
         STRIPE_SIGNING_SECRET: string;
+        STRIPE_PRICE_ID: string;
 
         MAGICBELL_KEY: string;
         MAGICBELL_SECRET: string;

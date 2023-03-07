@@ -21,7 +21,7 @@ export const POST = (async (event) => {
     const who_followed = await Nametag.getById(event.locals.nametag_id);
 
     if (who_followed)
-      await Notify(event, {
+      await Notify({
         title: 'New follower',
         content: `${who_followed.nametag} started following you!`,
         action_url: `https://${event.url.host}/profile/${who_followed.id}`,

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { page } from '$app/stores';
   import Button from '$lib/components/Button.svelte';
   import Container from '$lib/components/Container.svelte';
   import Icon from '$lib/components/Icon.svelte';
@@ -37,7 +38,46 @@
             $App.sheet_id = 'edit_nametag';
           }}
         />
-        {#if data.account.charges_enabled}
+        {#if $page.data.my_nametag?.stripe?.has_account}
+          {#if $page.data.my_nametag?.stripe?.charges_enabled}
+            <Button
+              label="Stripe dashboard"
+              icon="account_balance"
+              jumbo
+              href="/_/stripe/account/link"
+            />
+            {#if $page.data.my_nametag?.stripe?.has_sub}
+              <Button
+                label="Cancel subscription"
+                icon="favorite_border"
+                jumbo
+                href="/_/stripe/account/cancel"
+              />
+            {:else}
+              <Button
+                label="Become a subscriber"
+                icon="favorite"
+                jumbo
+                href="/_/stripe/payment-link"
+              />
+            {/if}
+          {:else}
+            <Button
+              label="Update settings"
+              icon="account_balance"
+              jumbo
+              href="/_/stripe/account/onboard"
+            />
+          {/if}
+        {:else}
+          <Button
+            label="Add payment account"
+            icon="account_balance"
+            jumbo
+            href="/_/stripe/account/onboard"
+          />
+        {/if}
+        <!-- {#if $page.data.my_nametag?.stripe?.has_account}
           <Button
             label="Get paid"
             icon="attach_money"
@@ -61,22 +101,22 @@
               $App.sheet_id = 'enable_payouts';
             }}
           />
-        {/if}
-        {#if data.account.stripe_subscription_status === 'subscribed'}
+        {/if} -->
+        <!-- {#if $page.data.my_nametag?.stripe?.has_sub}
           <Button label="Cancel subscription" icon="cancel" jumbo />
         {:else}
           <Button label="Subscribe" icon="favorite" jumbo />
-        {/if}
+        {/if} -->
       </div>
     </div>
 
-    <div data-flex="v" data-gap>
+    <!-- <div data-flex="v" data-gap>
       <h2 class="h3 half">Settings</h2>
       <div data-flex="vs" data-gap>
         <Button label="Notifications" icon="campaign" jumbo />
         <Button label="Enable 2FA" icon="fingerprint" jumbo />
       </div>
-    </div>
+    </div> -->
     <div data-flex="v" data-gap>
       <h2 class="h3 half">Your account</h2>
       <div data-flex="vs" data-gap>
@@ -89,7 +129,7 @@
             location.pathname = '/account/sign-out';
           }}
         />
-        <Button label="Delete account" icon="sentiment_very_dissatisfied" jumbo />
+        <!-- <Button label="Delete account" icon="sentiment_very_dissatisfied" jumbo /> -->
       </div>
     </div>
   </div>

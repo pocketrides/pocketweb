@@ -6,11 +6,10 @@
 
   export let fill: Fill = 'light';
   export let padded: boolean = true;
-  export let minheight: boolean = true;
 </script>
 
 <main data-fill={fill}>
-  <div class:minheight>
+  <div class="c">
     <Container rounded={false} {padded}>
       <slot />
     </Container>
@@ -23,7 +22,7 @@
 </main>
 
 <style lang="scss">
-  .minheight {
-    min-height: 100vh;
+  .c {
+    min-height: 60vh;
   }
 </style>

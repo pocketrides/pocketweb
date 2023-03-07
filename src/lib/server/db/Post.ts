@@ -8,6 +8,12 @@ import { PostStats } from './PostStats';
 export class Post {
   static collection = 'posts';
 
+  static async get(post_id: string) {
+    const post = await Fauna.get<ServerPost>(Post.toRef(post_id), Post.parseFQL);
+
+    return post;
+  }
+
   static async getById(post_id: string) {
     const post = await Fauna.get<ServerPost>(Post.toRef(post_id), Post.parseFQL);
 

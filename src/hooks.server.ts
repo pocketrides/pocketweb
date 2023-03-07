@@ -15,6 +15,7 @@ import {
   getSessionCookie
 } from '$lib/server/Cookies';
 import { OpenAI } from '$lib/server/OpenAI';
+import { MagicbellConfig } from '$lib/server/MagicbellConfig';
 
 export const handle = (async ({ event, resolve }) => {
   loadSecrets(
@@ -36,6 +37,7 @@ export const handle = (async ({ event, resolve }) => {
 
       if (fauna_account) {
         event.locals.fauna_account_id = fauna_account.id;
+        event.locals.fauna_account = fauna_account;
 
         const nametag_cookie = getNametagCookie(event.cookies);
 
@@ -47,15 +49,18 @@ export const handle = (async ({ event, resolve }) => {
 
           if (verified) {
             event.locals.nametag_id = verified.id;
+            event.locals.nametag = verified;
             createNametagCookie(event.cookies, verified.id);
           } else {
             event.locals.nametag_id = undefined;
+            event.locals.nametag = undefined;
             destroySessionCookie(event.cookies);
             destroyNametagCookie(event.cookies);
           }
         }
       } else {
         event.locals.fauna_account_id = undefined;
+        event.locals.fauna_account = undefined;
         destroySessionCookie(event.cookies);
       }
     } else {
@@ -85,6 +90,7 @@ type AppSecrets = {
   STYTCH_ENV: string;
   STRIPE_KEY: string;
   STRIPE_SIGNING_SECRET: string;
+  STRIPE_PRICE_ID: string;
   MAGICBELL_KEY: string;
   MAGICBELL_SECRET: string;
   OPEN_AI_KEY: string;
@@ -102,13 +108,12 @@ const loadSecrets = (event: RequestEvent, env: AppSecrets) => {
   // stripe
   StripeClient.STRIPE_KEY = env.STRIPE_KEY;
   StripeClient.STRIPE_SIGNING_SECRET = env.STRIPE_SIGNING_SECRET;
+  StripeClient.STRIPE_PRICE_ID = env.STRIPE_PRICE_ID;
 
   // openai
   OpenAI.API_KEY = env.OPEN_AI_KEY;
 
-  // this gets passed to the frontend intentionally
-  event.locals.mb_api_key = env.MAGICBELL_KEY;
-
-  // this is used for signing the user id in +layout.server.ts
-  event.locals.mb_api_secret = env.MAGICBELL_SECRET;
+  // magicbell
+  MagicbellConfig.MAGICBELL_KEY = env.MAGICBELL_KEY;
+  MagicbellConfig.MAGICBELL_SECRET = env.MAGICBELL_SECRET;
 };

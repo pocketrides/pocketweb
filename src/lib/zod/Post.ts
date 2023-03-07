@@ -80,6 +80,7 @@ export type ServerPost = {
   stats?: ServerPostStats;
 
   is_liked?: boolean;
+  unlike_key?: string;
   is_quarantined?: boolean;
 };
 

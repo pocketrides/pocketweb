@@ -9,11 +9,16 @@ export const draft_invoice_validator = z.object({
 
 export const server_invoice_validator = draft_invoice_validator.extend({
   id: z.string(),
-  account_ref: client_ref_validator
+  nametag_ref: client_ref_validator
 });
 
-export type DraftInvoice = z.infer<typeof draft_invoice_validator>;
+export type DraftInvoice = {
+  stripe_invoice_id: string;
+  minted: boolean;
+  nametag_ref?: Expr;
+};
+
 export type ServerInvoice = DraftInvoice & {
   id: string;
-  account_ref: ClientRef | Expr;
+  nametag_ref: ClientRef | Expr;
 };

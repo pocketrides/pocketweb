@@ -9,9 +9,9 @@
   const dispatch = createEventDispatcher();
   const context = getContext<WorkflowContext>(WORKFLOW_CONTEXT_ID);
 
-  const complete = () => {
+  const complete = (e: CustomEvent) => {
     if (next) $context.current = next;
-    dispatch('complete');
+    dispatch('complete', e.detail);
   };
 </script>
 

@@ -1,22 +1,19 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import { LikeCreateRequest } from '$lib/api/like/create';
-  import { LikeDestroyRequest } from '$lib/api/like/destroy';
+  import { Like } from '$lib/api/like/like';
   import { LoadPostRequest } from '$lib/api/post/load';
   import { QuarantineCreateRequest } from '$lib/api/quarantine/create';
   import { QuarantineDestroyRequest } from '$lib/api/quarantine/destroy';
   import { App } from '$lib/stores/app';
-  import { plural } from '$lib/util/plural';
   import { getTimeAgo } from '$lib/util/time-ago';
   import type { ServerPost } from '$lib/zod/Post';
-  import { createEventDispatcher, onMount } from 'svelte';
+  import { afterUpdate, createEventDispatcher, onMount } from 'svelte';
   import { writable } from 'svelte/store';
   import Button from './Button.svelte';
   import ButtonRow from './ButtonRow.svelte';
   import Container from './Container.svelte';
   import Icon from './Icon.svelte';
   import Nametag from './Nametag.svelte';
-  import Replies from './Replies.svelte';
   import Row from './Row.svelte';
 
   export let post_id: string | undefined = undefined;
@@ -32,6 +29,7 @@
   const is_liking = writable(false);
   const is_quarantining = writable(false);
   const showing_post = writable(false);
+  const loading_post = writable(false);
 
   $: should_be_hidden = $post_controller
     ? $post_controller.is_quarantined || $post_controller.settings.is_nsfw
@@ -40,12 +38,24 @@
   $: is_my_post = $page.data.my_nametag?.id === $post_controller?.nametag?.id;
 
   onMount(async () => {
-    if (post_id) {
-      const post = await LoadPostRequest.load(post_id);
-      if (post) {
-        $post_controller = post;
+    try {
+      if (post_id) {
+        $loading_post = true;
+        const post = await LoadPostRequest.load(post_id);
+        if (post) {
+          $post_controller = post;
+          $loading_post = false;
+        } else {
+          $loading_post = false;
+        }
       }
+    } catch (e) {
+      $loading_post = false;
     }
+  });
+
+  afterUpdate(() => {
+    console.log('> Post.afterUpdate()');
   });
 
   const reload = async () => {
@@ -62,21 +72,21 @@
 
     $is_liking = true;
 
-    if ($post_controller.is_liked) {
+    if ($post_controller.is_liked && $post_controller.unlike_key) {
       $post_controller.stats.likes = $post_controller.stats.likes - 1;
       $post_controller.is_liked = false;
-      await LikeDestroyRequest.post({ post_id: $post_controller.id });
+      await Like.unlikePost($post_controller.unlike_key);
       $is_liking = false;
     } else {
-      const res = await LikeCreateRequest.post({ post_id: $post_controller.id });
       $post_controller.is_liked = true;
       $post_controller.stats.likes = $post_controller.stats.likes + 1;
+      const res = await Like.likePost($post_controller.id);
+      $is_liking = false;
       if (res.success) {
-        $is_liking = false;
-      } else {
-        $App.sheet_id = 'out_of_likes';
-        $is_liking = false;
-      }
+        $post_controller.unlike_key = res.unlike_key;
+      } //else {
+      // $App.sheet_id = 'out_of_likes';
+      //}
     }
 
     await reload();
@@ -232,7 +242,7 @@
       </Container>
     {/if}
   </div>
-{:else}
+{:else if $loading_post === true}
   <div data-loading>
     <div data-fill="system-superlight" />
     <div />
@@ -240,7 +250,7 @@
     <p />
     <p />
   </div>
-{/if}
+{:else}<div />{/if}
 
 <style lang="scss">
   .summary {

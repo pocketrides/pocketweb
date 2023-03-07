@@ -1,6 +1,6 @@
 import { LoadPostRequest } from '$lib/api/post/load';
 import { error } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
+import type { PageLoad } from './$types';
 
 export const load = (async (event) => {
   const post = await LoadPostRequest.load(event.params.post_id, event.fetch);
@@ -14,4 +14,4 @@ export const load = (async (event) => {
     my_nametag: parent.my_nametag,
     page_theme: post?.nametag.theme
   };
-}) satisfies PageServerLoad;
+}) satisfies PageLoad;

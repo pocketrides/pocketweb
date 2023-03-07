@@ -1,22 +1,15 @@
-import { LikeCreateRequest, type LikeCreateResponse } from '$lib/api/like/create';
-import { Like } from '$lib/server/db/Like';
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import type { DraftLike } from '$lib/zod/Like';
+import { like_post_payload_validator, type LikePostResponse } from '$lib/zod/Like';
+import { Like } from '$lib/server/db/Like';
 
 export const POST = (async (event) => {
-  const payload = LikeCreateRequest.payload.safeParse(await event.request.json());
-  let res: LikeCreateResponse = { success: false };
+  const payload = like_post_payload_validator.safeParse(await event.request.json());
+  let response: LikePostResponse = { success: false, reason: 'idk' };
 
-  if (payload.success && event.locals.fauna_account_id && event.locals.nametag_id) {
-    const draft: DraftLike = Object.assign(payload.data, {
-      nametag_id: event.locals.nametag_id
-    });
-
-    res = {
-      success: await Like.assign(event.locals.fauna_account_id, draft)
-    };
+  if (payload.success && payload.data.post_id && event.locals.nametag_id) {
+    response = await Like.likePost(event.locals.nametag_id, payload.data.post_id);
   }
 
-  return json(res);
+  return json(response);
 }) satisfies RequestHandler;

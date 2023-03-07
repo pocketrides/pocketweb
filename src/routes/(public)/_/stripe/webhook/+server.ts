@@ -19,22 +19,27 @@ export const POST = (async (event) => {
 
   switch (webhook_event.type) {
     case 'checkout.session.completed':
+      console.log('> checkout session event');
       await StripeClient.handleCheckoutSessionCompletedEvent(webhook_event);
       break;
-    case 'customer.deleted':
-      await StripeClient.handleCustomerDeletedEvent(webhook_event);
-      break;
     case 'customer.subscription.created':
+      console.log('> subscription created');
+      await StripeClient.handleSubscriptionCreatedEvent(webhook_event);
+      await StripeClient.handleCustomerSubscriptionEvent(webhook_event);
+      break;
     case 'customer.subscription.deleted':
     case 'customer.subscription.updated':
     case 'customer.subscription.paused':
     case 'customer.subscription.resumed':
+      console.log('> subscription event');
       await StripeClient.handleCustomerSubscriptionEvent(webhook_event);
       break;
     case 'invoice.paid':
+      console.log('> invoice event');
       await StripeClient.handleInvoicePaidEvent(webhook_event);
       break;
     case 'account.updated':
+      console.log('> account event');
       await StripeClient.handleAccountUpdatedEvent(webhook_event);
       break;
   }

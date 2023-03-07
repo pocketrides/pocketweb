@@ -43,7 +43,10 @@
       });
 
       if (use_result.success) {
-        dispatch('complete');
+        dispatch('complete', {
+          first_time: false,
+          nametag_id: list_result.nametags[0].id
+        });
       } else needsInput();
     } else needsInput();
   });
@@ -64,7 +67,7 @@
     const result = await NametagCreate.post({ nametag, theme });
 
     if (result.success === true) {
-      dispatch('complete');
+      dispatch('complete', { first_time: true, nametag_id: result.nametag_id });
     }
   };
 </script>
@@ -88,7 +91,7 @@
           {#if theme === ''}
             <p class="half">Add some color, pick a theme!</p>
           {:else}
-            <p class="h3"><em>It's you!</em></p>
+            <p class="h3">It's you!</p>
           {/if}
         </div>
       </Container>

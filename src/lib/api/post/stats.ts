@@ -1,5 +1,6 @@
 export type PostStatsResponse = {
   is_liked: boolean;
+  unlike_key?: string;
   is_quarantined: boolean;
 };
 

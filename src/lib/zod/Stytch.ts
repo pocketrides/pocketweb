@@ -1,8 +1,8 @@
 import { getCountryCodeForRegionCode } from 'awesome-phonenumber';
 import { z } from 'zod';
 
-const regions = ['US', 'GB', 'SG'];
-const flags = ['🇺🇸', '🇬🇧', '🇸🇬'];
+const regions = ['US']; //, 'GB', 'SG'];
+const flags = ['🇺🇸']; //, '🇬🇧', '🇸🇬'];
 
 export const AVAILABLE_COUNTRIES = regions.map((r, i) => ({
   value: r,

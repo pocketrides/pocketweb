@@ -25,6 +25,7 @@ export class LoadPostRequest {
       const stats = await PostStatsRequest.load(post.id, _fetch);
 
       post.is_liked = stats.is_liked;
+      post.unlike_key = stats.unlike_key;
       post.is_quarantined = stats.is_quarantined;
       await IDBCache.put(post);
     }

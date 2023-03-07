@@ -1,13 +1,14 @@
 import type { ServerInvoice, DraftInvoice } from '$lib/zod/Invoice';
 import { Account } from './Account';
 import { Fauna } from './Fauna';
+import { Nametag } from './Nametag';
 
 export class Invoice {
   static collection = 'invoices';
 
-  static async create(account_id: string, draft: DraftInvoice) {
+  static async create(nametag_id: string, draft: DraftInvoice) {
     const data = Object.assign(draft, {
-      account_ref: Account.toRef(account_id),
+      nametag_ref: Nametag.toRef(nametag_id),
       minted: false
     });
 
@@ -19,9 +20,8 @@ export class Invoice {
   }
 
   static async getById(invoice_id: string) {
-    return await Fauna.one<ServerInvoice>(
-      'invoices_by_id',
-      invoice_id,
+    return await Fauna.get<ServerInvoice>(
+      Invoice.toRef(invoice_id),
       Invoice.parseFQL
     );
   }
@@ -43,7 +43,7 @@ export class Invoice {
   }
 
   static parseFQL(fql: any) {
-    return Fauna.parseFQL<ServerInvoice>(fql, ['account_ref']);
+    return Fauna.parseFQL<ServerInvoice>(fql, ['nametag_ref']);
   }
 
   static toRef(invoice_id: string) {

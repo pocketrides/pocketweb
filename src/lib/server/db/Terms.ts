@@ -16,11 +16,6 @@ export class Terms {
         }
       )
     );
-    return await Fauna.one<ServerTerms>(
-      'terms_by_latest_version',
-      undefined,
-      Terms.parseFQL
-    );
   }
 
   static parseFQL(fql: any) {
