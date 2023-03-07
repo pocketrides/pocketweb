@@ -1,111 +1,45 @@
-import type { DraftLike, ServerLike } from '$lib/zod/Like';
+import type { DraftLike, LikePostResponse, ServerLike } from '$lib/zod/Like';
 import { Account } from './Account';
 import { Fauna, q } from './Fauna';
 import { Invoice } from './Invoice';
 import { Nametag } from './Nametag';
 import { Post } from './Post';
-import { PostStats } from './PostStats';
 
 export class Like {
-  static mint_count = 250;
+  static mint_count = 10;
   static collection = 'likes';
 
-  static async nextAvailable(account_id: string) {
-    return await Fauna.one<ServerLike>(
-      'likes_by_account_ref_and_availability',
-      [Account.toRef(account_id), true],
-      Like.parseFQL
-    );
-  }
-
   static async doesLikePost(nametag_id: string, post_id: string) {
-    const exists = await Fauna.one(
+    const exists = await Fauna.one<ServerLike>(
       'is_post_liked',
       [Nametag.toRef(nametag_id), Post.toRef(post_id)],
       Like.parseFQL
     );
 
-    if (exists) return true;
+    if (exists) return exists.id;
     return false;
   }
 
-  static async assign(account_id: string, draft: DraftLike) {
-    const next_available = await Like.nextAvailable(account_id);
-
-    if (next_available) {
-      let data: Partial<ServerLike> = {
-        nametag_ref: Nametag.toRef(draft.nametag_id),
-        available: false
-      };
-
-      if (draft.post_id) {
-        data.post_ref = Post.toRef(draft.post_id);
-
-        await PostStats.addLike(draft.post_id);
-      }
-      // if (draft.chat_id) data.chat_ref =
-      // if (draft.reply_id) data.reply_ref =
-
-      await Fauna.update<ServerLike>(
-        this.toRef(next_available.id),
-        data,
-        this.parseFQL
-      );
-
-      return true;
-    }
-
-    return false;
+  static async nextAvailable(account_id: string) {
+    return await Fauna.one<ServerLike>(
+      'likes_by_nametag_ref_and_availability',
+      [Account.toRef(account_id), true],
+      Like.parseFQL
+    );
   }
 
-  static async unassign(draft: DraftLike) {
-    let query: ServerLike | undefined;
-
-    if (draft.post_id) {
-      query = await Fauna.one<ServerLike>(
-        'is_post_liked',
-        [Nametag.toRef(draft.nametag_id), Post.toRef(draft.post_id)],
-        this.parseFQL
-      );
-
-      if (query) await PostStats.removeLike(draft.post_id);
-    }
-
-    if (query) {
-      let data: Partial<ServerLike> = { nametag_ref: null, available: true };
-
-      if (draft.post_id) data.post_ref = null;
-      if (draft.chat_id) data.chat_ref = null;
-      if (draft.reply_id) data.reply_ref = null;
-
-      await Fauna.update<ServerLike>(this.toRef(query.id), data, this.parseFQL);
-
-      return true;
-    }
-
-    return false;
-  }
-
-  static async mint(account_id: string, invoice_id: string) {
-    const invoice = await Invoice.getById(invoice_id);
-
-    if (invoice === undefined) {
-      return false;
-    }
-
-    if (invoice.minted) {
-      return true;
-    }
-
+  static async mint(nametag_id: string, invoice_id: string) {
     const likes_to_mint: Partial<ServerLike>[] = [];
 
     for (let i = 0; i < Like.mint_count; i++) {
       likes_to_mint.push({
-        account_ref: Account.toRef(account_id),
+        nametag_ref: Nametag.toRef(nametag_id),
         invoice_ref: Invoice.toRef(invoice_id),
         available: true
       });
     }
+
+    console.log('> like.mint created likes:', likes_to_mint);
 
     try {
       await Fauna.client().query(
@@ -118,12 +52,179 @@ export class Like {
         )
       );
 
+      console.log('Minted.');
+
       await Invoice.update(invoice_id, { minted: true });
+
+      console.log('Invoice updated');
 
       return true;
     } catch (e) {
+      console.log('> fauna error');
+      console.error(e);
       return false;
     }
+  }
+
+  // update a Like record to point to a post ID
+  // things to update: post stats, account stats (likes), the record itself
+  static async likePost(
+    nametag_id: string,
+    post_id: string
+  ): Promise<LikePostResponse> {
+    try {
+      return await Fauna.client().query<LikePostResponse>(
+        q.Let(
+          {
+            // performance matters here, so null-check subsequent variables
+            // because we bail out early in the response
+            // (it looks complex but just check the var's if() dependency and you
+            // can then safely rely on that variable)
+            nametag_ref: Nametag.toRef(nametag_id),
+            next_available_set: q.Match(
+              q.Index('likes_by_nametag_ref_and_availability'),
+              [Nametag.toRef(nametag_id), true]
+            ),
+            has_next_available: q.Exists(q.Var('next_available_set')),
+            next_available: q.If(
+              q.Var('has_next_available'),
+              q.Get(q.Var('next_available_set')),
+              null
+            ),
+            next_available_ref: q.If(
+              q.Var('has_next_available'),
+              q.Select(['ref'], q.Var('next_available')),
+              null
+            ),
+            post_ref: q.If(q.Var('has_next_available'), Post.toRef(post_id), null),
+            post_exists: q.If(
+              q.IsNull(q.Var('post_ref')),
+              false,
+              q.Exists(q.Var('post_ref'))
+            ),
+            post: q.If(q.Var('post_exists'), q.Get(q.Var('post_ref')), null),
+            post_settings_likes_enabled: q.If(
+              q.Var('post_exists'),
+              q.Select(['data', 'settings', 'enable_likes'], q.Var('post')),
+              false
+            ),
+            post_stats_ref: q.If(
+              q.IsNull(q.Var('post')),
+              null,
+              q.Select(['data', 'stats_ref'], q.Var('post'))
+            ),
+            has_post_stats: q.If(
+              q.IsNull(q.Var('post_stats_ref')),
+              false,
+              q.Exists(q.Var('post_stats_ref'))
+            ),
+            post_stats: q.If(
+              q.Var('has_post_stats'),
+              q.Get(q.Var('post_stats_ref')),
+              null
+            ),
+            // nametag that's receiving the like, pulled off the post
+            target_nametag_ref: q.If(
+              q.Var('post_settings_likes_enabled'),
+              q.Select(['data', 'nametag_ref'], q.Var('post')),
+              null
+            ),
+            has_target_nametag: q.If(
+              q.IsNull(q.Var('target_nametag_ref')),
+              false,
+              q.Exists(q.Var('target_nametag_ref'))
+            ),
+            target_nametag: q.If(
+              q.Var('has_target_nametag'),
+              q.Get(q.Var('target_nametag_ref')),
+              null
+            ),
+            target_nametag_stats_ref: q.If(
+              q.Var('has_target_nametag'),
+              q.Select(['data', 'stats_ref'], q.Var('target_nametag')),
+              null
+            ),
+            has_target_nametag_stats: q.If(
+              q.IsNull(q.Var('target_nametag_stats_ref')),
+              false,
+              q.Exists(q.Var('target_nametag_stats_ref'))
+            ),
+            target_nametag_stats: q.If(
+              q.Var('has_target_nametag_stats'),
+              q.Get(q.Var('target_nametag_stats_ref')),
+              null
+            ),
+            target_nametag_likes_received_val: q.If(
+              q.Var('has_target_nametag_stats'),
+              q.Select(['data', 'likes_received'], q.Var('target_nametag_stats')),
+              null
+            ),
+            target_likes_received: q.If(
+              q.IsNull(q.Var('target_nametag_likes_received_val')),
+              0,
+              q.Var('target_nametag_likes_received_val')
+            )
+          },
+          q.If(
+            q.Var('has_next_available'),
+            q.If(
+              q.And(q.Var('post_settings_likes_enabled'), q.Var('has_post_stats')),
+              q.If(
+                q.And(
+                  q.Var('has_target_nametag'),
+                  q.Var('has_target_nametag_stats')
+                ),
+                q.Do(
+                  q.Update(q.Var('next_available_ref'), {
+                    data: {
+                      available: false,
+                      post_ref: q.Var('post_ref'),
+                      nametag_ref: q.Var('nametag_ref'),
+                      target_nametag_ref: q.Var('target_nametag_ref')
+                    }
+                  }),
+                  q.Update(q.Var('post_stats_ref'), {
+                    data: {
+                      likes: q.Add(
+                        q.Select(['data', 'likes'], q.Var('post_stats')),
+                        1
+                      )
+                    }
+                  }),
+                  q.Update(q.Var('target_nametag_stats_ref'), {
+                    data: {
+                      likes_received: q.Add(q.Var('target_likes_received'), 1)
+                    }
+                  }),
+                  {
+                    success: true,
+                    unlike_key: q.Select(['ref', 'id'], q.Var('next_available'))
+                  }
+                ),
+                { success: false, reason: 'ownership_chain' }
+              ),
+              { success: false, reason: 'likes_disabled' }
+            ),
+            { success: false, reason: 'out_of_likes' }
+          )
+        )
+      );
+    } catch (e) {
+      console.error('[> Like.likePost()]', e);
+      return { success: false, reason: 'idk' };
+    }
+  }
+
+  static async unlike(unlike_key: string): Promise<boolean> {
+    // const record = await Fauna.get<ServerLike>(
+    //   Like.toRef(unlike_key),
+    //   Like.parseFQL
+    // );
+    return false;
+  }
+
+  static async update(id: string, data: Partial<ServerLike>) {
+    return await Fauna.update(this.toRef(id), data, this.parseFQL);
   }
 
   static toRef(id: string) {
