@@ -93,10 +93,6 @@
     }
   }
 
-  .small {
-    height: 32px !important;
-  }
-
   button.large,
   button.primary,
   button.system,
@@ -123,5 +119,11 @@
     @media (min-width: 640px) {
       width: calc(50% - 0.5rem);
     }
+  }
+
+  button.small {
+    padding: 0 0.5rem;
+    height: 32px !important;
+    gap: 0;
   }
 </style>

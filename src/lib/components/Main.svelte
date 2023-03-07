@@ -23,6 +23,6 @@
 
 <style lang="scss">
   .c {
-    min-height: 60vh;
+    min-height: 80vh;
   }
 </style>

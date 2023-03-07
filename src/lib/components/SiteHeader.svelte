@@ -33,7 +33,7 @@
                 }}
               />
               {#if $page.url.pathname === `/profile/${$page.data.my_nametag.id}`}
-                <Button href="/account" label="Settings" icon="settings_suggest" />
+                <Button href="/settings" label="Settings" icon="settings_suggest" />
               {:else}
                 <Nametag nametag={$page.data.my_nametag} />
               {/if}

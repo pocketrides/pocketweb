@@ -15,7 +15,7 @@
 
 <SiteHeader utility>
   <div slot="left">
-    <Button icon="arrow_back_ios" label="Settings" href="/account" />
+    <Button icon="arrow_back_ios" label="Settings" href="/settings" />
   </div>
 </SiteHeader>
 <Main>
@@ -42,7 +42,7 @@
             <Button
               id="new_payout"
               icon="attach_money"
-              href="/account/payouts/payout"
+              href="/settings/payouts/payout"
               label="New payout"
               {controller}
             />
@@ -55,7 +55,7 @@
 
       <div data-flex="vs" data-gap>
         <a
-          href="/account/payouts/payout/123"
+          href="/settings/payouts/payout/123"
           data-3d="ah"
           data-unstyle
           data-fill="base"
@@ -71,7 +71,7 @@
       <h2 class="h3 half">Paid</h2>
       <div data-flex="vs" data-gap>
         <a
-          href="/account/payouts/payout/123"
+          href="/settings/payouts/payout/123"
           data-3d="ah"
           data-unstyle
           data-fill="system-superlight"
@@ -82,7 +82,7 @@
           <p><strong>Paid</strong> • February 10th, 2023</p>
         </a>
         <a
-          href="/account/payouts/payout/123"
+          href="/settings/payouts/payout/123"
           data-3d="ah"
           data-unstyle
           data-fill="system-superlight"
@@ -98,7 +98,7 @@
       <h2 class="h3 half">Denied</h2>
       <div data-flex="vs" data-gap>
         <a
-          href="/account/payouts/payout/123"
+          href="/settings/payouts/payout/123"
           data-3d="ah"
           data-unstyle
           data-fill="dark"
@@ -119,12 +119,12 @@
     </div>
     <HowPayoutsWork>
       <Button
-        href="/account/payouts/payout?quickstart=1"
+        href="/settings/payouts/payout?quickstart=1"
         label="Get started"
         xlarge
         primary
       />
-      <Button href="/account" label="Go back" />
+      <Button href="/settings" label="Go back" />
     </HowPayoutsWork>
   </div>
 </Main>

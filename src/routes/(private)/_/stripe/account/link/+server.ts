@@ -3,7 +3,7 @@ import { redirect } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
 export const GET = (async (event) => {
-  let redirect_url = '/account';
+  let redirect_url = '/settings';
 
   if (event.locals.nametag?.stripe?.account_id) {
     const url = await StripeClient.createAccountDashboardLink(

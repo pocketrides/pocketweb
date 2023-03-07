@@ -145,7 +145,9 @@ export class StripeClient {
       });
 
       return link.url;
-    } catch (e) {}
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   static async transfer(
@@ -173,17 +175,12 @@ export class StripeClient {
     const metadata = checkout_session.metadata as StripeClientCustomMetadata;
     const customer_id = checkout_session.customer as string;
     const subscription_id = checkout_session.subscription as string;
-    const subscription = await this.client().subscriptions.retrieve(subscription_id);
-    const subscription_status = subscription.status;
-    const is_active = subscription_status === 'active';
 
-    if (metadata.nametag_id && subscription_id) {
+    if (metadata.nametag_id && customer_id && subscription_id) {
       await Nametag.update(metadata.nametag_id, {
         stripe: {
           cus_id: customer_id,
-          sub_id: subscription_id,
-          has_sub: is_active,
-          free_mode: is_active ? false : true
+          sub_id: subscription_id
         }
       });
 
@@ -221,7 +218,8 @@ export class StripeClient {
       let update_data: Partial<DraftNametag> = {
         stripe: {
           has_sub: is_active,
-          free_mode: is_active ? false : true
+          free_mode: is_active ? false : true,
+          sub_id: subscription.id
         }
       };
 
@@ -244,12 +242,8 @@ export class StripeClient {
     const stripe_invoice_id = invoice.id;
     const metadata = invoice.lines.data[0].metadata as StripeClientCustomMetadata;
 
-    console.log('> invoice paid event', metadata);
-
     if (metadata && metadata.nametag_id) {
       const exists = await Invoice.getByStripeInvoiceId(stripe_invoice_id);
-
-      console.log('invoice exists?', exists === undefined);
 
       if (exists === undefined) {
         const invoice_record = await Invoice.create(metadata.nametag_id, {
@@ -257,16 +251,11 @@ export class StripeClient {
           minted: false
         });
 
-        console.log('> invoice_record', invoice_record);
-
         if (invoice_record) {
-          console.log('calling like.mint');
           await Like.mint(metadata.nametag_id, invoice_record.id);
         }
       }
     }
-
-    console.log('< invoice paid event');
   }
 
   static async handleAccountUpdatedEvent(event: Stripe.Event) {

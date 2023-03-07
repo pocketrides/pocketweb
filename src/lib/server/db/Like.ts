@@ -39,8 +39,6 @@ export class Like {
       });
     }
 
-    console.log('> like.mint created likes:', likes_to_mint);
-
     try {
       await Fauna.client().query(
         q.Foreach(
@@ -52,11 +50,7 @@ export class Like {
         )
       );
 
-      console.log('Minted.');
-
       await Invoice.update(invoice_id, { minted: true });
-
-      console.log('Invoice updated');
 
       return true;
     } catch (e) {

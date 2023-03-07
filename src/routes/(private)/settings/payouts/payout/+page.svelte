@@ -28,14 +28,14 @@
     </h1>
   </div>
   <div slot="right">
-    <Button label="Cancel" href="/account/payouts" />
+    <Button label="Cancel" href="/settings/payouts" />
   </div>
 </SiteHeader>
 <Main>
   <div data-flex="v" data-gap="1">
     <HowPayoutsWork>
       <Button label="Get started" primary xlarge on:click={quickstart} />
-      <Button label="Go back" href="/account/payouts" />
+      <Button label="Go back" href="/settings/payouts" />
     </HowPayoutsWork>
   </div>
 </Main>

@@ -14,7 +14,7 @@
     </h1>
   </div>
   <div slot="right">
-    <Button label="Back" href="/account/payouts" />
+    <Button label="Back" href="/settings/payouts" />
   </div>
 </SiteHeader>
 <Main>

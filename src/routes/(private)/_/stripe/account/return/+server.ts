@@ -5,5 +5,5 @@ export const GET = (async (event) => {
   if (event.locals.nametag_id)
     throw redirect(301, `/profile/${event.locals.nametag_id}`);
 
-  throw redirect(301, '/account');
+  throw redirect(301, '/settings');
 }) satisfies RequestHandler;
