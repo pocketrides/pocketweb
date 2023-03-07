@@ -1,11 +1,8 @@
 import type { ServerPost } from '$lib/zod/Post';
-import { z } from 'zod';
 import { PostStatsRequest } from './stats';
 import { IDBCache } from '$lib/util/idb-cache';
 
 export class LoadPostRequest {
-  static validator = z.object({ id: z.string() });
-
   static async load(
     post_id: string,
     _fetch = fetch

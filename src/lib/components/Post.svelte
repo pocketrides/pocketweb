@@ -54,9 +54,9 @@
     }
   });
 
-  afterUpdate(() => {
-    console.log('> Post.afterUpdate()');
-  });
+  // afterUpdate(() => {
+  //   console.log('> Post.afterUpdate()');
+  // });
 
   const reload = async () => {
     const id = post ? post.id : post_id ? post_id : undefined;

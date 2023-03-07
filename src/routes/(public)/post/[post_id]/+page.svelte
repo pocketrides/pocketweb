@@ -16,5 +16,5 @@
 
 <SiteHeader />
 <Main padded={false}>
-  <Post post={data.post} />
+  <Post post_id={data.post.id} />
 </Main>

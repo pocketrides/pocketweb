@@ -34,6 +34,10 @@ export class Feed {
                 q.Match(q.Index('feed_friends'), [Nametag.toRef(nametag_id)]),
                 q.Index('feed_posts')
               ),
+              q.Join(
+                q.Match(q.Index('feed_close_friends'), [Nametag.toRef(nametag_id)]),
+                q.Index('feed_posts')
+              ),
               q.Match(q.Index('feed_posts'), [Nametag.toRef(nametag_id)])
             ),
             paginate_opts

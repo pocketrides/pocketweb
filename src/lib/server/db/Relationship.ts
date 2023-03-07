@@ -109,6 +109,8 @@ export class Relationship {
     my_nametag_id: string,
     target_nametag_id: string
   ): Promise<boolean> {
+    if (my_nametag_id === target_nametag_id) return true;
+
     const exists = await Fauna.one<ServerCloseFriend>(
       'is_close_friend',
       [Nametag.toRef(my_nametag_id), Nametag.toRef(target_nametag_id)],
