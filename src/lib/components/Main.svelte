@@ -9,7 +9,7 @@
 </script>
 
 <main data-fill={fill}>
-  <div class="c">
+  <div>
     <Container rounded={false} {padded}>
       <slot />
     </Container>
@@ -20,9 +20,3 @@
     {/if}
   </slot>
 </main>
-
-<style lang="scss">
-  .c {
-    min-height: 80vh;
-  }
-</style>

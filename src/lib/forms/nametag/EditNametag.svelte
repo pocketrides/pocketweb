@@ -5,6 +5,8 @@
   import Button from '$lib/components/Button.svelte';
   import Select from '$lib/components/Select.svelte';
   import { App } from '$lib/stores/app';
+  import { IDBCache } from '$lib/util/idb-cache';
+  import { IDBFeedCache } from '$lib/util/idb-feed-cache';
   import { draft_nametag_validator } from '$lib/zod/Nametag';
   import { THEME_NAMES, THEME_VALUES } from '$lib/zod/Theme';
   import { writable } from 'svelte/store';
@@ -24,6 +26,9 @@
 
     if (res.success) {
       await invalidateAll();
+      await IDBFeedCache.clear();
+      await IDBCache.clear();
+
       $App.sheet_id = '';
     } else {
       error = true;
@@ -33,7 +38,7 @@
   };
 </script>
 
-<form on:submit={handleSubmit} data-flex="v" data-gap="1">
+<form on:submit={handleSubmit} data-flex="v" data-gap="1" data-theme={theme}>
   <div data-flex="v as">
     <label for="nametag" class="h2">Nametag:</label>
     <input
@@ -58,7 +63,7 @@
       <p data-error>Something went wrong, try again.</p>
     </div>
   {/if}
-  <div data-flex data-theme={theme}>
+  <div data-flex>
     <Button
       type="submit"
       label={$submitting ? 'One sec!' : 'Save'}

@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { invalidateAll } from '$app/navigation';
   import { NametagCreate } from '$lib/api/nametag/create';
   import { NametagList } from '$lib/api/nametag/list';
   import { NametagUse } from '$lib/api/nametag/use';
@@ -9,7 +8,6 @@
   import Select from '$lib/components/Select.svelte';
   import { type SheetContext, SHEET_CONTEXT_ID } from '$lib/contexts/Sheet';
   import { type WorkflowContext, WORKFLOW_CONTEXT_ID } from '$lib/contexts/Workflow';
-  import { App } from '$lib/stores/app';
   import { draft_nametag_validator } from '$lib/zod/Nametag';
   import { THEME_NAMES, THEME_VALUES, type ThemeValue } from '$lib/zod/Theme';
   import { createEventDispatcher, getContext, onMount } from 'svelte';
@@ -28,11 +26,6 @@
   const submitting = writable(false);
 
   $workflow_context.loading = true;
-
-  const themeChange = () => {
-    if (theme !== '') $App.theme = theme;
-    else $App.theme = 'system';
-  };
 
   onMount(async () => {
     const list_result = await NametagList.get();
@@ -73,7 +66,12 @@
 </script>
 
 {#if $loading === false}
-  <form on:submit|preventDefault={handleSubmit} data-flex="v" data-gap>
+  <form
+    on:submit|preventDefault={handleSubmit}
+    data-flex="v"
+    data-gap
+    data-theme={theme}
+  >
     <div>
       <h2>Nametags aren't usernames, they're better.</h2>
       <p>Add some emojis, pick your favorite color, have fun with it.</p>
@@ -110,7 +108,7 @@
 
       <div data-flex="v">
         <label for="theme" class="h3">Theme:</label>
-        <Select id="theme" bind:value={theme} on:change={themeChange}>
+        <Select id="theme" bind:value={theme}>
           <option value="">Pick!</option>
           {#each THEME_NAMES as name, i}
             <option value={THEME_VALUES[i]}>{name}</option>

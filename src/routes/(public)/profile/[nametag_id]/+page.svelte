@@ -5,7 +5,7 @@
   import EnableNotifications from '$lib/sheets/EnableNotifications.svelte';
   import { App } from '$lib/stores/app';
   import DefaultUtilityNav from '$lib/utility-navs/DefaultUtilityNav.svelte';
-  import { onMount } from 'svelte';
+  import { afterUpdate, onMount } from 'svelte';
   import { writable } from 'svelte/store';
   import type { PageData } from './$types';
   import ProfileHeader from './ui/ProfileHeader.svelte';
@@ -16,7 +16,6 @@
   import Icon from '$lib/components/Icon.svelte';
   import CreateContentUtilityNav from '$lib/utility-navs/CreateContentUtilityNav.svelte';
   import { LoadNametagFeedRequest } from '$lib/api/feed/nametag';
-  import Container from '$lib/components/Container.svelte';
   import ProfileFreeModeHeader from './ui/ProfileFreeModeHeader.svelte';
 
   $App.fill = 'system-superlight';
@@ -32,6 +31,10 @@
       // $App.sheet_id = 'enable-notifications';
       history.replaceState({}, '', location.toString().replace('?subscribed=1', ''));
     }
+  });
+
+  afterUpdate(() => {
+    $page_controller = data;
   });
 
   const loadMore = async () => {

@@ -54,12 +54,12 @@
     }
   });
 
-  // afterUpdate(() => {
-  //   console.log('> Post.afterUpdate()');
-  // });
+  afterUpdate(async () => {
+    if (post && post_id && post.id !== post_id) await reload();
+  });
 
   const reload = async () => {
-    const id = post ? post.id : post_id ? post_id : undefined;
+    const id = post_id ? post_id : post ? post.id : undefined;
 
     if (id) {
       const post = await LoadPostRequest.reload(id);
