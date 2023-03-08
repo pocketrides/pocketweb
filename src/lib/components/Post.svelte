@@ -9,6 +9,7 @@
   import type { ServerPost } from '$lib/zod/Post';
   import { afterUpdate, createEventDispatcher, onMount } from 'svelte';
   import { writable } from 'svelte/store';
+  import { slide } from 'svelte/transition';
   import Button from './Button.svelte';
   import ButtonRow from './ButtonRow.svelte';
   import Container from './Container.svelte';
@@ -25,11 +26,12 @@
   let _seen = false;
 
   const post_controller = writable(post);
-  const button_controller = writable('');
+  const button_controller = writable('hide');
   const is_liking = writable(false);
   const is_quarantining = writable(false);
   const showing_post = writable(false);
   const loading_post = writable(false);
+  const showing_mod_result = writable(false);
 
   $: should_be_hidden = $post_controller
     ? $post_controller.is_quarantined || $post_controller.settings.is_nsfw
@@ -168,13 +170,25 @@
                     on:click={likeClick}
                   />
                 {/if}
+                {#if is_my_post && $post_controller?.settings?.mod_result?.allow_likes === false}
+                  <Button
+                    id="mod_result"
+                    icon={$showing_mod_result === true ? 'close' : 'info'}
+                    small
+                    primary={$showing_mod_result === true}
+                    label=""
+                    on:click={() => {
+                      $showing_mod_result = !$showing_mod_result;
+                    }}
+                  />
+                {/if}
                 <!-- <Button
                 id="replies"
                 icon="reply"
                 count={$post_controller.stats.replies}
               /> -->
               </ButtonRow>
-              <ButtonRow slot="right" initial="hide">
+              <ButtonRow slot="right">
                 {#if $post_controller.is_quarantined}
                   <Button
                     controller={button_controller}
@@ -190,10 +204,13 @@
                   id="quarantines"
                   icon="support"
                   disabled={$is_quarantining}
+                  controller={button_controller}
                   count={$post_controller.stats.quarantines}
                   small
                   primary={$post_controller.is_quarantined}
-                  label=""
+                  label={$post_controller.is_quarantined
+                    ? 'Un-quarantine'
+                    : 'Quarantine'}
                   on:click={quarantineClick}
                 />
               </ButtonRow>
@@ -215,14 +232,20 @@
         </div>
       </Container>
     {/if}
-    {#if is_my_post && $post_controller?.settings?.mod_result?.allow_likes === false && post_hidden === false}
-      <Container fill="superlight">
-        <div data-flex="v as" data-gap>
-          <div>
-            <h3>Heads up!</h3>
-            <p>
-              Your post failed our automatic checks, so likes have been turned off.
-              Think we got it wrong? <Button
+    {#if post_hidden === false && $showing_mod_result}
+      <div in:slide|local out:slide|local>
+        <Container fill="superlight">
+          <div data-flex="v as" data-gap="1">
+            <div data-flex="v as" data-gap>
+              <h3>
+                <Icon icon="info" />
+                Heads up!
+              </h3>
+              <p>
+                Your post failed our automatic checks, so likes have been turned off.
+                Think we got it wrong? Tap Dispute and we'll review it.
+              </p>
+              <Button
                 label="Dispute"
                 on:click={() => {
                   window.open(
@@ -233,13 +256,13 @@
                   );
                 }}
               />
-            </p>
+            </div>
+            <small class="half">
+              <Icon icon="visibility_off" /> Only you can see this.
+            </small>
           </div>
-          <small class="half">
-            <Icon icon="visibility_off" /> Only you can see this.
-          </small>
-        </div>
-      </Container>
+        </Container>
+      </div>
     {/if}
   </div>
 {:else if $loading_post === true}

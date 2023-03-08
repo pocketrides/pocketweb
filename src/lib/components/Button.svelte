@@ -74,7 +74,9 @@
   on:click={hrefClick}
 >
   <Icon {icon} />
-  {#if count !== undefined}<span>{count}</span>{/if}
+  {#if count !== undefined && ($controller !== id || $label_store === '')}
+    <span>{count}</span>
+  {/if}
   {#if $controller === id}
     <span in:typewriter|local out:typewriter|local>
       {$label_store}
@@ -123,6 +125,5 @@
   button.small {
     padding: 0 0.5rem;
     height: 32px !important;
-    gap: 0;
   }
 </style>
