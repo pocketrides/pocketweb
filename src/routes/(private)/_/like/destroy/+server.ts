@@ -10,9 +10,9 @@ export const POST = (async (event) => {
   );
   let response: ApiGenericResponse = { success: false };
 
-  if (payload.success && payload.data.unlike_key) {
+  if (payload.success && payload.data.unlike_key && event.locals.nametag_id) {
     response = {
-      success: await Like.unlike(payload.data.unlike_key)
+      success: await Like.unlike(payload.data.unlike_key, event.locals.nametag_id)
     };
   }
 

@@ -57,6 +57,7 @@ export const load = (async (event) => {
     relationship,
     nametag_id: page_nametag.id,
     post_ids: feed.post_ids,
-    after_id: feed.after_id
+    after_id: feed.after_id,
+    has_more: feed.has_more
   };
 }) satisfies PageServerLoad;

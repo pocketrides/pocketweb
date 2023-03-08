@@ -27,6 +27,7 @@ export class IDBFeedCache {
       if (typeof indexedDB === 'undefined') return resolve(undefined);
 
       await this.#open();
+      if (!this.#db) resolve(undefined);
       const transaction = this.#db.transaction('feed_cache', 'readwrite');
       const store = transaction.objectStore('feed_cache');
 
@@ -50,6 +51,7 @@ export class IDBFeedCache {
       if (typeof indexedDB === 'undefined') return resolve([]);
 
       await this.#open();
+      if (!this.#db) resolve([]);
       const transaction = this.#db.transaction('feed_cache', 'readwrite');
       const store = transaction.objectStore('feed_cache');
 
@@ -105,6 +107,7 @@ export class IDBFeedCache {
       if (typeof indexedDB === 'undefined') return resolve(undefined);
 
       await this.#open();
+      if (!this.#db) resolve(undefined);
       const transaction = this.#db.transaction('feed_cache', 'readwrite');
       const store = transaction.objectStore('feed_cache');
 

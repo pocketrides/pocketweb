@@ -1,4 +1,4 @@
-import type { DraftLike, LikePostResponse, ServerLike } from '$lib/zod/Like';
+import type { LikePostResponse, ServerLike } from '$lib/zod/Like';
 import { Account } from './Account';
 import { Fauna, q } from './Fauna';
 import { Invoice } from './Invoice';
@@ -209,12 +209,137 @@ export class Like {
     }
   }
 
-  static async unlike(unlike_key: string): Promise<boolean> {
-    // const record = await Fauna.get<ServerLike>(
-    //   Like.toRef(unlike_key),
-    //   Like.parseFQL
-    // );
-    return false;
+  static async unlike(unlike_key: string, nametag_id: string): Promise<boolean> {
+    try {
+      return await Fauna.client().query<boolean>(
+        q.Let(
+          {
+            like_ref: Like.toRef(unlike_key),
+            like_exists: q.Exists(q.Var('like_ref')),
+            like: q.If(q.Var('like_exists'), q.Get(q.Var('like_ref')), null),
+            has_like: q.If(q.IsNull(q.Var('like')), false, q.Var('like_exists')),
+            like_nametag_ref: q.If(
+              q.Var('has_like'),
+              q.Select(['data', 'nametag_ref'], q.Var('like')),
+              null
+            ),
+            nametags_match: q.If(
+              q.Var('has_like'),
+              q.Equals(q.Var('like_nametag_ref'), Nametag.toRef(nametag_id)),
+              false
+            ),
+            has_transferred: q.If(
+              q.Var('has_like'),
+              q.ContainsPath(['data', 'transferred'], q.Var('like')),
+              false
+            ),
+            is_already_transferred: q.If(
+              q.Var('has_transferred'),
+              q.Equals(q.Select(['data', 'transferred'], q.Var('like')), true),
+              false
+            ),
+            should_continue: q.And(
+              q.Var('has_like'),
+              q.Var('nametags_match'),
+              q.Equals(q.Var('is_already_transferred'), false)
+            ),
+            // the rest of this is just repeated from above…
+            post_ref: q.If(
+              q.Var('should_continue'),
+              q.Select(['data', 'post_ref'], q.Var('like'), null),
+              null
+            ),
+            post: q.If(q.Var('should_continue'), q.Get(q.Var('post_ref')), null),
+            post_stats_ref: q.If(
+              q.IsNull(q.Var('post')),
+              null,
+              q.Select(['data', 'stats_ref'], q.Var('post'))
+            ),
+            has_post_stats: q.If(
+              q.IsNull(q.Var('post_stats_ref')),
+              false,
+              q.Exists(q.Var('post_stats_ref'))
+            ),
+            post_stats: q.If(
+              q.Var('has_post_stats'),
+              q.Get(q.Var('post_stats_ref')),
+              null
+            ),
+            // nametag that's receiving the like, pulled off the post
+            target_nametag_ref: q.If(
+              q.Var('has_like'),
+              q.Select(['data', 'target_nametag_ref'], q.Var('like')),
+              null
+            ),
+            has_target_nametag: q.If(
+              q.IsNull(q.Var('target_nametag_ref')),
+              false,
+              q.Exists(q.Var('target_nametag_ref'))
+            ),
+            target_nametag: q.If(
+              q.Var('has_target_nametag'),
+              q.Get(q.Var('target_nametag_ref')),
+              null
+            ),
+            target_nametag_stats_ref: q.If(
+              q.Var('has_target_nametag'),
+              q.Select(['data', 'stats_ref'], q.Var('target_nametag')),
+              null
+            ),
+            has_target_nametag_stats: q.If(
+              q.IsNull(q.Var('target_nametag_stats_ref')),
+              false,
+              q.Exists(q.Var('target_nametag_stats_ref'))
+            ),
+            target_nametag_stats: q.If(
+              q.Var('has_target_nametag_stats'),
+              q.Get(q.Var('target_nametag_stats_ref')),
+              null
+            ),
+            target_nametag_likes_received_val: q.If(
+              q.Var('has_target_nametag_stats'),
+              q.Select(['data', 'likes_received'], q.Var('target_nametag_stats')),
+              null
+            ),
+            target_likes_received: q.If(
+              q.IsNull(q.Var('target_nametag_likes_received_val')),
+              0,
+              q.Var('target_nametag_likes_received_val')
+            )
+          },
+          q.If(
+            q.Var('should_continue'),
+            q.Do(
+              q.Update(q.Var('like_ref'), {
+                data: {
+                  available: true,
+                  post_ref: null,
+                  target_nametag_ref: null
+                }
+              }),
+              q.Update(q.Var('post_stats_ref'), {
+                data: {
+                  likes: q.Subtract(
+                    q.Select(['data', 'likes'], q.Var('post_stats')),
+                    1
+                  )
+                }
+              }),
+              q.Update(q.Var('target_nametag_stats_ref'), {
+                data: {
+                  likes_received: q.Subtract(q.Var('target_likes_received'), 1)
+                }
+              }),
+              true
+            ),
+            false
+          )
+        )
+      );
+    } catch (e) {
+      console.error('[>Like.unlike()]', e);
+      return false;
+    }
   }
 
   static async update(id: string, data: Partial<ServerLike>) {
@@ -227,12 +352,12 @@ export class Like {
 
   static parseFQL(fql: any) {
     return Fauna.parseFQL(fql, [
-      'account_ref',
       'invoice_ref',
       'nametag_ref',
       'post_ref',
       'reply_ref',
-      'chat_ref'
+      'chat_ref',
+      'target_nametag_ref'
     ]);
   }
 }

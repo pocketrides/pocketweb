@@ -24,8 +24,6 @@
 
   const page_controller = writable(data);
 
-  let has_more = true;
-
   onMount(() => {
     if (new URLSearchParams(location.search).has('subscribed')) {
       // $App.sheet_id = 'enable-notifications';
@@ -47,7 +45,7 @@
       if (feed.post_ids) prev.post_ids.push.apply(prev.post_ids, feed.post_ids);
 
       prev.after_id = feed.after_id;
-      has_more = feed.has_more ? true : false;
+      prev.has_more = feed.has_more ? true : false;
 
       return prev;
     });
@@ -73,8 +71,8 @@
     </Row>
     <ScrollList
       has_none={$page_controller.post_ids.length === 0}
-      {has_more}
-      no_more={has_more === false}
+      has_more={$page_controller.has_more}
+      no_more={$page_controller.has_more === false}
       on:loadmore={loadMore}
     >
       {#each $page_controller.post_ids as post_id (post_id)}

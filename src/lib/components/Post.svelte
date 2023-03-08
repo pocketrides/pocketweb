@@ -77,8 +77,14 @@
     if ($post_controller.is_liked && $post_controller.unlike_key) {
       $post_controller.stats.likes = $post_controller.stats.likes - 1;
       $post_controller.is_liked = false;
-      await Like.unlikePost($post_controller.unlike_key);
+      const res = await Like.unlikePost($post_controller.unlike_key);
       $is_liking = false;
+      if (res === true) {
+        $post_controller.unlike_key = undefined;
+      } else {
+        $post_controller.is_liked = true;
+        $post_controller.stats.likes = $post_controller.stats.likes + 1;
+      }
     } else {
       $post_controller.is_liked = true;
       $post_controller.stats.likes = $post_controller.stats.likes + 1;

@@ -25,6 +25,7 @@ export class IDBCache {
       if (typeof indexedDB === 'undefined') return resolve(undefined);
 
       await IDBCache.#open();
+      if (!this.#db) resolve(undefined);
       const transaction = IDBCache.#db.transaction('cache');
       const store = transaction.objectStore('cache');
       const request = store.get(id);
@@ -43,6 +44,7 @@ export class IDBCache {
       if (typeof indexedDB === 'undefined') return resolve(undefined);
 
       await IDBCache.#open();
+      if (!this.#db) resolve(undefined);
       const transaction = IDBCache.#db.transaction('cache', 'readwrite');
       const store = transaction.objectStore('cache');
 
@@ -63,6 +65,7 @@ export class IDBCache {
       if (typeof indexedDB === 'undefined') return resolve(false);
 
       await IDBCache.#open();
+      if (!this.#db) resolve(false);
       const transaction = IDBCache.#db.transaction('cache', 'readwrite');
       const store = transaction.objectStore('cache');
       const request = store.delete(id);
@@ -82,6 +85,7 @@ export class IDBCache {
       if (typeof indexedDB === 'undefined') return resolve(undefined);
 
       await this.#open();
+      if (!this.#db) resolve(undefined);
       const transaction = this.#db.transaction('cache', 'readwrite');
       const store = transaction.objectStore('cache');
 
