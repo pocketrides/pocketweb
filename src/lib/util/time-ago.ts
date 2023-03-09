@@ -12,3 +12,7 @@ const ta = new TimeAgo('en');
 export const getTimeAgo = (date: DateInput, style?: FormatStyleName | Style) => {
   return ta.format(date, style);
 };
+
+export const formatDate = (date: Date) => {
+  return new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' }).format(date);
+};

@@ -1,12 +1,38 @@
 <script lang="ts">
   import Button from '$lib/components/Button.svelte';
-  import ButtonRow from '$lib/components/ButtonRow.svelte';
   import Icon from '$lib/components/Icon.svelte';
   import Main from '$lib/components/Main.svelte';
   import Row from '$lib/components/Row.svelte';
   import SiteHeader from '$lib/components/SiteHeader.svelte';
+  import type { ServerPayout } from '$lib/zod/Payout';
+  import { writable } from 'svelte/store';
   import type { PageData } from './$types';
   import HowPayoutsWork from './ui/HowPayoutsWork.svelte';
+  import PayoutChip from './ui/PayoutChip.svelte';
+
+  export let data: PageData;
+
+  const getPayouts = (
+    statuses: ServerPayout['status'][],
+    payouts: ServerPayout[]
+  ): ServerPayout[] => {
+    return payouts.filter((p) => statuses.indexOf(p.status) > -1);
+  };
+
+  const in_progress_statuses: ServerPayout['status'][] = [
+    'processing',
+    'processing_error',
+    'started'
+  ];
+  const completed_statuses: ServerPayout['status'][] = ['transferred'];
+
+  const in_progress = writable<ServerPayout[]>(
+    getPayouts(in_progress_statuses, data.payouts_feed.post_ids)
+  );
+
+  const completed = writable<ServerPayout[]>(
+    getPayouts(completed_statuses, data.payouts_feed.post_ids)
+  );
 </script>
 
 <svelte:head>
@@ -17,6 +43,7 @@
   <div slot="left">
     <Button icon="arrow_back_ios" label="Settings" href="/settings" />
   </div>
+  <div slot="right" />
 </SiteHeader>
 <Main>
   <div data-flex="v" data-gap="1">
@@ -29,112 +56,58 @@
           </h1>
         </div>
         <div slot="right">
-          <ButtonRow initial="new_payout" let:controller>
-            <Button
-              id="stripe"
-              icon="account_balance"
-              label="Stripe dash"
-              {controller}
-              on:click={() => {
-                window.open('/_/stripe/account/link');
-              }}
-            />
+          {#if data.payouts_enabled}
             <Button
               id="new_payout"
               icon="attach_money"
               href="/settings/payouts/payout"
               label="New payout"
-              {controller}
             />
-          </ButtonRow>
+          {/if}
         </div>
       </Row>
     </div>
-    <div data-flex="v" data-gap>
-      <h2 class="h3 half">Scheduled</h2>
+    {#if $in_progress.length}
+      <div data-flex="v" data-gap>
+        <h2 class="h3 half">In progress</h2>
 
-      <div data-flex="vs" data-gap>
-        <a
-          href="/settings/payouts/payout/123"
-          data-3d="ah"
-          data-unstyle
-          data-fill="base"
-          data-flex="v"
-          data-gap="0"
-        >
-          <p class="h1 jumbo thin">$2.30</p>
-          <p><strong>Scheduled</strong> • February 13th, 2023</p>
-        </a>
+        <div data-flex="vs" data-gap>
+          {#each $in_progress as payout}
+            <PayoutChip {payout} />
+          {/each}
+        </div>
       </div>
-    </div>
-    <div data-flex="v" data-gap>
-      <h2 class="h3 half">Paid</h2>
-      <div data-flex="vs" data-gap>
-        <a
-          href="/settings/payouts/payout/123"
-          data-3d="ah"
-          data-unstyle
-          data-fill="system-superlight"
-          data-flex="v"
-          data-gap="0"
-        >
-          <p class="h1 jumbo thin">$1.75</p>
-          <p><strong>Paid</strong> • February 10th, 2023</p>
-        </a>
-        <a
-          href="/settings/payouts/payout/123"
-          data-3d="ah"
-          data-unstyle
-          data-fill="system-superlight"
-          data-flex="v"
-          data-gap="0"
-        >
-          <p class="h1 jumbo thin">$2.00</p>
-          <p><strong>Paid</strong> • February 6th, 2023</p>
-        </a>
+    {/if}
+    {#if $completed.length}
+      <div data-flex="v" data-gap>
+        <h2 class="h3 half">Completed</h2>
+        <div data-flex="vs" data-gap>
+          {#each $completed as payout}
+            <PayoutChip {payout} />
+          {/each}
+        </div>
       </div>
-    </div>
-    <div data-flex="v" data-gap>
-      <h2 class="h3 half">Denied</h2>
-      <div data-flex="vs" data-gap>
-        <a
-          href="/settings/payouts/payout/123"
-          data-3d="ah"
-          data-unstyle
-          data-fill="dark"
-          data-flex="v"
-          data-gap
-        >
-          <p class="h1 thin half" data-flex data-gap>
-            <span><Icon icon="favorite" /> 10</span>
-            <span><Icon icon="support" /> 15</span>
-            <span><Icon icon="visibility" /> 150</span>
-          </p>
-          <p>
-            <strong data-color="base">Appealed</strong>
-            <span class="half"> • February 8th, 2023</span>
-          </p>
-        </a>
-      </div>
-    </div>
+    {/if}
     <HowPayoutsWork>
-      <Button
-        href="/settings/payouts/payout?quickstart=1"
-        label="Get started"
-        xlarge
-        primary
-      />
-      <Button href="/settings" label="Go back" />
+      {#if data.payouts_enabled}
+        <Button
+          href="/settings/payouts/payout?quickstart=1"
+          label="Get started"
+          xlarge
+          primary
+        />
+        <Button href="/settings" label="Go back" />
+      {:else}
+        <Button label="Get started" disabled xlarge primary />
+        {#if data.total_likes}
+          <p>
+            <span class="h3">Almost there!</span>
+            You have {data.total_likes} likes so far.
+          </p>
+        {:else}
+          <p>Come back when you have more likes!</p>
+        {/if}
+      {/if}
     </HowPayoutsWork>
   </div>
 </Main>
-
-<style lang="scss">
-  a {
-    padding: 1rem;
-
-    @media (min-width: 640px) {
-      width: calc(50% - 0.5rem);
-    }
-  }
-</style>

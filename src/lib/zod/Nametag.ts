@@ -35,6 +35,6 @@ export type ServerNametag = DraftNametag & {
   account_ref: ClientRef | Expr;
 
   stripe?: StripeAccountStatus | Partial<StripeAccountStatus>;
-  stats_ref?: ClientRef | Expr;
+  stats_ref?: ClientRef | any;
   stats?: ServerNametagStats;
 };

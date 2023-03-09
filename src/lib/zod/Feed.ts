@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
-export type FeedResponse = {
-  post_ids: string[];
+export type FeedResponse<T = string> = {
+  post_ids: T[];
   after_id?: string;
   before_id?: string;
   has_more?: boolean;

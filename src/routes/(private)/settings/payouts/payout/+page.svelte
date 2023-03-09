@@ -22,14 +22,9 @@
 
 <SiteHeader utility>
   <div slot="left">
-    <h1 class="h2">
-      <Icon icon="attach_money" />
-      New payout
-    </h1>
+    <Button icon="arrow_back_ios" label="Payouts" href="/settings/payouts" />
   </div>
-  <div slot="right">
-    <Button label="Cancel" href="/settings/payouts" />
-  </div>
+  <div slot="right" />
 </SiteHeader>
 <Main>
   <div data-flex="v" data-gap="1">

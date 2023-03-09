@@ -4,29 +4,41 @@
 
 <Container rounded fill="superlight">
   <div data-flex="v" data-gap="1">
-    <h2>How payouts work</h2>
     <div data-flex="v" data-gap>
-      <p>
-        First we'll scan your content to check it's not against our <a
-          href="/terms-of-use"
-          class="h3">Terms of Use</a
-        >. If it's good to go, you get paid for how many likes it has. Disagree with
-        our scan? You'll have a chance to appeal.
-      </p>
-      <p>Next we'll check your older posts for new likes since your last payout.</p>
-      <p>
-        Finally we'll transfer the sum to our partners at Stripe, where you can link
-        your bank account and start the deposit to your bank account.
-      </p>
+      <div>
+        <h2>How payouts work</h2>
+        <p>It's a three-step process to get paid on Pocketrides:</p>
+      </div>
+      <div>
+        <h3>Step 1: Get 500 likes.</h3>
+        <p>
+          It's not economical to transfer less than $5 to your bank, so when you've
+          received at least 500 likes it's time for step 2.
+        </p>
+      </div>
+      <div>
+        <h3>Step 2: Create a Stripe account</h3>
+        <p>
+          We partner with <a
+            href="https://stripe.com"
+            target="_blank"
+            rel="noreferrer"
+            class="h3">Stripe</a
+          > to get you paid, which means you need an account with them. When you're ready
+          to get paid the first time, it takes 2-3 minutes to create your account.
+        </p>
+      </div>
+      <div>
+        <h3>Step 3: Start a Payout</h3>
+        <p>
+          After you've created a Stripe account, we'll begin a payout by adding up
+          all the likes you've gotten and reconciling them in our system before
+          transferring them to you.
+        </p>
+      </div>
     </div>
     <div data-flex="v cc" data-gap="1" class="wrapper">
       <slot />
     </div>
   </div>
 </Container>
-
-<style lang="scss">
-  .wrapper {
-    margin-top: 3rem;
-  }
-</style>

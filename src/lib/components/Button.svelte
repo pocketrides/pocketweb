@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { goto } from '$app/navigation';
   import { typewriter } from '$lib/util/transition';
   import { nanoid } from 'nanoid';
   import { afterUpdate } from 'svelte';
@@ -36,7 +37,10 @@
   };
 
   const hrefClick = async () => {
-    if (href) location.href = href;
+    if (href) {
+      if (href.includes('/_/')) location.href = href;
+      else await goto(href);
+    }
   };
 
   afterUpdate(() => {

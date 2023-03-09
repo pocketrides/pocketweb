@@ -30,6 +30,7 @@ export type ServerLike = {
   // if it's been transferred or not
   transferred?: boolean;
   stripe_transaction_id?: string;
+  payout_ref?: ClientRef | Expr | null;
 };
 
 export const like_post_payload_validator = z.object({
