@@ -1,6 +1,4 @@
 import Stripe from 'stripe';
-import { Account } from './db/Account';
-import type { ServerAccount } from '$lib/zod/Account';
 import { blankAccountStatus, type StripeAccountStatus } from '$lib/zod/Stripe';
 import { Invoice } from './db/Invoice';
 import { Like } from './db/Like';
@@ -56,6 +54,7 @@ export class StripeClient {
       const stripe_account = await this.client().accounts.create({
         type: 'standard',
         business_profile: {
+          product_description: 'I post on Pocketrides',
           url: `https://pocketrides.com/profile/${nametag_id}`,
           mcc: '7299'
         },
@@ -67,6 +66,15 @@ export class StripeClient {
       });
 
       return stripe_account.id;
+    } catch (e) {
+      console.error(e);
+      return undefined;
+    }
+  }
+
+  static async retrieveAccount(account_id: string) {
+    try {
+      return this.client().accounts.retrieve(account_id);
     } catch (e) {
       return undefined;
     }
@@ -129,6 +137,7 @@ export class StripeClient {
 
       return link.url;
     } catch (e) {
+      console.error(e);
       return undefined;
     }
   }
@@ -164,6 +173,7 @@ export class StripeClient {
 
       return transfer;
     } catch (e) {
+      console.error(e);
       return undefined;
     }
   }

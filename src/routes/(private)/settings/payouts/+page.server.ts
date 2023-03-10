@@ -8,7 +8,9 @@ export const load = (async (event) => {
     my_nametag: parent.my_nametag,
     page_theme: parent.my_nametag?.theme,
     payouts_feed: await Feed.getPayoutFeed(event.locals.nametag_id as string),
-    payouts_enabled: parent.payouts_enabled,
-    total_likes: parent.total_likes
+    can_create_account: parent.can_create_account,
+    total_likes: parent.total_likes,
+    stripe_account: parent.stripe_account,
+    can_create_payouts: parent.can_create_payouts
   };
 }) satisfies PageServerLoad;

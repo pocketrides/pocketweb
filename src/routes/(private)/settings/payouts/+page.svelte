@@ -33,6 +33,22 @@
   const completed = writable<ServerPayout[]>(
     getPayouts(completed_statuses, data.payouts_feed.post_ids)
   );
+
+  const redirecting_to_stripe = writable(false);
+
+  const redirectToStripe = () => {
+    $redirecting_to_stripe = true;
+  };
+
+  let account_disabled =
+    typeof data.stripe_account?.requirements?.disabled_reason === 'string';
+  let disabled_reason = account_disabled
+    ? data.stripe_account?.requirements?.disabled_reason
+    : undefined;
+  let can_create_payouts =
+    data.can_create_account &&
+    data.stripe_account?.charges_enabled === true &&
+    account_disabled === false;
 </script>
 
 <svelte:head>
@@ -56,7 +72,7 @@
           </h1>
         </div>
         <div slot="right">
-          {#if data.payouts_enabled}
+          {#if data.can_create_payouts}
             <Button
               id="new_payout"
               icon="attach_money"
@@ -88,15 +104,54 @@
         </div>
       </div>
     {/if}
-    <HowPayoutsWork>
-      {#if data.payouts_enabled}
+    <HowPayoutsWork
+      step1_done={data.can_create_account}
+      step2_done={typeof data.stripe_account !== 'undefined'}
+      step3_hidden={account_disabled}
+      step3_hidden_reason={disabled_reason === 'requirements.pending_verification'
+        ? 'Pending Verification'
+        : 'Heads up!'}
+      step3_hidden_icon={disabled_reason === 'requirements.pending_verification'
+        ? 'verified'
+        : 'error_outline'}
+    >
+      {#if can_create_payouts}
         <Button
-          href="/settings/payouts/payout?quickstart=1"
-          label="Get started"
+          href="/settings/payouts/payout"
+          label={$redirecting_to_stripe ? 'One sec!' : 'New Payout'}
+          icon="attach_money"
+          disabled={$redirecting_to_stripe}
           xlarge
           primary
+          on:click={redirectToStripe}
         />
-        <Button href="/settings" label="Go back" />
+      {:else if data.can_create_account}
+        {#if account_disabled}
+          {#if disabled_reason === 'requirements.pending_verification'}
+            <h3>Your Stripe account is pending verification.</h3>
+          {:else}
+            <h3>Your Stripe account needs attention.</h3>
+          {/if}
+          <Button
+            href="/_/stripe/account/onboard"
+            label={$redirecting_to_stripe
+              ? 'One sec!'
+              : 'Manage your Stripe account'}
+            disabled={$redirecting_to_stripe}
+            xlarge
+            primary
+            on:click={redirectToStripe}
+          />
+        {:else}
+          <Button
+            href="/_/stripe/account/onboard"
+            label={$redirecting_to_stripe ? 'One sec!' : 'Create Stripe account'}
+            disabled={$redirecting_to_stripe}
+            xlarge
+            primary
+            on:click={redirectToStripe}
+          />
+        {/if}
       {:else}
         <Button label="Get started" disabled xlarge primary />
         {#if data.total_likes}
@@ -108,6 +163,7 @@
           <p>Come back when you have more likes!</p>
         {/if}
       {/if}
+      <Button href="/settings" label="Go back" />
     </HowPayoutsWork>
   </div>
 </Main>
