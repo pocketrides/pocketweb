@@ -22,7 +22,7 @@
   const in_progress_statuses: ServerPayout['status'][] = [
     'processing',
     'processing_error',
-    'started'
+    'idle'
   ];
   const completed_statuses: ServerPayout['status'][] = ['transferred'];
 

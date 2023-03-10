@@ -20,54 +20,6 @@ export class Like {
     return false;
   }
 
-  static async getPayoutBoundary(
-    target_nametag_id: string
-  ): Promise<PayoutBoundary | undefined | null> {
-    try {
-      return await Fauna.client().query(
-        q.Let(
-          {
-            match: q.Match(q.Index('likes_by_target_nametag_ref'), [
-              Nametag.toRef(target_nametag_id)
-            ]),
-            first_page: q.Paginate(q.Var('match'), { size: 1 }),
-            has_first_page: q.ContainsPath(['data', 0], q.Var('first_page')),
-            first_like_ref: q.If(
-              q.Var('has_first_page'),
-              q.Select(['data', 0], q.Var('first_page')),
-              null
-            ),
-            last_page: q.Paginate(q.Var('match'), { size: 1, before: null }),
-            has_last_page: q.ContainsPath(['data', 0], q.Var('last_page')),
-            last_like_ref: q.If(
-              q.Var('has_last_page'),
-              q.Select(['data', 0], q.Var('last_page')),
-              null
-            ),
-            count: q.Count(q.Paginate(q.Var('match'), { size: 10000 })),
-            count_is_exact: q.If(q.Equals(q.Var('count'), 10000), false, true)
-          },
-          q.If(
-            q.Or(
-              q.IsNull(q.Var('first_like_ref')),
-              q.IsNull(q.Var('last_like_ref'))
-            ),
-            null,
-            {
-              first_like_ref: q.Var('first_like_ref'),
-              last_like_ref: q.Var('last_like_ref'),
-              count: q.Var('count'),
-              is_exact: q.Var('count_is_exact')
-            }
-          )
-        )
-      );
-    } catch (e) {
-      console.error('[>Like.getPayoutBoundary()]', e);
-      return undefined;
-    }
-  }
-
   static async mint(nametag_id: string, invoice_id: string) {
     const likes_to_mint: Partial<ServerLike>[] = [];
 

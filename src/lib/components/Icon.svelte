@@ -2,6 +2,7 @@
   export let icon: string | undefined;
   export let filled: boolean = false;
   export let half: boolean = false;
+  export let spins: boolean = false;
 </script>
 
 {#if icon}
@@ -9,7 +10,28 @@
     class:material-icons-outlined={!filled}
     class:material-icons={filled}
     class:half
+    class:spins
   >
     {icon}
   </span>
 {/if}
+
+<style lang="scss">
+  @keyframes icon-spins {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    20% {
+      transform: rotate(360deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  .spins {
+    animation: icon-spins 5s ease-in-out infinite;
+  }
+</style>

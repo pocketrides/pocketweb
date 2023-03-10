@@ -8,10 +8,10 @@
 
   const getFillForStatus = (): Fill => {
     switch (payout.status) {
-      case 'started':
+      case 'idle':
       case 'processing':
       case 'transferred':
-        return 'superlight';
+        return 'system-superlight';
       case 'processing_error':
         return 'base';
     }
@@ -27,7 +27,7 @@
   data-gap="0"
 >
   <p class="h1 jumbo thin">
-    {formatCents(payout.count) + payout.is_exact ? '' : '+'}
+    {formatCents(payout.count)}{payout.is_exact ? '' : '+'}
   </p>
   <p>
     <strong>{humanStatus(payout.status)}</strong> • {formatDate(

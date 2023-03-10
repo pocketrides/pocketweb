@@ -6,13 +6,15 @@ export type PayoutBoundary = {
   last_like_ref: ClientRef | Expr;
   count: number;
   is_exact: boolean;
+  grand_total: number;
 };
 
 export type ServerPayout = PayoutBoundary & {
   id: string;
   ts: number;
   nametag_ref: ClientRef | Expr;
-  status: 'started' | 'processing' | 'processing_error' | 'transferred';
+  status: 'idle' | 'processing' | 'processing_error' | 'transferred';
+  error_status?: 'failed_transfer' | 'needs_restart';
 };
 
 export const humanStatus = (status: ServerPayout['status']): string => {
@@ -21,8 +23,8 @@ export const humanStatus = (status: ServerPayout['status']): string => {
       return 'Processing';
     case 'processing_error':
       return 'Error';
-    case 'started':
-      return 'Just getting started!';
+    case 'idle':
+      return 'Waiting to start';
     case 'transferred':
       return 'Transferred to Stripe';
   }

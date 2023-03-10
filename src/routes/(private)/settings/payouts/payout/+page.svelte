@@ -1,24 +1,37 @@
 <script lang="ts">
+  import { invalidateAll } from '$app/navigation';
   import Button from '$lib/components/Button.svelte';
-  import Icon from '$lib/components/Icon.svelte';
   import Main from '$lib/components/Main.svelte';
-  import Sheet from '$lib/components/Sheet.svelte';
   import SiteHeader from '$lib/components/SiteHeader.svelte';
-  import { App } from '$lib/stores/app';
-  import { onMount } from 'svelte';
-  import HowPayoutsWork from '../ui/HowPayoutsWork.svelte';
+  import { writable } from 'svelte/store';
+  import PayoutDetail from '../ui/PayoutDetail.svelte';
+  import type { PageData } from './$types';
 
-  onMount(() => {
-    if (new URLSearchParams(location.search).has('quickstart')) {
-      history.replaceState({}, '', location.toString().replace('?quickstart=1', ''));
-      quickstart();
-    }
-  });
+  export let data: PageData;
 
-  const quickstart = () => {
-    $App.sheet_id = 'payout_select_content';
+  const is_refreshing = writable(false);
+
+  const startClick = async () => {
+    const fd = new FormData();
+    fd.append('payout_id', data.payout.id);
+
+    await fetch('?/start', {
+      method: 'POST',
+      body: fd
+    });
+    await invalidateAll();
+  };
+
+  const refreshClick = async () => {
+    $is_refreshing = true;
+    await invalidateAll();
+    $is_refreshing = false;
   };
 </script>
+
+<svelte:head>
+  <title>Payout for {data.my_nametag?.nametag} | pocketrides!</title>
+</svelte:head>
 
 <SiteHeader utility>
   <div slot="left">
@@ -26,12 +39,21 @@
   </div>
   <div slot="right" />
 </SiteHeader>
-<Main>
-  <div data-flex="v" data-gap="1">
-    <HowPayoutsWork>
-      <Button label="Get started" primary xlarge on:click={quickstart} />
-      <Button label="Go back" href="/settings/payouts" />
-    </HowPayoutsWork>
+<Main fullheight>
+  <div data-flex="v as" data-gap="1">
+    <PayoutDetail payout={data.payout} />
+    {#if data.payout.status === 'idle'}
+      <Button label="Tap to start" large primary on:click={startClick} />
+    {/if}
+    {#if data.payout.status === 'processing'}
+      <Button
+        icon="autorenew"
+        label={$is_refreshing ? 'Refreshing…' : 'Refresh'}
+        disabled={$is_refreshing}
+        large
+        primary
+        on:click={refreshClick}
+      />
+    {/if}
   </div>
 </Main>
-<Sheet id="payout_select_content" header="Select content" icon="edit" />

@@ -38,8 +38,6 @@
 [data-flex*="vs"] {
   @media (min-width: 640px) {
     flex-direction: row;
-    justify-content: space-between;
     flex-wrap: wrap;
-    gap: 1rem !important;
   }
 }
