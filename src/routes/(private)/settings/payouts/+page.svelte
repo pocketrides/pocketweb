@@ -133,7 +133,10 @@
       {:else if data.can_create_account}
         {#if account_disabled}
           {#if disabled_reason === 'requirements.pending_verification'}
-            <h3>Your Stripe account is pending verification.</h3>
+            <div>
+              <h3>Your Stripe account is pending verification.</h3>
+              <p>This could take 1-3 business days.</p>
+            </div>
           {:else}
             <h3>Your Stripe account needs attention.</h3>
           {/if}

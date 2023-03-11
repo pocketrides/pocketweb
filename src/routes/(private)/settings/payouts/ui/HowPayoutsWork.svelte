@@ -20,10 +20,12 @@
       </div>
       {#if step1_done}
         <Container rounded padded bordered fill="system-superlight">
-          <h3 class="h2 thin half">
-            <Icon icon="done" />
-            Step 1: Get 500 likes.
-          </h3>
+          <div data-flex="v as">
+            <h3 class="h2 thin half">
+              <Icon icon="done" />
+              Step 1: Get 500 likes.
+            </h3>
+          </div>
         </Container>
       {:else}
         <div>
@@ -36,10 +38,12 @@
       {/if}
       {#if step2_done}
         <Container rounded padded bordered fill="system-superlight">
-          <h3 class="h2 thin half">
-            <Icon icon="done" />
-            Step 2: Stripe account
-          </h3>
+          <div data-flex="v as">
+            <h3 class="h2 thin half">
+              <Icon icon="done" />
+              Step 2: Stripe account
+            </h3>
+          </div>
         </Container>
       {:else}
         <div>
@@ -58,10 +62,12 @@
       {/if}
       {#if step3_hidden}
         <Container rounded padded bordered fill="superlight">
-          <h3 class="h2">
-            <Icon icon={step3_hidden_icon} />
-            {step3_hidden_reason}
-          </h3>
+          <div data-flex="v as">
+            <h3 class="h2">
+              <Icon icon={step3_hidden_icon} />
+              {step3_hidden_reason}
+            </h3>
+          </div>
         </Container>
       {:else}
         <div>
