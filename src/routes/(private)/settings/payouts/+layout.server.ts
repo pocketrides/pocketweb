@@ -1,5 +1,6 @@
 import { StripeClient } from '$lib/server/StripeClient';
 import { NametagStats } from '$lib/server/db/NametagStats';
+import { Payout } from '$lib/server/db/Payout';
 import type { LayoutServerLoad } from './$types';
 
 export const load = (async (event) => {
@@ -8,13 +9,11 @@ export const load = (async (event) => {
   let total_likes = undefined;
   let stripe_account: any;
 
-  if (event.locals.nametag?.stats_ref?.id) {
-    const stats = await NametagStats.get(event.locals.nametag.stats_ref.id);
+  if (event.locals.nametag_id) {
+    const can_create = await Payout.canCreate(event.locals.nametag_id);
 
-    if (stats) {
-      can_create_account = (stats.likes_received || 0) >= 500;
-      total_likes = stats.likes_received;
-    }
+    can_create_account = can_create.can_create;
+    total_likes = can_create.total_likes;
   }
 
   if (event.locals.nametag?.stripe?.account_id) {
@@ -24,7 +23,8 @@ export const load = (async (event) => {
       );
 
       if (stripe_account) {
-        can_create_payouts = stripe_account.charges_enabled === true;
+        can_create_payouts =
+          stripe_account.charges_enabled === true && can_create_account;
       }
     } catch (e) {}
   }

@@ -48,7 +48,7 @@
       class:half={payout.status !== 'transferred'}
     >
       <div class="h3">
-        {payout.status === 'idle'
+        {payout.status === 'transfer_ready'
           ? 'Processed:'
           : payout.status === 'transferred'
           ? 'Totals:'

@@ -3,6 +3,7 @@
   export let filled: boolean = false;
   export let half: boolean = false;
   export let spins: boolean = false;
+  export let inline: boolean = false;
 </script>
 
 {#if icon}
@@ -11,6 +12,7 @@
     class:material-icons={filled}
     class:half
     class:spins
+    class:inline
   >
     {icon}
   </span>

@@ -38,10 +38,15 @@ h3,
   font-size: 1.25em;
 }
 
-*:has(> [class*="material"]) {
+*:has(> [class*="material"]:not(.inline)) {
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
+}
+
+[class*="material"].inline {
+  vertical-align: baseline;
+  transform: translateY(0.2em);
 }
 
 .half {

@@ -12,6 +12,7 @@
   const is_refreshing = writable(false);
 
   const startClick = async () => {
+    $is_refreshing = true;
     const fd = new FormData();
     fd.append('payout_id', data.payout.id);
 
@@ -20,6 +21,7 @@
       body: fd
     });
     await invalidateAll();
+    $is_refreshing = false;
   };
 
   const refreshClick = async () => {
@@ -43,7 +45,13 @@
   <div data-flex="v as" data-gap="1">
     <PayoutDetail payout={data.payout} />
     {#if data.payout.status === 'idle'}
-      <Button label="Tap to start" large primary on:click={startClick} />
+      <Button
+        label="Tap to start"
+        disabled={$is_refreshing}
+        large
+        primary
+        on:click={startClick}
+      />
     {/if}
     {#if data.payout.status === 'processing'}
       <Button

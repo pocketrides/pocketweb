@@ -12,7 +12,7 @@ export const load = (async (event) => {
   if (event.locals.nametag_id)
     payout = await Payout.createOrContinue(event.locals.nametag_id);
 
-  if (!payout) throw error(403);
+  if (!payout) throw redirect(302, '/settings/payouts');
 
   return {
     my_nametag: parent.my_nametag,

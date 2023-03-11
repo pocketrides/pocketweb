@@ -9,7 +9,7 @@
   export let step3_hidden_reason: string = 'Pending Verification';
 </script>
 
-<Container rounded fill="system-superlight">
+<Container rounded fill="system-light">
   <div data-flex="v" data-gap="1">
     <div data-flex="v" data-gap="1">
       <div>
@@ -19,7 +19,7 @@
         {/if}
       </div>
       {#if step1_done}
-        <Container rounded padded fill="dark">
+        <Container rounded padded bordered fill="system-superlight">
           <h3 class="h2 thin half">
             <Icon icon="done" />
             Step 1: Get 500 likes.
@@ -29,13 +29,13 @@
         <div>
           <h3 class="h2">Step 1: Get 500 likes.</h3>
           <p>
-            It's not economical to transfer less than $5 to your bank, so when you've
-            received at least 500 likes it's time for step 2.
+            Our bank transfer minimum is $5, and it looks like you don't have enough
+            likes yet. Don't worry! The likes you earn will never expire.
           </p>
         </div>
       {/if}
       {#if step2_done}
-        <Container rounded padded fill="dark">
+        <Container rounded padded bordered fill="system-superlight">
           <h3 class="h2 thin half">
             <Icon icon="done" />
             Step 2: Stripe account
@@ -50,9 +50,9 @@
               target="_blank"
               rel="noreferrer"
               class="h3">Stripe</a
-            > to get you paid, which means you need an account with them. When you're
-            ready to get paid the first time, it takes 2-3 minutes to create your account
-            and then a few days to verify your information.
+            > to get you paid, which means you need a separate account with them. When
+            you're ready to get paid the first time, it takes 2-3 minutes to create your
+            account and then a few days to verify your information.
           </p>
         </div>
       {/if}
@@ -67,9 +67,8 @@
         <div>
           <h3 class="h2">Step 3: Start a Payout</h3>
           <p>
-            After you've created a Stripe account, we'll begin a payout by adding up
-            all the likes you've gotten and reconciling them in our system before
-            transferring the cash equivalent to you.
+            The time's arrived! We'll start a payout for all the likes you've earned
+            so far, add them up and transfer them to your Stripe account.
           </p>
         </div>
       {/if}
@@ -77,5 +76,19 @@
     <div data-flex="v cc" data-gap="1" class="wrapper">
       <slot />
     </div>
+    {#if !step2_done}
+      <p>
+        <small>
+          <strong>
+            <Icon icon="info" inline /> Heads up:
+          </strong>
+          You will have to verify your identity to get paid. Your relationship with Stripe
+          is your own, refer to our
+          <a href="/privacy-policy" target="_blank" rel="noreferrer">
+            <strong>privacy policy</strong>
+          </a> for details on the information that's shared with Pocketrides.
+        </small>
+      </p>
+    {/if}
   </div>
 </Container>

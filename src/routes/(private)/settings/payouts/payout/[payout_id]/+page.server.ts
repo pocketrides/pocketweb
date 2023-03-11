@@ -5,9 +5,10 @@ import { Payout } from '$lib/server/db/Payout';
 export const load = (async (event) => {
   const parent = await event.parent();
 
-  if (!parent.can_create_account) throw error(404);
-
-  const payout = await Payout.get(event.params.payout_id);
+  const payout = await Payout.retrieve(
+    event.params.payout_id,
+    event.locals.nametag_id!
+  );
 
   if (!payout) throw error(404);
 
