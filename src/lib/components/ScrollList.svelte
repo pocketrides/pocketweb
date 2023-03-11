@@ -32,7 +32,8 @@
       <Container padded rounded bordered fill="superlight">
         <div class="none" data-flex="v je">
           <h2 class="h1 jumbo half thin">
-            <span class="material-icons-outlined">sentiment_dissatisfied</span><br />
+            <span class="material-icons-outlined inline">sentiment_dissatisfied</span
+            ><br />
             Nothing here… <span class="half">yet!</span>
           </h2>
         </div>

@@ -14,6 +14,7 @@
   import Checkbox from '$lib/components/Checkbox.svelte';
   import ButtonRow from '$lib/components/ButtonRow.svelte';
   import { NewPostRequest } from '$lib/api/post/new';
+  import { goto } from '$app/navigation';
 
   const page_controller = writable<PageController>(blankPost());
   const is_publishing = writable(false);
@@ -33,8 +34,7 @@
     const post = await NewPostRequest.post($page_controller);
 
     if (post.success) {
-      location.href = `/post/${post.post_id}`;
-      $is_publishing = false;
+      await goto(`/post/${post.post_id}`);
     }
 
     if (post.success === false) {
@@ -61,7 +61,7 @@
     <Button label="Cancel" href="/home" />
   </div>
 </SiteHeader>
-<Main>
+<Main fullheight>
   <Posts store={page_controller} />
   <UtilityNav slot="utility-nav">
     <div slot="right">
