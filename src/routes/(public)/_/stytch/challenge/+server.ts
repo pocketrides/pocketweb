@@ -6,9 +6,9 @@ import {
 } from '$lib/api/stytch/challenge';
 import { Stytch } from '$lib/server/Stytch';
 import type {
-  OTPWhatsAppSendResponse,
-  SendOTPBySMSResponse
-} from 'stytch/types/lib/otps';
+  LoginOrCreateUserBySMSResponse,
+  OTPWhatsAppLoginOrCreateResponse
+} from 'stytch/types/lib/b2c/otps';
 
 export const POST = (async (event) => {
   const payload = StytchChallenge.payload.safeParse(await event.request.json());
@@ -16,12 +16,14 @@ export const POST = (async (event) => {
 
   if (payload.success) {
     try {
-      const stytch_response: SendOTPBySMSResponse | OTPWhatsAppSendResponse =
+      const stytch_response:
+        | LoginOrCreateUserBySMSResponse
+        | OTPWhatsAppLoginOrCreateResponse =
         payload.data.challenge_type === 'sms'
-          ? await Stytch.client().otps.sms.send({
+          ? await Stytch.client().otps.sms.loginOrCreate({
               phone_number: payload.data.phone_number
             })
-          : await Stytch.client().otps.whatsapp.send({
+          : await Stytch.client().otps.whatsapp.loginOrCreate({
               phone_number: payload.data.phone_number
             });
 
@@ -30,8 +32,10 @@ export const POST = (async (event) => {
           success: true,
           method_id: stytch_response.phone_id
         };
-      }
-    } catch (e) {}
+      } else throw new Error('bad status code', { cause: stytch_response });
+    } catch (e) {
+      console.error('> challenge/server', e);
+    }
   }
 
   return json(response);

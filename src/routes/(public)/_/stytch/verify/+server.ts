@@ -35,7 +35,9 @@ export const POST = (async (event) => {
           success: fauna_account_id !== undefined
         };
       }
-    } catch (e) {}
+    } catch (e) {
+      console.error('> verify/server', e);
+    }
   }
 
   return json(response);

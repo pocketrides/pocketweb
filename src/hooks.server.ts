@@ -26,48 +26,57 @@ export const handle = (async ({ event, resolve }) => {
   const session_cookie = getSessionCookie(event.cookies);
 
   if (session_cookie) {
-    const stytch_result = await Stytch.client().sessions.authenticate({
-      session_token: session_cookie,
-      session_duration_minutes: MAX_AGE_MINUTES
-    });
+    try {
+      const stytch_result = await Stytch.client().sessions.authenticate({
+        session_token: session_cookie,
+        session_duration_minutes: MAX_AGE_MINUTES
+      });
 
-    if (stytch_result.status_code === 200 && stytch_result.session_token) {
-      createSessionCookie(event.cookies, stytch_result.session_token);
-      const fauna_account = await Account.getByStytchId(stytch_result.user.user_id);
+      if (stytch_result.status_code === 200 && stytch_result.session_token) {
+        createSessionCookie(event.cookies, stytch_result.session_token);
+        const fauna_account = await Account.getByStytchId(
+          stytch_result.user.user_id
+        );
 
-      if (fauna_account) {
-        event.locals.fauna_account_id = fauna_account.id;
-        event.locals.fauna_account = fauna_account;
+        if (fauna_account) {
+          event.locals.fauna_account_id = fauna_account.id;
+          event.locals.fauna_account = fauna_account;
 
-        const nametag_cookie = getNametagCookie(event.cookies);
+          const nametag_cookie = getNametagCookie(event.cookies);
 
-        if (nametag_cookie) {
-          const verified = await Nametag.verifyOwnership(
-            event.locals.fauna_account_id,
-            nametag_cookie
-          );
+          if (nametag_cookie) {
+            const verified = await Nametag.verifyOwnership(
+              event.locals.fauna_account_id,
+              nametag_cookie
+            );
 
-          if (verified) {
-            event.locals.nametag_id = verified.id;
-            event.locals.nametag = verified;
-            createNametagCookie(event.cookies, verified.id);
-          } else {
-            event.locals.nametag_id = undefined;
-            event.locals.nametag = undefined;
-            destroySessionCookie(event.cookies);
-            destroyNametagCookie(event.cookies);
+            if (verified) {
+              event.locals.nametag_id = verified.id;
+              event.locals.nametag = verified;
+              createNametagCookie(event.cookies, verified.id);
+            } else {
+              event.locals.nametag_id = undefined;
+              event.locals.nametag = undefined;
+              destroySessionCookie(event.cookies);
+              destroyNametagCookie(event.cookies);
+            }
           }
+        } else {
+          event.locals.fauna_account_id = undefined;
+          event.locals.fauna_account = undefined;
+          destroySessionCookie(event.cookies);
         }
-      } else {
-        event.locals.fauna_account_id = undefined;
-        event.locals.fauna_account = undefined;
-        destroySessionCookie(event.cookies);
       }
-    } else {
+    } catch (e) {
+      event.locals.fauna_account = undefined;
+      event.locals.fauna_account_id = undefined;
+      event.locals.nametag = undefined;
+      event.locals.nametag_id = undefined;
       destroySessionCookie(event.cookies);
       destroyNametagCookie(event.cookies);
     }
   } else {
+    event.locals.fauna_account_id = undefined;
     destroySessionCookie(event.cookies);
     destroyNametagCookie(event.cookies);
   }
