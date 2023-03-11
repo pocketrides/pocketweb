@@ -69,7 +69,7 @@
           <p>
             After you've created a Stripe account, we'll begin a payout by adding up
             all the likes you've gotten and reconciling them in our system before
-            transferring them to you.
+            transferring the cash equivalent to you.
           </p>
         </div>
       {/if}

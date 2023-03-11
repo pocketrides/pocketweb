@@ -46,8 +46,7 @@ export class Like {
 
       return true;
     } catch (e) {
-      console.log('> fauna error');
-      console.error(e);
+      console.error('>> Like.mint: fauna error', e);
       return false;
     }
   }
@@ -349,7 +348,8 @@ export class Like {
       'post_ref',
       'reply_ref',
       'chat_ref',
-      'target_nametag_ref'
+      'target_nametag_ref',
+      'payout_ref'
     ]);
   }
 }

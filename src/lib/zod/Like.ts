@@ -29,7 +29,6 @@ export type ServerLike = {
   target_nametag_ref?: ClientRef | Expr | null;
   // if it's been transferred or not
   transferred?: boolean;
-  stripe_transaction_id?: string;
   payout_ref?: ClientRef | Expr | null;
 };
 

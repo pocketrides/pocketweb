@@ -1,6 +1,9 @@
+import { StripeClient } from '$lib/server/StripeClient';
 import type { ServerPayout } from '$lib/zod/Payout';
+import type { RequestEvent } from '@sveltejs/kit';
 import { Fauna, q } from './Fauna';
 import { Nametag } from './Nametag';
+import type { ClientRef } from '$lib/zod/Fauna';
 
 export class Payout {
   static collection = 'payouts';
@@ -51,9 +54,28 @@ export class Payout {
                   q.Select(['data', 0], q.Var('last_page')),
                   null
                 ),
-                count: q.Select(
-                  ['data', 0],
-                  q.Count(q.Paginate(q.Var('boundary'), { size: 10000 }))
+                range: q.If(
+                  q.And(
+                    q.IsNull(q.Var('first_like_ref')),
+                    q.IsNull(q.Var('last_like_ref'))
+                  ),
+                  null,
+                  q.Range(
+                    q.Var('boundary'),
+                    q.Var('first_like_ref'),
+                    q.Var('last_like_ref')
+                  )
+                ),
+                count: q.If(
+                  q.IsNull(q.Var('range')),
+                  q.Select(
+                    ['data', 0],
+                    q.Count(q.Paginate(q.Var('boundary'), { size: 10000 }))
+                  ),
+                  q.Select(
+                    ['data', 0],
+                    q.Count(q.Paginate(q.Var('range'), { size: 10000 }))
+                  )
                 ),
                 count_is_exact: q.If(q.Equals(q.Var('count'), 10000), false, true)
               },
@@ -80,6 +102,7 @@ export class Payout {
   }
 
   static async updateStatus(
+    event: RequestEvent,
     payout_id: string,
     nametag_id: string,
     new_status: ServerPayout['status'],
@@ -106,7 +129,7 @@ export class Payout {
             payout: q.Update(q.Var('payout_ref'), {
               data: {
                 status: new_status,
-                error_status: error_status ? error_status : null
+                error_status
               }
             })
           },
@@ -116,12 +139,58 @@ export class Payout {
     );
 
     if (req.payout) {
-      const payout = this.parseFQL(req.payout);
+      let payout: ServerPayout | undefined = this.parseFQL(req.payout);
+
+      if (new_status === 'processing' && event.platform?.env.POCKETQUEUE && payout) {
+        await event.platform.env.POCKETQUEUE.send({
+          type: 'payout',
+          data: {
+            payout_id: payout.id,
+            nametag_id,
+            first_like_id: (payout.first_like_ref as ClientRef).id,
+            last_like_id: (payout.last_like_ref as ClientRef).id
+          }
+        });
+      }
+
+      if (
+        new_status === 'transferred' &&
+        event.locals.nametag?.stripe?.charges_enabled &&
+        event.locals.nametag?.stripe?.account_id &&
+        payout
+      ) {
+        try {
+          const transfer = await StripeClient.transfer(
+            event.locals.nametag.stripe.account_id,
+            payout.grand_total
+          );
+
+          if (transfer)
+            payout = await this.update(payout.id, {
+              stripe_transfer_id: transfer.id
+            });
+        } catch (e) {
+          console.error('> transfer error', e);
+          if (payout)
+            payout = await this.update(payout.id, {
+              status: 'processing_error',
+              error_status: 'failed_transfer'
+            });
+        }
+      }
 
       return payout;
     }
 
     return undefined;
+  }
+
+  static async update(payout_id: string, data: Partial<ServerPayout>) {
+    return await Fauna.update<ServerPayout>(
+      this.toRef(payout_id),
+      data,
+      this.parseFQL
+    );
   }
 
   static async get(payout_id: string): Promise<ServerPayout | undefined> {

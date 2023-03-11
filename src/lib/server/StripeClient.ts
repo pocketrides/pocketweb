@@ -67,15 +67,20 @@ export class StripeClient {
 
       return stripe_account.id;
     } catch (e) {
-      console.error(e);
+      console.error('>> createAccount', e);
       return undefined;
     }
   }
 
   static async retrieveAccount(account_id: string) {
     try {
-      return this.client().accounts.retrieve(account_id);
+      const account = this.client().accounts.retrieve(account_id);
+
+      if (account) return account;
+
+      return undefined;
     } catch (e) {
+      console.error('>> retrieveAccount', e);
       return undefined;
     }
   }
@@ -95,7 +100,7 @@ export class StripeClient {
 
       return account_link.url;
     } catch (e) {
-      console.log(e);
+      console.error('>> createAccountOnboardingLink', e);
       return undefined;
     }
   }
@@ -123,7 +128,7 @@ export class StripeClient {
 
       return undefined;
     } catch (e) {
-      console.error(e);
+      console.error('>> createSubscribeLink', e);
       return undefined;
     }
   }
@@ -137,7 +142,7 @@ export class StripeClient {
 
       return link.url;
     } catch (e) {
-      console.error(e);
+      console.error('>> createAccountDashboardLink', e);
       return undefined;
     }
   }
@@ -155,7 +160,7 @@ export class StripeClient {
 
       return link.url;
     } catch (e) {
-      console.error(e);
+      console.error('>> createBillingPortalLink', e);
       return undefined;
     }
   }
@@ -173,7 +178,7 @@ export class StripeClient {
 
       return transfer;
     } catch (e) {
-      console.error(e);
+      console.error('>> transfer', e);
       return undefined;
     }
   }

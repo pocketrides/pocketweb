@@ -32,7 +32,7 @@ declare global {
 
         OPEN_AI_KEY: string;
 
-        // POCKETQUEUE: Queue<import('$lib/zod/Publisher').PublisherQueuePayload>;
+        POCKETQUEUE: Queue<import('$lib/zod/Pocketqueue').PocketqueuePayload>;
       };
     }
   }

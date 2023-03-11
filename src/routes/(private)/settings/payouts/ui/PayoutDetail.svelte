@@ -29,10 +29,15 @@
           <Icon icon="autorenew" spins />
           Status: {humanStatus(payout.status)}
         </div>
+      {:else if payout.status === 'transfer_ready'}
+        <div class="h2 half thin">
+          <Icon icon="attach_money" />
+          Status: {humanStatus(payout.status)}
+        </div>
       {:else if payout.status === 'transferred'}
         <div class="h2 half thin">
           <Icon icon="done" />
-          Transferred to Stripe
+          Status: {humanStatus(payout.status)}
         </div>
       {/if}
     </div>

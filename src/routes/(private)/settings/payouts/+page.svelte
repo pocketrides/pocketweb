@@ -61,7 +61,7 @@
   </div>
   <div slot="right" />
 </SiteHeader>
-<Main>
+<Main fullheight>
   <div data-flex="v" data-gap="1">
     <div data-ph>
       <Row>
@@ -72,7 +72,7 @@
           </h1>
         </div>
         <div slot="right">
-          {#if data.can_create_payouts}
+          {#if data.can_create_payouts && !$in_progress.length}
             <Button
               id="new_payout"
               icon="attach_money"
@@ -118,8 +118,12 @@
       {#if can_create_payouts}
         <Button
           href="/settings/payouts/payout"
-          label={$redirecting_to_stripe ? 'One sec!' : 'New Payout'}
-          icon="attach_money"
+          label={$redirecting_to_stripe
+            ? 'One sec!'
+            : $in_progress.length
+            ? 'Check status'
+            : 'New Payout'}
+          icon={$in_progress.length ? undefined : 'attach_money'}
           disabled={$redirecting_to_stripe}
           xlarge
           primary

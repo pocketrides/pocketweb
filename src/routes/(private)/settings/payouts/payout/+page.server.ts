@@ -24,12 +24,34 @@ export const load = (async (event) => {
 export const actions = {
   start: async (event) => {
     const fd = await event.request.formData();
-    let payout_id = fd.get('payout_id')?.toString();
+    const payout_id = fd.get('payout_id')?.toString();
 
     if (!payout_id) return false;
 
     if (event.locals.nametag_id) {
-      await Payout.updateStatus(payout_id, event.locals.nametag_id, 'processing');
+      await Payout.updateStatus(
+        event,
+        payout_id,
+        event.locals.nametag_id,
+        'processing'
+      );
+      return true;
+    }
+  },
+  transfer: async (event) => {
+    const fd = await event.request.formData();
+    const payout_id = fd.get('payout_id')?.toString();
+
+    if (!payout_id) return false;
+
+    if (event.locals.nametag_id) {
+      await Payout.updateStatus(
+        event,
+        payout_id,
+        event.locals.nametag_id,
+        'transferred'
+      );
+
       return true;
     }
   }

@@ -126,7 +126,7 @@ export class Feed {
         });
 
         if (payouts[0].id === after_id) payouts.shift();
-        if (payouts[payouts.length].id === after_id) payouts.pop();
+        if (payouts[payouts.length - 1].id === after_id) payouts.pop();
 
         return {
           post_ids: payouts,

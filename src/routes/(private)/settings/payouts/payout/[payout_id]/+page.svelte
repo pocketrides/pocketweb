@@ -14,6 +14,6 @@
   </div>
   <div slot="right" />
 </SiteHeader>
-<Main>
+<Main fullheight>
   <PayoutDetail payout={data.payout} />
 </Main>

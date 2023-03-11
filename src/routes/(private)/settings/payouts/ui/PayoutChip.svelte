@@ -8,18 +8,18 @@
 
   const getFillForStatus = (): Fill => {
     switch (payout.status) {
-      case 'idle':
-      case 'processing':
-      case 'transferred':
-        return 'system-superlight';
       case 'processing_error':
         return 'base';
     }
+
+    return 'system-superlight';
   };
 </script>
 
 <a
-  href={`/settings/payouts/payout/${payout.id}`}
+  href={payout.status === 'transferred'
+    ? `/settings/payouts/payout/${payout.id}`
+    : `/settings/payouts/payout`}
   data-3d="ah"
   data-unstyle
   data-fill={getFillForStatus()}
