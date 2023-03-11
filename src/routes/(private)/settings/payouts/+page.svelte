@@ -139,9 +139,7 @@
           {/if}
           <Button
             href="/_/stripe/account/onboard"
-            label={$redirecting_to_stripe
-              ? 'One sec!'
-              : 'Manage your Stripe account'}
+            label={$redirecting_to_stripe ? 'One sec!' : 'Manage Stripe account'}
             disabled={$redirecting_to_stripe}
             xlarge
             primary

@@ -27,14 +27,14 @@ Map(
 Assign all likes:
 
 Map(
-  Paginate(Documents(Collection("likes"))),
+  Paginate(Documents(Collection("likes")), { size: 500 }),
   Lambda(
     "like",
     Update(Var("like"), {
       data: {
         available: false,
-        post_ref: Ref(Collection("posts"), "358932306528829513"),
-        target_nametag_ref: Ref(Collection("nametags"), "358581124374462541")
+        post_ref: Ref(Collection("posts"), "358934245606948937"),
+        target_nametag_ref: Ref(Collection("nametags"), "358934090209034317")
       }
     })
   )
