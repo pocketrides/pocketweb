@@ -9,6 +9,7 @@
   import type { PageData } from './$types';
   import HowPayoutsWork from './ui/HowPayoutsWork.svelte';
   import PayoutChip from './ui/PayoutChip.svelte';
+  import { plural } from '$lib/util/plural';
 
   export let data: PageData;
 
@@ -161,7 +162,7 @@
         {#if data.total_likes}
           <p>
             <span class="h3">Almost there!</span>
-            You have {data.total_likes} likes so far.
+            You have {plural(data.total_likes, 'like', 'likes', true)} so far.
           </p>
         {:else}
           <p>Come back when you have more likes!</p>

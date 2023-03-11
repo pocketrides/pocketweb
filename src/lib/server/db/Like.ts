@@ -1,12 +1,11 @@
 import type { LikePostResponse, ServerLike } from '$lib/zod/Like';
-import type { PayoutBoundary } from '$lib/zod/Payout';
 import { Fauna, q } from './Fauna';
 import { Invoice } from './Invoice';
 import { Nametag } from './Nametag';
 import { Post } from './Post';
 
 export class Like {
-  static mint_count = 10;
+  static mint_count = 250;
   static collection = 'likes';
 
   static async doesLikePost(nametag_id: string, post_id: string) {

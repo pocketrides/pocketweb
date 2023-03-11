@@ -67,8 +67,8 @@
         <div>
           <h3 class="h2">Step 3: Start a Payout</h3>
           <p>
-            The time's arrived! We'll start a payout for all the likes you've earned
-            so far, add them up and transfer them to your Stripe account.
+            We'll start a payout for all the likes you've received so far, add them
+            up, and transfer them to your Stripe account.
           </p>
         </div>
       {/if}

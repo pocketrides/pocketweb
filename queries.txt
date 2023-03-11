@@ -1,0 +1,41 @@
+Delete all:
+
+Map(
+  Paginate(Collections(), { size: 1000 }),
+  Lambda(
+    "c",
+    Let(
+      {
+        collection: Get(Var('c')),
+        name: Select('name', Var('collection'))
+      },
+      If(
+        Equals("terms", Var("name")),
+        Concat(['skipped', Var('name')], ' '),
+        Do(
+          Foreach(
+            Paginate(Documents(Var("c")), { size: 1000 }),
+            Lambda("d", Do(Delete(Var("d"))))
+          ),
+          Concat(['deleted', Var('name')], ' ')
+        )
+      )
+    )
+  )
+)
+
+Assign all likes:
+
+Map(
+  Paginate(Documents(Collection("likes"))),
+  Lambda(
+    "like",
+    Update(Var("like"), {
+      data: {
+        available: false,
+        post_ref: Ref(Collection("posts"), "358932306528829513"),
+        target_nametag_ref: Ref(Collection("nametags"), "358581124374462541")
+      }
+    })
+  )
+)
