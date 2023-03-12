@@ -34,6 +34,6 @@ export const humanStatus = (status: ServerPayout['status']): string => {
     case 'transfer_ready':
       return 'Ready to transfer';
     case 'transferred':
-      return 'Transferred to Stripe';
+      return 'Transferred';
   }
 };
