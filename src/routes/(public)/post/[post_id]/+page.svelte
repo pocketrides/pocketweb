@@ -15,6 +15,6 @@
 </svelte:head>
 
 <SiteHeader />
-<Main padded={false}>
+<Main fullheight padded={false}>
   <Post post_id={data.post.id} />
 </Main>

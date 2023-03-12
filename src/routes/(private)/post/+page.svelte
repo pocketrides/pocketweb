@@ -19,6 +19,7 @@
   const page_controller = writable<PageController>(blankPost());
   const is_publishing = writable(false);
   const publish_error = writable(false);
+  const nav_controller = writable('publish');
 
   const settingsSheetClick = () => {
     $App.sheet_id = 'post_settings';
@@ -64,26 +65,26 @@
 <Main fullheight>
   <Posts store={page_controller} />
   <UtilityNav slot="utility-nav">
+    <div slot="left">
+      <Button
+        id="settings"
+        label="Settings"
+        icon="settings"
+        large
+        controller={nav_controller}
+        on:click={settingsSheetClick}
+      />
+    </div>
     <div slot="right">
-      <ButtonRow let:controller initial="publish">
-        <Button
-          id="settings"
-          label="Settings"
-          icon="settings"
-          large
-          {controller}
-          on:click={settingsSheetClick}
-        />
-        <Button
-          id="publish"
-          label="Publish to…"
-          icon="signpost"
-          disabled={!valid}
-          primary
-          {controller}
-          on:click={publishSheetClick}
-        />
-      </ButtonRow>
+      <Button
+        id="publish"
+        label="Publish to…"
+        icon="signpost"
+        disabled={!valid}
+        primary
+        controller={nav_controller}
+        on:click={publishSheetClick}
+      />
     </div>
   </UtilityNav>
 </Main>
