@@ -18,7 +18,14 @@
   aria-disabled={disabled}
 >
   <input type="checkbox" bind:checked {disabled} on:change />
-  <Icon filled={checked} icon={checked ? 'check_box' : 'check_box_outline_blank'} />
+  {#if checked}
+    <Icon filled={checked} icon={'check_box'} />
+  {:else}
+    <Icon icon={'check_box_outline_blank'} />
+    <span class="vh">
+      <Icon filled={checked} icon={'check_box'} />
+    </span>
+  {/if}
   <Icon {icon} />
   {label}
 </label>
