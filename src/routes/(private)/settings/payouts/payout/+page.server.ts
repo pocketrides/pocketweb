@@ -1,4 +1,4 @@
-import { error, redirect } from '@sveltejs/kit';
+import { redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { Payout } from '$lib/server/db/Payout';
 
@@ -45,12 +45,15 @@ export const actions = {
     if (!payout_id) return false;
 
     if (event.locals.nametag_id) {
-      await Payout.updateStatus(
+      const payout = await Payout.updateStatus(
         event,
         payout_id,
         event.locals.nametag_id,
         'transferred'
       );
+
+      if (payout?.status === 'transferred')
+        throw redirect(302, `/settings/payouts/payout/${payout.id}`);
 
       return true;
     }

@@ -13,6 +13,8 @@ export const getTimeAgo = (date: DateInput, style?: FormatStyleName | Style) => 
   return ta.format(date, style);
 };
 
-export const formatDate = (date: Date) => {
-  return new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' }).format(date);
+export const formatDate = (date: Date, short?: boolean) => {
+  return new Intl.DateTimeFormat('en-US', {
+    dateStyle: short ? 'short' : 'medium'
+  }).format(date);
 };

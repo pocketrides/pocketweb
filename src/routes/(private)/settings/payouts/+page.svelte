@@ -21,6 +21,7 @@
   };
 
   const in_progress_statuses: ServerPayout['status'][] = [
+    'transfer_ready',
     'processing',
     'processing_error',
     'idle'
@@ -73,7 +74,7 @@
           </h1>
         </div>
         <div slot="right">
-          {#if data.can_create_payouts && !$in_progress.length}
+          {#if can_create_payouts && !$in_progress.length}
             <Button
               id="new_payout"
               icon="attach_money"
@@ -160,13 +161,15 @@
         {/if}
       {:else}
         <Button label="Get started" disabled xlarge primary />
-        {#if data.total_likes}
-          <p>
-            <span class="h3">Almost there!</span>
-            You have {plural(data.total_likes, 'like', 'likes', true)} so far.
-          </p>
-        {:else}
-          <p>Come back when you have more likes!</p>
+        {#if !$in_progress.length}
+          {#if data.total_likes}
+            <p>
+              <span class="h3">Almost there!</span>
+              You have {plural(data.total_likes, 'like', 'likes', true)} so far.
+            </p>
+          {:else}
+            <p>Come back when you have more likes!</p>
+          {/if}
         {/if}
       {/if}
       <Button href="/settings" label="Go back" />

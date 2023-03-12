@@ -32,7 +32,7 @@
   </div>
   <div slot="right" />
 </SiteHeader>
-<Main>
+<Main fullheight>
   <div data-flex="v" data-gap="1">
     <h1 data-ph>
       <Icon icon="settings_suggest" />

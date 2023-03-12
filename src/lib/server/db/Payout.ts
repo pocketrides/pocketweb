@@ -173,7 +173,7 @@ export class Payout {
             payout: q.Update(q.Var('payout_ref'), {
               data: {
                 status: new_status,
-                error_status
+                error_status: error_status || null
               }
             })
           },
@@ -218,6 +218,7 @@ export class Payout {
             payout = await this.#update(payout.id, {
               stripe_transfer_id: transfer.id
             });
+          else throw Error(`couldn't create transfer`, { cause: transfer });
         } catch (e) {
           console.error('> transfer error', e);
           if (payout)

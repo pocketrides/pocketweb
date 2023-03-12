@@ -29,11 +29,23 @@
           <Icon icon="autorenew" spins />
           Status: {humanStatus(payout.status)}
         </div>
+      {:else if payout.status === 'processing_error' && payout.error_status === 'needs_restart'}
+        <div class="h2 half thin">
+          <Icon icon="info" />
+          Status: {humanStatus(payout.status)}
+        </div>
+        <div class="h2 half thin">Something went wrong, try again</div>
       {:else if payout.status === 'transfer_ready'}
         <div class="h2 half thin">
           <Icon icon="attach_money" />
           Status: {humanStatus(payout.status)}
         </div>
+      {:else if payout.status === 'processing_error' && payout.error_status === 'failed_transfer'}
+        <div class="h2 half thin">
+          <Icon icon="info" />
+          Status: {humanStatus(payout.status)}
+        </div>
+        <div class="h2 half thin">Transfer failed, try again</div>
       {:else if payout.status === 'transferred'}
         <div class="h2 half thin">
           <Icon icon="done" />
@@ -48,7 +60,7 @@
       class:half={payout.status !== 'transferred'}
     >
       <div class="h3">
-        {payout.status === 'transfer_ready'
+        {payout.status === 'transfer_ready' || payout.status === 'processing_error'
           ? 'Processed:'
           : payout.status === 'transferred'
           ? 'Totals:'

@@ -24,16 +24,12 @@
       transform: rotate(0deg);
     }
 
-    20% {
-      transform: rotate(360deg);
-    }
-
     100% {
       transform: rotate(360deg);
     }
   }
 
   .spins {
-    animation: icon-spins 5s ease-in-out infinite;
+    animation: icon-spins 1.5s linear infinite;
   }
 </style>

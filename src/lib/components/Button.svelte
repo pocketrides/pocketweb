@@ -15,6 +15,7 @@
   export let name: string = '';
   export let value: string = '';
   export let href: string | undefined = undefined;
+  export let target: string | undefined = undefined;
 
   export let small: boolean = false;
   export let primary: boolean = false;
@@ -39,6 +40,7 @@
   const hrefClick = async () => {
     if (href) {
       if (href.includes('/_/')) location.href = href;
+      else if (target === '_blank') window.open(href);
       else await goto(href);
     }
   };

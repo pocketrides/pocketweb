@@ -1,5 +1,4 @@
 import { StripeClient } from '$lib/server/StripeClient';
-import { NametagStats } from '$lib/server/db/NametagStats';
 import { Payout } from '$lib/server/db/Payout';
 import type { LayoutServerLoad } from './$types';
 
@@ -23,10 +22,11 @@ export const load = (async (event) => {
       );
 
       if (stripe_account) {
-        can_create_payouts =
-          stripe_account.charges_enabled === true && can_create_account;
+        can_create_payouts = stripe_account.charges_enabled === true;
       }
-    } catch (e) {}
+    } catch (e) {
+      console.error('payouts/layout.server - stripe error', e);
+    }
   }
 
   return {
