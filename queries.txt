@@ -33,8 +33,8 @@ Map(
     Update(Var("like"), {
       data: {
         available: false,
-        post_ref: Ref(Collection("posts"), "358934245606948937"),
-        target_nametag_ref: Ref(Collection("nametags"), "358934090209034317")
+        post_ref: Ref(Collection("posts"), "358943647306088525"),
+        target_nametag_ref: Ref(Collection("nametags"), "358943372823494733")
       }
     })
   )
