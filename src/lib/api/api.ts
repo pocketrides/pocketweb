@@ -22,6 +22,7 @@ export class Api {
     const res = validator.safeParse(await req.json());
 
     if (res.success) return res.data as T;
+    console.warn(res);
     return { success: false };
   };
 
@@ -30,15 +31,23 @@ export class Api {
     payload: object,
     validator: z.ZodTypeAny
   ): Promise<T | ApiGenericFailureResponse> => {
-    const req = await fetch(endpoint, {
-      method: 'post',
-      body: JSON.stringify(payload)
-    });
+    try {
+      const req = await fetch(endpoint, {
+        method: 'post',
+        body: JSON.stringify(payload)
+      });
 
-    const res = validator.safeParse(await req.json());
+      if (req.status !== 200) return { success: false };
 
-    if (res.success) return res.data as T;
-    return { success: false };
+      const res = validator.safeParse(await req.json());
+
+      if (res.success) return res.data as T;
+      console.warn(res);
+      return { success: false };
+    } catch (e) {
+      console.error(e);
+      return { success: false };
+    }
   };
 }
 

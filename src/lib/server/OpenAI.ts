@@ -92,7 +92,8 @@ export class OpenAI {
 
     return {
       allow_likes: false,
-      response_text: `We had a problem moderating this and have disabled likes out of an abundance of caution.`
+      response_text: `We had a problem moderating this and have disabled likes out of an abundance of caution.`,
+      raw_response: json
     };
   }
 

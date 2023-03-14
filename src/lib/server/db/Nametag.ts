@@ -1,12 +1,22 @@
-import { Fauna, type FaunaRef } from './Fauna';
+import { Fauna, q, type FaunaRef } from './Fauna';
 import { Account } from './Account';
-import type { DraftNametag, ServerNametag } from '$lib/zod/Nametag';
+import type { ClientNametag, DraftNametag, ServerNametag } from '$lib/zod/Nametag';
 import { NametagStats } from './NametagStats';
 import { blankNametagStats } from '$lib/zod/NametagStats';
 import { blankAccountStatus } from '$lib/zod/Stripe';
 
 export class Nametag {
   static collection = 'nametags';
+
+  static fql_for = {
+    client_nametag: (var_name: string = 'nametag') => {
+      return {
+        id: q.Select(['ref', 'id'], q.Var(var_name)),
+        nametag: q.Select(['data', 'nametag'], q.Var(var_name)),
+        theme: q.Select(['data', 'theme'], q.Var(var_name))
+      };
+    }
+  };
 
   static async verifyOwnership(
     account_id: string,
@@ -71,6 +81,16 @@ export class Nametag {
 
   static parseFQL(fql: any) {
     return Fauna.parseFQL<ServerNametag>(fql, ['account_ref', 'stats_ref']);
+  }
+
+  static parseClientFQL(fql: any): ClientNametag {
+    const nametag = this.parseFQL(fql);
+
+    return {
+      id: nametag.id,
+      nametag: nametag.nametag,
+      theme: nametag.theme
+    };
   }
 
   static toRef(id: string) {

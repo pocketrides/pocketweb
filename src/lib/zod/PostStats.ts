@@ -18,20 +18,13 @@ export const draft_post_stats_validator = z.object({
 
 export const server_post_stats_validator = draft_post_stats_validator.extend({
   id: z.string(),
-  post_ref: client_ref_validator,
-
-  // bolted on after payout or when quarantine has been clicked
-  moderation_result_ref: client_ref_validator.optional(),
-  moderation_result: server_moderation_result_validator.optional()
+  post_ref: client_ref_validator
 });
 
 export type DraftPostStats = z.infer<typeof draft_post_stats_validator>;
 export type ServerPostStats = DraftPostStats & {
   id: string;
   post_ref: ClientRef | Expr;
-
-  moderation_result_ref?: ClientRef | Expr;
-  moderation_result?: ServerModerationResult;
 };
 
 export const blankPostStats = (): DraftPostStats => {

@@ -15,6 +15,7 @@
   import Container from './Container.svelte';
   import Icon from './Icon.svelte';
   import Nametag from './Nametag.svelte';
+  import Replies from './replies/Replies.svelte';
   import Row from './Row.svelte';
 
   export let post_id: string | undefined = undefined;
@@ -70,6 +71,11 @@
   };
 
   const likeClick = async () => {
+    if (!$page.data.my_nametag) {
+      $App.sheet_id = 'onboarding';
+      return;
+    }
+
     if (!$post_controller.stats) return;
 
     $is_liking = true;
@@ -101,6 +107,11 @@
   };
 
   const quarantineClick = async () => {
+    if (!$page.data.my_nametag) {
+      $App.sheet_id = 'onboarding';
+      return;
+    }
+
     if (!$post_controller.stats) return;
 
     $is_quarantining = true;
@@ -141,8 +152,15 @@
 {#if $post_controller !== undefined}
   <div bind:this={wrapper} data-post={$post_controller.id}>
     <Row sticky padded bordered fill="system-superlight">
-      <div slot="left">
-        <Nametag small nametag={$post_controller.nametag} />
+      <div slot="left" data-flex="ac">
+        <Nametag nametag={$post_controller.nametag} />
+        <div class="half">
+          <Icon icon="arrow_right" />
+        </div>
+        <p class="h3 half">
+          <Icon icon="signpost" />
+          Posts
+        </p>
       </div>
       <div slot="right">
         <a
@@ -156,7 +174,8 @@
       </div>
     </Row>
     {#if post_hidden === false}
-      <Container fill="system-light">
+      <!-- The main post area -->
+      <Container fill="system-light" bottombordered>
         <div data-flex="v" data-gap="1">
           <div class="summary">
             {@html $post_controller.contents[0].content}
@@ -270,6 +289,9 @@
         </Container>
       </div>
     {/if}
+    {#if post_hidden === false && $post_controller.settings.enable_replies === true}
+      <Replies replies={$post_controller.replies} post_id={$post_controller.id} />
+    {/if}
   </div>
 {:else if $loading_post === true}
   <div data-loading>
@@ -283,10 +305,11 @@
 
 <style lang="scss">
   .summary {
+    font-size: 1.125rem;
     display: -webkit-box;
-    max-height: 4.5rem;
+    max-height: 6rem;
     overflow: hidden;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
   }
 

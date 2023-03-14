@@ -7,15 +7,20 @@ export class LoadPostRequest {
     post_id: string,
     _fetch = fetch
   ): Promise<ServerPost | undefined> {
-    let post = await IDBCache.get<ServerPost>(post_id);
+    let post; // = await IDBCache.get<ServerPost>(post_id);
 
     if (!post) {
-      const req = await _fetch(`/_/post/${post_id}`);
+      const req = await _fetch(`/_/post/${post_id}/retrieve`);
 
       if (req.status !== 200) return undefined;
 
-      post = await req.json<ServerPost>();
-      await IDBCache.put(post);
+      const json = await req.json<{ success: boolean; post: ServerPost }>();
+      if (json.success) {
+        post = json.post;
+      } else {
+        return undefined;
+      }
+      // await IDBCache.put(post);
     }
 
     if (post.is_liked === undefined) {
@@ -24,7 +29,7 @@ export class LoadPostRequest {
       post.is_liked = stats.is_liked;
       post.unlike_key = stats.unlike_key;
       post.is_quarantined = stats.is_quarantined;
-      await IDBCache.put(post);
+      // await IDBCache.put(post);
     }
 
     return post;

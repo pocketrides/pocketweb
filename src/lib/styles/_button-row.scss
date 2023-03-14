@@ -19,7 +19,7 @@
     }
 
     & + [data-3d],
-    & + [data-3d-container] {
+    & + [data-3d-container] [data-3d] {
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
       margin-left: -1px;

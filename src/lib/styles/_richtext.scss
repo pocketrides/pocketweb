@@ -6,7 +6,9 @@
   hr,
   ul,
   ol {
-    margin-bottom: 1.5rem;
+    &:not(:last-child) {
+      margin-bottom: 1.5rem;
+    }
   }
 
   ul,

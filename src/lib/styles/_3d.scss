@@ -6,6 +6,10 @@
   height: 42px;
   padding: 0 0.5rem;
 
+  &.small {
+    height: 32px;
+  }
+
   &[data-fill="superdark"] {
     box-shadow: -1px 1px rgba(var(--base), 0.25);
     border-color: rgba(var(--base), 0.5);
@@ -23,6 +27,7 @@
   &:not([aria-disabled="true"]) {
     &:is(input):focus-within,
     &:is(select):focus,
+    &:is(textarea):focus,
     &:active {
       box-shadow: none;
       transform: translate(-1px, 1px);

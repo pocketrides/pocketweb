@@ -38,3 +38,15 @@ export type ServerNametag = DraftNametag & {
   stats_ref?: ClientRef | any;
   stats?: ServerNametagStats;
 };
+
+export const client_nametag_validator = z.object({
+  id: z.string(),
+  nametag: z.string().min(1).max(32),
+  theme: z.enum(THEME_VALUES)
+});
+
+export type ClientNametag = {
+  id: string;
+  nametag: string;
+  theme: ThemeValue;
+};

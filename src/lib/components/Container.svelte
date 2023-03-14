@@ -5,9 +5,10 @@
   export let rounded: boolean = false;
   export let padded: boolean = true;
   export let bordered: boolean = false;
+  export let bottombordered: boolean = false;
 </script>
 
-<div data-fill={fill} class:rounded class:padded class:bordered>
+<div data-fill={fill} class:rounded class:padded class:bordered class:bottombordered>
   <slot />
 </div>
 
@@ -37,5 +38,9 @@
     :global([data-padded]:not(:last-child)) {
       border-bottom: 1px solid rgba(var(--dark), 0.25);
     }
+  }
+
+  .bottombordered {
+    border-bottom: 1px solid rgba(var(--dark), 0.25);
   }
 </style>

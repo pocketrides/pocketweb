@@ -1,11 +1,13 @@
 import type { ClientRef } from '$lib/zod/Fauna';
 import type { FeedResponse } from '$lib/zod/Feed';
 import type { ServerPayout } from '$lib/zod/Payout';
+import type { ClientReply } from '$lib/zod/Reply';
 import { Fauna, q } from './Fauna';
 import { Nametag } from './Nametag';
 import { NametagStats } from './NametagStats';
 import { Payout } from './Payout';
 import { Post } from './Post';
+import { Reply } from './Reply';
 
 type FaunaQueryResponse<T = string> = {
   data: T[];
@@ -58,6 +60,7 @@ export class Feed {
         };
       } else return { post_ids: [], has_more: false };
     } catch (e) {
+      console.error('feed/getHomeFeed', e);
       return { post_ids: [], has_more: false };
     }
   }
@@ -93,6 +96,7 @@ export class Feed {
         };
       } else return { post_ids: [], has_more: false };
     } catch (e) {
+      console.error('feed/getNametagFeed', e);
       return { post_ids: [] };
     }
   }
@@ -135,6 +139,59 @@ export class Feed {
         };
       } else return { post_ids: [], has_more: false };
     } catch (e) {
+      console.error('feed/getPayoutFeed', e);
+      return { post_ids: [] };
+    }
+  }
+
+  static async getPostRepliesFeed(
+    post_id: string,
+    after_id?: string
+  ): Promise<FeedResponse<ClientReply>> {
+    try {
+      let paginate_opts: any = { size: 20 };
+
+      if (after_id) {
+        paginate_opts.after = [Reply.toRef(after_id)];
+      }
+
+      const res = await Fauna.client().query<FaunaQueryResponse<any>>(
+        q.Map(
+          q.Paginate(q.Match(q.Index('replies_by_post_ref'), [Post.toRef(post_id)])),
+          q.Lambda(
+            'reply_ref',
+            q.Let(
+              {
+                reply: q.Get(q.Var('reply_ref')),
+                nametag: q.Get(q.Select(['data', 'nametag_ref'], q.Var('reply')))
+              },
+              Reply.fql_for.client_reply()
+            )
+          )
+        )
+      );
+
+      if (res.data) {
+        let replies: ClientReply[] = res.data.map((r) => {
+          return Reply.parseFQL(r);
+        });
+
+        if (replies[0].id === after_id) replies.shift();
+        if (replies[replies.length - 1].id === after_id) replies.pop();
+
+        return {
+          post_ids: replies,
+          after_id: res.after && res.after[0] ? res.after[0].id : undefined,
+          has_more: res.after && res.after[0] ? true : false
+        };
+      } else {
+        return {
+          post_ids: [],
+          has_more: false
+        };
+      }
+    } catch (e) {
+      console.error('feed/getPostRepliesFeed', e);
       return { post_ids: [] };
     }
   }

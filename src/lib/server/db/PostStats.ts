@@ -80,6 +80,6 @@ export class PostStats {
   }
 
   static parseFQL(fql: any) {
-    return Fauna.parseFQL(fql, ['post_ref', 'moderation_result_ref']);
+    return Fauna.parseFQL<ServerPostStats>(fql, ['post_ref']);
   }
 }

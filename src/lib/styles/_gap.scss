@@ -9,4 +9,8 @@
     gap: 0;
     line-height: 1;
   }
+
+  &[data-gap="sm"] {
+    gap: 0.25rem;
+  }
 }

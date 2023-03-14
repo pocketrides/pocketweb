@@ -6,7 +6,7 @@
   export let fill: Fill = 'system-superlight';
 </script>
 
-<div>
+<div data-util-nav>
   <nav data-fill={fill}>
     <Container>
       <Row>

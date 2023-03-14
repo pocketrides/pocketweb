@@ -22,7 +22,7 @@
 <style lang="scss">
   .sticky {
     position: sticky;
-    z-index: 11;
+    z-index: 15;
     top: 0;
   }
 

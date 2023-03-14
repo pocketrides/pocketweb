@@ -89,6 +89,11 @@
     opacity: 0;
   }
 
+  textarea,
+  [data-richtext] {
+    font-size: 1.125rem;
+  }
+
   // article {
   // padding-bottom: 1.5rem;
   // }

@@ -1,11 +1,16 @@
 import { link_validator } from './Link';
 import { cloudinary_photo_validator } from './CloudinaryPhoto';
 import { z } from 'zod';
-import { server_nametag_validator, type ServerNametag } from './Nametag';
+import {
+  server_nametag_validator,
+  type ClientNametag,
+  type ServerNametag
+} from './Nametag';
 import { server_post_stats_validator, type ServerPostStats } from './PostStats';
 import { client_ref_validator, type ClientRef } from './Fauna';
 import type { Expr } from 'faunadb';
 import { openai_mod_result_validator } from './OpenAI';
+import type { ClientReply } from './Reply';
 
 export const MAX_POST_CONTENT_LENGTH = 720;
 
@@ -73,7 +78,7 @@ export type ServerPost = {
   ts: number;
   audience: 'friends' | 'close_friends' | 'pocket';
   nametag_ref: ClientRef | Expr;
-  nametag: ServerNametag;
+  nametag: ClientNametag;
   settings: PostSettings;
   contents: PostContent[];
   stats_ref: ClientRef | Expr;
@@ -82,6 +87,9 @@ export type ServerPost = {
   is_liked?: boolean;
   unlike_key?: string;
   is_quarantined?: boolean;
+
+  replies?: ClientReply[];
+  replies_after?: string;
 };
 
 export const blankPostContent = (): DraftPostContent => {

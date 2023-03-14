@@ -16,7 +16,7 @@
   export let data: PageData;
 
   if (data.page_theme) $App.theme = data.page_theme;
-  $App.fill = 'superlight';
+  $App.fill = 'system-superlight';
 
   let scroll_list: HTMLDivElement | undefined;
 
