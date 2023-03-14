@@ -24,13 +24,13 @@
   const dispatch = createEventDispatcher();
 
   let is_focused = false;
+  let can_autofocus = false;
 
   $: is_valid = messages_payload_validator.safeParse($controller).success;
   $: is_active =
     always_active ||
     is_focused ||
     ($controller[0].type === 'text' && $controller[0].content_raw !== '');
-  $: dispatch('active', { is_active });
 
   const reset = (success: boolean) => {
     if (success) $controller = [blankMessage()];
@@ -47,6 +47,7 @@
 
     if (is_valid) {
       $pending = true;
+      can_autofocus = true;
       dispatch('message', {
         messages: $controller,
         completeCallback: reset
@@ -56,6 +57,7 @@
 
   const focus = () => {
     is_focused = true;
+    dispatch('active', { is_active });
   };
 
   const addMoreClick = () => {
@@ -98,7 +100,7 @@
               {placeholder}
               controller={controls}
               can_delete={$controller.length > 1}
-              active={is_active}
+              autofocus={can_autofocus}
               disabled={$pending}
               on:submit={handleSubmit}
               on:delete={deleteText}
@@ -168,6 +170,11 @@
 </form>
 
 <style lang="scss">
+  .composer {
+    max-height: 220px;
+    overflow-y: auto;
+  }
+
   .composer:not(.active) {
     padding-top: 0;
     padding-bottom: 0;

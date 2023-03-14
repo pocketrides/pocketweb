@@ -5,6 +5,7 @@
   import { QuarantineCreateRequest } from '$lib/api/quarantine/create';
   import { QuarantineDestroyRequest } from '$lib/api/quarantine/destroy';
   import { App } from '$lib/stores/app';
+  import { RepliesManager } from '$lib/stores/RepliesManager';
   import { getTimeAgo } from '$lib/util/time-ago';
   import type { ServerPost } from '$lib/zod/Post';
   import { afterUpdate, createEventDispatcher, onMount } from 'svelte';
@@ -145,6 +146,10 @@
       }
     }
   };
+
+  const openReplies = () => {
+    RepliesManager.openReplies(post_id, $post_controller.replies);
+  };
 </script>
 
 <svelte:window on:scroll={checkBounds} />
@@ -207,11 +212,15 @@
                     }}
                   />
                 {/if}
-                <!-- <Button
-                id="replies"
-                icon="reply"
-                count={$post_controller.stats.replies}
-              /> -->
+                {#if $post_controller?.settings?.enable_replies === true}
+                  <Button
+                    id="replies"
+                    icon="reply"
+                    label=""
+                    count={$post_controller.stats.replies}
+                    on:click={openReplies}
+                  />
+                {/if}
               </ButtonRow>
               <ButtonRow slot="right">
                 {#if $post_controller.is_quarantined}
@@ -288,9 +297,6 @@
           </div>
         </Container>
       </div>
-    {/if}
-    {#if post_hidden === false && $post_controller.settings.enable_replies === true}
-      <Replies replies={$post_controller.replies} post_id={$post_controller.id} />
     {/if}
   </div>
 {:else if $loading_post === true}

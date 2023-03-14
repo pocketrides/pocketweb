@@ -13,6 +13,7 @@
   import MyNotifications from '$lib/sheets/MyNotifications.svelte';
   import type MagicBellClient from '@magicbell/core';
   import Subscribe from '$lib/sheets/Subscribe.svelte';
+  import PostReplies from '$lib/sheets/PostReplies.svelte';
 
   let started: boolean = false;
   let client: MagicBellClient;
@@ -86,3 +87,5 @@
 {:else}
   <Onboarding />
 {/if}
+
+<PostReplies />

@@ -58,7 +58,7 @@
 
 <svelte:head>
   {#if data.my_nametag}
-    <title>{data.my_nametag.nametag} | home | pocketrides!</title>
+    <title>home | pocketrides!</title>
   {/if}
 </svelte:head>
 

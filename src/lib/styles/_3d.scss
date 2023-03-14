@@ -10,6 +10,11 @@
     height: 32px;
   }
 
+  &:focus {
+    box-shadow: none;
+    transform: translate(-1px, 1px);
+  }
+
   &[data-fill="superdark"] {
     box-shadow: -1px 1px rgba(var(--base), 0.25);
     border-color: rgba(var(--base), 0.5);

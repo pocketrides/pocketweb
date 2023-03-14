@@ -16,7 +16,7 @@
   export let placeholder: string = `Write a message…`;
   export let can_delete = false;
   export let controller = writable('');
-  export let active: boolean = false;
+  export let autofocus: boolean = false;
   export let disabled: boolean = false;
 
   const dispatch = createEventDispatcher();
@@ -31,7 +31,7 @@
 
     sanitize = lib.default.sanitize;
 
-    if (active && textarea) textarea.focus();
+    if (autofocus && textarea) textarea.focus();
   });
 
   $: if (sanitize) {
@@ -70,7 +70,6 @@
 <div class="grow" data-flex="ae" data-gap>
   <div class="grow" class:editing>
     <label for={id} class="vh">{placeholder}</label>
-    <!-- svelte-ignore a11y-autofocus -->
     <textarea
       {id}
       bind:this={textarea}
@@ -88,12 +87,7 @@
       class:active={editing}
     />
     <!-- svelte-ignore a11y-role-supports-aria-props -->
-    <article
-      data-3d={active || valid ? '' : undefined}
-      class:filled={valid}
-      data-richtext
-      aria-disabled={disabled}
-    >
+    <article data-3d class:filled={valid} data-richtext aria-disabled={disabled}>
       {#if valid}
         {@html message.content}
       {:else}

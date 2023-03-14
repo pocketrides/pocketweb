@@ -16,6 +16,8 @@
   export let close: string = 'Close';
   export let dismissable: boolean = true;
 
+  let el: HTMLDivElement;
+
   const context = setContext<SheetContext>(
     'sheet',
     writable({ icon, header, dismissable })
@@ -59,6 +61,8 @@
   />
   <div
     class="sheet"
+    bind:this={el}
+    on:scroll
     data-fill="system-light"
     on:keyup={keyboardDismiss}
     in:slide|local
@@ -83,9 +87,10 @@
     </header>
     <article>
       <Container>
-        <slot controller={context} />
+        <slot controller={context} {el} />
       </Container>
     </article>
+    <slot name="nav" controller={context} {el} />
   </div>
 {/if}
 
