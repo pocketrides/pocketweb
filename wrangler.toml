@@ -12,5 +12,5 @@ compatibility_date="2022-12-22"
   bucket="cloudflare/public"
 
 [[queues.producers]]
-  queue="pocketqueue"
+  queue="pocketworker"
   binding="POCKETQUEUE"
