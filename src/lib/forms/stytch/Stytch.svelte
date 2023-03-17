@@ -25,12 +25,12 @@
 
 {#if $context === 'challenge'}
   <div>
-    <PhoneNumber on:complete={challengeComplete} />
+    <PhoneNumber on:done={challengeComplete} />
   </div>
 {/if}
 
 {#if $context === 'verify'}
   <div>
-    <SecretCode {method_id} on:complete={verifyComplete} />
+    <SecretCode {method_id} on:done={verifyComplete} />
   </div>
 {/if}

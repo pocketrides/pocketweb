@@ -5,9 +5,38 @@
   import MessageComposer from '$lib/components/messaging/MessageComposer.svelte';
   import type { MessageComposerEvent } from '$lib/zod/Message';
   import { ReplyToPostRequest } from '$lib/api/reply/reply_to_post';
+  import { page } from '$app/stores';
+  import { Room, type RoomConnection } from '$lib/api/room';
 
   let replies_are_scrolled_up = false;
   let shadow: HTMLElement;
+
+  let room: RoomConnection | undefined;
+
+  const connect = async () => {
+    if ($RepliesManagerStore.post_id) {
+      room = await Room.connect(
+        'post',
+        $RepliesManagerStore.post_id,
+        $page.data.room_key
+      );
+
+      if (room) {
+        room.handleMessage(() => {
+          console.log('> handling a message');
+        });
+      }
+    } else {
+      console.log('not connecting');
+    }
+  };
+
+  const disconnect = () => {
+    if (room) {
+      room.disconnect();
+      room = undefined;
+    }
+  };
 
   const handleReply = async (
     e: CustomEvent<MessageComposerEvent>,
@@ -64,6 +93,8 @@
   id="post_replies"
   header="Replies"
   icon="reply"
+  on:activate={connect}
+  on:dismiss={disconnect}
   on:scroll={handleScroll}
   let:el
 >
@@ -75,7 +106,7 @@
     class="shadow"
     bind:this={shadow}
     class:active={replies_are_scrolled_up}
-    data-fill="system-superlight"
+    data-fill="system-light"
   >
     <MessageComposer
       on:active={() => {
@@ -106,12 +137,12 @@
 
   @media (max-width: 640px) {
     .shadow {
-      position: fixed;
-      width: 100%;
+      // position: fixed;
+      // width: 100%;
     }
 
     div {
-      padding-bottom: 120px;
+      // padding-bottom: 120px;
     }
   }
 </style>

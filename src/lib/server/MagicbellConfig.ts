@@ -5,7 +5,7 @@ export class MagicbellConfig {
   static MAGICBELL_SECRET: string;
 
   static async getConfig(
-    nametag_id?: string
+    nametag_id?: string | null
   ): Promise<MagicBellConfigOptions | undefined> {
     if (nametag_id) {
       const encoder = new TextEncoder();

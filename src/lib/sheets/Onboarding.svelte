@@ -17,7 +17,7 @@
     await IDBCache.clear();
     await IDBFeedCache.clear();
 
-    if (e.detail.first_time === true) {
+    if (e.detail.first_time === true && location.href === '/') {
       $App.sheet_id = '';
       location.href = `/profile/${e.detail.nametag_id}`;
     } else {

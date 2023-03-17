@@ -3,6 +3,8 @@ import { TermsAccept } from '$lib/api/terms/accept';
 import { Account } from '$lib/server/db/Account';
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
+import { createSessionCookie, getSessionCookie } from '$lib/server/Cookies';
+import { Stytch } from '$lib/server/Stytch';
 
 export const POST = (async (event) => {
   const payload = TermsAccept.payload.safeParse(await event.request.json());
@@ -13,7 +15,20 @@ export const POST = (async (event) => {
       terms_version: payload.data.version
     });
 
-    if (account) result = { success: true };
+    const session_cookie = getSessionCookie(event.cookies);
+
+    if (account && session_cookie) {
+      const upgrade = await Stytch.upgradeSessionWithAccount(
+        session_cookie,
+        account.id,
+        account
+      );
+
+      if (upgrade) {
+        createSessionCookie(event.cookies, upgrade.session_token);
+        result = { success: true };
+      }
+    }
   }
 
   return json(result);

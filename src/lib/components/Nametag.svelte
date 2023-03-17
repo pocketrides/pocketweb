@@ -12,7 +12,7 @@
   <a
     href={nametag.id ? `/profile/${nametag.id}` : undefined}
     data-theme={nametag.theme}
-    data-3d
+    data-3d={tiny ? '' : ''}
     on:click
     class:normal={!small && !large && !tiny}
     class:small
@@ -40,8 +40,14 @@
   }
 
   .tiny {
-    height: auto;
-    padding: 0 0.125rem;
+    height: 28px;
+    padding: 0 6px;
+    border: 1px solid rgba(var(--dark), 0.5);
+    border-radius: 3px;
+    box-shadow: 0 0 4px 0 rgba(var(--base), 0.5);
+    // background-color: rgba(var(--superlight), 0.85);
+    // font-weight: 300;
+    font-size: 0.875rem;
   }
 
   .small {

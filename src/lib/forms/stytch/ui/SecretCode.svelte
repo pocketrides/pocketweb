@@ -31,7 +31,7 @@
       });
 
       if (res.success) {
-        dispatch('complete');
+        dispatch('done');
       } else {
         $submitting = false;
         $api_error = true;

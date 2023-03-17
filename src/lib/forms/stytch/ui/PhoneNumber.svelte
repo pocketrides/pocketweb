@@ -10,6 +10,7 @@
 
   const dispatch = createEventDispatcher();
   const submitting = writable(false);
+  const has_error = writable(false);
   const context = getContext<SheetContext>(SHEET_CONTEXT_ID);
 
   let regionCode: string = AVAILABLE_COUNTRIES[0].value;
@@ -31,7 +32,7 @@
     valid = e164 !== undefined;
   });
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: any) => {
     if (valid && e164) {
       $submitting = true;
 
@@ -41,9 +42,10 @@
       });
 
       if (res.success) {
-        dispatch('complete', { method_id: res.method_id });
+        dispatch('done', { method_id: res.method_id });
       } else {
         $submitting = false;
+        $has_error = true;
       }
     }
   };
@@ -77,6 +79,9 @@
     </div>
     {#if valid === false && phoneNumber !== ''}
       <label for="phone" data-error>That doesn't look like a valid number!</label>
+    {/if}
+    {#if $has_error}
+      <label for="phone" data-error>Something went wrong! Try again.</label>
     {/if}
   </div>
   <p class="half">

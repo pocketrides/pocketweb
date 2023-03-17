@@ -1,22 +1,48 @@
 import type { DraftAccount, ServerAccount } from '$lib/zod/Account';
-import { Fauna } from './Fauna';
+import { Fauna, q } from './Fauna';
 
 export class Account {
   static collection: string = 'accounts';
 
-  static async createIfNeeded(stytch_id: string): Promise<string | undefined> {
-    const exists = await Account.getByStytchId(stytch_id);
+  static async createIfNeeded(
+    stytch_id: string
+  ): Promise<ServerAccount | undefined> {
+    try {
+      const res = await Fauna.client().query(
+        q.Let(
+          {
+            match: q.Match(q.Index('accounts_by_stytch_id'), [stytch_id]),
+            exists: q.Exists(q.Var('match'))
+          },
+          q.If(
+            q.Var('exists'),
+            q.Get(q.Var('match')),
+            q.Create(q.Collection(this.collection), {
+              data: {
+                stytch_id
+              }
+            })
+          )
+        )
+      );
 
-    if (exists) {
-      return exists.id;
-    } else {
-      const created = await Account.create({
-        stytch_id: stytch_id
-      });
-
-      if (created) return created.id;
-      else return undefined;
+      return this.parseFQL(res);
+    } catch (e) {
+      console.error('account/createIfNeeded', e);
+      return undefined;
     }
+    // const exists = await Account.getByStytchId(stytch_id);
+
+    // if (exists) {
+    //   return exists;
+    // } else {
+    //   const created = await Account.create({
+    //     stytch_id: stytch_id
+    //   });
+
+    //   if (created) return created;
+    //   else return undefined;
+    // }
   }
 
   static async getByFaunaId(fauna_id: string) {

@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "vite dev --host --https",
+    "dev": "vite dev --host --https --port 5174",
     "wrangler-dev": "npx wrangler@latest dev cloudflare/worker.js --port 3000 --local-protocol=https",
     "stripe-listen": "stripe listen --forward-to https://localhost:5173/_/stripe/webhook --skip-verify",
     "build": "vite build",
@@ -16,6 +16,7 @@
     "deploy": "vite build && npx wrangler@latest publish"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^4.20230307.0",
     "@sveltejs/adapter-auto": "*",
     "@sveltejs/adapter-cloudflare-workers": "*",
     "@sveltejs/kit": "*",

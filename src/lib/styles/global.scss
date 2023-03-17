@@ -10,6 +10,10 @@
 @import "richtext";
 @import "loading";
 
-[data-locked="true"] {
-  overflow: hidden;
+html[data-locked="true"] {
+  &,
+  & body {
+    // overflow: hidden;
+    // max-height: 100vh;
+  }
 }

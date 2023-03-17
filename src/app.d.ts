@@ -4,15 +4,21 @@ declare global {
   namespace App {
     // interface Error {}
     interface Locals {
-      fauna_account_id?: string;
+      fauna_account_id?: string | null;
       fauna_account?: import('$lib/zod/Account').ServerAccount;
-      nametag_id?: string;
+      nametag_id?: string | null;
       nametag?: import('$lib/zod/Nametag').ServerNametag;
+      room_host: string;
+      room_key?: string;
+      session_expires?: import('$lib/zod/Stytch').DateString;
     }
     interface PageData {
       page_theme?: import('$lib/zod/Theme').ThemeAnyValue;
       my_nametag?: import('$lib/zod/Nametag').ServerNametag;
       mb_config?: import('@magicbell/core/dist/MagicBellClient').MagicBellConfigOptions;
+      room_host: string;
+      room_key?: string;
+      session_expires?: string;
     }
     interface Platform {
       context?: ExecutionContext;
@@ -31,6 +37,8 @@ declare global {
         MAGICBELL_SECRET: string;
 
         OPEN_AI_KEY: string;
+
+        ROOM_HOST: string;
 
         POCKETQUEUE: Queue<import('$lib/zod/Pocketqueue').PocketqueuePayload>;
       };

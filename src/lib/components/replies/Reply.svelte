@@ -1,6 +1,7 @@
 <script lang="ts">
+  import { App } from '$lib/stores/app';
   import type { ClientReply } from '$lib/zod/Reply';
-  import { slide, fly } from 'svelte/transition';
+  import { fly } from 'svelte/transition';
   import Nametag from '../Nametag.svelte';
   import ReplyText from './ReplyText.svelte';
 
@@ -21,11 +22,23 @@
   {/each}
   {#if reply.pending}
     <div in:fly={{ y: 100, delay: reply.messages.length * 50, duration: 150 }}>
-      <Nametag nametag={reply.nametag} />
+      <Nametag
+        nametag={reply.nametag}
+        tiny
+        on:click={() => {
+          $App.sheet_id = '';
+        }}
+      />
     </div>
   {:else}
     <div>
-      <Nametag nametag={reply.nametag} />
+      <Nametag
+        nametag={reply.nametag}
+        tiny
+        on:click={() => {
+          $App.sheet_id = '';
+        }}
+      />
     </div>
   {/if}
 </li>

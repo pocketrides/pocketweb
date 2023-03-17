@@ -7,6 +7,8 @@ via: https://piccalil.li/blog/a-modern-css-reset/
 *::before,
 *::after {
   box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Remove default margin */

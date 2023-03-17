@@ -2,7 +2,7 @@
   import '$lib/styles/global.scss';
 
   import { browser } from '$app/environment';
-  import { afterNavigate, beforeNavigate } from '$app/navigation';
+  import { afterNavigate, beforeNavigate, invalidateAll } from '$app/navigation';
   import { page } from '$app/stores';
   import SiteFooter from '$lib/components/SiteFooter.svelte';
   import SiteLoader from '$lib/components/SiteLoader.svelte';
@@ -14,10 +14,16 @@
   import type MagicBellClient from '@magicbell/core';
   import Subscribe from '$lib/sheets/Subscribe.svelte';
   import PostReplies from '$lib/sheets/PostReplies.svelte';
+  import { Room } from '$lib/api/room';
+  import type { LayoutData } from './$types';
 
   let started: boolean = false;
   let client: MagicBellClient;
   let dispose: Function | undefined;
+
+  export let data: LayoutData;
+
+  Room.host = data.room_host;
 
   $: if (browser) {
     document.documentElement.setAttribute(
@@ -71,8 +77,16 @@
     }, 2000);
   });
 
-  afterNavigate(() => {
+  afterNavigate(async () => {
     $App.loading = false;
+
+    if ($page.data.session_expires) {
+      const expiration = new Date($page.data.session_expires);
+
+      if (expiration < new Date()) {
+        location.reload();
+      }
+    }
   });
 </script>
 

@@ -3,15 +3,9 @@ import { env } from '$env/dynamic/private';
 import { Fauna } from '$lib/server/db/Fauna';
 import { Stytch } from '$lib/server/Stytch';
 import { StripeClient } from '$lib/server/StripeClient';
-import { Account } from '$lib/server/db/Account';
-import { Nametag } from '$lib/server/db/Nametag';
 import {
-  MAX_AGE_MINUTES,
-  createNametagCookie,
-  destroyNametagCookie,
   createSessionCookie,
   destroySessionCookie,
-  getNametagCookie,
   getSessionCookie
 } from '$lib/server/Cookies';
 import { OpenAI } from '$lib/server/OpenAI';
@@ -26,59 +20,19 @@ export const handle = (async ({ event, resolve }) => {
   const session_cookie = getSessionCookie(event.cookies);
 
   if (session_cookie) {
-    try {
-      const stytch_result = await Stytch.client().sessions.authenticate({
-        session_token: session_cookie,
-        session_duration_minutes: MAX_AGE_MINUTES
-      });
+    const res = await Stytch.authenticate(session_cookie);
 
-      if (stytch_result.status_code === 200 && stytch_result.session_token) {
-        createSessionCookie(event.cookies, stytch_result.session_token);
-        const fauna_account = await Account.getByStytchId(
-          stytch_result.user.user_id
-        );
-
-        if (fauna_account) {
-          event.locals.fauna_account_id = fauna_account.id;
-          event.locals.fauna_account = fauna_account;
-
-          const nametag_cookie = getNametagCookie(event.cookies);
-
-          if (nametag_cookie) {
-            const verified = await Nametag.verifyOwnership(
-              event.locals.fauna_account_id,
-              nametag_cookie
-            );
-
-            if (verified) {
-              event.locals.nametag_id = verified.id;
-              event.locals.nametag = verified;
-              createNametagCookie(event.cookies, verified.id);
-            } else {
-              event.locals.nametag_id = undefined;
-              event.locals.nametag = undefined;
-              destroySessionCookie(event.cookies);
-              destroyNametagCookie(event.cookies);
-            }
-          }
-        } else {
-          event.locals.fauna_account_id = undefined;
-          event.locals.fauna_account = undefined;
-          destroySessionCookie(event.cookies);
-        }
-      }
-    } catch (e) {
-      event.locals.fauna_account = undefined;
-      event.locals.fauna_account_id = undefined;
-      event.locals.nametag = undefined;
-      event.locals.nametag_id = undefined;
+    if (res) {
+      event.locals.fauna_account_id = res.fauna_account_id;
+      event.locals.fauna_account = res.fauna_account;
+      event.locals.nametag = res.nametag;
+      event.locals.nametag_id = res.nametag_id;
+      event.locals.room_key = res.room_key;
+      event.locals.session_expires = res.session_expires;
+      createSessionCookie(event.cookies, res.session_token);
+    } else {
       destroySessionCookie(event.cookies);
-      destroyNametagCookie(event.cookies);
     }
-  } else {
-    event.locals.fauna_account_id = undefined;
-    destroySessionCookie(event.cookies);
-    destroyNametagCookie(event.cookies);
   }
 
   if (
@@ -103,6 +57,7 @@ type AppSecrets = {
   MAGICBELL_KEY: string;
   MAGICBELL_SECRET: string;
   OPEN_AI_KEY: string;
+  ROOM_HOST: string;
 };
 
 const loadSecrets = (event: RequestEvent, env: AppSecrets) => {
@@ -125,4 +80,7 @@ const loadSecrets = (event: RequestEvent, env: AppSecrets) => {
   // magicbell
   MagicbellConfig.MAGICBELL_KEY = env.MAGICBELL_KEY;
   MagicbellConfig.MAGICBELL_SECRET = env.MAGICBELL_SECRET;
+
+  // Room config (for frontend)
+  event.locals.room_host = env.ROOM_HOST;
 };

@@ -97,6 +97,8 @@
             <TextComposer
               bind:message
               on:focus={focus}
+              on:focus
+              on:blur
               {placeholder}
               controller={controls}
               can_delete={$controller.length > 1}
