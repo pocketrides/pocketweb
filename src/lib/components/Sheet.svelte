@@ -174,14 +174,13 @@
     }
 
     article {
-      min-height: 100%;
-      // transition: min-height 0.25s ease-out;
+      min-height: 420px;
     }
 
-    .nav {
-      // position: relative;
-      // display: none;
-    }
+    // .nav {
+    // position: relative;
+    // display: none;
+    // }
 
     @media (max-width: 640px) {
       &:has(:focus-within input:focus, :focus-within textarea:focus) {
@@ -195,7 +194,7 @@
         border-top-left-radius: 0;
 
         article {
-          // min-height: auto;
+          min-height: 100%;
         }
       }
     }

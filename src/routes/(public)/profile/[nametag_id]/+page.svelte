@@ -59,7 +59,7 @@
 <SiteHeader outer_fill="system-light">
   <ProfileHeader {page_controller} />
 </SiteHeader>
-<Main fullheight padded={false}>
+<Main fullheight padded={false} fill="system-light">
   {#if $page_controller.is_my_profile_page && $page.data.my_nametag?.stripe?.free_mode}
     <ProfileFreeModeHeader />
   {:else}

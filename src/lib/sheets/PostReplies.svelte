@@ -135,14 +135,14 @@
     box-shadow: 0 -8px 8px -8px rgba(var(--dark), 0.5);
   }
 
-  @media (max-width: 640px) {
-    .shadow {
-      // position: fixed;
-      // width: 100%;
-    }
+  // @media (max-width: 640px) {
+  // .shadow {
+  // position: fixed;
+  // width: 100%;
+  // }
 
-    div {
-      // padding-bottom: 120px;
-    }
-  }
+  // div {
+  // padding-bottom: 120px;
+  // }
+  // }
 </style>

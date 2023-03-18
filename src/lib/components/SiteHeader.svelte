@@ -62,11 +62,11 @@
     }
   }
 
-  @media (min-width: 640px) {
-    .wrapper[data-fill] {
-      background-color: rgb(var(--light));
-    }
-  }
+  // @media (min-width: 640px) {
+  //   .wrapper[data-fill] {
+  //     background-color: rgb(var(--system-light));
+  //   }
+  // }
 
   header {
     border-bottom-left-radius: 1rem;

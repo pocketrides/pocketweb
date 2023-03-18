@@ -25,7 +25,7 @@
   };
 </script>
 
-<div bind:this={el}>
+<div class="list" bind:this={el}>
   <slot />
   {#if has_none}
     <div class="wrap">
@@ -58,6 +58,12 @@
 </div>
 
 <style lang="scss">
+  @media (min-width: 640px) {
+    .list {
+      border-left: 1px solid rgba(var(--dark), 0.05);
+      border-right: 1px solid rgba(var(--dark), 0.05);
+    }
+  }
   .wrap {
     padding: 1rem;
   }

@@ -70,7 +70,7 @@
       data-flex="v"
       data-unread={$notif_store.isRead ? undefined : ''}
     >
-      {#if $notif_store.actionUrl && !$notif_store.isRead}
+      {#if $notif_store.actionUrl}
         <a href={$notif_store.actionUrl} data-unstyle on:click={actionClick}>
           <h3 class="half">{$notif_store.title}</h3>
           {#if $notif_store.content}

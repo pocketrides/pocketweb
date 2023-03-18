@@ -14,7 +14,7 @@
 </svelte:head>
 
 <SiteHeader />
-<Main>
+<Main fullheight>
   <Container fill="dark" rounded>
     <h1 class="h2">Something broke!</h1>
     <p>We'll try and fix it.</p>

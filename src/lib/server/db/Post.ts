@@ -44,9 +44,14 @@ export class Post {
         post.is_quarantined = req.is_quarantined;
 
         return { success: true, post };
-      }
-
-      return { success: false };
+      } else
+        throw new Error('query error', {
+          cause: {
+            post_id,
+            nametag_id,
+            req
+          }
+        });
     } catch (e) {
       console.error('post/retrieve', e);
       return { success: false };

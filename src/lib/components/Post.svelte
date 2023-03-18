@@ -34,6 +34,7 @@
   const showing_post = writable(false);
   const loading_post = writable(false);
   const showing_mod_result = writable(false);
+  const is_expanded = writable(false); // if the post is longer than 6 lines, show an "expand" button
 
   $: should_be_hidden = $post_controller
     ? $post_controller.is_quarantined || $post_controller.settings.is_nsfw
@@ -156,16 +157,30 @@
 
 {#if $post_controller !== undefined}
   <div bind:this={wrapper} data-post={$post_controller.id}>
-    <Row sticky padded bordered fill="system-superlight">
+    <Row
+      sticky
+      padded
+      bordered
+      fill={$post_controller.audience === 'close_friends'
+        ? 'superlight'
+        : 'system-superlight'}
+    >
       <div slot="left" data-flex="ac">
         <Nametag nametag={$post_controller.nametag} />
         <div class="half">
           <Icon icon="arrow_right" />
         </div>
-        <p class="h3 half">
-          <Icon icon="signpost" />
-          Posts
-        </p>
+        {#if $post_controller.audience === 'close_friends'}
+          <p class="h3 half">
+            <Icon icon="favorite" />
+            Close Friends
+          </p>
+        {:else}
+          <p class="h3 half">
+            <Icon icon="signpost" />
+            Posts
+          </p>
+        {/if}
       </div>
       <div slot="right">
         <a
@@ -180,11 +195,43 @@
     </Row>
     {#if post_hidden === false}
       <!-- The main post area -->
-      <Container fill="system-light" bottombordered>
+      <Container
+        fill={$post_controller.audience === 'close_friends'
+          ? 'light'
+          : 'system-light'}
+        bottombordered
+      >
         <div data-flex="v" data-gap="1">
-          <div class="summary">
-            {@html $post_controller.contents[0].content}
+          <div class="summary-wrapper" data-expanded={$is_expanded}>
+            <div class="summary" data-richtext>
+              {@html $post_controller.contents[0].content}
+            </div>
+            <div
+              class="read-more"
+              data-theme={$post_controller.audience === 'close_friends'
+                ? $post_controller.nametag.theme
+                : 'system'}
+            >
+              {#if $post_controller.contents.length === 1}
+                <Button
+                  icon={$is_expanded ? 'expand_less' : 'expand_more'}
+                  label={$is_expanded ? 'Collapse' : 'Expand'}
+                  on:click={() => {
+                    $is_expanded = !$is_expanded;
+                  }}
+                />
+              {/if}
+            </div>
           </div>
+          {#if $post_controller.contents.length > 1}
+            <div>
+              <Button
+                small
+                label={`Read ${$post_controller.contents.length - 1} more…`}
+                href={`/post/${$post_controller.id}`}
+              />
+            </div>
+          {/if}
           {#if $post_controller.stats}
             <Row>
               <ButtonRow slot="left">
@@ -310,13 +357,41 @@
 {:else}<div />{/if}
 
 <style lang="scss">
-  .summary {
-    font-size: 1.125rem;
-    display: -webkit-box;
-    max-height: 6rem;
+  .summary-wrapper {
+    position: relative;
     overflow: hidden;
-    -webkit-line-clamp: 4;
-    -webkit-box-orient: vertical;
+    padding-bottom: 34px;
+
+    .summary {
+      font-size: 1.125rem;
+      display: -webkit-box;
+      max-height: 108px;
+      overflow: hidden;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+    }
+
+    .read-more {
+      position: absolute;
+      padding-left: 1px;
+      width: 100%;
+      height: 34px;
+      top: 108px;
+      background: linear-gradient(0deg, rgb(var(--light)), rgba(var(--light), 0.85));
+    }
+
+    &[data-expanded='true'] {
+      padding-bottom: 0;
+
+      .summary {
+        max-height: none;
+        -webkit-line-clamp: 1000;
+      }
+
+      .read-more {
+        position: static;
+      }
+    }
   }
 
   .quarantined {

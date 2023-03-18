@@ -62,8 +62,8 @@
   {/if}
 </svelte:head>
 
-<SiteHeader fill="system-superlight" outer_fill="system-superlight" />
-<Main fullheight padded={false}>
+<SiteHeader fill="system-superlight" outer_fill="system-light" />
+<Main fill="system-light" padded={false}>
   <ScrollList
     has_none={$page_controller.post_ids.length === 0}
     load_more_label="Load newest"

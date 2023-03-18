@@ -2,6 +2,7 @@ import type DOMPurify from 'dompurify';
 
 export const dompurify_config: DOMPurify.Config = {
   ALLOWED_TAGS: [
+    'br',
     'ul',
     'ol',
     'li',

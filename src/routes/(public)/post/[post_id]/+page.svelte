@@ -14,7 +14,7 @@
   <title>{page_title} | pocketrides!</title>
 </svelte:head>
 
-<SiteHeader />
-<Main fullheight padded={false}>
+<SiteHeader outer_fill="system-light" />
+<Main fill="system-light" fullheight padded={false}>
   <Post post_id={data.post.id} />
 </Main>
