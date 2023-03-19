@@ -11,6 +11,7 @@
 
   export let type: 'button' | 'submit' = 'button';
   export let icon: string | undefined = undefined;
+  export let icon_filled: boolean = false;
   export let disabled: boolean = false;
   export let name: string = '';
   export let value: string = '';
@@ -31,8 +32,10 @@
 
   const label_store = writable(label);
 
-  const controllerClick = (e: MouseEvent) => {
-    if ($controller !== id) e.stopPropagation();
+  const controllerClick = (e: any) => {
+    if ($controller !== id) {
+      e.stopPropagation();
+    }
 
     $controller = id;
   };
@@ -79,7 +82,7 @@
   on:click
   on:click={hrefClick}
 >
-  <Icon {icon} />
+  <Icon {icon} filled={icon_filled} />
   {#if count !== undefined && ($controller !== id || $label_store === '')}
     <span>{count}</span>
   {/if}
@@ -94,6 +97,7 @@
   button {
     padding: 0 0.5rem;
     height: 32px;
+    white-space: nowrap;
 
     span:empty {
       display: none;

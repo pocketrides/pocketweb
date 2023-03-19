@@ -156,7 +156,11 @@
 <svelte:window on:scroll={checkBounds} />
 
 {#if $post_controller !== undefined}
-  <div bind:this={wrapper} data-post={$post_controller.id}>
+  <div
+    bind:this={wrapper}
+    data-post={$post_controller.id}
+    data-theme={$post_controller.nametag.theme}
+  >
     <Row
       sticky
       padded
@@ -167,16 +171,16 @@
     >
       <div slot="left" data-flex="ac">
         <Nametag nametag={$post_controller.nametag} />
-        <div class="half">
+        <div class="half small">
           <Icon icon="arrow_right" />
         </div>
         {#if $post_controller.audience === 'close_friends'}
-          <p class="h3 half">
+          <p class="h3 half small">
             <Icon icon="favorite" />
             Close Friends
           </p>
         {:else}
-          <p class="h3 half">
+          <p class="h3 half small">
             <Icon icon="signpost" />
             Posts
           </p>
@@ -206,12 +210,7 @@
             <div class="summary" data-richtext>
               {@html $post_controller.contents[0].content}
             </div>
-            <div
-              class="read-more"
-              data-theme={$post_controller.audience === 'close_friends'
-                ? $post_controller.nametag.theme
-                : 'system'}
-            >
+            <div class="read-more">
               {#if $post_controller.contents.length === 1}
                 <Button
                   icon={$is_expanded ? 'expand_less' : 'expand_more'}

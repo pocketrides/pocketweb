@@ -1,21 +1,20 @@
 <script lang="ts">
-  import { fade, fly, slide } from 'svelte/transition';
-  import Row from './Row.svelte';
-  import Icon from './Icon.svelte';
+  import { browser } from '$app/environment';
+  import type { SheetContext } from '$lib/contexts/Sheet';
   import { App } from '$lib/stores/app';
-  import Container from './Container.svelte';
   import {
     afterUpdate,
-    beforeUpdate,
     createEventDispatcher,
     onDestroy,
     onMount,
     setContext
   } from 'svelte';
-  import { browser } from '$app/environment';
   import { writable } from 'svelte/store';
-  import type { SheetContext } from '$lib/contexts/Sheet';
+  import { fade, fly, slide } from 'svelte/transition';
   import Button from './Button.svelte';
+  import Container from './Container.svelte';
+  import Icon from './Icon.svelte';
+  import Row from './Row.svelte';
 
   export let id: string;
   export let icon: string | undefined = undefined;
@@ -23,8 +22,12 @@
   export let close: string = 'Close';
   export let dismissable: boolean = true;
 
-  let el: HTMLDivElement;
-  let article: HTMLElement;
+  let outer: HTMLDivElement;
+  let element: HTMLDivElement;
+  let scrolls: HTMLDivElement;
+  let body: HTMLDivElement;
+  let focused = false;
+  let last_window_y = 0;
 
   const dispatch = createEventDispatcher();
 
@@ -35,12 +38,16 @@
 
   $: $context.dismissable = dismissable;
 
-  $: if ($App.sheet_id === id) dispatch('activate');
+  $: if ($App.sheet_id === id) {
+    dispatch('activate');
+    last_window_y = window.scrollY;
+  }
 
   const dismiss = () => {
     if ($context.dismissable === false) return;
     if ($App.sheet_id === id) {
       $App.sheet_id = '';
+      scrollTo(last_window_y);
       dispatch('dismiss');
     }
   };
@@ -51,43 +58,78 @@
     }
   };
 
-  const mobileInputFocused = (e: Event) => {
-    if (
-      visualViewport &&
-      el &&
-      window.innerWidth <= 640 &&
-      visualViewport.height < 420
-    ) {
-      // document.body.style.height = visualViewport.height + 'px';
-    } else {
-      // document.body.style.height = '';
+  const resize = () => {
+    if (window.visualViewport && element) {
+      element.style.height = window.visualViewport.height + 'px';
     }
-    // const target = e.target as HTMLInputElement | HTMLTextAreaElement;
-    // console.log(target.nodeName);
-    // const width = visualViewport?.width || window.innerWidth;
-    // const height = visualViewport?.height;
-    // if (
-    //   width <= 640 &&
-    //   ['input', 'textarea'].indexOf(target.nodeName.toLowerCase()) !== -1
-    // ) {
-    //   setInterval(() => {
-    //     console.log(height);
-    //   }, 50);
-    // }
+  };
+
+  const focus = (e: any) => {
+    if (
+      !(
+        e.target.nodeName === 'TEXTAREA' ||
+        (e.target.nodeName === 'INPUT' && e.target.type !== 'button')
+      )
+    )
+      return;
+    if (window.innerWidth > 640) return;
+    if (element && element.clientHeight > 360)
+      element.style.transform = 'translateY(-2000px)';
+    focused = true;
+    scrollTo(0);
+    scrollContentToBottom();
+    setTimeout(() => {
+      if (element) element.style.transform = '';
+    });
+  };
+
+  const blur = () => {
+    focused = false;
+    if (element) element.style.height = '';
+  };
+
+  const scrollTo = (y: number | null, el: any = window, max: number = 20) => {
+    let count = 0;
+    let interval = setInterval(() => {
+      if (count < max) {
+        el.scrollTo(0, y ? y : el.scrollHeight);
+        count++;
+      } else {
+        clearInterval(interval);
+      }
+    }, 50);
+  };
+
+  const scrollContentToBottom = () => {
+    if (scrolls) {
+      scrollTo(null, scrolls);
+    }
   };
 
   onMount(() => {
-    if (browser) window.addEventListener('keyup', keyboardDismiss);
+    if (browser) {
+      window.addEventListener('keyup', keyboardDismiss);
+      visualViewport?.addEventListener('resize', resize);
+      outer.addEventListener('focus', focus, true);
+      outer.addEventListener('blur', blur, true);
+    }
   });
 
   onDestroy(() => {
-    if (browser) window.removeEventListener('keyup', keyboardDismiss);
-    $App.sheet_id = '';
-  });
+    if (browser) {
+      window.removeEventListener('keyup', keyboardDismiss);
+      visualViewport?.removeEventListener('resize', resize);
 
-  beforeUpdate(() => {
-    if ($App.sheet_id !== id && visualViewport)
-      visualViewport.removeEventListener('resize', mobileInputFocused);
+      if (element) {
+        element.style.height = '';
+        element.style.top = '';
+      }
+
+      if (outer) {
+        outer.removeEventListener('focus', focus, true);
+        outer.removeEventListener('blur', blur, true);
+      }
+    }
   });
 
   afterUpdate(() => {
@@ -95,106 +137,105 @@
     if (header && $context.header !== header) $context.header = header;
     if (dismissable && $context.dismissable !== dismissable)
       $context.dismissable = dismissable;
-    if ($App.sheet_id === id && visualViewport) {
-      visualViewport.addEventListener('resize', mobileInputFocused);
-    }
   });
 </script>
 
-{#if $App.sheet_id === id}
-  <div
-    class="cover"
-    on:click={dismiss}
-    on:keyup={keyboardDismiss}
-    in:fade|local
-    out:fade|local
-  />
-  <div
-    class="sheet"
-    bind:this={el}
-    on:scroll
-    data-fill="system-light"
-    on:keyup={keyboardDismiss}
-    in:slide|local
-    out:slide|local
-  >
-    <header data-fill="system-superlight">
-      <Container>
-        <Row>
-          <h2 slot="left">
-            <Icon icon={$context.icon} />
-            {$context.header || ''}
-          </h2>
-          <div slot="right">
-            <slot name="header-action">
-              {#if $context.dismissable === true}
-                <Button label={close} on:click={dismiss} />
-              {/if}
-            </slot>
+<div bind:this={outer}>
+  {#if $App.sheet_id === id}
+    <div
+      class="outer"
+      class:focused
+      bind:this={element}
+      in:fly|local={{ y: '100vh', opacity: 1 }}
+      out:fly|local={{ y: '100vh', opacity: 1 }}
+    >
+      <div class="inner" bind:this={scrolls} on:scroll>
+        <div class="body" bind:this={body}>
+          <header class="header" data-fill="system-superlight">
+            <Container>
+              <Row>
+                <div slot="left">
+                  <h2>
+                    <Icon icon={$context.icon} />
+                    {$context.header}
+                  </h2>
+                </div>
+                <div slot="right">
+                  <slot name="header-action">
+                    {#if $context.dismissable === true}
+                      <Button label={close} on:click={dismiss} />
+                    {/if}
+                  </slot>
+                </div>
+              </Row>
+            </Container>
+          </header>
+          <div class="content">
+            <Container>
+              <slot controller={context} {scrollContentToBottom} />
+            </Container>
           </div>
-        </Row>
-      </Container>
-    </header>
-    <article>
-      <Container>
-        <slot controller={context} {el} />
-      </Container>
-    </article>
-    <slot name="nav" controller={context} {el} />
-  </div>
-{/if}
+          <div class="nav">
+            <slot name="nav" controller={context} {scrollContentToBottom} />
+          </div>
+        </div>
+      </div>
+    </div>
+  {/if}
+</div>
 
 <style lang="scss">
-  .cover {
+  .outer {
     position: fixed;
-    top: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(var(--allblack), 0.85);
-    z-index: 20;
-  }
-
-  .sheet {
-    position: sticky;
-    width: 100vw;
-    // top: 20vh;
     bottom: 0;
-    max-height: 80vh;
-    overflow-x: hidden;
-    overflow-y: auto;
-    border-top-right-radius: 1rem;
-    border-top-left-radius: 1rem;
+    width: 100%;
+    height: 100%;
     z-index: 22;
+    overflow: hidden;
+    background-color: rgba(var(--allblack), 0.85);
 
-    header {
+    &.focused {
+      bottom: auto;
+      top: 0;
+
+      .header {
+        position: static;
+      }
+    }
+
+    .inner {
+      background-color: rgb(var(--system-light));
+      overflow-y: auto;
+      height: 100%;
+      overscroll-behavior: contain;
+    }
+
+    .header {
       position: sticky;
       top: 0;
+      width: 100%;
       z-index: 1;
       border-bottom: 1px solid rgba(var(--dark), 0.25);
     }
 
-    article {
-      min-height: 420px;
+    .nav {
+      position: sticky;
+      bottom: 0;
     }
+  }
 
-    // .nav {
-    // position: relative;
-    // display: none;
-    // }
-
-    @media (max-width: 640px) {
-      &:has(:focus-within input:focus, :focus-within textarea:focus) {
+  @media (min-width: 640px) {
+    .outer {
+      .inner {
+        max-height: 80vh;
         position: fixed;
-        top: 0;
         bottom: 0;
-        height: auto;
-        max-height: none;
-        min-height: auto;
-        border-top-right-radius: 0;
-        border-top-left-radius: 0;
+        width: 100%;
 
-        article {
-          min-height: 100%;
+        .body:has(.nav:not(:empty)) {
+          .content {
+            min-height: 80vh;
+          }
         }
       }
     }

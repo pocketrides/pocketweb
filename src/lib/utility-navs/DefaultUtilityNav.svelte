@@ -6,27 +6,44 @@
 </script>
 
 <UtilityNav>
-  <div class="h3" slot="left"><p>Pocketrides is<br />better social media.</p></div>
-  <div slot="right">
-    <ButtonRow initial="learn_more" let:controller>
-      <Button
-        id="get_account"
-        {controller}
-        label="Join now"
-        icon="hail"
-        large
-        on:click={() => {
-          $App.sheet_id = 'onboarding';
-        }}
-      />
-      <Button
-        id="learn_more"
-        {controller}
-        href="/"
-        label="Learn more"
-        icon="help_outline"
-        primary
-      />
-    </ButtonRow>
+  <div slot="left">
+    <div data-flex="as v" data-gap>
+      <h2 class="h3">
+        You're on Pocketrides! Hello! <span class="thin">
+          We're a social network doing things a whole lot of different.
+        </span>
+      </h2>
+      <ButtonRow let:controller initial="learn_more">
+        <Button
+          href="/"
+          id="learn_more"
+          label="Learn more"
+          icon="touch_app"
+          icon_filled
+          primary
+          {controller}
+        />
+        <Button
+          id="get_account"
+          label="Get free account"
+          large
+          icon="hail"
+          {controller}
+        />
+      </ButtonRow>
+    </div>
   </div>
 </UtilityNav>
+
+<style lang="scss">
+  @media (min-width: 640px) {
+    [data-flex] {
+      align-items: center;
+      text-align: center;
+    }
+
+    h2 {
+      max-width: 80%;
+    }
+  }
+</style>

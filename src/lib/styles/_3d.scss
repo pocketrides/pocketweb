@@ -10,7 +10,7 @@
     height: 32px;
   }
 
-  &:focus {
+  &:is(textarea):focus {
     box-shadow: none;
     transform: translate(-1px, 1px);
   }

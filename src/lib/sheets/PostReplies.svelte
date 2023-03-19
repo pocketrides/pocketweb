@@ -40,7 +40,7 @@
 
   const handleReply = async (
     e: CustomEvent<MessageComposerEvent>,
-    div: HTMLDivElement
+    scrollToBottom: Function
   ) => {
     if (!$RepliesManagerStore.post_id) return;
 
@@ -64,21 +64,10 @@
         return prev;
       });
 
-      scrollToBottom(div);
+      scrollToBottom();
     } else {
       e.detail.completeCallback(false);
     }
-  };
-
-  const scrollToBottom = (el: HTMLElement) => {
-    let count = 0;
-    let id = setInterval(() => {
-      el.scrollTop = el.scrollHeight - el.clientHeight;
-      count++;
-      if (count > 10) {
-        clearInterval(id);
-      }
-    }, 50);
   };
 
   const handleScroll = (e: any) => {
@@ -96,7 +85,7 @@
   on:activate={connect}
   on:dismiss={disconnect}
   on:scroll={handleScroll}
-  let:el
+  let:scrollContentToBottom
 >
   <div>
     <Replies />
@@ -106,14 +95,11 @@
     class="shadow"
     bind:this={shadow}
     class:active={replies_are_scrolled_up}
-    data-fill="system-light"
+    data-fill="system-superlight"
   >
     <MessageComposer
-      on:active={() => {
-        scrollToBottom(el);
-      }}
       on:message={(e) => {
-        handleReply(e, el);
+        handleReply(e, scrollContentToBottom);
       }}
       always_active={true}
       placeholder="Write a reply…"
@@ -126,23 +112,9 @@
     transition: box-shadow 0.15s ease-in-out;
     box-shadow: 0 0 0 0 rgba(var(--dark), 0);
     border-top: 1px solid rgba(var(--dark), 0.15);
-
-    position: sticky;
-    bottom: 0;
   }
 
   .shadow.active {
     box-shadow: 0 -8px 8px -8px rgba(var(--dark), 0.5);
   }
-
-  // @media (max-width: 640px) {
-  // .shadow {
-  // position: fixed;
-  // width: 100%;
-  // }
-
-  // div {
-  // padding-bottom: 120px;
-  // }
-  // }
 </style>
