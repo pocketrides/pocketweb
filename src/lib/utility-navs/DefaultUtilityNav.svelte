@@ -29,6 +29,9 @@
           large
           icon="hail"
           {controller}
+          on:click={() => {
+            $App.sheet_id = 'onboarding';
+          }}
         />
       </ButtonRow>
     </div>

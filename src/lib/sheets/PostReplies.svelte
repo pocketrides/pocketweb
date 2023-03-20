@@ -32,6 +32,7 @@
   };
 
   const disconnect = () => {
+    console.log('disconnect');
     if (room) {
       room.disconnect();
       room = undefined;
@@ -51,6 +52,8 @@
 
     if (res.success) {
       e.detail.completeCallback(true);
+
+      room?.sendMessage(res.reply.messages);
 
       RepliesManagerStore.update((prev) => {
         if (prev.replies && res.success) {
@@ -74,7 +77,8 @@
     if (!shadow) return;
     const target = e.target as HTMLElement;
     replies_are_scrolled_up =
-      target.scrollTop < target.scrollHeight - target.clientHeight;
+      Math.ceil(target.scrollTop) <
+      Math.floor(target.scrollHeight - target.clientHeight);
   };
 </script>
 
@@ -87,7 +91,7 @@
   on:scroll={handleScroll}
   let:scrollContentToBottom
 >
-  <div>
+  <div class="body">
     <Replies />
   </div>
   <nav
@@ -95,7 +99,7 @@
     class="shadow"
     bind:this={shadow}
     class:active={replies_are_scrolled_up}
-    data-fill="system-superlight"
+    data-fill="system-light"
   >
     <MessageComposer
       on:message={(e) => {
@@ -116,5 +120,13 @@
 
   .shadow.active {
     box-shadow: 0 -8px 8px -8px rgba(var(--dark), 0.5);
+  }
+
+  .body {
+    min-height: 100vh;
+
+    @media (min-width: 640px) {
+      min-height: calc(70vh - 130px);
+    }
   }
 </style>

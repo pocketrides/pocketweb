@@ -55,7 +55,7 @@
   .wrapper {
     position: relative;
     top: 0;
-    z-index: 15;
+    z-index: 16;
 
     &.utility {
       position: sticky;

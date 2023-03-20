@@ -123,6 +123,7 @@
       $post_controller.stats.quarantines = $post_controller.stats.quarantines - 1;
       await QuarantineDestroyRequest.post({ post_id: $post_controller.id });
       $is_quarantining = false;
+      $button_controller = '';
     } else {
       $post_controller.is_quarantined = true;
       $post_controller.stats.quarantines = $post_controller.stats.quarantines + 1;
@@ -161,43 +162,43 @@
     data-post={$post_controller.id}
     data-theme={$post_controller.nametag.theme}
   >
-    <Row
-      sticky
-      padded
-      bordered
-      fill={$post_controller.audience === 'close_friends'
-        ? 'superlight'
-        : 'system-superlight'}
-    >
-      <div slot="left" data-flex="ac">
-        <Nametag nametag={$post_controller.nametag} />
-        <div class="half small">
-          <Icon icon="arrow_right" />
-        </div>
-        {#if $post_controller.audience === 'close_friends'}
-          <p class="h3 half small">
-            <Icon icon="favorite" />
-            Close Friends
-          </p>
-        {:else}
-          <p class="h3 half small">
-            <Icon icon="signpost" />
-            Posts
-          </p>
-        {/if}
-      </div>
-      <div slot="right">
-        <a
-          href={`/post/${$post_controller.id}`}
-          class="half"
-          data-unstyle
-          title={`posted at ${new Date($post_controller.ts / 1000).toString()}`}
-        >
-          {getTimeAgo(new Date($post_controller.ts / 1000), 'mini')}
-        </a>
-      </div>
-    </Row>
     {#if post_hidden === false}
+      <Row
+        sticky
+        padded
+        bordered
+        fill={$post_controller.audience === 'close_friends'
+          ? 'superlight'
+          : 'system-superlight'}
+      >
+        <div slot="left" data-flex="ac">
+          <Nametag nametag={$post_controller.nametag} />
+          <div class="half small">
+            <Icon icon="arrow_right" />
+          </div>
+          {#if $post_controller.audience === 'close_friends'}
+            <p class="h3 half small">
+              <Icon icon="favorite" />
+              Close Friends
+            </p>
+          {:else}
+            <p class="h3 half small">
+              <Icon icon="signpost" />
+              Posts
+            </p>
+          {/if}
+        </div>
+        <div slot="right">
+          <a
+            href={`/post/${$post_controller.id}`}
+            class="half"
+            data-unstyle
+            title={`posted at ${new Date($post_controller.ts / 1000).toString()}`}
+          >
+            {getTimeAgo(new Date($post_controller.ts / 1000), 'mini')}
+          </a>
+        </div>
+      </Row>
       <!-- The main post area -->
       <Container
         fill={$post_controller.audience === 'close_friends'
@@ -213,6 +214,7 @@
             <div class="read-more">
               {#if $post_controller.contents.length === 1}
                 <Button
+                  small
                   icon={$is_expanded ? 'expand_less' : 'expand_more'}
                   label={$is_expanded ? 'Collapse' : 'Expand'}
                   on:click={() => {
@@ -262,6 +264,7 @@
                   <Button
                     id="replies"
                     icon="reply"
+                    small
                     label=""
                     count={$post_controller.stats.replies}
                     on:click={openReplies}
@@ -272,6 +275,7 @@
                 {#if $post_controller.is_quarantined}
                   <Button
                     controller={button_controller}
+                    small
                     id="hide"
                     icon="visibility_off"
                     label="Hide post"
@@ -283,13 +287,13 @@
                 <Button
                   id="quarantines"
                   icon="support"
+                  small
                   disabled={$is_quarantining}
                   controller={button_controller}
                   count={$post_controller.stats.quarantines}
-                  small
                   primary={$post_controller.is_quarantined}
                   label={$post_controller.is_quarantined
-                    ? 'Un-quarantine'
+                    ? 'Unquarantine'
                     : 'Quarantine'}
                   on:click={quarantineClick}
                 />
@@ -326,6 +330,7 @@
                 Think we got it wrong? Tap Dispute and we'll review it.
               </p>
               <Button
+                small
                 label="Dispute"
                 on:click={() => {
                   window.open(

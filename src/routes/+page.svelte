@@ -13,7 +13,7 @@
 </svelte:head>
 
 <SiteHeader />
-<Main>
+<Main fullheight>
   <div data-flex="v" data-gap>
     <h1 class="h2">Welcome to the experiment!</h1>
     <p>

@@ -10,15 +10,16 @@ export type RoomMessageBatch = {
 
 type RoomConnectionMessageCallback = (batch: RoomMessageBatch) => void;
 
+// what's going over the wires both ways
 type TelegraphMessage = {
   room_type: RoomType;
   room_id: string;
-  auth_key?: string;
+  room_key: string;
 };
 
 export type RoomConnection = {
   handleMessage: (callback: RoomConnectionMessageCallback) => void;
-  sendMessage: (nametag: ClientNametag, messages: MessagesPayload) => Promise<void>;
+  sendMessage: (messages: MessagesPayload) => Promise<void>;
   disconnect: typeof Room.disconnect;
 };
 
@@ -31,7 +32,7 @@ export class Room {
     return `${this.host}/${room_type}/${room_id}/connect`;
   };
 
-  static async connect(room_type: RoomType, room_id: string, auth_key?: string) {
+  static async connect(room_type: RoomType, room_id: string, room_key?: string) {
     return new Promise<RoomConnection | undefined>(async (resolve) => {
       if (this.#socket) {
         console.warn('> call disconnect next time', this.#socket);
@@ -39,7 +40,15 @@ export class Room {
       }
 
       try {
-        this.#socket = new WebSocket(this.#getConnectionString(room_type, room_id));
+        const req: any = await fetch(this.#getConnectionString(room_type, room_id), {
+          headers: {
+            Authorization: 'Bearer ' + room_key,
+            Upgrade: 'websocket'
+          },
+          mode: 'no-cors'
+        });
+
+        this.#socket = req.webSocket;
       } catch (e) {
         this.#socket = undefined;
       }
@@ -70,12 +79,16 @@ export class Room {
               }
             );
           },
-          sendMessage: async (
-            nametag: ClientNametag,
-            messages: MessagesPayload
-          ) => {},
+          sendMessage: async (messages: MessagesPayload) => {
+            this.#socket?.send(
+              JSON.stringify({
+                room_key,
+                messages
+              })
+            );
+          },
           disconnect: () => {
-            return this.disconnect;
+            return this.disconnect();
           }
         });
       } else {
@@ -87,8 +100,10 @@ export class Room {
   static disconnect() {
     if (this.#socket) {
       try {
-        this.#socket.close(200, 'do you hear me');
-      } catch (e) {}
+        this.#socket.close(1000, 'do you hear me');
+      } catch (e) {
+        console.warn(e);
+      }
 
       this.#socket = undefined;
     }
