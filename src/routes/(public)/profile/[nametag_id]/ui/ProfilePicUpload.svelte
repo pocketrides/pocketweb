@@ -14,6 +14,8 @@
   let files: FileList;
 
   const handleChange = async () => {
+    $uploading = true;
+
     const uploaded = await upload(files);
 
     if (uploaded) {
@@ -23,9 +25,13 @@
         profile_pic: uploaded[0]
       });
 
+      profile_pic = uploaded[0];
+
+      $uploading = false;
       await invalidateAll();
     } else {
       $error = true;
+      $uploading = false;
       profile_pic = undefined;
     }
   };
@@ -39,9 +45,11 @@
     accept="image/*"
     on:change={handleChange}
   />
-  <ProfilePic {profile_pic} />
-  {#if !profile_pic}
-    <div class="cta" data-3d data-flex="cc">
+  {#if !$uploading}
+    <ProfilePic {profile_pic} />
+  {/if}
+  {#if !profile_pic || $uploading}
+    <div class="cta" data-3d aria-disabled={$uploading} data-flex="cc">
       <div data-flex="v" class:half={$uploading}>
         <div class="h1 half" data-flex="cc"><Icon icon="face" /></div>
         <p class="h3 half">

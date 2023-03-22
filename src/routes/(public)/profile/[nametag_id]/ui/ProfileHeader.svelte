@@ -67,6 +67,7 @@
                 navigator.share({
                   url: window.location.toString()
                 });
+                $share_controller = '';
               }}
             />
           </div>
@@ -86,6 +87,12 @@
   }
 
   .share {
+    position: relative;
     margin-left: auto;
+
+    :global(button) {
+      position: absolute;
+      right: 0;
+    }
   }
 </style>

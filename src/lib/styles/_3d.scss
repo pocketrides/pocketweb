@@ -29,11 +29,12 @@
   }
 
   &:not([disabled]),
-  &:not([aria-disabled="true"]) {
+  &:not([aria-disabled="true"]),
+  &:not([data-inert]) {
     &:is(input):focus-within,
     &:is(select):focus,
     &:is(textarea):focus,
-    &:active {
+    &:active:not([data-inert]) {
       box-shadow: none;
       transform: translate(-1px, 1px);
     }

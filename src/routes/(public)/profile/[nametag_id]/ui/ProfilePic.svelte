@@ -6,7 +6,7 @@
 </script>
 
 {#if profile_pic}
-  <div data-3d data-flex>
+  <div data-3d data-inert data-flex>
     <CloudinaryImg photo={profile_pic} square />
   </div>
 {/if}
