@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { cloudinary_photo_validator } from './CloudinaryPhoto';
 import { MAX_POST_CONTENT_LENGTH } from './Post';
 import { link_validator } from './Link';
+import type { ClientNametag } from './Nametag';
 
 export const draft_message_text_validator = z.object({
   type: z.literal('text'),
@@ -45,6 +46,13 @@ export type MessageComposerEvent = {
 export type MessageComposerActiveEvent = {
   is_active: boolean;
 };
+
+export interface IServerMessage {
+  id: string;
+  ts: number;
+  nametag: ClientNametag;
+  messages: MessagesPayload;
+}
 
 export const blankMessage = (): DraftAnyMessage => {
   return {

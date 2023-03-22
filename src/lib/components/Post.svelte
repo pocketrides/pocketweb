@@ -195,7 +195,7 @@
             data-unstyle
             title={`posted at ${new Date($post_controller.ts / 1000).toString()}`}
           >
-            {getTimeAgo(new Date($post_controller.ts / 1000), 'mini')}
+            {getTimeAgo(new Date($post_controller.ts / 1000), 'twitter-now')}
           </a>
         </div>
       </Row>

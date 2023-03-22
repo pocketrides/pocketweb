@@ -79,6 +79,7 @@
 
   afterNavigate(async () => {
     $App.loading = false;
+    $App.sheet_id = '';
 
     if ($page.data.session_expires) {
       const expiration = new Date($page.data.session_expires);

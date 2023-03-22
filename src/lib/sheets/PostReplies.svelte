@@ -7,11 +7,16 @@
   import { ReplyToPostRequest } from '$lib/api/reply/reply_to_post';
   import { page } from '$app/stores';
   import { Room, type RoomConnection } from '$lib/api/room';
+  import type { ClientReply } from '$lib/zod/Reply';
+  import { onDestroy, onMount } from 'svelte';
 
   let replies_are_scrolled_up = false;
   let shadow: HTMLElement;
 
   let room: RoomConnection | undefined;
+  let last_connection: Date;
+  let retry_count = 0;
+  let scrollToBottomIfAtBottom: () => void;
 
   const connect = async () => {
     if ($RepliesManagerStore.post_id) {
@@ -22,8 +27,40 @@
       );
 
       if (room) {
-        room.handleMessage(() => {
-          console.log('> handling a message');
+        last_connection = new Date();
+        retry_count = 0;
+
+        room.handleMessage((msg) => {
+          RepliesManagerStore.update((prev) => {
+            if (prev.replies) prev.replies.push(msg as ClientReply);
+            else prev.replies = [msg as ClientReply];
+            return prev;
+          });
+
+          scrollToBottomIfAtBottom();
+        });
+
+        room.handleEarlyDisconnect(async () => {
+          if (retry_count > 5) return;
+
+          retry_count += 1;
+
+          if (!room) return;
+
+          disconnect();
+          await connect();
+
+          // if (
+          //   last_connection &&
+          //   new Date().getTime() - last_connection.getTime() < 2000
+          // ) {
+          //   setTimeout(async () => {
+          //     await connect();
+          //   }, 2500);
+          // } else {
+          //   room?.disconnect();
+          //   await connect();
+          // }
         });
       }
     } else {
@@ -32,7 +69,6 @@
   };
 
   const disconnect = () => {
-    console.log('disconnect');
     if (room) {
       room.disconnect();
       room = undefined;
@@ -53,8 +89,6 @@
     if (res.success) {
       e.detail.completeCallback(true);
 
-      room?.sendMessage(res.reply.messages);
-
       RepliesManagerStore.update((prev) => {
         if (prev.replies && res.success) {
           res.reply.pending = true;
@@ -66,6 +100,8 @@
 
         return prev;
       });
+
+      room?.sendMessage(res.reply);
 
       scrollToBottom();
     } else {
@@ -80,12 +116,23 @@
       Math.ceil(target.scrollTop) <
       Math.floor(target.scrollHeight - target.clientHeight);
   };
+
+  onMount(() => {
+    room?.disconnect();
+  });
+
+  onDestroy(() => {
+    room?.disconnect();
+  });
 </script>
 
 <Sheet
   id="post_replies"
   header="Replies"
   icon="reply"
+  padded={false}
+  nav_height={115}
+  bind:scrollToBottomIfAtBottom
   on:activate={connect}
   on:dismiss={disconnect}
   on:scroll={handleScroll}
@@ -120,13 +167,5 @@
 
   .shadow.active {
     box-shadow: 0 -8px 8px -8px rgba(var(--dark), 0.5);
-  }
-
-  .body {
-    min-height: 100vh;
-
-    @media (min-width: 640px) {
-      min-height: calc(70vh - 130px);
-    }
   }
 </style>

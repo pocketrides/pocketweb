@@ -3,6 +3,7 @@
   import type { ClientReply } from '$lib/zod/Reply';
   import { fly } from 'svelte/transition';
   import Nametag from '../Nametag.svelte';
+  import ReplyActions from './ReplyActions.svelte';
   import ReplyText from './ReplyText.svelte';
 
   export let reply: ClientReply;
@@ -21,24 +22,15 @@
     {/if}
   {/each}
   {#if reply.pending}
-    <div in:fly={{ y: 100, delay: reply.messages.length * 50, duration: 150 }}>
-      <Nametag
-        nametag={reply.nametag}
-        tiny
-        on:click={() => {
-          $App.sheet_id = '';
-        }}
-      />
+    <div
+      data-padded
+      in:fly={{ y: 100, delay: reply.messages.length * 50, duration: 150 }}
+    >
+      <ReplyActions {reply} />
     </div>
   {:else}
-    <div>
-      <Nametag
-        nametag={reply.nametag}
-        tiny
-        on:click={() => {
-          $App.sheet_id = '';
-        }}
-      />
+    <div data-padded>
+      <ReplyActions {reply} />
     </div>
   {/if}
 </li>
@@ -50,6 +42,6 @@
   }
 
   li :global([data-padded]) {
-    padding: 0;
+    padding: 0 1rem 0;
   }
 </style>

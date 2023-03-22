@@ -5,7 +5,7 @@
 </script>
 
 <div data-padded>
-  <div data-richtext data-flex="as">{@html message.content}</div>
+  <div data-richtext data-flex="v as">{@html message.content}</div>
 </div>
 
 <style lang="scss">

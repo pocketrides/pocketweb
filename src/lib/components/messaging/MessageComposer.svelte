@@ -89,7 +89,14 @@
 </script>
 
 <form on:submit|preventDefault={handleSubmit}>
-  <div class="composer" data-flex="v" data-gap data-padded class:active={is_active}>
+  <div
+    class="composer"
+    data-flex="v"
+    data-theme={$page.data.my_nametag?.theme}
+    data-gap
+    data-padded
+    class:active={is_active}
+  >
     <div class="row" data-flex="ae" data-gap>
       <div class="messages" data-flex="v" data-gap>
         {#each $controller as message (message)}

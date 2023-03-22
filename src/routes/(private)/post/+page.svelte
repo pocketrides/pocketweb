@@ -35,7 +35,7 @@
     const post = await NewPostRequest.post($page_controller);
 
     if (post.success) {
-      await goto(`/post/${post.post_id}`);
+      goto(`/post/${post.post_id}`, { invalidateAll: true });
     }
 
     if (post.success === false) {

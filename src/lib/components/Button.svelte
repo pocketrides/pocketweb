@@ -40,11 +40,11 @@
     $controller = id;
   };
 
-  const hrefClick = async () => {
+  const hrefClick = () => {
     if (href) {
       if (href.includes('/_/')) location.href = href;
       else if (target === '_blank') window.open(href);
-      else await goto(href);
+      else goto(href, { invalidateAll: true });
     }
   };
 

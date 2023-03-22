@@ -45,7 +45,7 @@ export class Post {
 
         return { success: true, post };
       } else
-        throw new Error('query error', {
+        throw new Error('unsuccessful in retrieving a post', {
           cause: {
             post_id,
             nametag_id,

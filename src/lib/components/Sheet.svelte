@@ -14,10 +14,13 @@
   export let header: string | undefined = undefined;
   export let close: string = 'Close';
   export let dismissable: boolean = true;
+  export let padded: boolean = true;
+  export let nav_height: number = 0;
 
   let dialog: HTMLDialogElement;
   let scrolls: HTMLDivElement;
   let closing = false;
+  let interval: any;
 
   const dispatch = createEventDispatcher();
 
@@ -33,22 +36,37 @@
 
   const scrollTo = (y: number | null, el: any = scrolls, max: number = 10) => {
     let count = 0;
-    let interval = setInterval(() => {
+    clearInterval(interval);
+    interval = setInterval(() => {
       if (count < max) {
         el.scrollTo(0, y ? y : el.scrollHeight);
         count++;
       } else {
         clearInterval(interval);
       }
-    }, 50);
+    }, 10);
   };
 
   const scrollContentToBottom = () => {
     scrollTo(null);
   };
 
+  export const scrollToBottomIfAtBottom = () => {
+    if (!scrolls) return;
+
+    if (
+      Math.ceil(scrolls.scrollTop) >
+      Math.floor(scrolls.scrollHeight - scrolls.clientHeight) - scrolls.scrollHeight
+    )
+      scrollContentToBottom();
+  };
+
   const focus = () => {
     scrollContentToBottom();
+  };
+
+  const dialogClosed = () => {
+    $App.sheet_id = '';
   };
 
   afterUpdate(() => {
@@ -67,13 +85,13 @@
           if (dialog) dialog.close();
           closing = false;
         }, 750);
-        dispatch('close');
+        dispatch('dismiss');
       }
     }
   });
 </script>
 
-<dialog bind:this={dialog} class:closing>
+<dialog bind:this={dialog} class:closing on:close={dialogClosed}>
   {#if $App.sheet_id === id}
     <div
       class="wrapper"
@@ -83,6 +101,7 @@
       on:focus|capture={focus}
       in:fly|local={{ y: '100vh', opacity: 1, duration: 300 }}
       out:fly|local={{ y: '100vh', opacity: 1, duration: 300 }}
+      style={`--nav-height: ${nav_height}px`}
     >
       <header class="header" data-fill="system-superlight">
         <Container>
@@ -106,7 +125,7 @@
         </Container>
       </header>
       <div class="content">
-        <Container>
+        <Container {padded}>
           <slot controller={context} {scrollContentToBottom} />
         </Container>
       </div>
@@ -183,8 +202,13 @@
     }
 
     .nav {
-      position: sticky;
+      position: fixed;
       bottom: 0;
+      width: 100%;
+    }
+
+    &:has(.nav:not(:empty)) .wrapper {
+      padding-bottom: var(--nav-height);
     }
   }
 </style>

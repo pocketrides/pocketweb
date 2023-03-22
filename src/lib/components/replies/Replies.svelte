@@ -12,8 +12,8 @@
       {/each}
     </ul>
   {:else}
-    <div>
-      <p class="h2 half thin">No replies… <span class="half">yet!</span></p>
+    <div data-padded>
+      <p class="h3 half thin">No replies… <span class="half">yet!</span></p>
     </div>
   {/if}
 </Container>
