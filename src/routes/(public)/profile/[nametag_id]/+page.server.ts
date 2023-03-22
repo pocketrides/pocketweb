@@ -7,7 +7,7 @@ import { blankNametagStats } from '$lib/zod/NametagStats';
 import { Relationship } from '$lib/server/db/Relationship';
 
 export const load = (async (event) => {
-  const page_nametag = await Nametag.getById(event.params.nametag_id);
+  const page_nametag = await Nametag.getClientNametagById(event.params.nametag_id);
 
   if (!page_nametag) throw error(404);
 

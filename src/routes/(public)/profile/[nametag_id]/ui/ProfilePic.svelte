@@ -1,21 +1,24 @@
 <script lang="ts">
-  export let profile_pic: string | undefined;
+  import CloudinaryImg from '$lib/components/CloudinaryImg.svelte';
+  import type { CloudinaryPhoto } from '$lib/zod/CloudinaryPhoto';
+
+  export let profile_pic: CloudinaryPhoto | undefined;
 </script>
 
 {#if profile_pic}
-  <div
-    style={`background-image: url("${profile_pic}")`}
-    data-fill="system-superlight"
-  />
+  <div data-3d data-flex>
+    <CloudinaryImg photo={profile_pic} square />
+  </div>
 {/if}
 
 <style lang="scss">
-  div {
+  [data-3d] {
     padding: 0;
-    width: 150px;
-    height: 150px;
+    flex: 1;
+    aspect-ratio: 1/1;
+    max-width: 140px;
     overflow: hidden;
-    background-position: center center;
-    background-size: cover;
+    width: 100%;
+    height: 100%;
   }
 </style>

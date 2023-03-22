@@ -5,7 +5,7 @@ import { Api } from '../api';
 export class NametagUpdate {
   static endpoint = '/_/nametag/update';
 
-  static payload = draft_nametag_validator;
+  static payload = draft_nametag_validator.partial();
 
   static response = Api.generic_response;
 

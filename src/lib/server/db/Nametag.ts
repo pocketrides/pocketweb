@@ -44,6 +44,13 @@ export class Nametag {
     );
   }
 
+  static async getClientNametagById(nametag_id: string) {
+    return await Fauna.get<ClientNametag>(
+      Nametag.toRef(nametag_id),
+      Nametag.parseClientFQL
+    );
+  }
+
   static async create(account_id: string, draft: Partial<DraftNametag>) {
     const data = Object.assign(draft, {
       account_ref: Account.toRef(account_id),
@@ -84,12 +91,13 @@ export class Nametag {
   }
 
   static parseClientFQL(fql: any): ClientNametag {
-    const nametag = this.parseFQL(fql);
+    const nametag = Nametag.parseFQL(fql);
 
     return {
       id: nametag.id,
       nametag: nametag.nametag,
-      theme: nametag.theme
+      theme: nametag.theme,
+      profile_pic: nametag.profile_pic
     };
   }
 

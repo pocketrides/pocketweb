@@ -1,56 +1,71 @@
 <script lang="ts">
+  import { invalidateAll } from '$app/navigation';
+  import { NametagUpdate } from '$lib/api/nametag/update';
   import Icon from '$lib/components/Icon.svelte';
+  import { upload } from '$lib/util/cloudinary';
+  import type { CloudinaryPhoto } from '$lib/zod/CloudinaryPhoto';
+  import { writable } from 'svelte/store';
+  import ProfilePic from './ProfilePic.svelte';
 
-  export let profile_pic: string | undefined;
+  export let profile_pic: CloudinaryPhoto | undefined;
+
+  const uploading = writable(false);
+  const error = writable(false);
+  let files: FileList;
+
+  const handleChange = async () => {
+    const uploaded = await upload(files);
+
+    if (uploaded) {
+      $error = false;
+
+      await NametagUpdate.post({
+        profile_pic: uploaded[0]
+      });
+
+      await invalidateAll();
+    } else {
+      $error = true;
+      profile_pic = undefined;
+    }
+  };
 </script>
 
-<div class="container" data-flex="cc" data-fill="system-superlight" data-3d>
-  <div class="shim" data-flex="v cc">
-    <p class="h1 half">
-      <Icon icon="face" />
-    </p>
-    <p class="h3 half">Upload pic</p>
-    <input type="file" />
-    {#if profile_pic}
-      <div class="img" style={`background-image:url('${profile_pic}')`} />
-    {/if}
-  </div>
+<div class="wrapper">
+  <input
+    data-sham
+    type="file"
+    bind:files
+    accept="image/*"
+    on:change={handleChange}
+  />
+  <ProfilePic {profile_pic} />
+  {#if !profile_pic}
+    <div class="cta" data-3d data-flex="cc">
+      <div data-flex="v" class:half={$uploading}>
+        <div class="h1 half" data-flex="cc"><Icon icon="face" /></div>
+        <p class="h3 half">
+          {#if $uploading}
+            Uploading…
+          {:else if $error}
+            Try again
+          {:else}
+            Upload pic
+          {/if}
+        </p>
+      </div>
+    </div>
+  {/if}
 </div>
 
 <style lang="scss">
-  .container,
-  .shim,
-  .img {
-    width: 150px;
-    height: 150px;
+  .wrapper {
+    flex: 1;
+    aspect-ratio: 1/1;
+    max-width: 140px;
   }
 
-  .container {
-    padding: 0;
-
-    overflow: hidden;
-  }
-
-  .shim {
-    position: relative;
-  }
-
-  input,
-  .img {
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: 100%;
+  .cta {
     height: 100%;
-    opacity: 0;
-  }
-
-  .img {
-    pointer-events: none;
-    background-position: center center;
-    background-size: cover;
-    opacity: 1;
   }
 </style>
