@@ -31,6 +31,15 @@
     padding: 0 1rem;
   }
 
+  :global([data-padded*='v']) {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  :global([data-padded] + [data-padded]) {
+    padding-top: 0;
+  }
+
   .rounded {
     border-radius: 1rem;
     overflow: hidden;

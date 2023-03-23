@@ -9,17 +9,14 @@
   import { getTimeAgo } from '$lib/util/time-ago';
   import type { ServerPost } from '$lib/zod/Post';
   import { afterUpdate, createEventDispatcher, onMount } from 'svelte';
-  import { each } from 'svelte/internal';
   import { writable } from 'svelte/store';
   import { slide } from 'svelte/transition';
   import Button from './Button.svelte';
   import ButtonRow from './ButtonRow.svelte';
-  import CloudinaryImg from './CloudinaryImg.svelte';
   import Container from './Container.svelte';
   import Gallery from './Gallery.svelte';
   import Icon from './Icon.svelte';
   import Nametag from './Nametag.svelte';
-  import Replies from './replies/Replies.svelte';
   import Row from './Row.svelte';
 
   export let post_id: string | undefined = undefined;

@@ -74,7 +74,7 @@
       {/each}
     </div>
   {/if}
-  <div data-flex="v" data-padded="h">
+  <div data-flex="v" data-padded="vh">
     <label for={label_id} class="h3">
       {#if index === 0}What's up?{/if}
     </label>

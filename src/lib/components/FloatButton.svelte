@@ -1,19 +1,19 @@
 <script lang="ts">
+  import type { Fill } from '$lib/zod/Fill';
   import Icon from './Icon.svelte';
+
+  export let icon: string;
+  export let fill: Fill = 'dark';
 </script>
 
-<button on:click data-flex="cc" data-fill="dark">
-  <Icon icon="delete" />
+<button on:click data-flex="cc" data-fill={fill}>
+  <Icon {icon} />
 </button>
 
 <style lang="scss">
   button {
-    position: absolute;
-    top: -16px;
-    right: -16px;
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    z-index: 1;
   }
 </style>

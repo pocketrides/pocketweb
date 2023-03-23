@@ -1,6 +1,7 @@
 <script lang="ts">
   import Button from '$lib/components/Button.svelte';
   import { upload } from '$lib/util/cloudinary';
+  import type { CloudinaryPhoto } from '$lib/zod/CloudinaryPhoto';
   import { createEventDispatcher } from 'svelte';
   import { writable, type Writable } from 'svelte/store';
 
@@ -43,6 +44,17 @@
 
     file_input.value = '';
   };
+
+  const testRejection = () => {
+    dispatch('uploaded', [
+      {
+        public_id: 'nQinLZtTrOe5SKr49ixHw',
+        version: 1679526532,
+        aws_rek_status: 'rejected',
+        alt_text: ''
+      }
+    ] as CloudinaryPhoto[]);
+  };
 </script>
 
 <div data-3d-container>
@@ -69,7 +81,7 @@
     <Button
       id="add_pics"
       label={$error ? $current_status : 'Add pics'}
-      icon="add_photo_alternate"
+      icon={$error ? 'sentiment_very_dissatisfied' : 'add_photo_alternate'}
       {controller}
       disabled={$uploading}
     />
