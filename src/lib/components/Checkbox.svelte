@@ -23,7 +23,7 @@
   {:else}
     <Icon icon={'check_box_outline_blank'} />
     <span class="vh">
-      <Icon filled={checked} icon={'check_box'} />
+      <Icon filled icon={'check_box'} />
     </span>
   {/if}
   <Icon {icon} />

@@ -69,7 +69,7 @@
 <div data-flex="v" data-gap>
   {#if post.photos.length}
     <div class="photos-wrapper" data-flex data-gap>
-      {#each post.photos as photo}
+      {#each post.photos as photo (photo)}
         <CloudinaryPreview {photo} on:delete={handleDeletePhoto} />
       {/each}
     </div>

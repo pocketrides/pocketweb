@@ -80,16 +80,14 @@ export const upload = async (
 const cloud = 'dz6ahaem9';
 
 const base_url = () => {
-  return `https://res-${
-    Math.round(Math.random() * 4) + 1
-  }.cloudinary.com/${cloud}/image/upload`;
+  return `https://res.cloudinary.com/${cloud}/image/upload`;
 };
 
 export const getThumbnail = (
   version: number | undefined,
   public_id: string | undefined
 ) => {
-  return `${base_url()}/c_thumb,h_440,g_auto/v${version}/${public_id}`;
+  return `${base_url()}/c_thumb,h_440/v${version}/${public_id}`;
 };
 
 export const getNormal = (
@@ -103,7 +101,7 @@ export const getSquare = (
   version: number | undefined,
   public_id: string | undefined
 ) => {
-  return `${base_url()}/c_thumb,w_1280,h_1280,g_auto/v${version}/${public_id}`;
+  return `${base_url()}/c_thumb,w_1280,h_1280/v${version}/${public_id}`;
 };
 
 export const getSquareSmall = (

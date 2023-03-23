@@ -68,13 +68,19 @@
       </div>
     </div>
 
-    <!-- <div data-flex="v" data-gap>
-      <h2 class="h3 half">Settings</h2>
+    <div data-flex="v" data-gap>
+      <h2 class="h3 half">Other stuff</h2>
       <div data-flex="vs" data-gap>
-        <Button label="Notifications" icon="campaign" jumbo />
-        <Button label="Enable 2FA" icon="fingerprint" jumbo />
+        <Button
+          label="Content settings"
+          icon="auto_stories"
+          jumbo
+          href="/settings/content"
+        />
+        <!-- <Button label="Notifications" icon="campaign" jumbo /> -->
+        <!-- <Button label="Enable 2FA" icon="fingerprint" jumbo /> -->
       </div>
-    </div> -->
+    </div>
     <div data-flex="v" data-gap>
       <h2 class="h3 half">Your account</h2>
       <div data-flex="vs" data-gap>

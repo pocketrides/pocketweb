@@ -13,7 +13,12 @@ export const draft_nametag_validator = z.object({
   nametag: z.string().min(1).max(32),
   theme: z.enum(THEME_VALUES),
   stripe: stripe_account_status_validator.optional(),
-  profile_pic: cloudinary_photo_validator.optional()
+  profile_pic: cloudinary_photo_validator.optional(),
+  content_prefs: z
+    .object({
+      allow_nsfw_posts: z.boolean().optional()
+    })
+    .optional()
 });
 
 export const server_nametag_validator = draft_nametag_validator.extend({
@@ -40,6 +45,9 @@ export type ServerNametag = DraftNametag & {
   stats_ref?: ClientRef | any;
   stats?: ServerNametagStats;
   profile_pic?: CloudinaryPhoto;
+  content_prefs?: {
+    allow_nsfw_posts?: boolean;
+  };
 };
 
 export const client_nametag_validator = z.object({

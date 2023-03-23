@@ -28,26 +28,25 @@
     </div>
     <FloatButton icon="delete" on:click={deleteClick} />
   </FloatButtonContainer>
-  <div data-3d>
-    <CloudinaryImg {photo} normal />
+  <div data-3d data-flex="cc">
+    <CloudinaryImg {photo} square />
   </div>
 </div>
 
 <style lang="scss">
-  .wrapper {
+  .wrapper,
+  [data-3d] {
     position: relative;
     width: 128px;
     height: 128px;
-    aspect-ratio: 1/1;
   }
 
   [data-3d] {
-    width: 100%;
-    height: 100%;
     overflow: hidden;
     padding: 0;
 
     :global(img) {
+      object-fit: cover;
       width: 100%;
       height: 100%;
     }

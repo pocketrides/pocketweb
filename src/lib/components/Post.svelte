@@ -37,7 +37,9 @@
   const is_expanded = writable(false); // if the post is longer than 6 lines, show an "expand" button
 
   $: should_be_hidden = $post_controller
-    ? $post_controller.is_quarantined || $post_controller.settings.is_nsfw
+    ? $post_controller.is_quarantined ||
+      ($post_controller.settings.is_nsfw &&
+        $page.data.my_nametag?.content_prefs?.allow_nsfw_posts !== true)
     : false;
   $: post_hidden = should_be_hidden && $showing_post === false;
   $: is_my_post = $page.data.my_nametag?.id === $post_controller?.nametag?.id;
@@ -311,8 +313,24 @@
               <Icon icon="visibility_off" />
               Post is hidden.
             </h2>
-            <h3 class="half">You quarantined it.</h3>
-            <Button label="Tap to show" superdark on:click={showPost} />
+            {#if $post_controller.is_quarantined}
+              <h3 class="half">You quarantined it.</h3>
+            {/if}
+            {#if $post_controller.settings.is_nsfw}
+              <h3 class="half">It's NSFW.</h3>
+            {/if}
+            <div data-flex data-gap>
+              <Button label="Tap to show" superdark on:click={showPost} />
+              <div>
+                {#if $post_controller.settings.is_nsfw}
+                  <Button
+                    label="Change settings"
+                    superdark
+                    href="/settings/content"
+                  />
+                {/if}
+              </div>
+            </div>
           </div>
         </div>
       </Container>
