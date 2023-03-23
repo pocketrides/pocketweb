@@ -62,7 +62,7 @@
     <Button label="Cancel" href="/home" />
   </div>
 </SiteHeader>
-<Main fullheight>
+<Main padded={false} fullheight>
   <Posts store={page_controller} />
   <UtilityNav slot="utility-nav">
     <div slot="left">

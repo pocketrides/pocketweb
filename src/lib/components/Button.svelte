@@ -12,6 +12,7 @@
   export let type: 'button' | 'submit' = 'button';
   export let icon: string | undefined = undefined;
   export let icon_filled: boolean = false;
+  export let icon_spins: boolean = false;
   export let disabled: boolean = false;
   export let name: string = '';
   export let value: string = '';
@@ -82,7 +83,7 @@
   on:click
   on:click={hrefClick}
 >
-  <Icon {icon} filled={icon_filled} />
+  <Icon {icon} filled={icon_filled} spins={icon_spins} />
   {#if count !== undefined && ($controller !== id || $label_store === '')}
     <span>{count}</span>
   {/if}

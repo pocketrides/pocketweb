@@ -1,6 +1,8 @@
 <script lang="ts">
   import Button from '$lib/components/Button.svelte';
+  import CloudinaryPreview from '$lib/components/CloudinaryPreview.svelte';
   import MarkdownEditor from '$lib/components/MarkdownEditor.svelte';
+  import type { CloudinaryPhoto } from '$lib/zod/CloudinaryPhoto';
   import {
     blankPostContent,
     MAX_POST_CONTENT_LENGTH,
@@ -8,6 +10,7 @@
   } from '$lib/zod/Post';
   import { nanoid } from 'nanoid';
   import { writable } from 'svelte/store';
+  import AddPics from './AddPics.svelte';
   import type { PageControllerStore } from './types';
 
   export let store: PageControllerStore;
@@ -27,6 +30,30 @@
     $button_row = '';
   };
 
+  const handlePicsUploaded = (e: CustomEvent<CloudinaryPhoto[]>) => {
+    store.update((prev) => {
+      if (prev.contents[index].photos) {
+        prev.contents[index].photos.push(...e.detail);
+      } else {
+        prev.contents[index].photos = e.detail;
+      }
+
+      return prev;
+    });
+  };
+
+  const handleDeletePhoto = (e: CustomEvent<CloudinaryPhoto>) => {
+    store.update((prev) => {
+      const photo_index = prev.contents[index].photos.findIndex((photo) => {
+        return photo.public_id === e.detail.public_id;
+      });
+
+      prev.contents[index].photos.splice(photo_index, 1);
+
+      return prev;
+    });
+  };
+
   const discard = () => {
     store.update((prev) => {
       prev.contents.splice(index, 1);
@@ -40,7 +67,14 @@
 </script>
 
 <div data-flex="v" data-gap>
-  <div data-flex="v">
+  {#if post.photos.length}
+    <div class="photos-wrapper" data-flex data-gap>
+      {#each post.photos as photo}
+        <CloudinaryPreview {photo} on:delete={handleDeletePhoto} />
+      {/each}
+    </div>
+  {/if}
+  <div data-flex="v" data-padded="h">
     <label for={label_id} class="h3">
       {#if index === 0}What's up?{/if}
     </label>
@@ -52,22 +86,12 @@
       placeholder={index === 0 ? 'Tell everyone' : 'Keep writing!'}
     />
   </div>
-  <div data-flex="sb">
+  <div data-flex="sb" data-padded="h">
     <div data-button-row>
-      <div data-3d-container>
-        {#if $button_row === 'add_pics'}
-          <input type="file" data-sham />
-        {/if}
-        <Button
-          id="add_pics"
-          label="Add pics"
-          icon="add_photo_alternate"
-          controller={button_row}
-        />
-      </div>
+      <AddPics controller={button_row} on:uploaded={handlePicsUploaded} />
       <Button
         id="add_links"
-        label="Add links"
+        label="Add link"
         icon="add_link"
         controller={button_row}
       />
@@ -92,3 +116,12 @@
     </div>
   </div>
 </div>
+
+<style lang="scss">
+  .photos-wrapper {
+    padding: 2rem 1rem 1px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: visible;
+  }
+</style>

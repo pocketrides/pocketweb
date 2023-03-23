@@ -27,6 +27,10 @@
     padding: 1rem;
   }
 
+  :global([data-padded*='h']) {
+    padding: 0 1rem;
+  }
+
   .rounded {
     border-radius: 1rem;
     overflow: hidden;

@@ -50,8 +50,8 @@ const uploadSingle = async (file: File): Promise<CloudinaryPhoto | undefined> =>
 
 export const upload = async (
   files: FileList,
-  onComplete?: CloudinaryUploadOnCompleteCallback,
-  onChange?: CloudinaryUploadOnChangeCallback
+  onChange?: CloudinaryUploadOnChangeCallback,
+  onComplete?: CloudinaryUploadOnCompleteCallback
 ): Promise<CloudinaryPhoto[] | undefined> => {
   return new Promise(async (resolve) => {
     const _list = Array.from(files);
@@ -104,6 +104,13 @@ export const getSquare = (
   public_id: string | undefined
 ) => {
   return `${base_url()}/c_thumb,w_1280,h_1280,g_auto/v${version}/${public_id}`;
+};
+
+export const getSquareSmall = (
+  version: number | undefined,
+  public_id: string | undefined
+) => {
+  return `${base_url()}/c_thumb,w_320,h_320/v${version}/${public_id}`;
 };
 
 export const getDownload = (
