@@ -114,7 +114,7 @@
     />
   </div>
   {#if post.links.length}
-    <div class="links-wrapper" data-flex="scroll-h" data-gap>
+    <div class="links-wrapper" data-flex="scroll-h ae" data-gap>
       {#each post.links as link (link)}
         <LinkPreview {link} on:delete={handleDeleteLink} />
       {/each}
