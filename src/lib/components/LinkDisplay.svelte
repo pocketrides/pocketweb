@@ -87,7 +87,7 @@
         aspect-ratio: 1/1;
         border-top-right-radius: 0.25rem;
         border-bottom-right-radius: 0.25rem;
-        border-right: 1px solid rgba(var(--dark), 0.85rem);
+        border-right: 1px solid rgba(var(--dark), 0.85);
       }
     }
   }
