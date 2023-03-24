@@ -1,8 +1,12 @@
 <script lang="ts">
+  import AddLink from '$lib/components/AddLink.svelte';
+  import AddPics from '$lib/components/AddPics.svelte';
   import Button from '$lib/components/Button.svelte';
   import CloudinaryPreview from '$lib/components/CloudinaryPreview.svelte';
+  import LinkPreview from '$lib/components/LinkPreview.svelte';
   import MarkdownEditor from '$lib/components/MarkdownEditor.svelte';
   import type { CloudinaryPhoto } from '$lib/zod/CloudinaryPhoto';
+  import type { Link } from '$lib/zod/Link';
   import {
     blankPostContent,
     MAX_POST_CONTENT_LENGTH,
@@ -10,7 +14,6 @@
   } from '$lib/zod/Post';
   import { nanoid } from 'nanoid';
   import { writable } from 'svelte/store';
-  import AddPics from './AddPics.svelte';
   import type { PageControllerStore } from './types';
 
   export let store: PageControllerStore;
@@ -54,6 +57,30 @@
     });
   };
 
+  const handleLinkAdded = (e: CustomEvent<Link>) => {
+    store.update((prev) => {
+      if (prev.contents[index].links) {
+        prev.contents[index].links.push(e.detail);
+      } else {
+        prev.contents[index].links = [e.detail];
+      }
+
+      return prev;
+    });
+  };
+
+  const handleDeleteLink = (e: CustomEvent<Link>) => {
+    store.update((prev) => {
+      const link_index = prev.contents[index].links.findIndex((link) => {
+        return link.url === e.detail.url;
+      });
+
+      prev.contents[index].links.splice(link_index, 1);
+
+      return prev;
+    });
+  };
+
   const discard = () => {
     store.update((prev) => {
       prev.contents.splice(index, 1);
@@ -86,15 +113,17 @@
       placeholder={index === 0 ? 'Tell everyone' : 'Keep writing!'}
     />
   </div>
+  {#if post.links.length}
+    <div class="links-wrapper" data-flex data-gap>
+      {#each post.links as link (link)}
+        <LinkPreview {link} on:delete={handleDeleteLink} />
+      {/each}
+    </div>
+  {/if}
   <div data-flex="sb" data-padded="h">
     <div data-button-row>
       <AddPics controller={button_row} on:uploaded={handlePicsUploaded} />
-      <Button
-        id="add_links"
-        label="Add link"
-        icon="add_link"
-        controller={button_row}
-      />
+      <AddLink controller={button_row} on:added={handleLinkAdded} />
       <Button
         id="add_more"
         label="Add more"
@@ -118,7 +147,8 @@
 </div>
 
 <style lang="scss">
-  .photos-wrapper {
+  .photos-wrapper,
+  .links-wrapper {
     padding: 2rem 1rem 1px;
     flex-wrap: nowrap;
     overflow-x: auto;
