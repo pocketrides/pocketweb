@@ -4,6 +4,7 @@
   import Icon from './Icon.svelte';
 
   export let link: Link;
+  export let mini: boolean = false;
 
   let url = new URL(link.url);
 
@@ -16,67 +17,77 @@
   });
 </script>
 
-<a data-3d="ah" data-fill="base" href={link.url} target="_blank" rel="noreferrer">
+<div data-3d="ah" data-fill="base" class:mini data-flex={mini ? '' : 'v'}>
   {#if link.og_image}
-    <span class="image-wrapper" data-fill="light">
+    <a
+      href={link.url}
+      target="_blank"
+      rel="noreferrer"
+      class="og-image"
+      aria-label={`${link.og_desc || ' '} (link to ${url.hostname})`}
+    >
       <img src={link.og_image} alt="" />
-    </span>
+    </a>
   {/if}
-  <span class="wrapper">
-    {#if link.og_title && typeof sanitize !== 'undefined'}
-      <span class="h3">{@html sanitize(link.og_title)}</span>
-    {:else}
-      <span class="h3 link-only">
-        <Icon icon="link" />
-        {url.host}
-      </span>
-    {/if}
-    {#if link.og_desc && typeof sanitize !== 'undefined'}
-      <small>{@html sanitize(link.og_desc)}</small>
-    {:else}
-      <small>{url.host + url.pathname}</small>
-    {/if}
-  </span>
-</a>
+  <a
+    href={link.url}
+    target="_blank"
+    rel="noreferrer"
+    data-flex="v cc"
+    data-gap="0"
+    class="og-link"
+  >
+    <h3 class="nowraps">{link.og_title || url.host + url.pathname}</h3>
+    <p class="small half nowraps">{link.og_desc || url.host}</p>
+  </a>
+</div>
 
 <style lang="scss">
-  a {
+  [data-3d] {
     max-width: 220px;
-    max-height: 12rem;
-    display: block;
+    flex-shrink: 0;
     overflow: hidden;
+    position: relative;
 
-    text-decoration: none;
-
-    .image-wrapper {
-      display: block;
+    .og-image {
       overflow: hidden;
-      max-height: 115px;
+      flex-shrink: 0;
 
       img {
         width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center top;
       }
     }
 
-    .wrapper {
-      display: inline-block;
+    .og-link {
       padding: 0.5rem;
+      text-decoration: none;
+    }
 
-      .h3,
-      small {
-        overflow: hidden;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 1;
-        text-overflow: ellipsis;
+    &:not(.mini) .og-image {
+      width: 100%;
+      aspect-ratio: 16/9;
+      border-bottom-right-radius: 0.25rem;
+      border-bottom-left-radius: 0.25rem;
+      border-bottom: 1px solid rgba(var(--dark), 0.85);
+    }
+
+    &.mini {
+      max-width: none;
+
+      .og-link {
+        max-width: 220px;
+        padding: 0 0.5rem;
       }
 
-      .h3.link-only {
-        display: inline-flex;
-
-        :global([class*='material']) {
-          font-size: 1em;
-        }
+      .og-image {
+        max-height: 42px;
+        aspect-ratio: 1/1;
+        border-top-right-radius: 0.25rem;
+        border-bottom-right-radius: 0.25rem;
+        border-right: 1px solid rgba(var(--dark), 0.85rem);
       }
     }
   }

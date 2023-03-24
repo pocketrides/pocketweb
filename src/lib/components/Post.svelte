@@ -16,6 +16,8 @@
   import Container from './Container.svelte';
   import Gallery from './Gallery.svelte';
   import Icon from './Icon.svelte';
+  import LinkDisplay from './LinkDisplay.svelte';
+  import LinkList from './LinkList.svelte';
   import Nametag from './Nametag.svelte';
   import Row from './Row.svelte';
 
@@ -208,9 +210,10 @@
           ? 'light'
           : 'system-light'}
         bottombordered
+        padded={false}
       >
-        <div data-flex="v" data-gap="1">
-          <div class="summary-wrapper" data-expanded={$is_expanded}>
+        <div data-flex="v">
+          <div class="summary-wrapper" data-expanded={$is_expanded} data-padded>
             <div class="summary" data-richtext>
               {@html $post_controller.contents[0].content}
             </div>
@@ -227,8 +230,17 @@
               {/if}
             </div>
           </div>
-          {#if $post_controller.contents.length > 1}
+          {#if $post_controller.contents[0].links.length}
             <div>
+              <LinkList padded>
+                {#each $post_controller.contents[0].links as link (link)}
+                  <LinkDisplay {link} />
+                {/each}
+              </LinkList>
+            </div>
+          {/if}
+          {#if $post_controller.contents.length > 1}
+            <div data-padded>
               <Button
                 small
                 label={`Read ${$post_controller.contents.length - 1} more…`}
@@ -237,71 +249,73 @@
             </div>
           {/if}
           {#if $post_controller.stats}
-            <Row>
-              <ButtonRow slot="left">
-                {#if $post_controller.settings.enable_likes === true}
+            <div data-padded>
+              <Row>
+                <ButtonRow slot="left">
+                  {#if $post_controller.settings.enable_likes === true}
+                    <Button
+                      id="likes"
+                      icon="favorite_border"
+                      disabled={$is_liking}
+                      small
+                      primary={$post_controller.is_liked}
+                      count={$post_controller.stats.likes}
+                      label=""
+                      on:click={likeClick}
+                    />
+                  {/if}
+                  {#if is_my_post && $post_controller?.settings?.mod_result?.allow_likes === false}
+                    <Button
+                      id="mod_result"
+                      icon={$showing_mod_result === true ? 'close' : 'info'}
+                      small
+                      primary={$showing_mod_result === true}
+                      label=""
+                      on:click={() => {
+                        $showing_mod_result = !$showing_mod_result;
+                      }}
+                    />
+                  {/if}
+                  {#if $post_controller?.settings?.enable_replies === true}
+                    <Button
+                      id="replies"
+                      icon="reply"
+                      small
+                      label=""
+                      count={$post_controller.stats.replies}
+                      on:click={openReplies}
+                    />
+                  {/if}
+                </ButtonRow>
+                <ButtonRow slot="right">
+                  {#if $post_controller.is_quarantined}
+                    <Button
+                      controller={button_controller}
+                      small
+                      id="hide"
+                      icon="visibility_off"
+                      label="Hide post"
+                      on:click={() => {
+                        $showing_post = false;
+                      }}
+                    />
+                  {/if}
                   <Button
-                    id="likes"
-                    icon="favorite_border"
-                    disabled={$is_liking}
+                    id="quarantines"
+                    icon="support"
                     small
-                    primary={$post_controller.is_liked}
-                    count={$post_controller.stats.likes}
-                    label=""
-                    on:click={likeClick}
-                  />
-                {/if}
-                {#if is_my_post && $post_controller?.settings?.mod_result?.allow_likes === false}
-                  <Button
-                    id="mod_result"
-                    icon={$showing_mod_result === true ? 'close' : 'info'}
-                    small
-                    primary={$showing_mod_result === true}
-                    label=""
-                    on:click={() => {
-                      $showing_mod_result = !$showing_mod_result;
-                    }}
-                  />
-                {/if}
-                {#if $post_controller?.settings?.enable_replies === true}
-                  <Button
-                    id="replies"
-                    icon="reply"
-                    small
-                    label=""
-                    count={$post_controller.stats.replies}
-                    on:click={openReplies}
-                  />
-                {/if}
-              </ButtonRow>
-              <ButtonRow slot="right">
-                {#if $post_controller.is_quarantined}
-                  <Button
+                    disabled={$is_quarantining}
                     controller={button_controller}
-                    small
-                    id="hide"
-                    icon="visibility_off"
-                    label="Hide post"
-                    on:click={() => {
-                      $showing_post = false;
-                    }}
+                    count={$post_controller.stats.quarantines}
+                    primary={$post_controller.is_quarantined}
+                    label={$post_controller.is_quarantined
+                      ? 'Unquarantine'
+                      : 'Quarantine'}
+                    on:click={quarantineClick}
                   />
-                {/if}
-                <Button
-                  id="quarantines"
-                  icon="support"
-                  small
-                  disabled={$is_quarantining}
-                  controller={button_controller}
-                  count={$post_controller.stats.quarantines}
-                  primary={$post_controller.is_quarantined}
-                  label={$post_controller.is_quarantined
-                    ? 'Unquarantine'
-                    : 'Quarantine'}
-                  on:click={quarantineClick}
-                />
-              </ButtonRow>
-            </Row>
+                </ButtonRow>
+              </Row>
+            </div>
           {/if}
         </div>
       </Container>

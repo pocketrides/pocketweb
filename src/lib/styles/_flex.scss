@@ -45,3 +45,13 @@
     flex-wrap: wrap;
   }
 }
+
+[data-flex*="scroll-h"] {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: visible;
+
+  &:has(> [data-3d]) {
+    padding-bottom: 1px;
+  }
+}

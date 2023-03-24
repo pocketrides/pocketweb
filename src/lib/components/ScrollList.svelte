@@ -31,10 +31,11 @@
     <div class="wrap">
       <Container padded rounded bordered fill="superlight">
         <div class="none" data-flex="v je">
-          <h2 class="h1 jumbo half thin">
-            <span class="material-icons-outlined inline">sentiment_dissatisfied</span
-            ><br />
-            Nothing here… <span class="half">yet!</span>
+          <h2 class="h1 jumbo half thin" data-flex="v" data-gap="0">
+            <span class="material-icons-outlined inline">
+              sentiment_dissatisfied
+            </span>
+            <span>Nothing here… <span class="half">yet!</span></span>
           </h2>
         </div>
       </Container>
@@ -64,6 +65,7 @@
       border-right: 1px solid rgba(var(--dark), 0.05);
     }
   }
+
   .wrap {
     padding: 1rem;
   }
@@ -78,10 +80,5 @@
     .none {
       aspect-ratio: 16/9;
     }
-  }
-
-  h2 {
-    display: block;
-    line-height: 1;
   }
 </style>

@@ -1,6 +1,8 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import { App } from '$lib/stores/app';
+  import type { CloudinaryPhoto } from '$lib/zod/CloudinaryPhoto';
+  import type { Link } from '$lib/zod/Link';
   import {
     blankMessage,
     type MessageComposerEvent,
@@ -10,8 +12,12 @@
   } from '$lib/zod/Message';
   import { createEventDispatcher } from 'svelte';
   import { writable } from 'svelte/store';
+  import AddLink from '../AddLink.svelte';
+  import AddPics from '../AddPics.svelte';
   import Button from '../Button.svelte';
+  import CloudinaryPreview from '../CloudinaryPreview.svelte';
   import Icon from '../Icon.svelte';
+  import LinkPreview from '../LinkPreview.svelte';
   import TextComposer from './TextComposer.svelte';
 
   export let placeholder: string = `Write a message…`;
@@ -86,6 +92,60 @@
       return prev;
     });
   };
+
+  const handlePicsUploaded = (e: CustomEvent<CloudinaryPhoto[]>) => {
+    if (e.detail.length) {
+      controller.update((prev) => {
+        prev.push({
+          type: 'photos',
+          photos: e.detail
+        });
+
+        return prev;
+      });
+    }
+  };
+
+  const handleDeletePhoto = (e: CustomEvent<CloudinaryPhoto>) => {
+    controller.update((prev) => {
+      prev.forEach((item, index) => {
+        if (item.type === 'photos') {
+          const photo_index = item.photos.indexOf(e.detail);
+
+          if (photo_index !== -1) {
+            item.photos.splice(photo_index, 1);
+          }
+
+          if (item.photos.length === 0) prev.splice(index, 1);
+        }
+      });
+
+      return prev;
+    });
+  };
+
+  const handleLinkAdded = (e: CustomEvent<Link>) => {
+    controller.update((prev) => {
+      prev.push({
+        type: 'link',
+        link: e.detail
+      });
+
+      return prev;
+    });
+  };
+
+  const handleDeleteLink = (e: CustomEvent<Link>) => {
+    controller.update((prev) => {
+      prev.forEach((item, index) => {
+        if (item.type === 'link' && item.link === e.detail) {
+          prev.splice(index, 1);
+        }
+      });
+
+      return prev;
+    });
+  };
 </script>
 
 <form on:submit|preventDefault={handleSubmit}>
@@ -115,6 +175,18 @@
               on:delete={deleteText}
             />
           {/if}
+          {#if message.type === 'photos'}
+            <div class="photos-wrapper" data-flex="scroll-h" data-gap>
+              {#each message.photos as photo (photo)}
+                <CloudinaryPreview {photo} on:delete={handleDeletePhoto} />
+              {/each}
+            </div>
+          {/if}
+          {#if message.type === 'link'}
+            <div class="link-wrapper">
+              <LinkPreview link={message.link} on:delete={handleDeleteLink} />
+            </div>
+          {/if}
         {/each}
       </div>
       {#if is_active}
@@ -138,20 +210,8 @@
       {/if}
       <div data-flex="sb">
         <div data-button-row>
-          <Button
-            id="add_pic"
-            icon="add_photo_alternate"
-            label="Add pics"
-            controller={controls}
-            disabled={$pending}
-          />
-          <Button
-            id="add_links"
-            label="Add link"
-            icon="add_link"
-            controller={controls}
-            disabled={$pending}
-          />
+          <AddPics controller={controls} on:uploaded={handlePicsUploaded} />
+          <AddLink controller={controls} on:added={handleLinkAdded} />
           <Button
             id="add_more"
             label="Add more"
@@ -180,7 +240,7 @@
 
 <style lang="scss">
   .composer {
-    max-height: 220px;
+    max-height: 50vh;
     overflow-y: auto;
   }
 
@@ -201,5 +261,10 @@
   [data-error] {
     margin-top: 0;
     align-self: flex-start;
+  }
+
+  .photos-wrapper,
+  .link-wrapper {
+    padding-top: 1rem;
   }
 </style>

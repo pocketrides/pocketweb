@@ -95,7 +95,7 @@
 
 <div data-flex="v" data-gap>
   {#if post.photos.length}
-    <div class="photos-wrapper" data-flex data-gap>
+    <div class="photos-wrapper" data-flex="scroll-h" data-gap>
       {#each post.photos as photo (photo)}
         <CloudinaryPreview {photo} on:delete={handleDeletePhoto} />
       {/each}
@@ -114,7 +114,7 @@
     />
   </div>
   {#if post.links.length}
-    <div class="links-wrapper" data-flex data-gap>
+    <div class="links-wrapper" data-flex="scroll-h" data-gap>
       {#each post.links as link (link)}
         <LinkPreview {link} on:delete={handleDeleteLink} />
       {/each}
@@ -150,8 +150,5 @@
   .photos-wrapper,
   .links-wrapper {
     padding: 2rem 1rem 1px;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    overflow-y: visible;
   }
 </style>

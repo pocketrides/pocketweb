@@ -4,6 +4,8 @@
   import { fly } from 'svelte/transition';
   import Nametag from '../Nametag.svelte';
   import ReplyActions from './ReplyActions.svelte';
+  import ReplyLink from './ReplyLink.svelte';
+  import ReplyPhotos from './ReplyPhotos.svelte';
   import ReplyText from './ReplyText.svelte';
 
   export let reply: ClientReply;
@@ -18,6 +20,24 @@
         </div>
       {:else}
         <ReplyText {message} />
+      {/if}
+    {/if}
+    {#if message.type === 'photos' && message.photos.length}
+      {#if reply.pending}
+        <div in:fly={{ y: 100, delay: index * 50, duration: 150 }}>
+          <ReplyPhotos {message} />
+        </div>
+      {:else}
+        <ReplyPhotos {message} />
+      {/if}
+    {/if}
+    {#if message.type === 'link'}
+      {#if reply.pending}
+        <div in:fly={{ y: 100, delay: index * 50, duration: 150 }}>
+          <ReplyLink {message} />
+        </div>
+      {:else}
+        <ReplyLink {message} />
       {/if}
     {/if}
   {/each}

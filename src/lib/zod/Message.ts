@@ -19,8 +19,8 @@ export const draft_message_photos_validator = z.object({
 });
 
 export const draft_message_links_validator = z.object({
-  type: z.literal('links'),
-  links: z.array(link_validator)
+  type: z.literal('link'),
+  link: link_validator
 });
 
 export const draft_message_validator = z.discriminatedUnion('type', [
