@@ -95,6 +95,12 @@
         z-index: 1;
         width: 100%;
       }
+
+      [slot='bottom'] {
+        border-bottom-left-radius: 1rem;
+        border-bottom-right-radius: 1rem;
+        overflow: hidden;
+      }
     }
   }
 
