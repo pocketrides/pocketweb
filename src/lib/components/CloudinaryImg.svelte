@@ -15,28 +15,28 @@
   export let square_small: boolean = false;
 </script>
 
-{#if thumbnail}
+{#if thumbnail === true}
   <img
     data-thumbnail
     src={getThumbnail(photo.version, photo.public_id)}
     alt={photo.alt_text}
   />
 {/if}
-{#if normal}
+{#if normal === true}
   <img
     data-normal
     src={getNormal(photo.version, photo.public_id)}
     alt={photo.alt_text}
   />
 {/if}
-{#if square}
+{#if square === true}
   <img
     data-square
     src={getSquare(photo.version, photo.public_id)}
     alt={photo.alt_text}
   />
 {/if}
-{#if square_small}
+{#if square_small === true}
   <img
     data-square-sm
     src={getSquareSmall(photo.version, photo.public_id)}

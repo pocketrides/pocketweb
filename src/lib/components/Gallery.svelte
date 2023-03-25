@@ -26,7 +26,11 @@
     >
       {#each photos as photo (photo)}
         <div class="gallery-item" data-flex="cc">
-          <CloudinaryImg {photo} square />
+          <CloudinaryImg
+            {photo}
+            square={square === true}
+            normal={square === false}
+          />
         </div>
       {/each}
     </div>
@@ -42,6 +46,22 @@
   .gallery {
     overflow-x: auto;
     scroll-snap-type: x mandatory;
+
+    .gallery-item {
+      // flex-shrink: 0;
+      max-height: 512px;
+      min-width: 50%;
+
+      @media (max-width: 640px) {
+        min-width: 100%;
+      }
+
+      :global(img) {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
 
     &.square .gallery-item {
       flex-shrink: 0;

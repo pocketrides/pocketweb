@@ -62,7 +62,7 @@
   {/if}
 </svelte:head>
 
-<SiteHeader fill="system-superlight" outer_fill="system-light" />
+<SiteHeader fill="system-superlight" outer_fill="system-superlight" />
 <Main fill="system-light" padded={false}>
   <ScrollList
     has_none={$page_controller.post_ids.length === 0}

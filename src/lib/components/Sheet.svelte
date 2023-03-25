@@ -66,7 +66,7 @@
   };
 
   const dialogClosed = () => {
-    $App.sheet_id = '';
+    if ($context.dismissable === true) $App.sheet_id = '';
   };
 
   afterUpdate(() => {
@@ -91,7 +91,12 @@
   });
 </script>
 
-<dialog bind:this={dialog} class:closing on:close={dialogClosed}>
+<dialog
+  bind:this={dialog}
+  class:closing
+  on:close={dialogClosed}
+  on:cancel|preventDefault={dialogClosed}
+>
   {#if $App.sheet_id === id}
     <div
       class="wrapper"

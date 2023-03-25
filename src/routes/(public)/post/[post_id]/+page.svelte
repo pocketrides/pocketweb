@@ -1,20 +1,234 @@
 <script lang="ts">
+  import { page } from '$app/stores';
+  import { ReplyToPostRequest } from '$lib/api/reply/reply_to_post';
+  import { Room, type RoomConnection } from '$lib/api/room';
+  import Gallery from '$lib/components/Gallery.svelte';
+  import Icon from '$lib/components/Icon.svelte';
+  import LinkDisplay from '$lib/components/LinkDisplay.svelte';
+  import LinkList from '$lib/components/LinkList.svelte';
   import Main from '$lib/components/Main.svelte';
+  import MessageComposer from '$lib/components/messaging/MessageComposer.svelte';
+  import Nametag from '$lib/components/Nametag.svelte';
   import Post from '$lib/components/Post.svelte';
+  import PostActionsLeft from '$lib/components/PostActionsLeft.svelte';
+  import PostActionsRight from '$lib/components/PostActionsRight.svelte';
+  import PostModResult from '$lib/components/PostModResult.svelte';
+  import Replies from '$lib/components/replies/Replies.svelte';
+  import Row from '$lib/components/Row.svelte';
   import SiteHeader from '$lib/components/SiteHeader.svelte';
+  import UtilityNav from '$lib/components/UtilityNav.svelte';
+  import { RepliesManager, RepliesManagerStore } from '$lib/stores/RepliesManager';
+  import { getTimeAgo } from '$lib/util/time-ago';
+  import type { MessageComposerEvent } from '$lib/zod/Message';
+  import { onDestroy, onMount } from 'svelte';
   import type { PageData } from './$types';
 
   export let data: PageData;
 
+  let room: RoomConnection | undefined;
   let page_title = data.post.contents[0].content_raw;
   if (page_title.length > 40) page_title = page_title.substring(0, 40) + '…';
+  let interval_id: any;
+  let replies_wrapper: HTMLDivElement;
+
+  onMount(async () => {
+    await RepliesManager.loadReplies(data.post.id, data.post.stats!.replies);
+    room = await Room.connect('post', data.post.id, $page.data.room_key);
+    room?.handleNewCount((new_count: number) => {
+      $RepliesManagerStore.latest_count = new_count;
+    });
+  });
+
+  onDestroy(() => {
+    room?.disconnect();
+    room = undefined;
+    $RepliesManagerStore.replies = [];
+  });
+
+  const repliesClick = () => {
+    if (replies_wrapper) {
+      replies_wrapper.querySelector('textarea')?.focus();
+    }
+  };
+
+  const handleReply = async (e: CustomEvent<MessageComposerEvent>) => {
+    let res = await ReplyToPostRequest.post({
+      post_id: data.post.id,
+      messages: e.detail.messages
+    });
+
+    if (res.success) {
+      e.detail.completeCallback(true);
+
+      RepliesManagerStore.update((prev) => {
+        if (prev.replies && res.success) {
+          res.reply.pending = true;
+          prev.replies.push(res.reply);
+          prev.latest_count = res.new_count;
+        } else if (!prev.replies && res.success) {
+          res.reply.pending = true;
+          prev.replies = [res.reply];
+          prev.latest_count = res.new_count;
+        }
+
+        return prev;
+      });
+
+      room?.updateCount(res.new_count);
+      room?.sendMessage(res.reply, $page.data.room_key);
+
+      scrollToBottom();
+    } else {
+      e.detail.completeCallback(false);
+    }
+  };
+
+  const scrollToBottom = () => {
+    const main = document.querySelector('main');
+    if (main) {
+      clearInterval(interval_id);
+      let count = 0;
+      interval_id = setInterval(() => {
+        window.scrollTo(0, main.scrollHeight - window.innerHeight + main.offsetTop);
+
+        if (count > 10) {
+          clearInterval(interval_id);
+        }
+
+        count++;
+      }, 50);
+    }
+  };
 </script>
 
 <svelte:head>
   <title>{page_title} | pocketrides!</title>
 </svelte:head>
 
-<SiteHeader outer_fill="system-light" />
-<Main fill="system-light" fullheight padded={false}>
-  <Post post_id={data.post.id} />
-</Main>
+<SiteHeader
+  fill={data.post.audience === 'close_friends' ? 'superlight' : 'system-superlight'}
+  outer_fill={data.post.audience === 'close_friends'
+    ? 'superlight'
+    : 'system-superlight'}
+>
+  <div slot="bottom">
+    <Gallery photos={data.post.contents[0].photos} square={false} />
+  </div>
+</SiteHeader>
+
+<Post
+  post={data.post}
+  wrapper_mode
+  let:post
+  let:post_controller
+  let:likeClick
+  let:button_controller
+  let:is_liking
+  let:is_my_post
+  let:is_quarantining
+  let:quarantineClick
+  let:showing_mod_result
+  let:showing_post
+  let:post_hidden
+  let:replies_loading
+>
+  <Main fill="system-light" fullheight padded={false}>
+    <Row
+      padded
+      fill={post.audience === 'close_friends' ? 'superlight' : 'system-superlight'}
+      sticky
+      bordered
+    >
+      <div slot="left" data-flex="ac">
+        <Nametag nametag={post.nametag} />
+        <div class="half small">
+          <Icon icon="arrow_right" />
+        </div>
+        {#if post.audience === 'close_friends'}
+          <p class="h3 half small">
+            <Icon icon="favorite" />
+            Close Friends
+          </p>
+        {:else}
+          <p class="h3 half small">
+            <Icon icon="signpost" />
+            Posts
+          </p>
+        {/if}
+      </div>
+      <h3 slot="right" class="half small thin">
+        {getTimeAgo(new Date(post.ts / 1000), 'round-minute')}
+      </h3>
+    </Row>
+    <div class="post-wrapper">
+      {#each post.contents as content, index (content)}
+        <div>
+          {#if index > 0}
+            <Gallery photos={content.photos} square={false} />
+          {/if}
+          <div data-richtext data-padded>
+            {@html content.content}
+          </div>
+          {#if content.links.length}
+            <LinkList padded>
+              {#each content.links as link (link)}
+                <LinkDisplay {link} />
+              {/each}
+            </LinkList>
+          {/if}
+        </div>
+        {#if index === 0}
+          <PostModResult {post_controller} {showing_mod_result} {post_hidden} />
+        {/if}
+      {/each}
+    </div>
+    <UtilityNav
+      fill="system-light"
+      outer_fill="system-light"
+      border_bottom={false}
+      slot="utility-nav"
+    >
+      <PostActionsLeft
+        slot="left"
+        {post_controller}
+        {is_my_post}
+        {is_liking}
+        {likeClick}
+        {repliesClick}
+        {replies_loading}
+        {showing_mod_result}
+      />
+      <PostActionsRight
+        slot="right"
+        {post_controller}
+        {button_controller}
+        {showing_post}
+        {is_quarantining}
+        {quarantineClick}
+      />
+    </UtilityNav>
+    <Row padded fill="system-superlight" bordered>
+      <div slot="left" data-flex="ac">
+        <h3>
+          <Icon icon="reply" />
+          Replies
+        </h3>
+      </div>
+    </Row>
+    <div class="replies-wrapper" data-flex="v" data-gap bind:this={replies_wrapper}>
+      <Replies />
+      <MessageComposer
+        placeholder="Write a reply…"
+        on:message={handleReply}
+        on:active={scrollToBottom}
+      />
+    </div>
+  </Main>
+</Post>
+
+<style lang="scss">
+  .post-wrapper,
+  .replies-wrapper {
+    padding-bottom: 1rem;
+  }
+</style>

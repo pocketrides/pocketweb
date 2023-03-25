@@ -5,24 +5,26 @@
   import { QuarantineCreateRequest } from '$lib/api/quarantine/create';
   import { QuarantineDestroyRequest } from '$lib/api/quarantine/destroy';
   import { App } from '$lib/stores/app';
-  import { RepliesManager } from '$lib/stores/RepliesManager';
+  import { RepliesManager, RepliesManagerStore } from '$lib/stores/RepliesManager';
   import { getTimeAgo } from '$lib/util/time-ago';
   import type { ServerPost } from '$lib/zod/Post';
   import { afterUpdate, createEventDispatcher, onMount } from 'svelte';
   import { writable } from 'svelte/store';
-  import { slide } from 'svelte/transition';
   import Button from './Button.svelte';
-  import ButtonRow from './ButtonRow.svelte';
   import Container from './Container.svelte';
   import Gallery from './Gallery.svelte';
   import Icon from './Icon.svelte';
   import LinkDisplay from './LinkDisplay.svelte';
   import LinkList from './LinkList.svelte';
   import Nametag from './Nametag.svelte';
+  import PostActionsLeft from './PostActionsLeft.svelte';
+  import PostActionsRight from './PostActionsRight.svelte';
+  import PostModResult from './PostModResult.svelte';
   import Row from './Row.svelte';
 
   export let post_id: string | undefined = undefined;
   export let post: ServerPost | undefined = undefined;
+  export let wrapper_mode: boolean = false;
 
   let wrapper: HTMLDivElement | undefined;
 
@@ -37,6 +39,7 @@
   const loading_post = writable(false);
   const showing_mod_result = writable(false);
   const is_expanded = writable(false); // if the post is longer than 6 lines, show an "expand" button
+  const replies_loading = writable(false);
 
   $: should_be_hidden = $post_controller
     ? $post_controller.is_quarantined ||
@@ -45,6 +48,14 @@
     : false;
   $: post_hidden = should_be_hidden && $showing_post === false;
   $: is_my_post = $page.data.my_nametag?.id === $post_controller?.nametag?.id;
+  $: if (
+    $post_controller &&
+    $post_controller.stats &&
+    $RepliesManagerStore.post_id === $post_controller.id &&
+    $post_controller.stats.replies !== $RepliesManagerStore.latest_count
+  ) {
+    $post_controller.stats.replies = $RepliesManagerStore.latest_count;
+  }
 
   onMount(async () => {
     try {
@@ -153,14 +164,37 @@
     }
   };
 
-  const openReplies = () => {
-    RepliesManager.openReplies(post_id, $post_controller.replies);
+  const repliesClick = async () => {
+    if ($post_controller && $post_controller.stats) {
+      $replies_loading = true;
+      await RepliesManager.openReplies(
+        $post_controller.id,
+        $post_controller.stats.replies
+      );
+      $replies_loading = false;
+    }
   };
 </script>
 
 <svelte:window on:scroll={checkBounds} />
 
-{#if $post_controller !== undefined}
+{#if wrapper_mode}
+  <slot
+    post={$post_controller}
+    {post_controller}
+    {button_controller}
+    {is_my_post}
+    {is_liking}
+    {is_quarantining}
+    {showing_mod_result}
+    {showing_post}
+    {post_hidden}
+    {replies_loading}
+    {likeClick}
+    {repliesClick}
+    {quarantineClick}
+  />
+{:else if $post_controller !== undefined}
   <div
     bind:this={wrapper}
     data-post={$post_controller.id}
@@ -217,8 +251,13 @@
             <div class="summary" data-richtext>
               {@html $post_controller.contents[0].content}
             </div>
-            <div class="read-more">
-              {#if $post_controller.contents.length === 1}
+            {#if $post_controller.contents.length === 1}
+              <div
+                class="read-more"
+                data-theme={$post_controller.audience === 'close_friends'
+                  ? $post_controller.nametag.theme
+                  : 'system'}
+              >
                 <Button
                   small
                   icon={$is_expanded ? 'expand_less' : 'expand_more'}
@@ -227,12 +266,12 @@
                     $is_expanded = !$is_expanded;
                   }}
                 />
-              {/if}
-            </div>
+              </div>
+            {/if}
           </div>
           {#if $post_controller.contents[0].links.length}
             <div>
-              <LinkList padded>
+              <LinkList padded="h">
                 {#each $post_controller.contents[0].links as link (link)}
                   <LinkDisplay {link} />
                 {/each}
@@ -251,69 +290,24 @@
           {#if $post_controller.stats}
             <div data-padded>
               <Row>
-                <ButtonRow slot="left">
-                  {#if $post_controller.settings.enable_likes === true}
-                    <Button
-                      id="likes"
-                      icon="favorite_border"
-                      disabled={$is_liking}
-                      small
-                      primary={$post_controller.is_liked}
-                      count={$post_controller.stats.likes}
-                      label=""
-                      on:click={likeClick}
-                    />
-                  {/if}
-                  {#if is_my_post && $post_controller?.settings?.mod_result?.allow_likes === false}
-                    <Button
-                      id="mod_result"
-                      icon={$showing_mod_result === true ? 'close' : 'info'}
-                      small
-                      primary={$showing_mod_result === true}
-                      label=""
-                      on:click={() => {
-                        $showing_mod_result = !$showing_mod_result;
-                      }}
-                    />
-                  {/if}
-                  {#if $post_controller?.settings?.enable_replies === true}
-                    <Button
-                      id="replies"
-                      icon="reply"
-                      small
-                      label=""
-                      count={$post_controller.stats.replies}
-                      on:click={openReplies}
-                    />
-                  {/if}
-                </ButtonRow>
-                <ButtonRow slot="right">
-                  {#if $post_controller.is_quarantined}
-                    <Button
-                      controller={button_controller}
-                      small
-                      id="hide"
-                      icon="visibility_off"
-                      label="Hide post"
-                      on:click={() => {
-                        $showing_post = false;
-                      }}
-                    />
-                  {/if}
-                  <Button
-                    id="quarantines"
-                    icon="support"
-                    small
-                    disabled={$is_quarantining}
-                    controller={button_controller}
-                    count={$post_controller.stats.quarantines}
-                    primary={$post_controller.is_quarantined}
-                    label={$post_controller.is_quarantined
-                      ? 'Unquarantine'
-                      : 'Quarantine'}
-                    on:click={quarantineClick}
-                  />
-                </ButtonRow>
+                <PostActionsLeft
+                  slot="left"
+                  {is_my_post}
+                  {post_controller}
+                  {is_liking}
+                  {showing_mod_result}
+                  {replies_loading}
+                  {likeClick}
+                  {repliesClick}
+                />
+                <PostActionsRight
+                  slot="right"
+                  {post_controller}
+                  {button_controller}
+                  {showing_post}
+                  {is_quarantining}
+                  {quarantineClick}
+                />
               </Row>
             </div>
           {/if}
@@ -349,39 +343,7 @@
         </div>
       </Container>
     {/if}
-    {#if post_hidden === false && $showing_mod_result}
-      <div in:slide|local out:slide|local>
-        <Container fill="superlight">
-          <div data-flex="v as" data-gap="1">
-            <div data-flex="v as" data-gap>
-              <h3>
-                <Icon icon="info" />
-                Heads up!
-              </h3>
-              <p>
-                Your post failed our automatic checks, so likes have been turned off.
-                Think we got it wrong? Tap Dispute and we'll review it.
-              </p>
-              <Button
-                small
-                label="Dispute"
-                on:click={() => {
-                  window.open(
-                    `mailto:hello@pocketrides.cc?subject=dispute&body=` +
-                      encodeURIComponent(
-                        `Hello, I think my post was incorrectly moderated. It says:\n\n\t\t${$post_controller.contents[0].content_raw}\n\nThe moderator said the following:\n\n\t\t${$post_controller.settings.mod_result?.response_text}\n\nLink to the post: https://pocketrides.com/post/${$post_controller.id}\n\nThanks!`
-                      )
-                  );
-                }}
-              />
-            </div>
-            <small class="half">
-              <Icon icon="visibility_off" /> Only you can see this.
-            </small>
-          </div>
-        </Container>
-      </div>
-    {/if}
+    <PostModResult {post_controller} {showing_mod_result} {post_hidden} />
   </div>
 {:else if $loading_post === true}
   <div data-loading>
@@ -397,7 +359,7 @@
   .summary-wrapper {
     position: relative;
     overflow: hidden;
-    padding-bottom: 34px;
+    // padding-bottom: 34px;
 
     .summary {
       font-size: 1.125rem;
@@ -413,13 +375,11 @@
       padding-left: 1px;
       width: 100%;
       height: 34px;
-      top: 108px;
+      top: 96px;
       background: linear-gradient(0deg, rgb(var(--light)), rgba(var(--light), 0.85));
     }
 
     &[data-expanded='true'] {
-      padding-bottom: 0;
-
       .summary {
         max-height: none;
         -webkit-line-clamp: 1000;

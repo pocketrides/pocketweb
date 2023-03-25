@@ -8,7 +8,6 @@
   import { page } from '$app/stores';
   import { Room, type RoomConnection } from '$lib/api/room';
   import type { ClientReply } from '$lib/zod/Reply';
-  import { onDestroy, onMount } from 'svelte';
 
   let replies_are_scrolled_up = false;
   let shadow: HTMLElement;
@@ -40,6 +39,10 @@
           scrollToBottomIfAtBottom();
         });
 
+        room.handleNewCount((new_count: number) => {
+          $RepliesManagerStore.latest_count = new_count;
+        });
+
         room.handleEarlyDisconnect(async () => {
           if (retry_count > 5) return;
 
@@ -49,22 +52,8 @@
 
           disconnect();
           await connect();
-
-          // if (
-          //   last_connection &&
-          //   new Date().getTime() - last_connection.getTime() < 2000
-          // ) {
-          //   setTimeout(async () => {
-          //     await connect();
-          //   }, 2500);
-          // } else {
-          //   room?.disconnect();
-          //   await connect();
-          // }
         });
       }
-    } else {
-      console.log('not connecting');
     }
   };
 
@@ -73,6 +62,8 @@
       room.disconnect();
       room = undefined;
     }
+
+    $RepliesManagerStore.replies = [];
   };
 
   const handleReply = async (
@@ -93,15 +84,18 @@
         if (prev.replies && res.success) {
           res.reply.pending = true;
           prev.replies.push(res.reply);
-        } else if (res.success && !prev.replies) {
+          prev.latest_count = res.new_count;
+        } else if (!prev.replies && res.success) {
           res.reply.pending = true;
           prev.replies = [res.reply];
+          prev.latest_count = res.new_count;
         }
 
         return prev;
       });
 
-      room?.sendMessage(res.reply);
+      room?.updateCount(res.new_count);
+      room?.sendMessage(res.reply, $page.data.room_key);
 
       scrollToBottom();
     } else {
@@ -116,14 +110,6 @@
       Math.ceil(target.scrollTop) <
       Math.floor(target.scrollHeight - target.clientHeight);
   };
-
-  onMount(() => {
-    room?.disconnect();
-  });
-
-  onDestroy(() => {
-    room?.disconnect();
-  });
 </script>
 
 <Sheet

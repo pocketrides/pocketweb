@@ -242,11 +242,13 @@
   .composer {
     max-height: 50vh;
     overflow-y: auto;
+    max-width: 640px;
+    margin: auto;
   }
 
   .composer:not(.active) {
     padding-top: 0;
-    padding-bottom: 0;
+    padding-bottom: 1px;
   }
 
   // [data-padded].active {

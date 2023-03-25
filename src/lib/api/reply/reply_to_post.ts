@@ -14,7 +14,8 @@ export class ReplyToPostRequest {
   static response_validator = z.discriminatedUnion('success', [
     z.object({
       success: z.literal(true),
-      reply: client_reply_validator
+      reply: client_reply_validator,
+      new_count: z.number()
     }),
     z.object({
       success: z.literal(false)

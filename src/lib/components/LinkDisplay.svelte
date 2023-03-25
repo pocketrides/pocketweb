@@ -79,6 +79,7 @@
 
       .og-link {
         max-width: 220px;
+        min-height: 42px;
         padding: 0 0.5rem;
       }
 

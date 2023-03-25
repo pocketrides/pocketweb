@@ -4,7 +4,6 @@ import { Fauna, q } from './Fauna';
 import { Nametag } from './Nametag';
 import { NametagStats } from './NametagStats';
 import { PostStats } from './PostStats';
-import { Reply } from './Reply';
 
 export class Post {
   static collection = 'posts';
@@ -19,7 +18,6 @@ export class Post {
         post: any;
         post_nametag: any;
         post_stats: any;
-        replies: { data: any[]; after?: { id: string }[] };
         is_liked?: boolean;
         unlike_key?: string;
         is_quarantined?: boolean;
@@ -29,15 +27,6 @@ export class Post {
         let post = Post.parseFQL(req.post);
         post.nametag = Nametag.parseClientFQL(req.post_nametag);
         post.stats = PostStats.parseFQL(req.post_stats);
-
-        if (req.replies.after)
-          post.replies_after = req.replies.after[0]
-            ? req.replies.after[0].id
-            : undefined;
-
-        post.replies = req.replies.data.map((r) => {
-          return Reply.parseFQL(r);
-        });
 
         post.is_liked = req.is_liked;
         post.unlike_key = req.unlike_key;

@@ -10,3 +10,9 @@
     <Post {store} {index} bind:post />
   {/each}
 </div>
+
+<style lang="scss">
+  div {
+    padding-bottom: 1rem;
+  }
+</style>

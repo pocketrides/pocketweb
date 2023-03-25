@@ -16,38 +16,45 @@
 
 <div class="wrapper" data-fill={outer_fill} class:utility>
   <header data-fill={fill}>
-    <Container>
-      <Row>
-        <slot name="left" slot="left"><Logo /></slot>
-        <slot name="right" slot="right">
-          <div data-flex data-button-row>
-            {#if $page.data.my_nametag}
-              <Button
-                icon={$Notifications.unread_count === 0
-                  ? 'notifications'
-                  : 'notifications_active'}
-                label=""
-                count={$Notifications.unread_count}
-                on:click={() => {
-                  $App.sheet_id = 'notifications';
-                }}
-              />
-              {#if $page.url.pathname === `/profile/${$page.data.my_nametag.id}`}
-                <Button href="/settings" label="Settings" icon="settings_suggest" />
+    <div class="header-inner">
+      <Container>
+        <Row>
+          <slot name="left" slot="left"><Logo /></slot>
+          <slot name="right" slot="right">
+            <div data-flex data-button-row>
+              {#if $page.data.my_nametag}
+                <Button
+                  icon={$Notifications.unread_count === 0
+                    ? 'notifications'
+                    : 'notifications_active'}
+                  label=""
+                  count={$Notifications.unread_count}
+                  on:click={() => {
+                    $App.sheet_id = 'notifications';
+                  }}
+                />
+                {#if $page.url.pathname === `/profile/${$page.data.my_nametag.id}`}
+                  <Button
+                    href="/settings"
+                    label="Settings"
+                    icon="settings_suggest"
+                  />
+                {:else}
+                  <Nametag nametag={$page.data.my_nametag} />
+                {/if}
               {:else}
-                <Nametag nametag={$page.data.my_nametag} />
+                <Button
+                  label="Sign in"
+                  on:click={() => ($App.sheet_id = 'onboarding')}
+                />
               {/if}
-            {:else}
-              <Button
-                label="Sign in"
-                on:click={() => ($App.sheet_id = 'onboarding')}
-              />
-            {/if}
-          </div>
-        </slot>
-      </Row>
-      <slot />
-    </Container>
+            </div>
+          </slot>
+        </Row>
+        <slot />
+      </Container>
+    </div>
+    <slot name="bottom" />
   </header>
 </div>
 
@@ -62,11 +69,11 @@
     }
   }
 
-  // @media (min-width: 640px) {
-  //   .wrapper[data-fill] {
-  //     background-color: rgb(var(--system-light));
-  //   }
-  // }
+  @media (min-width: 640px) {
+    .wrapper[data-fill] {
+      background-color: rgb(var(--system-light));
+    }
+  }
 
   header {
     border-bottom-left-radius: 1rem;
@@ -75,8 +82,20 @@
     border-bottom: 1px solid rgba(var(--dark), 0.5);
     box-shadow: 0 16px 16px -24px rgba(var(--dark), 0.75);
 
-    display: flex;
-    justify-content: space-between;
+    overflow: hidden;
+
+    // display: flex;
+    // justify-content: space-between;
+
+    &:has([slot='bottom']:not(:empty)) {
+      position: relative;
+
+      .header-inner {
+        position: absolute;
+        z-index: 1;
+        width: 100%;
+      }
+    }
   }
 
   .utility header {

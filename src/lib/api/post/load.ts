@@ -23,14 +23,14 @@ export class LoadPostRequest {
       // await IDBCache.put(post);
     }
 
-    if (post.is_liked === undefined) {
-      const stats = await PostStatsRequest.load(post.id, _fetch);
+    // if (post.is_liked === undefined) {
+    //   const stats = await PostStatsRequest.load(post.id, _fetch);
 
-      post.is_liked = stats.is_liked;
-      post.unlike_key = stats.unlike_key;
-      post.is_quarantined = stats.is_quarantined;
-      // await IDBCache.put(post);
-    }
+    //   post.is_liked = stats.is_liked;
+    //   post.unlike_key = stats.unlike_key;
+    //   post.is_quarantined = stats.is_quarantined;
+    //   // await IDBCache.put(post);
+    // }
 
     return post;
   }
