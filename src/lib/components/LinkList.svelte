@@ -8,11 +8,6 @@
 
 <style lang="scss">
   [data-flex] {
-    scroll-snap-type: x mandatory;
     scroll-padding-left: 1rem;
-
-    :global([data-3d]) {
-      scroll-snap-align: start;
-    }
   }
 </style>

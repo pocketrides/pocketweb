@@ -11,16 +11,18 @@
   const current_scroll = writable(1);
 
   const handleScroll = () => {
-    $current_scroll = Math.floor(gallery.scrollLeft / gallery.clientWidth) + 1;
+    $current_scroll = Math.max(
+      1,
+      Math.floor(gallery.scrollLeft / gallery.clientWidth) + 1
+    );
   };
 </script>
 
 {#if photos.length}
-  <div class="gallery-outer">
+  <div class="gallery-outer" class:square>
     <div
       class="gallery"
-      class:square
-      data-flex
+      data-flex="scroll-h"
       bind:this={gallery}
       on:scroll={handleScroll}
     >
@@ -43,21 +45,30 @@
 {/if}
 
 <style lang="scss">
-  .gallery {
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
+  .gallery-outer {
+    border-bottom-right-radius: 1rem;
+    border-bottom-left-radius: 1rem;
+    overflow: hidden;
+
+    &.square {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      border-bottom: 0;
+    }
 
     .gallery-item {
-      // flex-shrink: 0;
-      max-height: 512px;
+      max-height: 640px;
       min-width: 50%;
+      scroll-snap-align: center;
 
       @media (max-width: 640px) {
-        min-width: 100%;
+        // min-width: 100%;
+        min-width: 120%;
       }
 
       :global(img) {
-        width: 100%;
+        // width: 100%;
+        min-width: 100%;
         height: 100%;
         object-fit: cover;
       }

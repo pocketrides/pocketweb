@@ -84,9 +84,6 @@
 
     overflow: hidden;
 
-    // display: flex;
-    // justify-content: space-between;
-
     &:has([slot='bottom']:not(:empty)) {
       position: relative;
 
@@ -95,12 +92,6 @@
         z-index: 1;
         width: 100%;
       }
-    }
-
-    :global([slot='bottom']) {
-      border-bottom-left-radius: 1rem;
-      border-bottom-right-radius: 1rem;
-      overflow: hidden;
     }
   }
 

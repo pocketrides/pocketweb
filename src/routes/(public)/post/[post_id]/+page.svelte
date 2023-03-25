@@ -17,6 +17,7 @@
   import Row from '$lib/components/Row.svelte';
   import SiteHeader from '$lib/components/SiteHeader.svelte';
   import UtilityNav from '$lib/components/UtilityNav.svelte';
+  import { App } from '$lib/stores/app';
   import { RepliesManager, RepliesManagerStore } from '$lib/stores/RepliesManager';
   import { getTimeAgo } from '$lib/util/time-ago';
   import type { MessageComposerEvent } from '$lib/zod/Message';
@@ -24,6 +25,9 @@
   import type { PageData } from './$types';
 
   export let data: PageData;
+
+  $App.fill =
+    data.post.audience === 'close_friends' ? 'superlight' : 'system-superlight';
 
   let room: RoomConnection | undefined;
   let page_title = data.post.contents[0].content_raw;
