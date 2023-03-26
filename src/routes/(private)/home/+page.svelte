@@ -1,5 +1,6 @@
 <script lang="ts">
   import { browser } from '$app/environment';
+  import { page } from '$app/stores';
   import { LoadHomeFeedRequest } from '$lib/api/feed/home';
   import Main from '$lib/components/Main.svelte';
   import Post from '$lib/components/Post.svelte';
@@ -14,6 +15,8 @@
   import { writable } from 'svelte/store';
   import type { PageData } from './$types';
 
+  let scroll_key = $page.data.my_nametag?.id || '';
+
   export let data: PageData;
 
   if (data.page_theme) $App.theme = data.page_theme;
@@ -21,6 +24,7 @@
 
   let scroll_list: HTMLDivElement | undefined;
   let can_save_scroll = false;
+  let chill = true;
 
   const page_controller = writable<FeedResponse>(blankFeedResponse());
 
@@ -35,7 +39,7 @@
 
       scrollToEnhanced(
         () => {
-          const y = localStorage?.getItem('home-y');
+          const y = localStorage?.getItem(`${scroll_key}-home-y`);
 
           if (y) {
             window.scrollTo(0, Number(y));
@@ -43,6 +47,7 @@
         },
         () => {
           can_save_scroll = true;
+          chill = false;
         }
       );
     }
@@ -64,7 +69,7 @@
 
   const saveScrollY = () => {
     if (can_save_scroll) {
-      localStorage?.setItem('home-y', window.scrollY.toString());
+      localStorage?.setItem(`${scroll_key}-home-y`, window.scrollY.toString());
     }
   };
 </script>
@@ -78,23 +83,26 @@
 <svelte:window on:scroll={saveScrollY} />
 
 <SiteHeader fill="system-superlight" outer_fill="system-superlight" />
-<Main fill="system-light" padded={false}>
-  <ScrollList
-    has_none={$page_controller.post_ids.length === 0}
-    load_more_label="Load newest"
-    bind:el={scroll_list}
-    on:loadmore={async () => {
-      await loadMore();
-    }}
-  >
-    {#each $page_controller.post_ids as post_id (post_id)}
-      <Post
-        {post_id}
-        on:seen={async () => {
-          await IDBFeedCache.saveLastId(post_id);
-        }}
-      />
-    {/each}
-  </ScrollList>
-  <CreateContentUtilityNav slot="utility-nav" />
-</Main>
+<div class:chill>
+  <Main fill="system-light" padded={false}>
+    <ScrollList
+      has_none={$page_controller.post_ids.length === 0}
+      load_more_label="Load newest"
+      bind:el={scroll_list}
+      on:loadmore={async () => {
+        await loadMore();
+      }}
+    >
+      {#each $page_controller.post_ids as post_id (post_id)}
+        <Post {post_id} />
+      {/each}
+    </ScrollList>
+    <CreateContentUtilityNav slot="utility-nav" />
+  </Main>
+</div>
+
+<style lang="scss">
+  .chill {
+    opacity: 0;
+  }
+</style>
