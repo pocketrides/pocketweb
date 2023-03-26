@@ -258,6 +258,9 @@
 </Post>
 
 <style lang="scss">
+  [data-richtext] {
+    font-size: 1.125rem;
+  }
   .post-wrapper,
   .replies-wrapper {
     padding-bottom: 1rem;

@@ -7,6 +7,7 @@
   import SiteHeader from '$lib/components/SiteHeader.svelte';
   import { App } from '$lib/stores/app';
   import { IDBFeedCache } from '$lib/util/idb-feed-cache';
+  import { scrollToEnhanced } from '$lib/util/scroll-to';
   import CreateContentUtilityNav from '$lib/utility-navs/CreateContentUtilityNav.svelte';
   import { blankFeedResponse, type FeedResponse } from '$lib/zod/Feed';
   import { onMount, tick } from 'svelte';
@@ -19,6 +20,7 @@
   $App.fill = 'system-superlight';
 
   let scroll_list: HTMLDivElement | undefined;
+  let can_save_scroll = false;
 
   const page_controller = writable<FeedResponse>(blankFeedResponse());
 
@@ -31,11 +33,19 @@
 
       await tick();
 
-      const y = localStorage?.getItem('home-y');
+      scrollToEnhanced(
+        () => {
+          const y = localStorage?.getItem('home-y');
 
-      if (y) {
-        window.scrollTo(0, Number(y));
-      }
+          if (y) {
+            console.log('> scrolling to', y);
+            window.scrollTo(0, Number(y));
+          }
+        },
+        () => {
+          can_save_scroll = true;
+        }
+      );
     }
   });
 
@@ -54,7 +64,10 @@
   };
 
   const saveScrollY = () => {
-    localStorage?.setItem('home-y', window.scrollY.toString());
+    if (can_save_scroll) {
+      console.log('> saving scroll');
+      localStorage?.setItem('home-y', window.scrollY.toString());
+    }
   };
 </script>
 

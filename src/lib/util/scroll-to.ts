@@ -1,4 +1,4 @@
-export const scrollToEnhanced = (looper: () => void) => {
+export const scrollToEnhanced = (looper: () => void, final?: () => void) => {
   try {
     looper();
   } catch (e) {}
@@ -6,6 +6,7 @@ export const scrollToEnhanced = (looper: () => void) => {
   setTimeout(() => {
     try {
       looper();
+      if (final) final();
     } catch (e) {}
   }, 575);
 };
