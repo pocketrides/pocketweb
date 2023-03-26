@@ -19,8 +19,10 @@
   import UtilityNav from '$lib/components/UtilityNav.svelte';
   import { App } from '$lib/stores/app';
   import { RepliesManager, RepliesManagerStore } from '$lib/stores/RepliesManager';
+  import { scrollToEnhanced } from '$lib/util/scroll-to';
   import { getTimeAgo } from '$lib/util/time-ago';
   import type { MessageComposerEvent } from '$lib/zod/Message';
+  import type { ClientReply } from '$lib/zod/Reply';
   import { onDestroy, onMount } from 'svelte';
   import type { PageData } from './$types';
 
@@ -32,22 +34,52 @@
   let room: RoomConnection | undefined;
   let page_title = data.post.contents[0].content_raw;
   if (page_title.length > 40) page_title = page_title.substring(0, 40) + '…';
-  let interval_id: any;
   let replies_wrapper: HTMLDivElement;
+  let reconnect_count = 0;
 
   onMount(async () => {
-    await RepliesManager.loadReplies(data.post.id, data.post.stats!.replies);
-    room = await Room.connect('post', data.post.id, $page.data.room_key);
-    room?.handleNewCount((new_count: number) => {
-      $RepliesManagerStore.latest_count = new_count;
-    });
+    await Promise.all([
+      RepliesManager.loadReplies(data.post.id, data.post.stats!.replies),
+      connect()
+    ]);
   });
 
   onDestroy(() => {
-    room?.disconnect();
-    room = undefined;
+    disconnect();
     $RepliesManagerStore.replies = [];
   });
+
+  const connect = async () => {
+    room = await Room.connect('post', data.post.id, $page.data.room_key);
+
+    room?.handleMessage((msg) => {
+      RepliesManagerStore.update((prev) => {
+        if (prev.replies) prev.replies.push(msg as ClientReply);
+        else prev.replies = [msg as ClientReply];
+        return prev;
+      });
+    });
+
+    room?.handleNewCount((new_count: number) => {
+      $RepliesManagerStore.latest_count = new_count;
+    });
+
+    room?.handleEarlyDisconnect(() => {
+      reconnect_count++;
+
+      if (reconnect_count > 3) return;
+
+      setTimeout(async () => {
+        disconnect();
+        connect();
+      }, 2000);
+    });
+  };
+
+  const disconnect = () => {
+    room?.disconnect();
+    room = undefined;
+  };
 
   const repliesClick = () => {
     if (replies_wrapper) {
@@ -88,19 +120,19 @@
   };
 
   const scrollToBottom = () => {
-    const main = document.querySelector('main');
-    if (main) {
-      clearInterval(interval_id);
-      let count = 0;
-      interval_id = setInterval(() => {
-        window.scrollTo(0, main.scrollHeight - window.innerHeight + main.offsetTop);
+    const scroll_target = document.querySelector(
+      '[data-message-composer]'
+    ) as HTMLElement;
 
-        if (count > 10) {
-          clearInterval(interval_id);
-        }
-
-        count++;
-      }, 50);
+    if (scroll_target) {
+      scrollToEnhanced(() => {
+        window.scrollTo(
+          0,
+          scroll_target.offsetTop +
+            scroll_target.offsetHeight -
+            (window.visualViewport?.height || window.innerHeight)
+        );
+      });
     }
   };
 </script>
@@ -186,12 +218,23 @@
         {/if}
       {/each}
     </div>
-    <UtilityNav
-      fill="system-light"
-      outer_fill="system-light"
-      border_bottom={false}
-      slot="utility-nav"
-    >
+    <Row padded fill="system-superlight" bordered>
+      <div slot="left" data-flex="ac">
+        <h3>
+          <Icon icon="reply" />
+          Replies
+        </h3>
+      </div>
+    </Row>
+    <div class="replies-wrapper" data-flex="v" data-gap bind:this={replies_wrapper}>
+      <Replies />
+      <MessageComposer
+        placeholder="Write a reply…"
+        on:message={handleReply}
+        on:active={scrollToBottom}
+      />
+    </div>
+    <UtilityNav slot="utility-nav">
       <PostActionsLeft
         slot="left"
         {post_controller}
@@ -211,22 +254,6 @@
         {quarantineClick}
       />
     </UtilityNav>
-    <Row padded fill="system-superlight" bordered>
-      <div slot="left" data-flex="ac">
-        <h3>
-          <Icon icon="reply" />
-          Replies
-        </h3>
-      </div>
-    </Row>
-    <div class="replies-wrapper" data-flex="v" data-gap bind:this={replies_wrapper}>
-      <Replies />
-      <MessageComposer
-        placeholder="Write a reply…"
-        on:message={handleReply}
-        on:active={scrollToBottom}
-      />
-    </div>
   </Main>
 </Post>
 

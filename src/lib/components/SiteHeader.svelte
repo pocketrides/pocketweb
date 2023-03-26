@@ -82,10 +82,11 @@
     border-bottom: 1px solid rgba(var(--dark), 0.5);
     box-shadow: 0 16px 16px -24px rgba(var(--dark), 0.75);
 
-    overflow: hidden;
-
     &:has([slot='bottom']:not(:empty)) {
       position: relative;
+
+      border-bottom-color: rgba(var(--dark), 0.85);
+      box-shadow: 0 16px 16px -18px rgba(var(--dark), 0.75);
 
       .header-inner {
         position: absolute;

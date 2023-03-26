@@ -5,6 +5,7 @@ export const load = (async (event) => {
 
   return {
     my_nametag: parent.my_nametag,
-    page_theme: parent.my_nametag?.theme
+    page_theme: parent.my_nametag?.theme,
+    room_key: parent.room_key
   };
 }) satisfies PageServerLoad;

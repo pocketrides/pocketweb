@@ -148,7 +148,7 @@
   };
 </script>
 
-<form on:submit|preventDefault={handleSubmit}>
+<form on:submit|preventDefault={handleSubmit} data-message-composer>
   <div
     class="composer"
     data-flex="v"

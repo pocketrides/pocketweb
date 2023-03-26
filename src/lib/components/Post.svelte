@@ -55,11 +55,12 @@
     $post_controller.stats.replies !== $RepliesManagerStore.latest_count
   ) {
     $post_controller.stats.replies = $RepliesManagerStore.latest_count;
+    LoadPostRequest.overwrite($post_controller);
   }
 
   onMount(async () => {
     try {
-      if (post_id) {
+      if ($post_controller === undefined && post_id !== undefined) {
         $loading_post = true;
         const post = await LoadPostRequest.load(post_id);
         if (post) {
@@ -157,7 +158,7 @@
   const checkBounds = () => {
     if (wrapper && !_seen) {
       const bounds = wrapper.getBoundingClientRect();
-      if (bounds.bottom < 0) {
+      if (bounds.top < 0) {
         _seen = true;
         dispatch('seen');
       }
@@ -195,11 +196,7 @@
     {quarantineClick}
   />
 {:else if $post_controller !== undefined}
-  <div
-    bind:this={wrapper}
-    data-post={$post_controller.id}
-    data-theme={$post_controller.nametag.theme}
-  >
+  <div bind:this={wrapper} data-theme={$post_controller.nametag.theme}>
     {#if post_hidden === false}
       <Row
         sticky
@@ -348,7 +345,6 @@
 {:else if $loading_post === true}
   <div data-loading>
     <div data-fill="system-superlight" />
-    <div />
     <p />
     <p />
     <p />

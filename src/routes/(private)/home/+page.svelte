@@ -9,7 +9,7 @@
   import { IDBFeedCache } from '$lib/util/idb-feed-cache';
   import CreateContentUtilityNav from '$lib/utility-navs/CreateContentUtilityNav.svelte';
   import { blankFeedResponse, type FeedResponse } from '$lib/zod/Feed';
-  import { onMount } from 'svelte';
+  import { onMount, tick } from 'svelte';
   import { writable } from 'svelte/store';
   import type { PageData } from './$types';
 
@@ -24,19 +24,17 @@
 
   onMount(async () => {
     if (browser) {
-      const cached_seen = await IDBFeedCache.getLastId();
-
       const cached_ids = await IDBFeedCache.getFeed();
       $page_controller.post_ids = cached_ids;
 
       if ($page_controller.post_ids.length === 0) loadMore().then(() => {});
 
-      if (cached_seen) {
-        setTimeout(() => {
-          scroll_list
-            ?.querySelector(`[data-post="${cached_seen}"]`)
-            ?.scrollIntoView();
-        }, 50);
+      await tick();
+
+      const y = localStorage?.getItem('home-y');
+
+      if (y) {
+        window.scrollTo(0, Number(y));
       }
     }
   });
@@ -54,6 +52,10 @@
 
     await IDBFeedCache.save(feed.post_ids);
   };
+
+  const saveScrollY = () => {
+    localStorage?.setItem('home-y', window.scrollY.toString());
+  };
 </script>
 
 <svelte:head>
@@ -61,6 +63,8 @@
     <title>home | pocketrides!</title>
   {/if}
 </svelte:head>
+
+<svelte:window on:scroll={saveScrollY} />
 
 <SiteHeader fill="system-superlight" outer_fill="system-superlight" />
 <Main fill="system-light" padded={false}>

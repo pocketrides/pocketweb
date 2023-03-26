@@ -12,6 +12,7 @@ export const load = (async (event) => {
   return {
     post,
     my_nametag: parent.my_nametag,
-    page_theme: post?.nametag.theme
+    page_theme: post?.nametag.theme,
+    room_key: parent.room_key
   };
 }) satisfies PageLoad;

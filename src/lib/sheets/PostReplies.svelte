@@ -48,8 +48,6 @@
 
           retry_count += 1;
 
-          if (!room) return;
-
           disconnect();
           await connect();
         });
@@ -62,7 +60,10 @@
       room.disconnect();
       room = undefined;
     }
+  };
 
+  const sheetClosed = () => {
+    disconnect();
     $RepliesManagerStore.replies = [];
   };
 
@@ -120,7 +121,7 @@
   nav_height={115}
   bind:scrollToBottomIfAtBottom
   on:activate={connect}
-  on:dismiss={disconnect}
+  on:dismiss={sheetClosed}
   on:scroll={handleScroll}
   let:scrollContentToBottom
 >

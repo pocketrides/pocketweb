@@ -9,8 +9,11 @@ export class LoadHomeFeedRequest {
 
   static validator = feed_response_validator;
 
-  static async load(after_id?: string): Promise<FeedResponse> {
-    const req = await fetch(this.endpoint, {
+  static async load(
+    after_id?: string,
+    _fetch: typeof fetch = fetch
+  ): Promise<FeedResponse> {
+    const req = await _fetch(this.endpoint, {
       method: after_id ? 'POST' : 'GET',
       body: after_id ? JSON.stringify({ after_id }) : undefined
     });

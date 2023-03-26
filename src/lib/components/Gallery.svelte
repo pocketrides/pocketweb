@@ -45,9 +45,12 @@
 {/if}
 
 <style lang="scss">
-  .gallery-outer {
+  :global(header) .gallery-outer {
     border-bottom-right-radius: 1rem;
     border-bottom-left-radius: 1rem;
+  }
+
+  .gallery-outer {
     overflow: hidden;
 
     &.square {
@@ -57,13 +60,13 @@
     }
 
     .gallery-item {
-      max-height: 640px;
+      max-height: 546px;
       min-width: 50%;
-      scroll-snap-align: center;
+      scroll-snap-align: center !important;
 
       @media (max-width: 640px) {
         // min-width: 100%;
-        min-width: 120%;
+        min-width: 100%;
       }
 
       :global(img) {

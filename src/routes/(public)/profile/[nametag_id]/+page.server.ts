@@ -50,6 +50,7 @@ export const load = (async (event) => {
 
   return {
     my_nametag: parent.my_nametag,
+    room_key: parent.room_key,
     is_my_profile_page,
     page_theme: page_nametag.theme,
     page_nametag: page_nametag,

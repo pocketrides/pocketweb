@@ -26,6 +26,10 @@
     z-index: 15;
   }
 
+  :global(main:has(textarea:focus)) div {
+    position: static;
+  }
+
   nav {
     padding-bottom: 1rem;
     border-top: 1px solid rgba(var(--dark), 0.25);

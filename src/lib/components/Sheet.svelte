@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { SheetContext } from '$lib/contexts/Sheet';
   import { App } from '$lib/stores/app';
+  import { scrollToEnhanced } from '$lib/util/scroll-to';
   import { afterUpdate, createEventDispatcher, setContext } from 'svelte';
   import { writable } from 'svelte/store';
   import { fly } from 'svelte/transition';
@@ -35,16 +36,19 @@
   };
 
   const scrollTo = (y: number | null, el: any = scrolls, max: number = 10) => {
-    let count = 0;
-    clearInterval(interval);
-    interval = setInterval(() => {
-      if (count < max) {
-        el.scrollTo(0, y ? y : el.scrollHeight);
-        count++;
-      } else {
-        clearInterval(interval);
-      }
-    }, 10);
+    scrollToEnhanced(() => {
+      el.scrollTo(0, y ? y : el.scrollHeight);
+    });
+    // let count = 0;
+    // clearInterval(interval);
+    // interval = setInterval(() => {
+    //   if (count < max) {
+    //     el.scrollTo(0, y ? y : el.scrollHeight);
+    //     count++;
+    //   } else {
+    //     clearInterval(interval);
+    //   }
+    // }, 10);
   };
 
   const scrollContentToBottom = () => {
