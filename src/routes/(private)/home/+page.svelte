@@ -38,7 +38,6 @@
           const y = localStorage?.getItem('home-y');
 
           if (y) {
-            console.log('> scrolling to', y);
             window.scrollTo(0, Number(y));
           }
         },
@@ -65,7 +64,6 @@
 
   const saveScrollY = () => {
     if (can_save_scroll) {
-      console.log('> saving scroll');
       localStorage?.setItem('home-y', window.scrollY.toString());
     }
   };

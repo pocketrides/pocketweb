@@ -31,7 +31,6 @@ export class RepliesManager {
 
         resolve();
       } else {
-        console.log(res);
         resolve();
       }
     });
