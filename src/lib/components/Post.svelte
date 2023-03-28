@@ -70,6 +70,11 @@
           $loading_post = false;
         }
       }
+
+      // always get the latest from the post detail page
+      if ($post_controller !== undefined && wrapper_mode) {
+        await LoadPostRequest.overwrite($post_controller);
+      }
     } catch (e) {
       $loading_post = false;
     }

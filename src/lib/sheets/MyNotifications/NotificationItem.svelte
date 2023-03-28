@@ -37,16 +37,20 @@
         break;
     }
 
-    select.selectedIndex = 0;
-    selection = '';
+    await reloadNotifications();
+  };
 
+  const readClick = async (e: MouseEvent) => {
+    const target = e.target as HTMLElement;
+    if (['button', 'select'].indexOf(target.nodeName.toLowerCase()) !== -1) return;
+    if ($notif_store.isRead) return;
+    $notif_store.isRead = true;
+    await notif.markAsRead();
     await reloadNotifications();
   };
 
   const actionClick = async () => {
     $App.sheet_id = '';
-    await notif.markAsRead();
-    await reloadNotifications();
   };
 </script>
 
@@ -59,21 +63,15 @@
       : $notif_store.actionUrl
       ? 'system-superlight'
       : undefined}
-    data-3d={$notif_store.isRead
-      ? undefined
-      : $notif_store.actionUrl
-      ? 'ah'
-      : undefined}
+    data-3d={$notif_store.isRead ? undefined : 'ah'}
     data-flex="sb"
     data-gap
+    data-actionable={typeof $notif_store.actionUrl === 'string'}
+    data-unread={$notif_store.isRead ? undefined : ''}
     class:half={$notif_store.isRead}
+    on:mouseup={readClick}
   >
-    <div
-      class="wrapper"
-      data-flex="v"
-      data-gap="0"
-      data-unread={$notif_store.isRead ? undefined : ''}
-    >
+    <div class="wrapper" data-flex="v" data-gap="0">
       {#if $notif_store.actionUrl}
         <a href={$notif_store.actionUrl} data-unstyle on:click={actionClick}>
           <h3 class="half small">{$notif_store.title}</h3>
@@ -98,16 +96,23 @@
           bind:this={select}
           bind:value={selection}
           on:change={handleSelection}
+          on:change={async (e) => {
+            setTimeout(() => {
+              // @ts-ignore
+              e.target.value = '';
+            }, 100);
+          }}
           data-sham
         >
-          <optgroup label="Options:">
-            {#if $notif_store.isRead}
-              <option value="unread">Mark as unread</option>
-            {:else}
-              <option value="read">Mark as read</option>
-            {/if}
-            <option value="delete">Delete</option>
-          </optgroup>
+          <!-- <optgroup label="Options:"> -->
+          <option disabled value="">Pick:</option>
+          {#if $notif_store.isRead}
+            <option value="unread">Mark as unread</option>
+          {:else}
+            <option value="read">Mark as read</option>
+          {/if}
+          <option value="delete">Delete</option>
+          <!-- </optgroup> -->
         </select>
         <Button
           icon="more_horiz"
@@ -121,8 +126,15 @@
 
 <style lang="scss">
   li {
-    .wrapper {
-      &[data-unread] {
+    cursor: default;
+
+    &[data-actionable='false'][data-unread] {
+      border: 1px solid rgba(var(--dark), 0.5);
+      border-radius: 0.25rem;
+    }
+
+    &[data-unread] {
+      .wrapper {
         padding: 0.5rem;
       }
     }

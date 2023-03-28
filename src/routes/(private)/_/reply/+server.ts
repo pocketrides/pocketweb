@@ -20,6 +20,7 @@ export const POST = (async (event) => {
       await Notify({
         title: 'New reply',
         topic: payload.data.post_id,
+        action_url: `/post/${payload.data.post_id}`,
         recipients: [
           {
             // @ts-ignore

@@ -27,7 +27,11 @@ export const TopicSubscribe = async (external_id: string, topic: string) => {
     },
     body: JSON.stringify({
       subscription: {
-        categories: [],
+        categories: [
+          {
+            slug: '*'
+          }
+        ],
         topic
       }
     })

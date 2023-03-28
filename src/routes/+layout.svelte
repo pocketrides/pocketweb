@@ -91,6 +91,12 @@
   });
 </script>
 
+<svelte:head>
+  <link rel="icon" href={`/pocketrides-${$App.theme}.png`} type="image/png" />
+  <link rel="apple-touch-icon" sizes="any" href={`/pocketrides-${$App.theme}.png`} />
+  <link rel="manifest" href={`/manifest.webmanifest?theme=${$App.theme}`} />
+</svelte:head>
+
 <slot />
 {#if $page.data.footer_disabled === undefined}
   <SiteFooter />
