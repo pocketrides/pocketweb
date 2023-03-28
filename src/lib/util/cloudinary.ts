@@ -94,7 +94,7 @@ export const getNormal = (
   version: number | undefined,
   public_id: string | undefined
 ) => {
-  return `${base_url()}/h_1024/v${version}/${public_id}`;
+  return `${base_url()}/h_2048/v${version}/${public_id}`;
 };
 
 export const getSquare = (
@@ -109,11 +109,4 @@ export const getSquareSmall = (
   public_id: string | undefined
 ) => {
   return `${base_url()}/c_thumb,w_320,h_320/v${version}/${public_id}`;
-};
-
-export const getDownload = (
-  version: number | undefined,
-  public_id: string | undefined
-) => {
-  return `${base_url()}/fl_attachment/v${version}/${public_id}`;
 };

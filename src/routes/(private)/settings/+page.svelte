@@ -30,7 +30,7 @@
 </script>
 
 <svelte:head>
-  <title>account settings for {data.my_nametag?.nametag} | pocketrides!</title>
+  <title>account settings for {data.my_nametag?.nametag} | on pocketrides!</title>
 </svelte:head>
 
 <SiteHeader utility>

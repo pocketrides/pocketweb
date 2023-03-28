@@ -29,7 +29,7 @@
 </script>
 
 <svelte:head>
-  <title>Content Settings | Pocketrides!</title>
+  <title>content settings | on pocketrides!</title>
 </svelte:head>
 
 <SiteHeader utility>

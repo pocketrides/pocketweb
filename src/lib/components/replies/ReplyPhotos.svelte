@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { Photos } from '$lib/stores/gallery';
   import type { DraftPhotosMessage } from '$lib/zod/Message';
   import CloudinaryImg from '../CloudinaryImg.svelte';
 
@@ -7,7 +8,15 @@
 
 <div data-flex="scroll-h" data-gap data-padded="h">
   {#each message.photos as photo (photo)}
-    <div data-3d="ah">
+    <div
+      data-3d="ah"
+      on:mouseup={() => {
+        $Photos = {
+          photos: message.photos,
+          selected: photo
+        };
+      }}
+    >
       <CloudinaryImg {photo} square_small />
     </div>
   {/each}

@@ -54,7 +54,7 @@
 </script>
 
 <svelte:head>
-  <title>your payouts | pocketrides!</title>
+  <title>your payouts | on pocketrides!</title>
 </svelte:head>
 
 <SiteHeader utility>

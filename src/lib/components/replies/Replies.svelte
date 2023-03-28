@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { RepliesManagerStore } from '$lib/stores/RepliesManager';
+  import { RepliesManagerStore } from '$lib/stores/replies';
   import Container from '../Container.svelte';
   import Reply from './Reply.svelte';
 </script>

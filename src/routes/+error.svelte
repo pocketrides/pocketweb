@@ -10,7 +10,7 @@
 </script>
 
 <svelte:head>
-  <title>Something broke! | pocketrides</title>
+  <title>Something broke! | on pocketrides!</title>
 </svelte:head>
 
 <SiteHeader />

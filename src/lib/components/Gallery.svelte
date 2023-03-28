@@ -22,7 +22,7 @@
   <div class="gallery-outer" class:square>
     <div
       class="gallery"
-      data-flex="scroll-h"
+      data-flex={photos.length === 1 ? 'cc' : 'scroll-h'}
       bind:this={gallery}
       on:scroll={handleScroll}
     >
@@ -60,12 +60,12 @@
     }
 
     .gallery-item {
-      max-height: 546px;
+      max-width: 720px;
+      max-height: 640px;
       min-width: 50%;
       scroll-snap-align: center !important;
 
       @media (max-width: 640px) {
-        // min-width: 100%;
         min-width: 100%;
       }
 

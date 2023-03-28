@@ -18,7 +18,8 @@
   import SiteHeader from '$lib/components/SiteHeader.svelte';
   import UtilityNav from '$lib/components/UtilityNav.svelte';
   import { App } from '$lib/stores/app';
-  import { RepliesManager, RepliesManagerStore } from '$lib/stores/RepliesManager';
+  import { RepliesManager, RepliesManagerStore } from '$lib/stores/replies';
+  import { getThumbnail } from '$lib/util/cloudinary';
   import { scrollToEnhanced } from '$lib/util/scroll-to';
   import { getTimeAgo } from '$lib/util/time-ago';
   import type { MessageComposerEvent } from '$lib/zod/Message';
@@ -32,10 +33,14 @@
     data.post.audience === 'close_friends' ? 'superlight' : 'system-superlight';
 
   let room: RoomConnection | undefined;
-  let page_title = data.post.contents[0].content_raw;
+  let page_title = data.post.contents[0].content;
   if (page_title.length > 40) page_title = page_title.substring(0, 40) + '…';
   let replies_wrapper: HTMLDivElement;
   let reconnect_count = 0;
+  let has_first_image = data.post.contents[0].photos[0];
+  let og_image = has_first_image
+    ? getThumbnail(has_first_image.version, has_first_image.public_id)
+    : undefined;
 
   onMount(async () => {
     await Promise.all([
@@ -138,7 +143,15 @@
 </script>
 
 <svelte:head>
-  <title>{page_title} | pocketrides!</title>
+  <title>a post by {data.post.nametag.nametag} | on pocketrides!</title>
+  {#if og_image}
+    <meta property="og:image" content={og_image} />
+  {/if}
+  <meta
+    property="og:title"
+    content={`a post by ${data.post.nametag.nametag} on pocketrides!`}
+  />
+  <meta property="og:description" content={page_title} />
 </svelte:head>
 
 <SiteHeader

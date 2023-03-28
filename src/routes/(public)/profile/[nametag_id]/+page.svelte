@@ -17,12 +17,18 @@
   import CreateContentUtilityNav from '$lib/utility-navs/CreateContentUtilityNav.svelte';
   import { LoadNametagFeedRequest } from '$lib/api/feed/nametag';
   import ProfileFreeModeHeader from './ui/ProfileFreeModeHeader.svelte';
+  import { getSquare } from '$lib/util/cloudinary';
 
   $App.fill = 'system-superlight';
 
   export let data: PageData;
 
+  $App.theme = data.page_nametag.theme;
+
   const page_controller = writable(data);
+
+  let has_pic = data.page_nametag.profile_pic;
+  let og_image = has_pic ? getSquare(has_pic.version, has_pic.public_id) : undefined;
 
   onMount(() => {
     if (new URLSearchParams(location.search).has('subscribed')) {
@@ -54,6 +60,13 @@
 
 <svelte:head>
   <title>{data.page_nametag.nametag} is on pocketrides!</title>
+  {#if og_image}
+    <meta property="og:image" content={og_image} />
+  {/if}
+  <meta
+    property="og:title"
+    content={`${data.page_nametag.nametag} is on pocketrides!`}
+  />
 </svelte:head>
 
 <SiteHeader outer_fill="system-light">

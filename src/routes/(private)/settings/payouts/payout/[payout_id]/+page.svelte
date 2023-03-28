@@ -14,7 +14,7 @@
 </script>
 
 <svelte:head>
-  <title>Payout for {data.my_nametag?.nametag} | pocketrides!</title>
+  <title>payout for {data.my_nametag?.nametag} | on pocketrides!</title>
 </svelte:head>
 
 <SiteHeader utility>

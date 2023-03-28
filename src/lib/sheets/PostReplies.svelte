@@ -1,7 +1,7 @@
 <script lang="ts">
   import Replies from '$lib/components/replies/Replies.svelte';
   import Sheet from '$lib/components/Sheet.svelte';
-  import { RepliesManagerStore } from '$lib/stores/RepliesManager';
+  import { RepliesManagerStore } from '$lib/stores/replies';
   import MessageComposer from '$lib/components/messaging/MessageComposer.svelte';
   import type { MessageComposerEvent } from '$lib/zod/Message';
   import { ReplyToPostRequest } from '$lib/api/reply/reply_to_post';

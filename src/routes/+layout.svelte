@@ -16,6 +16,7 @@
   import PostReplies from '$lib/sheets/PostReplies.svelte';
   import { Room } from '$lib/api/room';
   import type { LayoutData } from './$types';
+  import Photos from '$lib/sheets/Photos.svelte';
 
   let started: boolean = false;
   let client: MagicBellClient;
@@ -110,3 +111,4 @@
 {/if}
 
 <PostReplies />
+<Photos />

@@ -5,7 +5,7 @@
   import { QuarantineCreateRequest } from '$lib/api/quarantine/create';
   import { QuarantineDestroyRequest } from '$lib/api/quarantine/destroy';
   import { App } from '$lib/stores/app';
-  import { RepliesManager, RepliesManagerStore } from '$lib/stores/RepliesManager';
+  import { RepliesManager, RepliesManagerStore } from '$lib/stores/replies';
   import { getTimeAgo } from '$lib/util/time-ago';
   import type { ServerPost } from '$lib/zod/Post';
   import { afterUpdate, createEventDispatcher, onMount } from 'svelte';
