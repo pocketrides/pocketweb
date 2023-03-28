@@ -39,16 +39,6 @@
     scrollToEnhanced(() => {
       el.scrollTo(0, y ? y : el.scrollHeight);
     });
-    // let count = 0;
-    // clearInterval(interval);
-    // interval = setInterval(() => {
-    //   if (count < max) {
-    //     el.scrollTo(0, y ? y : el.scrollHeight);
-    //     count++;
-    //   } else {
-    //     clearInterval(interval);
-    //   }
-    // }, 10);
   };
 
   const scrollContentToBottom = () => {
@@ -65,8 +55,10 @@
       scrollContentToBottom();
   };
 
-  const focus = () => {
-    scrollContentToBottom();
+  const focus = (e: FocusEvent) => {
+    const targ = e.target as HTMLElement;
+    if (['textarea'].indexOf(targ.nodeName.toLowerCase()) !== -1)
+      scrollContentToBottom();
   };
 
   const dialogClosed = () => {
@@ -184,6 +176,7 @@
       height: 100%;
       bottom: 0;
       min-height: 100%;
+      overflow-x: hidden;
       overflow-y: scroll;
 
       @media (min-width: 640px) {

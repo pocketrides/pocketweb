@@ -22,8 +22,8 @@ export class Api {
     const res = validator.safeParse(await req.json());
 
     if (res.success) return res.data as T;
-    console.warn(res);
-    return { success: false };
+    console.warn(endpoint, validator, res);
+    return { success: false } as ApiGenericFailureResponse;
   };
 
   static post = async <T>(
@@ -42,8 +42,8 @@ export class Api {
       const res = validator.safeParse(await req.json());
 
       if (res.success) return res.data as T;
-      console.warn(res);
-      return { success: false };
+      console.warn(endpoint, payload, res);
+      return { success: false } as ApiGenericFailureResponse;
     } catch (e) {
       console.error(e);
       return { success: false };

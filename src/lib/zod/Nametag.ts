@@ -53,7 +53,8 @@ export type ServerNametag = DraftNametag & {
 export const client_nametag_validator = z.object({
   id: z.string(),
   nametag: z.string().min(1).max(32),
-  theme: z.enum(THEME_VALUES)
+  theme: z.enum(THEME_VALUES),
+  profile_pic: cloudinary_photo_validator.optional()
 });
 
 export type ClientNametag = {

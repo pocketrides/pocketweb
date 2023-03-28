@@ -12,7 +12,24 @@ export const Notify = async (notification: NewNotification) => {
       'x-magicbell-api-secret': MagicbellConfig.MAGICBELL_SECRET
     },
     body: JSON.stringify({
-      notification: notification
+      notification
+    })
+  });
+};
+
+export const TopicSubscribe = async (external_id: string, topic: string) => {
+  await fetch(`https://api.magicbell.com/subscriptions`, {
+    method: 'POST',
+    headers: {
+      'x-magicbell-api-key': MagicbellConfig.MAGICBELL_KEY,
+      'x-magicbell-api-secret': MagicbellConfig.MAGICBELL_SECRET,
+      'X-MAGICBELL-USER-EXTERNAL-ID': external_id
+    },
+    body: JSON.stringify({
+      subscription: {
+        categories: [],
+        topic
+      }
     })
   });
 };

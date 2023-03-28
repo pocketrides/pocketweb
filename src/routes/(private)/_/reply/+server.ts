@@ -5,6 +5,7 @@ import {
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { Reply } from '$lib/server/db/Reply';
+import { Notify, TopicSubscribe } from '$lib/server/Notify';
 
 export const POST = (async (event) => {
   let res: ReplyToPostResponse = { success: false };
@@ -14,6 +15,23 @@ export const POST = (async (event) => {
 
   if (event.locals.nametag_id && payload.success) {
     res = await Reply.replyToPost(event.locals.nametag_id, payload.data);
+
+    if (res.success) {
+      await Notify({
+        title: 'New reply',
+        topic: payload.data.post_id,
+        recipients: [
+          {
+            // @ts-ignore
+            topic: {
+              subscribers: true
+            }
+          }
+        ]
+      });
+
+      await TopicSubscribe(event.locals.nametag_id, payload.data.post_id);
+    }
   }
 
   return json(res);

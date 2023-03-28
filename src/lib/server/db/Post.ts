@@ -1,3 +1,4 @@
+import { TopicSubscribe } from '$lib/server/Notify';
 import type { ClientRef } from '$lib/zod/Fauna';
 import type { DraftPost, ServerPost } from '$lib/zod/Post';
 import { Fauna, q } from './Fauna';
@@ -94,6 +95,10 @@ export class Post {
       }
 
       await NametagStats.addPost(nametag_id);
+    }
+
+    if (post) {
+      await TopicSubscribe(nametag_id, post.id);
     }
 
     return post;

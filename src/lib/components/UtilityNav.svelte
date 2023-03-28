@@ -26,8 +26,10 @@
     z-index: 15;
   }
 
-  :global(main:has(textarea:focus)) div {
-    position: static;
+  @media (max-width: 640px) {
+    :global(main:has(textarea:focus)) div {
+      position: static;
+    }
   }
 
   nav {

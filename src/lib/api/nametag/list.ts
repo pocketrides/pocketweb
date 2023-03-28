@@ -1,6 +1,10 @@
 import { server_nametag_validator, type ServerNametag } from '$lib/zod/Nametag';
 import { z } from 'zod';
 import { Api } from '../api';
+import {
+  client_nametag_collab_validator,
+  type ClientNametagCollab
+} from '$lib/zod/NametagCollab';
 
 export class NametagList {
   static endpoint = '/_/nametag/list';
@@ -8,7 +12,8 @@ export class NametagList {
   static response = z.discriminatedUnion('success', [
     z.object({
       success: z.literal(true),
-      nametags: z.array(server_nametag_validator)
+      nametags: z.array(server_nametag_validator),
+      collabs: z.array(client_nametag_collab_validator)
     }),
     Api.generic_failure_validator
   ]);
@@ -23,4 +28,4 @@ export class NametagList {
 
 export type NametagListResponse =
   | { success: false }
-  | { success: true; nametags: ServerNametag[] };
+  | { success: true; nametags: ServerNametag[]; collabs: ClientNametagCollab[] };

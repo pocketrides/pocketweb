@@ -1,9 +1,12 @@
+import { NametagCollab } from '$lib/server/db/NametagCollab';
 import { Fauna, q, type FaunaRef } from './Fauna';
 import { Account } from './Account';
 import type { ClientNametag, DraftNametag, ServerNametag } from '$lib/zod/Nametag';
 import { NametagStats } from './NametagStats';
 import { blankNametagStats } from '$lib/zod/NametagStats';
 import { blankAccountStatus } from '$lib/zod/Stripe';
+import type { NametagRelationshipsGetFriendsRequest } from '$lib/api/nametag/relationships';
+import type { ClientNametagCollab } from '$lib/zod/NametagCollab';
 
 export class Nametag {
   static collection = 'nametags';
@@ -22,19 +25,95 @@ export class Nametag {
     account_id: string,
     nametag_id: string
   ): Promise<ServerNametag | undefined> {
-    return await Fauna.one<ServerNametag>(
-      'verify_nametag_ownership',
-      [Account.toRef(account_id), nametag_id],
-      Nametag.parseFQL
-    );
+    try {
+      const query = await Fauna.client().query<ServerNametag | null>(
+        q.Let(
+          {
+            direct: q.Match(q.Index('verify_nametag_ownership'), [
+              Account.toRef(account_id),
+              nametag_id
+            ]),
+            direct_exists: q.Exists(q.Var('direct'))
+          },
+          q.If(
+            q.Var('direct_exists'),
+            q.Get(q.Var('direct')),
+            q.Let(
+              {
+                collab: q.Match(
+                  q.Index('collabs_by_authorized_account_ref_and_nametag_ref'),
+                  [Account.toRef(account_id), Nametag.toRef(nametag_id)]
+                ),
+                collab_exists: q.Exists(q.Var('collab'))
+              },
+              q.If(
+                q.Var('collab_exists'),
+                q.Get(q.Select(['data', 'nametag_ref'], q.Get(q.Var('collab')))),
+                null
+              )
+            )
+          )
+        )
+      );
+
+      if (query !== null) return Nametag.parseFQL(query);
+    } catch (e) {
+      console.error('db/Nametag.verifyOwnership', e);
+      return undefined;
+    }
   }
 
-  static async getByAccountRef(account_ref: FaunaRef) {
-    return await Fauna.many<ServerNametag>(
-      'nametags_by_account_ref',
-      account_ref,
-      Nametag.parseFQL
-    );
+  static async getByAccountId(account_id: string) {
+    let response: { nametags: ServerNametag[]; collabs: ClientNametagCollab[] } = {
+      nametags: [],
+      collabs: []
+    };
+
+    try {
+      const query = await Fauna.client().query<{ nametags: any[]; collabs: any[] }>(
+        q.Let(
+          {
+            nametags: q.Map(
+              q.Paginate(
+                q.Match(q.Index('nametags_by_account_ref'), [
+                  Account.toRef(account_id)
+                ])
+              ),
+              q.Lambda('nametag_ref', q.Get(q.Var('nametag_ref')))
+            ),
+            collabs: q.Map(
+              q.Paginate(
+                q.Match(q.Index('collabs_by_authorized_account_ref'), [
+                  Account.toRef(account_id)
+                ])
+              ),
+              q.Lambda('collab_ref', q.Get(q.Var('collab_ref')))
+            )
+          },
+          {
+            nametags: q.Select(['data'], q.Var('nametags')),
+            collabs: q.Map(
+              q.Select(['data'], q.Var('collabs')),
+              q.Lambda('collab', {
+                authorized_nametag: q.Get(
+                  q.Select(['data', 'authorized_nametag_ref'], q.Var('collab'))
+                ),
+                nametag: q.Get(q.Select(['data', 'nametag_ref'], q.Var('collab')))
+              })
+            )
+          }
+        )
+      );
+
+      response = {
+        nametags: query.nametags.map((n) => Nametag.parseFQL(n)),
+        collabs: query.collabs.map((c) => NametagCollab.parseFQL(c))
+      };
+    } catch (e) {
+      console.error('db/Nametag.getByAccountId:', e);
+    }
+
+    return response;
   }
 
   static async getById(nametag_id: string) {
@@ -49,6 +128,41 @@ export class Nametag {
       Nametag.toRef(nametag_id),
       Nametag.parseClientFQL
     );
+  }
+
+  static async getFriends(
+    nametag_id: string
+  ): Promise<NametagRelationshipsGetFriendsRequest> {
+    try {
+      const query = await Fauna.client().query<{ data: object[] } | undefined>(
+        q.Map(
+          q.Paginate(
+            q.Match(q.Index('friends_by_nametag_ref'), [Nametag.toRef(nametag_id)])
+          ),
+          q.Lambda(
+            'rel_ref',
+            q.Let(
+              {
+                rel: q.Get(q.Var('rel_ref'))
+              },
+              q.Get(q.Select(['data', 'friend_ref'], q.Var('rel')))
+            )
+          )
+        )
+      );
+
+      if (query) {
+        return {
+          success: true,
+          nametags: query.data.map((f) => Nametag.parseClientFQL(f))
+        };
+      } else throw new Error('query was undefined', { cause: query });
+    } catch (e) {
+      console.error('db/nametag.getFriends()', e);
+      return {
+        success: false
+      };
+    }
   }
 
   static async create(account_id: string, draft: Partial<DraftNametag>) {

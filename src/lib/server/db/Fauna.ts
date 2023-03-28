@@ -63,7 +63,7 @@ export class Fauna {
 
       return result.data.map((r) => parser(r));
     } catch (e) {
-      return [];
+      return [] as T[];
     }
   }
 

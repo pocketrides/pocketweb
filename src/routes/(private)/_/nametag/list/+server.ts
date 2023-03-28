@@ -7,14 +7,15 @@ import type { NametagListResponse } from '$lib/api/nametag/list';
 export const GET = (async (event) => {
   let response: NametagListResponse = { success: false };
 
-  const nametags = await Nametag.getByAccountRef(
-    Account.toRef(event.locals.fauna_account_id as string)
+  const { nametags, collabs } = await Nametag.getByAccountId(
+    event.locals.fauna_account_id!
   );
 
-  if (nametags) {
+  if (nametags && collabs) {
     response = {
       success: true,
-      nametags
+      nametags,
+      collabs
     };
   }
 

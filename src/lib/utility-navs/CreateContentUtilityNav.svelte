@@ -6,6 +6,8 @@
   import { App } from '$lib/stores/app';
   import { writable } from 'svelte/store';
 
+  export let feed_controls = false;
+
   const button_row = writable(
     $page.data.my_nametag?.stripe?.has_sub ? 'new_post' : 'sub_now'
   );
@@ -50,5 +52,38 @@
         />
       {/if}
     </ButtonRow>
+  </div>
+  <div slot="right">
+    {#if feed_controls}
+      <ButtonRow let:controller>
+        <Button
+          icon="keyboard_arrow_up"
+          label="Top"
+          {controller}
+          on:click={() => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            controller.update(() => '');
+          }}
+        />
+        <Button
+          icon="keyboard_arrow_down"
+          label="Bottom"
+          {controller}
+          on:click={() => {
+            window.scrollTo({
+              top:
+                (document.querySelector('main')?.offsetHeight || Infinity) -
+                window.innerHeight +
+                // @ts-ignore
+                (document.querySelector('[data-util-nav]')?.offsetHeight || 0) -
+                16,
+              behavior: 'smooth'
+            });
+
+            controller.update(() => '');
+          }}
+        />
+      </ButtonRow>
+    {/if}
   </div>
 </UtilityNav>

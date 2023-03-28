@@ -97,7 +97,7 @@
         <Post {post_id} />
       {/each}
     </ScrollList>
-    <CreateContentUtilityNav slot="utility-nav" />
+    <CreateContentUtilityNav slot="utility-nav" feed_controls />
   </Main>
 </div>
 

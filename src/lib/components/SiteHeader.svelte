@@ -9,12 +9,13 @@
   import type { Fill } from '$lib/zod/Fill';
   import { Notifications } from '$lib/stores/notifications';
 
+  export let sticky: boolean = false;
   export let utility: boolean = false;
   export let outer_fill: Fill | 'none' = 'light';
   export let fill: Fill = $App.fill;
 </script>
 
-<div class="wrapper" data-fill={outer_fill} class:utility>
+<div class="wrapper" data-fill={outer_fill} class:utility class:sticky>
   <header data-fill={fill}>
     <div class="header-inner">
       <Container>
@@ -64,6 +65,7 @@
     top: 0;
     z-index: 16;
 
+    &.sticky,
     &.utility {
       position: sticky;
     }
