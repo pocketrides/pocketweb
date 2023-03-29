@@ -6,7 +6,7 @@ export const GET = (async (event) => {
 
   return json(
     {
-      display: 'fullscreen',
+      display: 'standalone',
       icons: [
         {
           src: `/pocketrides-${theme}.png`,

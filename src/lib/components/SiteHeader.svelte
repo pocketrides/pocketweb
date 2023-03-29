@@ -8,14 +8,46 @@
   import Row from './Row.svelte';
   import type { Fill } from '$lib/zod/Fill';
   import { Notifications } from '$lib/stores/notifications';
+  import { onMount } from 'svelte';
 
   export let sticky: boolean = false;
   export let utility: boolean = false;
   export let outer_fill: Fill | 'none' = 'light';
   export let fill: Fill = $App.fill;
+  export let huddable: boolean = false;
+
+  let interval_id: any;
+  let hud = false;
+
+  const checkForScrollingUp = () => {
+    if (!huddable) return;
+    const start_y = window.scrollY;
+    if (start_y < 100) hud = true;
+    if (interval_id) return;
+    clearInterval(interval_id);
+    interval_id = setTimeout(() => {
+      if (start_y > window.scrollY || window.scrollY < 100) hud = true;
+
+      if (window.scrollY > start_y) hud = false;
+
+      clearInterval(interval_id);
+      interval_id = undefined;
+    }, 650);
+  };
+
+  onMount(checkForScrollingUp);
 </script>
 
-<div class="wrapper" data-fill={outer_fill} class:utility class:sticky>
+<svelte:window on:scroll={checkForScrollingUp} />
+
+<div
+  class="wrapper"
+  data-fill={outer_fill}
+  class:utility
+  class:sticky
+  class:huddable
+  class:hud
+>
   <header data-fill={fill}>
     <div class="header-inner">
       <Container>
@@ -65,9 +97,19 @@
     top: 0;
     z-index: 16;
 
+    &.huddable,
     &.sticky,
     &.utility {
       position: sticky;
+    }
+
+    &.huddable {
+      transition: transform 0.25s ease-in-out;
+      transform: translateY(-120%);
+    }
+
+    &.hud {
+      transform: translateY(0%);
     }
   }
 

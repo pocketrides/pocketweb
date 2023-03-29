@@ -213,4 +213,14 @@
       padding-bottom: var(--nav-height);
     }
   }
+
+  :global([data-standalone='true']) dialog {
+    &:has(.nav:not(:empty)) .wrapper {
+      padding-bottom: calc(var(--nav-height) + env(safe-area-inset-bottom));
+    }
+  }
+
+  :global([data-standalone='true']) dialog .nav > :global([data-fill]) {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
 </style>

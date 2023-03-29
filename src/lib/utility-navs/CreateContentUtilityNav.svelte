@@ -76,7 +76,9 @@
                 window.innerHeight +
                 // @ts-ignore
                 (document.querySelector('[data-util-nav]')?.offsetHeight || 0) -
-                16,
+                16 -
+                // @ts-ignore
+                (navigator.standalone ? 32 : 0),
               behavior: 'smooth'
             });
 

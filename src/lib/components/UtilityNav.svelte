@@ -43,4 +43,8 @@
       border-bottom: 1px solid rgba(var(--dark), 0.5);
     }
   }
+
+  :global([data-standalone='true']) nav {
+    padding-bottom: calc(env(safe-area-inset-bottom) + 1rem);
+  }
 </style>

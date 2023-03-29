@@ -82,7 +82,7 @@
 
 <svelte:window on:scroll={saveScrollY} />
 
-<SiteHeader fill="system-superlight" outer_fill="system-superlight" />
+<SiteHeader fill="system-superlight" outer_fill="none" huddable />
 <div class:chill>
   <Main fill="system-light" padded={false}>
     <ScrollList

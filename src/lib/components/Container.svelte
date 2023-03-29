@@ -23,6 +23,10 @@
     padding: 1rem;
   }
 
+  .padded + :global(.padded) {
+    padding-top: 0;
+  }
+
   :global([data-padded]) {
     padding: 1rem;
   }

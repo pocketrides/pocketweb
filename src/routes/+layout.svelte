@@ -36,6 +36,11 @@
       'data-locked',
       $App.sheet_id === '' ? 'false' : 'true'
     );
+    document.documentElement.setAttribute(
+      'data-standalone',
+      // @ts-ignore
+      navigator.standalone || false
+    );
   }
 
   // boots up MagicBell to avoid exploding Workers. (The ably library has a `window` check in it)

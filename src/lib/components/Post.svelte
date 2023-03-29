@@ -182,8 +182,6 @@
   };
 </script>
 
-<svelte:window on:scroll={checkBounds} />
-
 {#if wrapper_mode}
   <slot
     post={$post_controller}
