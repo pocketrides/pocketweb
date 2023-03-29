@@ -1,6 +1,6 @@
 import { Feed } from '$lib/server/db/Feed';
 import { Nametag } from '$lib/server/db/Nametag';
-import { error } from '@sveltejs/kit';
+import { error, redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { NametagStats } from '$lib/server/db/NametagStats';
 import { blankNametagStats } from '$lib/zod/NametagStats';
@@ -24,6 +24,7 @@ export const load = (async (event) => {
 
         if (upgrade && upgrade.nametag_id === nametag.id) {
           createSessionCookie(event.cookies, upgrade.session_token);
+          throw redirect(302, `/profile/${nametag.id}`);
         }
       }
     }
