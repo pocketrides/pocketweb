@@ -23,11 +23,11 @@
       <div data-flex="v as" data-gap>
         <h2>How Subscriptions work</h2>
         <p>
-          <strong>Subscriptions are $5/month.</strong> You'll get 250 likes to give to
-          your friends.
+          <strong>Subscriptions are $5/month.</strong> Every month, you'll have 250 likes
+          to give to your friends.
         </p>
         <p>
-          Every quarter, we'll ask what to do with your share of the profits: a
+          Every three months, we'll ask what to do with your share of the profits: a
           donation to fight climate change, or a transfer to your bank.
         </p>
         <p>In the meantime, we won't show you ads or sell your data. Ever.</p>

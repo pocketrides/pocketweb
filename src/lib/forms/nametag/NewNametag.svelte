@@ -9,6 +9,7 @@
   import { createEventDispatcher } from 'svelte';
   import { writable } from 'svelte/store';
   import { slide } from 'svelte/transition';
+  import NametagAnim from './NametagAnim.svelte';
 
   let nametag: string = '';
   let theme: ThemeValue | '' = '';
@@ -42,13 +43,16 @@
   data-gap
   data-theme={theme}
 >
-  <div>
-    <h2>Nametags aren't usernames, they're better.</h2>
-    <p>Add some emojis, pick your favorite color, have fun with it.</p>
-  </div>
-  {#if nametag !== ''}
-    <Container rounded fill="superlight">
-      <div class="preview" data-flex="v" data-gap in:slide out:slide>
+  <NametagAnim>
+    {#if nametag !== ''}
+      <div
+        class="preview"
+        data-flex="v cc"
+        data-gap
+        data-fill={theme === '' ? 'system-light' : 'superlight'}
+        in:slide
+        out:slide
+      >
         <Nametag
           large
           nametag={{ nametag, theme: theme === '' ? undefined : theme }}
@@ -59,11 +63,11 @@
         {#if theme === ''}
           <p class="half">Add some color, pick a theme!</p>
         {:else}
-          <p class="h3">It's you!</p>
+          <p class="h3">It's you! <span class="half">Gorgeous!</span></p>
         {/if}
       </div>
-    </Container>
-  {/if}
+    {/if}
+  </NametagAnim>
   <div data-flex data-gap>
     <div data-flex="v">
       <label for="nametag" class="h3">Nametag:</label>
@@ -98,12 +102,8 @@
 
 <style lang="scss">
   .preview {
-    padding: 0 1.5rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
     p {
+      max-width: 140px;
       text-align: center;
     }
   }

@@ -29,9 +29,14 @@
 <style lang="scss">
   a {
     text-decoration: none;
-    display: inline-flex;
+    display: flex;
+    flex-shrink: 0;
     align-items: center;
     user-select: none;
+    white-space: nowrap;
+    max-width: 220px;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 
   .normal {
