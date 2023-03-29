@@ -63,6 +63,7 @@
             url: `https://${window.location.host}/post/${$post_controller?.id}`
           });
         }}
-      />{/if}
+      />
+    {/if}
   </ButtonRow>
 {/if}

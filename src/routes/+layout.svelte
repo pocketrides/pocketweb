@@ -103,11 +103,18 @@
 <svelte:head>
   <link
     rel="icon"
-    href={`/pocketrides-${$page.data.page_theme}.png`}
+    href={`/pocketrides-${$page.data.page_theme ?? 'system'}.png`}
     type="image/png"
   />
-  <link rel="apple-touch-icon" sizes="any" href={`/pocketrides-${$App.theme}.png`} />
-  <link rel="manifest" href={`/manifest.webmanifest?theme=${$App.theme}`} />
+  <link
+    rel="apple-touch-icon"
+    sizes="any"
+    href={`/pocketrides-${$page.data.page_theme ?? 'system'}.png`}
+  />
+  <link
+    rel="manifest"
+    href={`/manifest.webmanifest?theme=${$page.data.page_theme ?? 'system'}`}
+  />
 </svelte:head>
 
 <slot />
