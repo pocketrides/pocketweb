@@ -18,6 +18,8 @@
   import { LoadNametagFeedRequest } from '$lib/api/feed/nametag';
   import ProfileFreeModeHeader from './ui/ProfileFreeModeHeader.svelte';
   import { getSquare } from '$lib/util/cloudinary';
+  import ProfileFriendsList from './ui/ProfileFriendsList.svelte';
+  import ProfileFollowersList from './ui/ProfileFollowersList.svelte';
 
   $App.fill = 'system-superlight';
 
@@ -106,3 +108,5 @@
   </svelte:fragment>
 </Main>
 <EnableNotifications />
+<ProfileFriendsList />
+<ProfileFollowersList />

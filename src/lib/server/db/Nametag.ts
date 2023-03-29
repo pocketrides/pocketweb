@@ -165,6 +165,41 @@ export class Nametag {
     }
   }
 
+  static async getFollowers(
+    nametag_id: string
+  ): Promise<NametagRelationshipsGetFriendsRequest> {
+    try {
+      const query = await Fauna.client().query<{ data: object[] } | undefined>(
+        q.Map(
+          q.Paginate(
+            q.Match(q.Index('followers_by_nametag_ref'), [Nametag.toRef(nametag_id)])
+          ),
+          q.Lambda(
+            'rel_ref',
+            q.Let(
+              {
+                rel: q.Get(q.Var('rel_ref'))
+              },
+              q.Get(q.Select(['data', 'follower_ref'], q.Var('rel')))
+            )
+          )
+        )
+      );
+
+      if (query) {
+        return {
+          success: true,
+          nametags: query.data.map((f) => Nametag.parseClientFQL(f))
+        };
+      } else throw new Error('query was undefined', { cause: query });
+    } catch (e) {
+      console.error('db/nametag.getFfollowers()', e);
+      return {
+        success: false
+      };
+    }
+  }
+
   static async create(account_id: string, draft: Partial<DraftNametag>) {
     const data = Object.assign(draft, {
       account_ref: Account.toRef(account_id),
@@ -179,10 +214,15 @@ export class Nametag {
 
     if (nametag) {
       const stats = await NametagStats.create(nametag.id, blankNametagStats());
-      if (stats)
-        nametag = await Nametag.update(nametag.id, {
+      if (stats) {
+        const latest = await Nametag.update(nametag.id, {
           stats_ref: NametagStats.toRef(stats.id)
         });
+
+        if (latest) {
+          nametag = latest;
+        }
+      }
     }
 
     return nametag;

@@ -7,6 +7,7 @@ export const load = (async (event) => {
     room_host: event.locals.room_host,
     my_nametag: event.locals.nametag,
     mb_config: await MagicbellConfig.getConfig(event.locals.nametag_id),
-    session_expires: event.locals.session_expires
+    session_expires: event.locals.session_expires,
+    magic_post_id: event.locals.magic_post_id
   };
 }) satisfies LayoutServerLoad;

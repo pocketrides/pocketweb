@@ -1,3 +1,6 @@
-export const homepage_pathname = '/post/360300421885984845';
+export class HomepageHelper {
+  static magic_post_id: string;
 
-export const isHomepagePath = () => window.location.pathname === homepage_pathname;
+  static isHomepagePath = () =>
+    window.location.pathname === `/post/${this.magic_post_id}`;
+}

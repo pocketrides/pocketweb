@@ -14,6 +14,13 @@ export class NametagRelationshipsRequest {
       this.get_friends_validator
     );
   }
+
+  static async getFollowers(nametag_id: string) {
+    return Api.get<NametagRelationshipsGetFriendsRequest>(
+      `/_/nametag/${nametag_id}/followers`,
+      this.get_friends_validator
+    );
+  }
 }
 
 export type NametagRelationshipsGetFriendsRequest =

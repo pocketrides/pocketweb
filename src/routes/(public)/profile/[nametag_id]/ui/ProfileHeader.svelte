@@ -9,6 +9,7 @@
   import Icon from '$lib/components/Icon.svelte';
   import Button from '$lib/components/Button.svelte';
   import { browser } from '$app/environment';
+  import { App } from '$lib/stores/app';
 
   export let page_controller: Writable<PageData>;
 
@@ -32,22 +33,40 @@
             </li>
           {/if}
           <li>
-            <p class="h3">
+            <!-- svelte-ignore a11y-invalid-attribute -->
+            <a
+              class="h3"
+              data-unstyle
+              href="#"
+              aria-label="Tap to open friends list"
+              on:click|preventDefault={() => {
+                $App.sheet_id = 'profile_friends_list';
+              }}
+            >
               {plural(
                 $page_controller.page_nametag_stats.friends,
                 'friend',
                 'friends'
               )}
-            </p>
+            </a>
           </li>
           <li>
-            <p class="h3">
+            <!-- svelte-ignore a11y-invalid-attribute -->
+            <a
+              class="h3"
+              data-unstyle
+              href="#"
+              aria-label="Tap to open followers list"
+              on:click|preventDefault={() => {
+                $App.sheet_id = 'profile_followers_list';
+              }}
+            >
               {plural(
                 $page_controller.page_nametag_stats.followers,
                 'follower',
                 'followers'
               )}
-            </p>
+            </a>
           </li>
           <li>
             <p class="h3">

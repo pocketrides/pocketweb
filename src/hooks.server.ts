@@ -58,6 +58,8 @@ type AppSecrets = {
   MAGICBELL_SECRET: string;
   OPEN_AI_KEY: string;
   ROOM_HOST: string;
+  MAGIC_NAMETAG_ID: string;
+  MAGIC_POST_ID: string;
 };
 
 const loadSecrets = (event: RequestEvent, env: AppSecrets) => {
@@ -83,4 +85,10 @@ const loadSecrets = (event: RequestEvent, env: AppSecrets) => {
 
   // Room config (for frontend)
   event.locals.room_host = env.ROOM_HOST;
+
+  // Auto-follow account
+  event.locals.magic_nametag_id = env.MAGIC_NAMETAG_ID;
+
+  // Homepage post ID
+  event.locals.magic_post_id = env.MAGIC_POST_ID;
 };

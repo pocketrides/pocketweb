@@ -1,5 +1,5 @@
 import { invalidateAll } from '$app/navigation';
-import { isHomepagePath } from './homepage';
+import { HomepageHelper } from './homepage';
 import { IDBCache } from './idb-cache';
 import { IDBFeedCache } from './idb-feed-cache';
 
@@ -12,7 +12,7 @@ export const nametagCreateComplete = async (
   if (e.detail.first_time === true) {
     location.href = `/profile/${e.detail.nametag_id}`;
   } else {
-    if (isHomepagePath()) location.href = `/home`;
+    if (HomepageHelper.isHomepagePath()) location.href = `/home`;
     else await invalidateAll();
   }
 };

@@ -17,12 +17,15 @@
   import { Room } from '$lib/api/room';
   import type { LayoutData } from './$types';
   import Photos from '$lib/sheets/Photos.svelte';
+  import { HomepageHelper } from '$lib/util/homepage';
 
   let started: boolean = false;
   let client: MagicBellClient;
   let dispose: Function | undefined;
 
   export let data: LayoutData;
+
+  HomepageHelper.magic_post_id = data.magic_post_id;
 
   Room.host = data.room_host;
 

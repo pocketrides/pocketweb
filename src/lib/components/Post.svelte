@@ -42,6 +42,12 @@
   const is_expanded = writable(false); // if the post is longer than 6 lines, show an "expand" button
   const replies_loading = writable(false);
 
+  let summary: HTMLDivElement;
+  $: can_read_more =
+    summary &&
+    summary.getBoundingClientRect().height > 100 &&
+    $post_controller?.contents?.length === 1;
+
   $: should_be_hidden = $post_controller
     ? $post_controller.is_quarantined ||
       ($post_controller.settings.is_nsfw &&
@@ -252,16 +258,11 @@
       >
         <div data-flex="v">
           <div class="summary-wrapper" data-expanded={$is_expanded} data-padded>
-            <div class="summary" data-richtext>
+            <div class="summary" data-richtext bind:this={summary}>
               {@html $post_controller.contents[0].content}
             </div>
-            {#if $post_controller.contents.length === 1}
-              <div
-                class="read-more"
-                data-theme={$post_controller.audience === 'close_friends'
-                  ? $post_controller.nametag.theme
-                  : 'system'}
-              >
+            {#if can_read_more}
+              <div class="read-more">
                 <Button
                   small
                   icon={$is_expanded ? 'expand_less' : 'expand_more'}
@@ -362,34 +363,19 @@
   .summary-wrapper {
     position: relative;
     overflow: hidden;
-    // padding-bottom: 34px;
 
     .summary {
       font-size: 1.125rem;
       display: -webkit-box;
-      max-height: 108px;
       overflow: hidden;
       -webkit-line-clamp: 4;
       -webkit-box-orient: vertical;
     }
 
-    .read-more {
-      position: absolute;
-      padding-left: 1px;
-      width: 100%;
-      height: 34px;
-      top: 96px;
-      background: linear-gradient(0deg, rgb(var(--light)), rgba(var(--light), 0.85));
-    }
-
     &[data-expanded='true'] {
       .summary {
         max-height: none;
-        -webkit-line-clamp: 1000;
-      }
-
-      .read-more {
-        position: static;
+        -webkit-line-clamp: unset;
       }
     }
   }

@@ -4,6 +4,8 @@ import type { RequestHandler } from './$types';
 import { Nametag } from '$lib/server/db/Nametag';
 import { createSessionCookie, getSessionCookie } from '$lib/server/Cookies';
 import { Stytch } from '$lib/server/Stytch';
+import { TopicSubscribe } from '$lib/server/Notify';
+import { Relationship } from '$lib/server/db/Relationship';
 
 export const POST = (async (event) => {
   const payload = NametagCreate.payload.safeParse(await event.request.json());
@@ -16,6 +18,13 @@ export const POST = (async (event) => {
     );
 
     if (nametag) {
+      try {
+        await TopicSubscribe(nametag.id, 'announcements');
+        await Relationship.follow(nametag.id, event.locals.magic_nametag_id);
+      } catch (e) {
+        console.error('nametag.create api route:', e);
+      }
+
       const session_cookie = getSessionCookie(event.cookies);
 
       if (session_cookie) {

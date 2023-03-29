@@ -11,6 +11,8 @@ declare global {
       room_host: string;
       room_key?: string;
       session_expires?: import('$lib/zod/Stytch').DateString;
+      magic_nametag_id: string;
+      magic_post_id: string;
     }
     interface PageData {
       page_theme?: import('$lib/zod/Theme').ThemeAnyValue;
@@ -19,6 +21,7 @@ declare global {
       room_host: string;
       room_key?: string;
       session_expires?: string;
+      magic_post_id: string;
     }
     interface Platform {
       context?: ExecutionContext;
