@@ -120,6 +120,7 @@ export class StripeClient {
         subscription_data: {
           metadata
         },
+        allow_promotion_codes: true,
         metadata,
         success_url: return_url
       });
@@ -219,6 +220,8 @@ export class StripeClient {
     await this.client().customers.update(customer_id, {
       metadata
     });
+
+    await this.handleCustomerSubscriptionEvent(event);
   }
 
   /**

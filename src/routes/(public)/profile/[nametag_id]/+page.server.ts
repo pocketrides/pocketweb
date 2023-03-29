@@ -5,8 +5,30 @@ import type { PageServerLoad } from './$types';
 import { NametagStats } from '$lib/server/db/NametagStats';
 import { blankNametagStats } from '$lib/zod/NametagStats';
 import { Relationship } from '$lib/server/db/Relationship';
+import { createSessionCookie, getSessionCookie } from '$lib/server/Cookies';
+import { Stytch } from '$lib/server/Stytch';
 
 export const load = (async (event) => {
+  if (event.url.searchParams.has('subscribed') && event.locals.nametag_id) {
+    const nametag = await Nametag.getById(event.locals.nametag_id);
+
+    if (nametag) {
+      const session_cookie = getSessionCookie(event.cookies);
+
+      if (session_cookie) {
+        const upgrade = await Stytch.upgradeSessionWithNametag(
+          session_cookie,
+          nametag.id,
+          nametag
+        );
+
+        if (upgrade && upgrade.nametag_id === nametag.id) {
+          createSessionCookie(event.cookies, upgrade.session_token);
+        }
+      }
+    }
+  }
+
   const page_nametag = await Nametag.getClientNametagById(event.params.nametag_id);
 
   if (!page_nametag) throw error(404);
