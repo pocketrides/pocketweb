@@ -70,7 +70,7 @@
 
 <Container fill="system-superlight" padded={false} bordered rounded>
   <div data-padded>
-    <h2>Nametags are better usernames.</h2>
+    <h2>Nametags are like usernames.</h2>
     <p>Add some emojis & pick your favorite color.</p>
   </div>
   <div class="anim" data-fill="system-light">
