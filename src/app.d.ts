@@ -44,6 +44,9 @@ declare global {
         ROOM_HOST: string;
 
         POCKETQUEUE: Queue<import('$lib/zod/Pocketqueue').PocketqueuePayload>;
+
+        MAGIC_NAMETAG_ID: string;
+        MAGIC_POST_ID: string;
       };
     }
   }
