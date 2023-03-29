@@ -2,7 +2,7 @@
   import '$lib/styles/global.scss';
 
   import { browser } from '$app/environment';
-  import { afterNavigate, beforeNavigate, invalidateAll } from '$app/navigation';
+  import { afterNavigate, beforeNavigate } from '$app/navigation';
   import { page } from '$app/stores';
   import SiteFooter from '$lib/components/SiteFooter.svelte';
   import SiteLoader from '$lib/components/SiteLoader.svelte';
@@ -101,7 +101,11 @@
 </script>
 
 <svelte:head>
-  <link rel="icon" href={`/pocketrides-${$App.theme}.png`} type="image/png" />
+  <link
+    rel="icon"
+    href={`/pocketrides-${$page.data.page_theme}.png`}
+    type="image/png"
+  />
   <link rel="apple-touch-icon" sizes="any" href={`/pocketrides-${$App.theme}.png`} />
   <link rel="manifest" href={`/manifest.webmanifest?theme=${$App.theme}`} />
 </svelte:head>
