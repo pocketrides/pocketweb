@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { browser } from '$app/environment';
   import type { ServerPost } from '$lib/zod/Post';
   import type { Writable } from 'svelte/store';
   import Button from './Button.svelte';
@@ -51,5 +52,17 @@
         on:click={repliesClick}
       />
     {/if}
+    {#if browser && typeof navigator?.share === 'function'}
+      <Button
+        id="share"
+        label=""
+        icon="ios_share"
+        small
+        on:click={() => {
+          navigator.share({
+            url: `https://${window.location.host}/post/${$post_controller?.id}`
+          });
+        }}
+      />{/if}
   </ButtonRow>
 {/if}
