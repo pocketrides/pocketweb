@@ -19,7 +19,16 @@
     }
 
     if ($Photos.selected) {
-      dialog.querySelector(`[data-photo="${$Photos.selected}"]`)?.scrollIntoView();
+      const el = dialog.querySelector(
+        `[data-photo="${$Photos.selected.public_id}"]`
+      );
+
+      if (el) {
+        setTimeout(() => {
+          el.scrollIntoView();
+        }, 25);
+      }
+
       $Photos.selected = undefined;
     }
   });
@@ -58,7 +67,7 @@
         </li>
       {/each}
     </ul>
-    <UtilityNav>
+    <UtilityNav border_bottom={false}>
       <div slot="left">
         <Button
           label="Close"
@@ -97,14 +106,22 @@
     padding: 0;
     border: 0;
     background: rgba(var(--allblack), 1);
+
+    :global([data-util-nav]) {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
   }
 
   ul {
-    min-width: 100vw;
+    width: 100vw;
+    height: calc(100vh - 5rem);
 
     li {
-      width: 100vw;
-      height: 100vh;
+      width: 100%;
+      height: 100%;
+      flex-shrink: 0;
 
       :global(img) {
         width: 100%;
