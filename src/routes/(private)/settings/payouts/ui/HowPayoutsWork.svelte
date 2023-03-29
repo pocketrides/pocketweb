@@ -13,7 +13,7 @@
   <div data-flex="v" data-gap="1">
     <div data-flex="v" data-gap="1">
       <div>
-        <h2>How payouts work</h2>
+        <h2>How Payouts work</h2>
         {#if !step3_hidden}
           <p>It's a three-step process to get paid on Pocketrides:</p>
         {/if}
@@ -29,7 +29,7 @@
         </Container>
       {:else}
         <div>
-          <h3 class="h2">Step 1: Get 500 likes.</h3>
+          <h3 class="h2">Step 1: <span class="half">Get 500 likes.</span></h3>
           <p>
             Our bank transfer minimum is $5, and it looks like you don't have enough
             likes yet. Don't worry! The likes you earn will never expire.
@@ -47,7 +47,7 @@
         </Container>
       {:else}
         <div>
-          <h3 class="h2">Step 2: Stripe account</h3>
+          <h3 class="h2">Step 2: <span class="half">Stripe account</span></h3>
           <p>
             We partner with <a
               href="https://stripe.com"
@@ -71,7 +71,7 @@
         </Container>
       {:else}
         <div>
-          <h3 class="h2">Step 3: Start a Payout</h3>
+          <h3 class="h2">Step 3: <span class="half">Start a Payout</span></h3>
           <p>
             We'll start a payout for all the likes you've received so far, add them
             up, and transfer them to your Stripe account.

@@ -43,7 +43,7 @@
         <Button
           id="sub_now"
           label="Subscribe"
-          icon="favorite_border"
+          icon="favorite"
           primary
           controller={button_row}
           on:click={() => {

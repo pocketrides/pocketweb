@@ -29,19 +29,14 @@
     position: fixed;
     width: 100vw;
     overflow: hidden;
-    bottom: 0;
-    z-index: 15;
+    top: 0;
+    z-index: 75;
     height: 2px;
 
     .indicator {
       position: relative;
       height: 2px;
       animation: 1s loader infinite ease-in-out;
-    }
-
-    @media (min-width: 640px) {
-      bottom: auto;
-      top: 0;
     }
   }
 </style>

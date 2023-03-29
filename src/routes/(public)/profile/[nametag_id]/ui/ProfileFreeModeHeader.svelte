@@ -5,20 +5,20 @@
 </script>
 
 <Container padded>
-  <Container rounded fill="system-superlight">
-    <div data-flex="v as" data-gap>
+  <Container rounded bordered fill="system-superlight">
+    <div data-flex="v as" data-gap="1">
       <div>
-        <small class="half">
-          <Icon icon="visibility_off" /> Only you can see this.
-        </small>
-        <h2>Heads up! <span class="thin">You&rsquo;re in free mode.</span></h2>
+        <h2>Hello! <span class="half">You&rsquo;re in free mode.</span></h2>
       </div>
-      <p>
-        Follow your friends, reply to their posts, and join pockets (coming soon).
+      <p class="h3">
+        Follow your friends, reply to their posts, and join up to three pockets.
       </p>
       <p>
-        When you're ready, tap Subscribe. You won't be able to post content or get
-        paid without subscribing first.
+        When you're ready for more, tap Subscribe. You won't be able to post content
+        without subscribing first.
+      </p>
+      <p class="small half">
+        <Icon icon="visibility_off" /> Only you can see this.
       </p>
     </div>
   </Container>

@@ -6,9 +6,12 @@
   import Sheet from '$lib/components/Sheet.svelte';
   import SiteHeader from '$lib/components/SiteHeader.svelte';
   import CollabNametag from '$lib/forms/nametag/CollabNametag.svelte';
+  import DeleteNametag from '$lib/forms/nametag/DeleteNametag.svelte';
   import EditNametag from '$lib/forms/nametag/EditNametag.svelte';
+  import NewNametag from '$lib/forms/nametag/NewNametag.svelte';
   import EnablePayouts from '$lib/sheets/settings/EnablePayouts.svelte';
   import { App } from '$lib/stores/app';
+  import { nametagCreateComplete } from '$lib/util/nametag';
   import { onMount } from 'svelte';
   import type { PageData } from './$types';
 
@@ -83,7 +86,14 @@
             $App.sheet_id = 'edit_nametag';
           }}
         />
-        <Button label="New Nametag" icon="sentiment_very_satisfied" jumbo />
+        <Button
+          label="New Nametag"
+          icon="sentiment_very_satisfied"
+          jumbo
+          on:click={() => {
+            $App.sheet_id = 'new_nametag';
+          }}
+        />
         <Button
           label="Nametag Collab"
           icon="face_retouching_natural"
@@ -119,7 +129,14 @@
             location.pathname = '/settings/sign-out';
           }}
         />
-        <!-- <Button label="Delete account" icon="sentiment_very_dissatisfied" jumbo /> -->
+        <Button
+          label="Delete Nametag"
+          icon="sentiment_very_dissatisfied"
+          jumbo
+          on:click={() => {
+            $App.sheet_id = 'nametag_delete';
+          }}
+        />
       </div>
     </div>
   </div>
@@ -130,13 +147,30 @@
 </Sheet>
 
 <Sheet
+  id="new_nametag"
+  header="New nametag"
+  icon="sentiment_very_satisfied"
+  close="Cancel"
+>
+  <NewNametag on:complete={nametagCreateComplete} />
+</Sheet>
+
+<Sheet
   id="nametag_collab"
   header="Nametag Collab"
   icon="face_retouching_natural"
-  close="Cancel"
+  close="Done"
   padded={false}
 >
   <CollabNametag />
+</Sheet>
+
+<Sheet
+  id="nametag_delete"
+  header="Delete nametag"
+  icon="sentiment_very_dissatisfied"
+>
+  <DeleteNametag />
 </Sheet>
 
 <EnablePayouts />

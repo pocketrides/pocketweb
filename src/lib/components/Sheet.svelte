@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { SheetContext } from '$lib/contexts/Sheet';
+  import { SHEET_CONTEXT_ID, type SheetContext } from '$lib/contexts/Sheet';
   import { App } from '$lib/stores/app';
   import { scrollToEnhanced } from '$lib/util/scroll-to';
   import { afterUpdate, createEventDispatcher, setContext } from 'svelte';
@@ -21,12 +21,11 @@
   let dialog: HTMLDialogElement;
   let scrolls: HTMLDivElement;
   let closing = false;
-  let interval: any;
 
   const dispatch = createEventDispatcher();
 
   const context = setContext<SheetContext>(
-    'sheet',
+    SHEET_CONTEXT_ID,
     writable({ icon, header, dismissable })
   );
 
@@ -66,11 +65,6 @@
   };
 
   afterUpdate(() => {
-    if (icon && $context.icon !== icon) $context.icon = icon;
-    if (header && $context.header !== header) $context.header = header;
-    if (dismissable && $context.dismissable !== dismissable)
-      $context.dismissable = dismissable;
-
     if ($App.sheet_id === id && dialog.open === false) {
       dispatch('activate');
       dialog.showModal();

@@ -43,7 +43,7 @@ export class Post {
           }
         });
     } catch (e) {
-      console.error('post/retrieve', e);
+      // console.error('post/retrieve', e);
       return { success: false };
     }
   }
@@ -110,6 +110,25 @@ export class Post {
 
   static async delete(post_id: string) {
     return await Fauna.delete(Post.toRef(post_id));
+  }
+
+  static async deleteAll(nametag_id: string) {
+    try {
+      await Fauna.client().query(
+        q.Map(
+          q.Paginate(
+            q.Match(q.Index('posts_by_nametag_ref'), [Nametag.toRef(nametag_id)]),
+            { size: 2500 }
+          ),
+          q.Lambda(
+            ['post_ref', 'stats_ref'],
+            q.Do(q.Delete(q.Var('post_ref')), q.Delete(q.Var('stats_ref')))
+          )
+        )
+      );
+    } catch (e) {
+      console.warn('post/deleteAll', e);
+    }
   }
 
   static toRef(post_id: string) {

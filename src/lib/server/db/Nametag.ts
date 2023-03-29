@@ -171,7 +171,7 @@ export class Nametag {
       stripe: blankAccountStatus()
     });
 
-    const nametag = await Fauna.create<ServerNametag>(
+    let nametag = await Fauna.create<ServerNametag>(
       Nametag.collection,
       data,
       Nametag.parseFQL
@@ -180,7 +180,7 @@ export class Nametag {
     if (nametag) {
       const stats = await NametagStats.create(nametag.id, blankNametagStats());
       if (stats)
-        await Nametag.update(nametag.id, {
+        nametag = await Nametag.update(nametag.id, {
           stats_ref: NametagStats.toRef(stats.id)
         });
     }

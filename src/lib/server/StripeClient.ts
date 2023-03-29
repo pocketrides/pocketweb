@@ -284,4 +284,14 @@ export class StripeClient {
       });
     }
   }
+
+  static async destroy(customer_id?: string) {
+    if (customer_id) {
+      try {
+        await this.client().customers.del(customer_id);
+      } catch (e) {
+        console.log(`stripeclient.destroy - delete customer error`, e);
+      }
+    }
+  }
 }

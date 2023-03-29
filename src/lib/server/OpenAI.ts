@@ -99,7 +99,7 @@ export class OpenAI {
 
   static parseResponseText(text: string): OpenAIModResult | undefined {
     const yesish = text.match(/^(\n+)?(yes)/i);
-    const noish = text.match(/^(\n+)?(no)/i);
+    // const noish = text.match(/^(\n+)?(no)/i);
 
     if (yesish) {
       return {
@@ -108,15 +108,15 @@ export class OpenAI {
       };
     }
 
-    if (noish) {
-      return {
-        allow_likes: true,
-        response_text: text.replace(leading_newlines, '')
-      };
-    }
+    // if (noish) {
+    return {
+      allow_likes: true,
+      response_text: text.replace(leading_newlines, '')
+    };
+    // }
 
-    console.warn(`[OpenAI] > couldn't match API response:`, text);
+    // console.warn(`[OpenAI] > couldn't match API response:`, text);
 
-    return undefined;
+    // return undefined;
   }
 }

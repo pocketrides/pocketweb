@@ -5,6 +5,13 @@
 
 const sw = self as unknown as ServiceWorkerGlobalScope;
 
-importScripts('https://assets.magicbell.io/web-push-notifications/sw.js');
+try {
+  importScripts('https://assets.magicbell.io/web-push-notifications/sw.js');
+} catch (e) {
+  try {
+    // @ts-ignore
+    import('https://assets.magicbell.io/web-push-notifications/sw.js');
+  } catch (e) {}
+}
 
 sw.addEventListener('fetch', () => {});

@@ -60,7 +60,7 @@
   {:else}
     <Container rounded fill="system-superlight" bordered>
       <div data-flex="v cc">
-        <h2 class="half">All caught up! <span class="half">For now.</span></h2>
+        <h2 class="half">All caught up! <span class="half">For now…</span></h2>
       </div>
     </Container>
   {/if}

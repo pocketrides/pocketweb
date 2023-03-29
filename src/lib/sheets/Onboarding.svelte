@@ -6,32 +6,18 @@
   import Nametag from '$lib/forms/nametag/Nametag.svelte';
   // import Subscription from '$lib/forms/subscription/Subscription.svelte';
   import Terms from '$lib/forms/terms/Terms.svelte';
-  import { App } from '$lib/stores/app';
-  import { invalidateAll } from '$app/navigation';
-  import { IDBCache } from '$lib/util/idb-cache';
-  import { IDBFeedCache } from '$lib/util/idb-feed-cache';
-
-  const nametagComplete = async (
-    e: CustomEvent<{ first_time: boolean; nametag_id: string }>
-  ) => {
-    await IDBCache.clear();
-    await IDBFeedCache.clear();
-
-    if (e.detail.first_time === true && location.href === '/') {
-      $App.sheet_id = '';
-      location.href = `/profile/${e.detail.nametag_id}`;
-    } else {
-      await invalidateAll();
-      $App.sheet_id = '';
-    }
-  };
+  import { nametagCreateComplete } from '$lib/util/nametag';
 </script>
 
 <Sheet id="onboarding">
   <Workflow initial="stytch">
     <WorkflowItem name="stytch" component={Stytch} next="terms" />
     <WorkflowItem name="terms" component={Terms} next="nametag" />
-    <WorkflowItem name="nametag" component={Nametag} on:complete={nametagComplete} />
+    <WorkflowItem
+      name="nametag"
+      component={Nametag}
+      on:complete={nametagCreateComplete}
+    />
     <!-- <WorkflowItem
       name="subscription"
       component={Subscription}

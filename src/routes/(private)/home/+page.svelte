@@ -84,7 +84,7 @@
 
 <SiteHeader fill="system-superlight" outer_fill="none" huddable />
 <div class:chill>
-  <Main fill="system-light" padded={false}>
+  <Main fill="system-light" padded={false} fullheight>
     <ScrollList
       has_none={$page_controller.post_ids.length === 0}
       load_more_label="Load newest"

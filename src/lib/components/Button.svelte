@@ -1,6 +1,7 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
   import { typewriter } from '$lib/util/transition';
+  import type { ThemeAnyValue } from '$lib/zod/Theme';
   import { nanoid } from 'nanoid';
   import { afterUpdate } from 'svelte';
   import { writable, type Writable } from 'svelte/store';
@@ -21,6 +22,7 @@
 
   export let small: boolean = false;
   export let primary: boolean = false;
+  export let theme: ThemeAnyValue | undefined = undefined;
   export let system: boolean = false;
   export let large: boolean = false;
   export let jumbo: boolean = false;
@@ -78,6 +80,7 @@
     : superdark
     ? 'superdark'
     : 'system-superlight'}
+  data-theme={theme}
   data-3d={transparent ? undefined : ''}
   on:click|capture={controllerClick}
   on:click

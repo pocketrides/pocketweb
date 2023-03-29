@@ -90,6 +90,10 @@ export class NametagStats {
     return await Fauna.update(NametagStats.toRef(id), data, NametagStats.parseFQL);
   }
 
+  static async delete(id: string) {
+    return await Fauna.delete(this.toRef(id));
+  }
+
   static parseFQL(fql: any) {
     return Fauna.parseFQL(fql, ['nametag_ref']);
   }
