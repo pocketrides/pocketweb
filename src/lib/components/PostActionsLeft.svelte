@@ -52,13 +52,16 @@
         on:click={repliesClick}
       />
     {/if}
-    {#if browser && typeof navigator?.share === 'function'}
+
+    {#if browser && // @ts-ignore
+      typeof navigator?.share === 'function'}
       <Button
         id="share"
         label=""
         icon="ios_share"
         small
         on:click={() => {
+          // @ts-ignore
           navigator.share({
             url: `https://${window.location.host}/post/${$post_controller?.id}`
           });

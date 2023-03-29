@@ -33,7 +33,7 @@
     data.post.audience === 'close_friends' ? 'superlight' : 'system-superlight';
 
   let room: RoomConnection | undefined;
-  let page_title = data.post.contents[0].content;
+  let page_title = data.post.contents[0].content_raw;
   if (page_title.length > 40) page_title = page_title.substring(0, 40) + '…';
   let replies_wrapper: HTMLDivElement;
   let reconnect_count = 0;
@@ -152,6 +152,7 @@
     content={`a post by ${data.post.nametag.nametag} on pocketrides!`}
   />
   <meta property="og:description" content={page_title} />
+  <meta name="description" content={page_title} />
 </svelte:head>
 
 <SiteHeader
