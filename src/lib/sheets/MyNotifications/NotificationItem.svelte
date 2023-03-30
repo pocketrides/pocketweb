@@ -74,18 +74,18 @@
     <div class="wrapper" data-flex="v" data-gap="0">
       {#if $notif_store.actionUrl}
         <a href={$notif_store.actionUrl} data-unstyle on:click={actionClick}>
-          <h3 class="half small">{$notif_store.title}</h3>
+          <h3 class=" small">{$notif_store.title}</h3>
           {#if $notif_store.content}
-            <p class="small" class:half={$notif_store.isRead}>
-              {$notif_store.content}
+            <p class="small half">
+              {@html $notif_store.content}
             </p>
           {/if}
         </a>
       {:else}
-        <h3 class="half small">{$notif_store.title}</h3>
+        <h3 class=" small">{$notif_store.title}</h3>
         {#if $notif_store.content}
-          <p class="small" class:half={$notif_store.isRead}>
-            {$notif_store.content}
+          <p class="small half">
+            {@html $notif_store.content}
           </p>
         {/if}
       {/if}
@@ -127,6 +127,10 @@
 <style lang="scss">
   li {
     cursor: default;
+
+    .wrapper {
+      flex: 1;
+    }
 
     &[data-actionable='false'][data-unread] {
       border: 1px solid rgba(var(--dark), 0.5);

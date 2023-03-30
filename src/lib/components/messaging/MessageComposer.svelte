@@ -258,6 +258,7 @@
 
   .messages {
     flex: 1;
+    max-width: calc(100% - 100px);
   }
 
   [data-error] {

@@ -23,8 +23,14 @@
 </div>
 
 <style lang="scss">
+  [data-flex='scroll-h'] {
+    scroll-padding: 0 1rem;
+  }
+
   [data-3d] {
     max-width: 128px;
+    flex-shrink: 0;
+    scroll-snap-align: start;
 
     :global(img) {
       width: 100%;

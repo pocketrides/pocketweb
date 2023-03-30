@@ -134,7 +134,8 @@
         window.scrollTo(
           0,
           scroll_target.offsetTop +
-            scroll_target.offsetHeight -
+            scroll_target.offsetHeight +
+            (window.innerWidth >= 640 ? 68 : 0) -
             (window.visualViewport?.height || window.innerHeight)
         );
       });
