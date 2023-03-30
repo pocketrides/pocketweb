@@ -17,8 +17,8 @@ return response;
 import type { RequestEvent } from '@sveltejs/kit';
 
 const lengths = {
-  short: 60 * 5, // 5 minutes
-  long: 60 * 60 // 1 hour
+  short: 30, // 5 minutes
+  long: 60 * 5 // 1 hour
 };
 
 type CacheLength = keyof typeof lengths | number;
