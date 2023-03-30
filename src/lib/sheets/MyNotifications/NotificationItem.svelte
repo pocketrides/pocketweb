@@ -74,7 +74,7 @@
     <div class="wrapper" data-flex="v" data-gap="0">
       {#if $notif_store.actionUrl}
         <a href={$notif_store.actionUrl} data-unstyle on:click={actionClick}>
-          <h3 class=" small">{$notif_store.title}</h3>
+          <h3 class="small">{@html $notif_store.title}</h3>
           {#if $notif_store.content}
             <p class="small half">
               {@html $notif_store.content}
@@ -82,7 +82,7 @@
           {/if}
         </a>
       {:else}
-        <h3 class=" small">{$notif_store.title}</h3>
+        <h3 class="small">{@html $notif_store.title}</h3>
         {#if $notif_store.content}
           <p class="small half">
             {@html $notif_store.content}

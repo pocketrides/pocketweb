@@ -42,6 +42,7 @@
 
 <div
   class="wrapper"
+  data-site-header
   data-fill={outer_fill}
   class:utility
   class:sticky
@@ -115,7 +116,7 @@
 
   @media (min-width: 640px) {
     .wrapper[data-fill] {
-      background-color: rgb(var(--system-light));
+      background-color: transparent;
     }
   }
 
@@ -143,5 +144,17 @@
   .utility header {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
+  }
+
+  @media (min-width: 640px) {
+    .wrapper:not(.utility) {
+      display: flex;
+      justify-content: center;
+      max-width: 100vw;
+
+      header {
+        min-width: 672px;
+      }
+    }
   }
 </style>

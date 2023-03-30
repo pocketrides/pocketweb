@@ -7,6 +7,7 @@ import type { RequestHandler } from './$types';
 import { Reply } from '$lib/server/db/Reply';
 import { Notify, TopicSubscribe } from '$lib/server/Notify';
 import { plural } from '$lib/util/plural';
+import { LoadPostRequest } from '$lib/api/post/load';
 
 export const POST = (async (event) => {
   let res: ReplyToPostResponse = { success: false };
@@ -18,6 +19,8 @@ export const POST = (async (event) => {
     res = await Reply.replyToPost(event.locals.nametag_id, payload.data);
 
     if (res.success) {
+      const post = await LoadPostRequest.load(payload.data.post_id, event.fetch);
+
       const content = res.reply.messages
         .map((m) => {
           if (m.type === 'text') return m.content_raw;
@@ -31,7 +34,11 @@ export const POST = (async (event) => {
         );
 
       await Notify({
-        title: 'New reply',
+        title: `<strong>New reply${
+          post
+            ? ': </strong>' + post.contents[0].content_raw.substring(0, 40)
+            : ' to a post</strong>'
+        }`,
         content: content.join('<br/>'),
         topic: payload.data.post_id,
         action_url: `/post/${payload.data.post_id}`,

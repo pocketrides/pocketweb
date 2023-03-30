@@ -62,8 +62,9 @@
     .gallery-item {
       max-width: 720px;
       max-height: 640px;
-      min-width: 50%;
+      // min-width: 50%;
       scroll-snap-align: center !important;
+      min-height: 320px;
 
       @media (max-width: 640px) {
         min-width: 100%;

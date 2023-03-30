@@ -217,7 +217,6 @@
             label="Add more"
             icon="post_add"
             controller={controls}
-            disabled={$pending}
             on:click={addMoreClick}
           />
         </div>

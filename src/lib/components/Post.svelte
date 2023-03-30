@@ -370,7 +370,7 @@
       overflow: hidden;
       -webkit-line-clamp: 4;
       -webkit-box-orient: vertical;
-      max-height: 6.75rem;
+      max-height: 6.49rem;
     }
 
     &[data-expanded='true'] {
