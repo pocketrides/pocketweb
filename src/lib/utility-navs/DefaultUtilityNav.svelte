@@ -9,9 +9,8 @@
   <div slot="left">
     <div data-flex="as v" data-gap>
       <h2 class="h3">
-        You're on Pocketrides! Hello! <span class="thin">
-          We're a social network doing things a whole lot of different.
-        </span>
+        You're on Pocketrides! <strong class="half">Hello!</strong>
+        <span class="thin"> We're doing social media a little differently. </span>
       </h2>
       <ButtonRow let:controller initial="learn_more">
         <Button
@@ -47,6 +46,10 @@
 
     h2 {
       max-width: 80%;
+
+      span {
+        display: inline-block;
+      }
     }
   }
 </style>

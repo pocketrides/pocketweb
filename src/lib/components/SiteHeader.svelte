@@ -9,6 +9,7 @@
   import type { Fill } from '$lib/zod/Fill';
   import { Notifications } from '$lib/stores/notifications';
   import { onMount } from 'svelte';
+  import ButtonRow from './ButtonRow.svelte';
 
   export let sticky: boolean = false;
   export let utility: boolean = false;
@@ -77,10 +78,18 @@
                   <Nametag nametag={$page.data.my_nametag} />
                 {/if}
               {:else}
-                <Button
-                  label="Sign in"
-                  on:click={() => ($App.sheet_id = 'onboarding')}
-                />
+                <ButtonRow>
+                  <Button
+                    label="Sign in"
+                    on:click={() => ($App.sheet_id = 'onboarding')}
+                  />
+                  <Button
+                    label="Get account"
+                    primary
+                    small
+                    on:click={() => ($App.sheet_id = 'onboarding')}
+                  />
+                </ButtonRow>
               {/if}
             </div>
           </slot>

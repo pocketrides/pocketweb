@@ -1,4 +1,5 @@
 import { invalidateAll } from '$app/navigation';
+import { App } from '$lib/stores/app';
 import { HomepageHelper } from './homepage';
 import { IDBCache } from './idb-cache';
 import { IDBFeedCache } from './idb-feed-cache';
@@ -14,5 +15,9 @@ export const nametagCreateComplete = async (
   } else {
     if (HomepageHelper.isHomepagePath()) location.href = `/home`;
     else await invalidateAll();
+    App.update((prev) => {
+      prev.sheet_id = '';
+      return prev;
+    });
   }
 };

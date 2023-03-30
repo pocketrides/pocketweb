@@ -52,12 +52,13 @@
 </script>
 
 <form on:submit|preventDefault={handleSubmit} data-flex="v" data-gap>
-  <div>
-    <h2>Join the experiment.</h2>
+  <div data-flex="v" data-gap>
+    <h2>Welcome to Pocketrides!</h2>
     <p>
-      No ads, no BS, just you, your friends, and a like button that earns you cash.
-      Use your phone number to get an account.
+      <strong>We're doing social media a little differently:</strong> no ads, no algorithms,
+      just you, your friends and a like button that earns you cash.
     </p>
+    <p>Use your phone number to get a free account.</p>
   </div>
 
   <div data-flex="v as">

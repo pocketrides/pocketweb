@@ -56,6 +56,11 @@
       },
       {
         id: '',
+        nametag: 'mary 🫶',
+        theme: 'pink'
+      },
+      {
+        id: '',
         nametag: '🙂 michelle',
         theme: 'sky'
       },

@@ -18,6 +18,7 @@
   import type { LayoutData } from './$types';
   import Photos from '$lib/sheets/Photos.svelte';
   import { HomepageHelper } from '$lib/util/homepage';
+  import OutOfLikes from '$lib/sheets/OutOfLikes.svelte';
 
   let started: boolean = false;
   let client: MagicBellClient;
@@ -125,6 +126,7 @@
 {#if $page.data.my_nametag}
   <MyNotifications />
   <Subscribe />
+  <OutOfLikes />
 {:else}
   <Onboarding />
 {/if}

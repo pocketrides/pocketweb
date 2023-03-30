@@ -131,9 +131,9 @@
       $is_liking = false;
       if (res.success) {
         $post_controller.unlike_key = res.unlike_key;
-      } //else {
-      // $App.sheet_id = 'out_of_likes';
-      //}
+      } else {
+        if (res.reason === 'out_of_likes') $App.sheet_id = 'out_of_likes';
+      }
     }
 
     await reload();
