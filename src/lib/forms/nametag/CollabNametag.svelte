@@ -112,7 +112,12 @@
     <p>You can only add friends to a collab.</p>
   </div>
   {#if $page.data.my_nametag?.id}
-    <FriendsList friends_for={$page.data.my_nametag.id} let:nametag {exclude_ids}>
+    <FriendsList
+      friends_for={$page.data.my_nametag.id}
+      let:nametag
+      {exclude_ids}
+      flex="v"
+    >
       <Row padded fill="system-superlight" bordered>
         <NametagWithPic slot="left" {nametag} />
         <Button

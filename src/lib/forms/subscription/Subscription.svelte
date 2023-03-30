@@ -24,13 +24,17 @@
         <h2>How Subscriptions work</h2>
         <p>
           <strong>Subscriptions are $5/month.</strong> Every month, you'll have 250 likes
-          to give to your friends.
+          to give out to great content you see on Pocketrides.
         </p>
         <p>
-          Every three months, we'll ask what to do with your share of the profits: a
-          donation to fight climate change, or a transfer to your bank.
+          <strong>Every three months,</strong> we'll ask what to do with your share of
+          Pocketrides' profits: make a donation to fight climate change, or transfer to
+          your bank account. If we've done our math right, it'll be about $3 every quarter.
         </p>
-        <p>In the meantime, we won't show you ads or sell your data. Ever.</p>
+        <p>
+          <strong>In the meantime,</strong> we won't show you ads or sell your data.
+          <strong>Ever.</strong>
+        </p>
       </div>
       <div class="wrapper" data-flex="v cc" data-gap="1">
         <Button

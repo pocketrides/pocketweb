@@ -52,9 +52,10 @@
 
 {#if $loading === false && $data.success === true && $data.accepted === false}
   <form on:submit|preventDefault={handleSubmit} data-flex="v" data-gap>
-    <div>
-      <h2>Accept the terms to continue.</h2>
+    <div data-flex="v" data-gap>
+      <h2>Please accept the Terms of Use to continue.</h2>
       <article>{@html $data.latest_version.summary}</article>
+      <p class="small half">Latest version: {$data.latest_version.version}</p>
     </div>
     <div class="wrapper">
       <Checkbox bind:checked label="I accept" />

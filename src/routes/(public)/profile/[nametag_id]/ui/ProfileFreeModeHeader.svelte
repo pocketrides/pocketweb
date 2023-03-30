@@ -11,11 +11,13 @@
         <h2>Hello! <span class="half">You&rsquo;re in free mode.</span></h2>
       </div>
       <p class="h3">
-        Follow your friends, reply to their posts, and join up to three pockets.
+        Follow your friends, reply to their posts, and join up to three pockets. <span
+          class="half thin small">(coming soon!)</span
+        >
       </p>
       <p>
-        When you're ready for more, tap Subscribe. You won't be able to post content
-        without subscribing first.
+        When you're ready, tap Subscribe. You won't be able to post content without
+        subscribing first.
       </p>
       <p class="small half">
         <Icon icon="visibility_off" /> Only you can see this.

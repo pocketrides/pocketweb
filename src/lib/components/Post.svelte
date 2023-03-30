@@ -109,6 +109,11 @@
       return;
     }
 
+    if ($page.data.my_nametag.stripe?.free_mode) {
+      $App.sheet_id = 'subscribe';
+      return;
+    }
+
     if (!$post_controller.stats) return;
 
     $is_liking = true;
