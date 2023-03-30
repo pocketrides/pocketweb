@@ -221,7 +221,15 @@ export class StripeClient {
       metadata
     });
 
-    await this.handleCustomerSubscriptionEvent(event);
+    if (subscription.status === 'active') {
+      await Nametag.update(metadata.nametag_id, {
+        stripe: {
+          has_sub: true,
+          free_mode: false,
+          sub_id: subscription.id
+        }
+      });
+    }
   }
 
   /**
