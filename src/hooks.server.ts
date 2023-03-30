@@ -10,8 +10,16 @@ import {
 } from '$lib/server/Cookies';
 import { OpenAI } from '$lib/server/OpenAI';
 import { MagicbellConfig } from '$lib/server/MagicbellConfig';
+import { Toucan } from 'toucan-js';
 
 export const handle = (async ({ event, resolve }) => {
+  new Toucan({
+    dsn: 'https://e3db4eb46baa4f43a32d1b98567638e4@o4504929428766720.ingest.sentry.io/4504929430274048',
+    context: event.platform?.context,
+    request: event.request,
+    tracesSampleRate: 0.5
+  });
+
   loadSecrets(
     event,
     event.platform && event.platform.env ? event.platform.env : env

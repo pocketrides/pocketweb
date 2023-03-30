@@ -8,7 +8,7 @@
   import SiteLoader from '$lib/components/SiteLoader.svelte';
   import Onboarding from '$lib/sheets/Onboarding.svelte';
   import { App } from '$lib/stores/app';
-  import { afterUpdate, onDestroy } from 'svelte';
+  import { afterUpdate, onDestroy, onMount } from 'svelte';
   import { Notifications, reloadNotifications } from '$lib/stores/notifications';
   import MyNotifications from '$lib/sheets/MyNotifications.svelte';
   import type MagicBellClient from '@magicbell/core';
@@ -19,6 +19,7 @@
   import Photos from '$lib/sheets/Photos.svelte';
   import { HomepageHelper } from '$lib/util/homepage';
   import OutOfLikes from '$lib/sheets/OutOfLikes.svelte';
+  import * as Fathom from 'fathom-client';
 
   let started: boolean = false;
   let client: MagicBellClient;
@@ -46,6 +47,15 @@
       navigator.standalone || false
     );
   }
+
+  onMount(() => {
+    Fathom.load('ZAOKOHGG', {
+      url: 'https://teacher-paul.pocketrides.com/script.js',
+      includedDomains: ['pocketrides.com', 'pocketweb.pocketrides.workers.dev']
+    });
+  });
+
+  $: $page.url.pathname, browser && Fathom.trackPageview();
 
   // boots up MagicBell to avoid exploding Workers. (The ably library has a `window` check in it)
   afterUpdate(async () => {

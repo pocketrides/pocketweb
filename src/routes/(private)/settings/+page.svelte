@@ -14,6 +14,7 @@
   import { nametagCreateComplete } from '$lib/util/nametag';
   import { onMount } from 'svelte';
   import type { PageData } from './$types';
+  import { trackGoal } from 'fathom-client';
 
   export let data: PageData;
 
@@ -71,7 +72,15 @@
             jumbo
           />
         {:else}
-          <Button label="Subscribe" href="/_/stripe/pay" icon="favorite" jumbo />
+          <Button
+            label="Subscribe"
+            href="/_/stripe/pay"
+            icon="favorite"
+            jumbo
+            on:click={() => {
+              trackGoal('ZOOQK7CR', 1);
+            }}
+          />
         {/if}
       </div>
     </div>

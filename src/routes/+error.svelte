@@ -4,9 +4,22 @@
   import Main from '$lib/components/Main.svelte';
   import SiteHeader from '$lib/components/SiteHeader.svelte';
   import { App } from '$lib/stores/app';
+  import { onMount } from 'svelte';
+  import * as Fathom from 'fathom-client';
+  import { page } from '$app/stores';
+  import { browser } from '$app/environment';
 
   $App.fill = 'superlight';
   $App.loading = false;
+
+  onMount(() => {
+    Fathom.load('ZAOKOHGG', {
+      url: 'https://teacher-paul.pocketrides.com/script.js',
+      includedDomains: ['pocketrides.com', 'pocketweb.pocketrides.workers.dev']
+    });
+  });
+
+  $: $page.url.pathname, browser && Fathom.trackPageview();
 </script>
 
 <svelte:head>

@@ -3,6 +3,7 @@
   import Container from '$lib/components/Container.svelte';
   import { createEventDispatcher } from 'svelte';
   import { writable } from 'svelte/store';
+  import { trackGoal } from 'fathom-client';
 
   const dispatch = createEventDispatcher();
 
@@ -10,6 +11,7 @@
 
   const subscribeClick = () => {
     $loading = true;
+    trackGoal('ZOOQK7CR', 1);
   };
 
   const noThanksClick = () => {
