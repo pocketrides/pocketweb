@@ -56,6 +56,18 @@
   $: post_hidden = should_be_hidden && $showing_post === false;
   $: is_my_post = $page.data.my_nametag?.id === $post_controller?.nametag?.id;
 
+  $: if (browser) {
+    if (
+      $post_controller &&
+      $post_controller.stats &&
+      $RepliesManagerStore.post_id === $post_controller.id &&
+      $post_controller.stats.replies !== $RepliesManagerStore.latest_count
+    ) {
+      $post_controller.stats.replies = $RepliesManagerStore.latest_count;
+      LoadPostRequest.overwrite($post_controller);
+    }
+  }
+
   onMount(async () => {
     try {
       if ($post_controller === undefined && post_id !== undefined) {
@@ -75,18 +87,6 @@
       }
     } catch (e) {
       $loading_post = false;
-    }
-
-    if (browser) {
-      if (
-        $post_controller &&
-        $post_controller.stats &&
-        $RepliesManagerStore.post_id === $post_controller.id &&
-        $post_controller.stats.replies !== $RepliesManagerStore.latest_count
-      ) {
-        $post_controller.stats.replies = $RepliesManagerStore.latest_count;
-        LoadPostRequest.overwrite($post_controller);
-      }
     }
   });
 

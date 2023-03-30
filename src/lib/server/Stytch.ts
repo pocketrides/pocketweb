@@ -47,8 +47,6 @@ export class Stytch {
 
           const claims = res.session.custom_claims as StytchCustomClaims | undefined;
 
-          // console.log(`\n> claims from authenticated session:\n`, claims, `\n`);
-
           let fauna_account, nametag;
 
           try {

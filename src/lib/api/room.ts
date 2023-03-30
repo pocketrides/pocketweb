@@ -35,6 +35,8 @@ export type RoomConnection = {
 
   // finally, you can disconnect when done w/ the room
   disconnect: typeof Room.disconnect;
+
+  current_count?: number;
 };
 
 export class Room {
@@ -70,6 +72,7 @@ export class Room {
 
       if (this.#socket) {
         let session_id: string;
+        let current_count: number;
 
         this.#socket.addEventListener('error', (e: any) => {
           this.#send({
@@ -90,6 +93,7 @@ export class Room {
           switch (msg._type) {
             case 'connect_confirm':
               if (msg.session_id) session_id = msg.session_id;
+              if (msg.data && typeof msg.data === 'number') current_count = msg.data;
               break;
           }
         });
@@ -102,6 +106,10 @@ export class Room {
         });
 
         let room: RoomConnection = {
+          get current_count() {
+            return current_count;
+          },
+
           sendMessage: async (message: RoomMessage, latest_room_key?: string) => {
             this.#send<RoomMessage>({
               room_key: latest_room_key || room_key,
@@ -110,6 +118,8 @@ export class Room {
             });
           },
           updateCount: async (new_count: number) => {
+            current_count = new_count;
+
             this.#send<number>({
               room_key,
               _type: 'new_count',
@@ -123,9 +133,13 @@ export class Room {
             });
           },
           handleNewCount: (callback: RoomConnectionNewCountCallback) => {
+            if (current_count) callback(current_count);
             this.#socket?.addEventListener('message', (e: MessageEvent) => {
               const msg = JSON.parse(e.data) as TelegraphMessage<number>;
-              if (msg._type === 'new_count' && msg.data) callback(msg.data);
+              if (msg._type === 'new_count' && msg.data) {
+                current_count = msg.data;
+                callback(msg.data);
+              }
             });
           },
           handleEarlyDisconnect: (

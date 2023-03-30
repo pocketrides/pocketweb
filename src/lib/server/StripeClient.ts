@@ -294,7 +294,7 @@ export class StripeClient {
         await this.client().customers.del(customer_id);
         return true;
       } catch (e) {
-        console.log(`stripeclient.destroy - delete customer error`, e);
+        console.error(`stripeclient.destroy - delete customer error`, e);
         return false;
       }
     }
