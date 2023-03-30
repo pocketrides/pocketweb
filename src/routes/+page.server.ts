@@ -6,5 +6,5 @@ export const load = (async (event) => {
     throw redirect(302, '/home');
   }
 
-  throw redirect(302, '/post/360300421885984845');
+  throw redirect(302, `/post/${event.locals.magic_post_id}`);
 }) satisfies PageServerLoad;

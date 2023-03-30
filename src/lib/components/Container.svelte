@@ -38,6 +38,8 @@
   :global([data-padded*='v']) {
     padding-top: 1rem;
     padding-bottom: 1rem;
+    padding-left: 0;
+    padding-right: 0;
   }
 
   :global([data-padded] + [data-padded]) {
