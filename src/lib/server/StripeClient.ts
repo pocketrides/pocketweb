@@ -292,8 +292,10 @@ export class StripeClient {
     if (customer_id) {
       try {
         await this.client().customers.del(customer_id);
+        return true;
       } catch (e) {
         console.log(`stripeclient.destroy - delete customer error`, e);
+        return false;
       }
     }
   }

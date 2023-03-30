@@ -183,6 +183,24 @@ export class Relationship {
       );
   }
 
+  // destroys all relationships (for nametag delete)
+  static async removeAll(platform: App.Platform, my_nametag_id: string) {
+    try {
+      await platform.env.POCKETQUEUE.send({
+        type: 'remove_friends',
+        data: {
+          my_nametag_id
+        }
+      });
+
+      return true;
+    } catch (e) {
+      console.error('db/Relationship.removeAll', e);
+
+      return false;
+    }
+  }
+
   static parseFQL(fql: any) {
     return Fauna.parseFQL(fql, [
       'nametag_ref',

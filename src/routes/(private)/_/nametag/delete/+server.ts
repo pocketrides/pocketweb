@@ -6,18 +6,27 @@ import { NametagStats } from '$lib/server/db/NametagStats';
 import { StripeClient } from '$lib/server/StripeClient';
 import { destroySessionCookie } from '$lib/server/Cookies';
 import { Post } from '$lib/server/db/Post';
+import { Relationship } from '$lib/server/db/Relationship';
 
 export const POST = (async (event) => {
   let res: ApiGenericResponse = { success: false };
 
   if (event.locals.nametag_id && event.locals.nametag) {
     try {
-      await Promise.all([
+      let promises = [
         Nametag.delete(event.locals.nametag_id),
         NametagStats.delete(event.locals.nametag.stats_ref?.id),
         StripeClient.destroy(event.locals.nametag.stripe?.cus_id),
         Post.deleteAll(event.locals.nametag_id)
-      ]);
+      ];
+
+      if (event.platform) {
+        promises.push(
+          Relationship.removeAll(event.platform, event.locals.nametag_id)
+        );
+      }
+
+      await Promise.all(promises);
 
       destroySessionCookie(event.cookies);
 

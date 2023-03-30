@@ -126,8 +126,10 @@ export class Post {
           )
         )
       );
+      return true;
     } catch (e) {
       console.warn('post/deleteAll', e);
+      return false;
     }
   }
 
