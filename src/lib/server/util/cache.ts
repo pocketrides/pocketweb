@@ -27,7 +27,7 @@ const cacheAndKey = (event: RequestEvent) => {
   return {
     // @ts-ignore
     cache: caches.default as Cache,
-    key: new Request(event.request.url.toString(), event.request)
+    key: new Request(event.request.url.toString(), event.request.clone())
   };
 };
 
@@ -40,7 +40,9 @@ export const getCachedResponse = async (
 
   const response = await cache.match(key);
 
-  if (response) return response.clone();
+  if (response && response.body) {
+    return new Response(response.body.tee()[0], response);
+  }
   return undefined;
 };
 
@@ -51,6 +53,8 @@ export const putCachedResponse = (
 ) => {
   if (typeof caches === 'undefined') return;
 
+  response = response.clone();
+
   const { cache, key } = cacheAndKey(event);
 
   if (typeof length === 'number') {
@@ -59,7 +63,9 @@ export const putCachedResponse = (
     response.headers.append('Cache-Control', `s-maxage=${lengths[length]}`);
   }
 
+  response.headers.delete('Set-Cookie');
+
   if (event.platform && event.platform.context) {
-    event.platform.context.waitUntil(cache.put(key, response.clone()));
+    event.platform.context.waitUntil(cache.put(key, response));
   }
 };
