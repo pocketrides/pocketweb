@@ -14,3 +14,15 @@ compatibility_date="2022-12-22"
 [[queues.producers]]
   queue="pocketworker"
   binding="POCKETQUEUE"
+
+[env.production]
+name="pocketweb-prod"
+workers_dev=false
+routes=[
+  { pattern = "pocketrides.com", custom_domain = true },
+  { pattern = "www.pocketrides.com", custom_domain = true }
+]
+
+  [[env.production.queues.producers]]
+    queue="pocketworker-prod"
+    binding="POCKETQUEUE"

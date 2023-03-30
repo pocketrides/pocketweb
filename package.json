@@ -13,6 +13,7 @@
     "lint": "prettier --plugin-search-dir . --check . && eslint .",
     "format": "prettier --plugin-search-dir . --write .",
     "tail": "npx wrangler@latest tail",
+    "tail-prod": "npx wrangler@latest tail --env production",
     "deploy": "vite build && npx wrangler@latest publish"
   },
   "devDependencies": {
