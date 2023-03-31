@@ -7,10 +7,14 @@ export class IDBFeedCache {
     return new Promise((resolve) => {
       if (this.#db) return resolve(undefined);
 
-      const request = indexedDB.open('feed_cache', 1);
+      const request = indexedDB.open('feed_cache', 2);
 
       request.onupgradeneeded = (e: any) => {
         const db: IDBDatabase = e.target.result;
+
+        try {
+          db.deleteObjectStore('feed_cache');
+        } catch (e) {}
 
         db.createObjectStore('feed_cache', { keyPath: '' });
       };

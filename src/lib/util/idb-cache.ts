@@ -5,10 +5,14 @@ export class IDBCache {
     return new Promise((resolve) => {
       if (IDBCache.#db) return resolve(undefined);
 
-      const request = indexedDB.open('cache', 1);
+      const request = indexedDB.open('cache', 2);
 
       request.onupgradeneeded = (e: any) => {
         const db: IDBDatabase = e.target.result;
+
+        try {
+          db.deleteObjectStore('cache');
+        } catch (e) {}
 
         db.createObjectStore('cache', { keyPath: 'id' });
       };

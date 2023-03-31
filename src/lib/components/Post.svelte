@@ -72,13 +72,16 @@
     try {
       if ($post_controller === undefined && post_id !== undefined) {
         $loading_post = true;
-        const post = await LoadPostRequest.load(post_id);
-        if (post) {
-          $post_controller = post;
-          $loading_post = false;
-        } else {
-          $loading_post = false;
-        }
+        setTimeout(async () => {
+          if (!post_id) return;
+          const post = await LoadPostRequest.load(post_id);
+          if (post) {
+            $post_controller = post;
+            $loading_post = false;
+          } else {
+            $loading_post = false;
+          }
+        }, 1);
       }
 
       // always get the latest from the post detail page

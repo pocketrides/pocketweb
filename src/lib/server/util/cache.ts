@@ -34,13 +34,16 @@ const cacheAndKey = (event: RequestEvent) => {
 export const getCachedResponse = async (
   event: RequestEvent
 ): Promise<Response | undefined> => {
+  return undefined;
   if (typeof caches === 'undefined') return undefined;
 
   const { cache, key } = cacheAndKey(event);
 
   const response = await cache.match(key);
 
+  // @ts-ignore
   if (response && response.body) {
+    // @ts-ignore
     return new Response(response.body.tee()[0], response);
   }
   return undefined;
@@ -51,6 +54,7 @@ export const putCachedResponse = (
   response: Response,
   length: CacheLength
 ) => {
+  return;
   if (typeof caches === 'undefined') return;
 
   response = response.clone();
@@ -60,12 +64,15 @@ export const putCachedResponse = (
   if (typeof length === 'number') {
     response.headers.append('Cache-Control', `s-maxage=${length}`);
   } else {
+    // @ts-ignore
     response.headers.append('Cache-Control', `s-maxage=${lengths[length]}`);
   }
 
   response.headers.delete('Set-Cookie');
 
+  // @ts-ignore
   if (event.platform && event.platform.context) {
+    // @ts-ignore
     event.platform.context.waitUntil(cache.put(key, response));
   }
 };
