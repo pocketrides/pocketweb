@@ -29,6 +29,11 @@
 </script>
 
 <ul data-unstyle data-flex={flex} data-gap={gap || undefined}>
+  {#if $friends.length === 0}
+    <li>
+      <p class="h3 half">Nothing here… <span class="half">yet!</span></p>
+    </li>
+  {/if}
   {#each $friends as nametag (nametag)}
     {#if exclude_ids.indexOf(nametag.id) === -1}
       <li>

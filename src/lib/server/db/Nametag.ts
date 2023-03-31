@@ -193,7 +193,7 @@ export class Nametag {
         };
       } else throw new Error('query was undefined', { cause: query });
     } catch (e) {
-      console.error('db/nametag.getFfollowers()', e);
+      console.error('db/nametag.getFollowers()', e);
       return {
         success: false
       };
