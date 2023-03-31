@@ -43,15 +43,19 @@
     : undefined;
 
   onMount(async () => {
-    await Promise.all([
-      RepliesManager.loadReplies(data.post.id, data.post.stats!.replies),
-      connect()
-    ]);
+    if (data.post.settings.enable_replies) {
+      await Promise.all([
+        RepliesManager.loadReplies(data.post.id, data.post.stats!.replies),
+        connect()
+      ]);
+    }
   });
 
   onDestroy(() => {
-    disconnect();
-    $RepliesManagerStore.replies = [];
+    if (data.post.settings.enable_replies) {
+      disconnect();
+      $RepliesManagerStore.replies = [];
+    }
   });
 
   const connect = async () => {
@@ -233,22 +237,29 @@
         {/if}
       {/each}
     </div>
-    <Row padded fill="system-superlight" bordered>
-      <div slot="left" data-flex="ac">
-        <h3>
-          <Icon icon="reply" />
-          Replies
-        </h3>
+    {#if data.post.settings.enable_replies}
+      <Row padded fill="system-superlight" bordered>
+        <div slot="left" data-flex="ac">
+          <h3>
+            <Icon icon="reply" />
+            Replies
+          </h3>
+        </div>
+      </Row>
+      <div
+        class="replies-wrapper"
+        data-flex="v"
+        data-gap
+        bind:this={replies_wrapper}
+      >
+        <Replies />
+        <MessageComposer
+          placeholder="Write a reply…"
+          on:message={handleReply}
+          on:active={scrollToBottom}
+        />
       </div>
-    </Row>
-    <div class="replies-wrapper" data-flex="v" data-gap bind:this={replies_wrapper}>
-      <Replies />
-      <MessageComposer
-        placeholder="Write a reply…"
-        on:message={handleReply}
-        on:active={scrollToBottom}
-      />
-    </div>
+    {/if}
     <UtilityNav slot="utility-nav">
       <PostActionsLeft
         slot="left"
