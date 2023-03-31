@@ -23,13 +23,15 @@
   const checkForScrollingUp = () => {
     if (!huddable) return;
     const start_y = window.scrollY;
-    if (start_y < 100) hud = true;
+    if (start_y < 640) hud = true;
     if (interval_id) return;
     clearInterval(interval_id);
     interval_id = setTimeout(() => {
       if (start_y > window.scrollY || window.scrollY < 100) hud = true;
 
       if (window.scrollY > start_y) hud = false;
+
+      if (window.scrollY < 640) hud = true;
 
       clearInterval(interval_id);
       interval_id = undefined;

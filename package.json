@@ -8,12 +8,15 @@
     "stripe-listen": "stripe listen --forward-to https://localhost:5174/_/stripe/webhook --skip-verify",
     "build": "vite build",
     "preview": "vite preview",
+    ">>>>>>>>>>>>>>>>>>>>>>>>>>>": "",
+    "tail-prod": "npx wrangler@latest tail --env production",
+    "deploy-prod": "vite build && npx wrangler@latest publish --env production",
+    "<<<<<<<<<<<<<<<<<<<<<<<<<<<": "echo hi",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "lint": "prettier --plugin-search-dir . --check . && eslint .",
     "format": "prettier --plugin-search-dir . --write .",
     "tail": "npx wrangler@latest tail",
-    "tail-prod": "npx wrangler@latest tail --env production",
     "deploy": "vite build && npx wrangler@latest publish"
   },
   "devDependencies": {
