@@ -1,13 +1,18 @@
 <script lang="ts">
   import type { CloudinaryPhoto } from '$lib/zod/CloudinaryPhoto';
+  import { createEventDispatcher } from 'svelte';
   import { writable } from 'svelte/store';
   import CloudinaryImg from './CloudinaryImg.svelte';
+  import FloatButton from './FloatButton.svelte';
+  import FloatButtonContainer from './FloatButtonContainer.svelte';
 
   export let photos: CloudinaryPhoto[];
   export let square: boolean = true;
+  export let allow_delete: boolean = false;
 
   let gallery: HTMLDivElement;
 
+  const dispatch = createEventDispatcher();
   const current_scroll = writable(1);
 
   const handleScroll = () => {
@@ -27,12 +32,22 @@
       on:scroll={handleScroll}
     >
       {#each photos as photo (photo)}
-        <div class="gallery-item" data-flex="cc">
+        <div class="gallery-item" data-flex="as jc">
           <CloudinaryImg
             {photo}
             square={square === true}
             normal={square === false}
           />
+          {#if allow_delete}
+            <FloatButtonContainer position="inner_right">
+              <FloatButton
+                icon="delete"
+                on:click={() => {
+                  dispatch('delete', photo);
+                }}
+              />
+            </FloatButtonContainer>
+          {/if}
         </div>
       {/each}
     </div>

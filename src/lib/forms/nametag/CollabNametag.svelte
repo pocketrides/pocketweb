@@ -117,6 +117,8 @@
       let:nametag
       {exclude_ids}
       flex="v"
+      padded
+      gap={false}
     >
       <Row padded fill="system-superlight" bordered>
         <NametagWithPic slot="left" {nametag} />

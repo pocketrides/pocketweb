@@ -13,9 +13,11 @@
 
   export let sticky: boolean = false;
   export let utility: boolean = false;
+  export let rounded: boolean = false;
   export let outer_fill: Fill | 'none' = 'light';
   export let fill: Fill = $App.fill;
   export let huddable: boolean = false;
+  export let border_disabled: boolean = false;
 
   let interval_id: any;
   let hud = false;
@@ -48,9 +50,11 @@
   data-site-header
   data-fill={outer_fill}
   class:utility
+  class:rounded
   class:sticky
   class:huddable
   class:hud
+  class:border_disabled
 >
   <header data-fill={fill}>
     <div class="header-inner">
@@ -110,8 +114,7 @@
     z-index: 16;
 
     &.huddable,
-    &.sticky,
-    &.utility {
+    &.sticky {
       position: sticky;
     }
 
@@ -126,7 +129,7 @@
   }
 
   @media (min-width: 640px) {
-    .wrapper[data-fill] {
+    .wrapper[data-fill]:not([data-fill='base']) {
       background-color: transparent;
     }
   }
@@ -138,9 +141,14 @@
     border-bottom: 1px solid rgba(var(--dark), 0.5);
     box-shadow: 0 16px 16px -24px rgba(var(--dark), 0.75);
 
-    &:has([slot='bottom']:not(:empty)) {
-      position: relative;
+    position: relative;
 
+    .header-inner {
+      position: relative;
+      width: 100%;
+    }
+
+    &:has([slot='bottom']:not(:empty)) {
       border-bottom-color: rgba(var(--dark), 0.85);
       box-shadow: 0 16px 16px -18px rgba(var(--dark), 0.75);
 
@@ -152,9 +160,22 @@
     }
   }
 
+  .utility {
+    min-height: 62px;
+  }
+
   .utility header {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
+  }
+
+  .rounded header {
+    border-bottom-left-radius: 1rem !important;
+    border-bottom-right-radius: 1rem !important;
+  }
+
+  .border_disabled header {
+    border-bottom: 0 none;
   }
 
   @media (min-width: 640px) {

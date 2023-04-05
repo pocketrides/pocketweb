@@ -25,6 +25,9 @@
   />
   <Icon {icon} />
   {label}
+  <span class="vh">
+    <Icon filled icon={'radio_button_checked'} />
+  </span>
 </label>
 
 <style lang="scss">

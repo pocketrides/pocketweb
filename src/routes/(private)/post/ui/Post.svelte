@@ -72,7 +72,7 @@
   const handleDeleteLink = (e: CustomEvent<Link>) => {
     store.update((prev) => {
       const link_index = prev.contents[index].links.findIndex((link) => {
-        return link.url === e.detail.url;
+        return link === e.detail;
       });
 
       prev.contents[index].links.splice(link_index, 1);

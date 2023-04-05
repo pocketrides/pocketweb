@@ -10,6 +10,10 @@
     height: 32px;
   }
 
+  &.large {
+    padding: 0 0.85rem;
+  }
+
   &:is(textarea):focus {
     box-shadow: none;
     transform: translate(-1px, 1px);
@@ -22,6 +26,7 @@
 
   &:not([data-fill]) {
     background: rgb(var(--system-light));
+    color: rgb(var(--dark));
 
     &.filled {
       background: rgb(var(--system-superlight));

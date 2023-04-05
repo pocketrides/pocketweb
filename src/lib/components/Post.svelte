@@ -178,16 +178,6 @@
     $showing_post = true;
   };
 
-  const checkBounds = () => {
-    if (wrapper && !_seen) {
-      const bounds = wrapper.getBoundingClientRect();
-      if (bounds.top < 0) {
-        _seen = true;
-        dispatch('seen');
-      }
-    }
-  };
-
   const repliesClick = async () => {
     if ($post_controller && $post_controller.stats) {
       $replies_loading = true;

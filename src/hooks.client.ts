@@ -8,7 +8,8 @@ Sentry.init({
   // Set tracesSampleRate to 1.0 to capture 100%
   // of transactions for performance monitoring.
   // We recommend adjusting this value in production
-  tracesSampleRate: 0.5
+  tracesSampleRate: 0.5,
+  denyUrls: ['10.0.0.16:5174']
 });
 
 Sentry.setTag('sveltekit', 'browser');

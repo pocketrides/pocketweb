@@ -53,8 +53,11 @@
   <div data-flex="v as">
     <label for="theme" class="h2">Theme:</label>
     <Select id="theme" bind:value={theme}>
-      {#each THEME_VALUES as value, i}
-        <option {value}>{THEME_NAMES[i]}</option>
+      {#if $page.data.my_nametag?.theme === 'system'}
+        <option value="system">system</option>
+      {/if}
+      {#each THEME_NAMES as name, i}
+        <option value={THEME_VALUES[i]}>{name}</option>
       {/each}
     </Select>
   </div>

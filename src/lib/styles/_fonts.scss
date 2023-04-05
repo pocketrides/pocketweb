@@ -4,8 +4,6 @@
 @import "@fontsource/dm-sans/500-italic.css";
 @import "@fontsource/dm-sans/700.css";
 @import "@fontsource/dm-sans/700-italic.css";
-@import "@fontsource/material-icons/400.css";
-@import "@fontsource/material-icons-outlined/400.css";
 
 html,
 body {
@@ -16,10 +14,11 @@ h1,
 .h1 {
   font-size: 1.5rem;
   font-weight: bold;
+}
 
-  &.jumbo {
-    font-size: 2.25rem;
-  }
+.jumbo {
+  font-size: 2.25rem;
+  font-weight: bold;
 }
 
 h2,
@@ -35,7 +34,7 @@ h3,
 }
 
 [class*="material"] {
-  font-size: 1.25em;
+  font-size: 1.25em !important;
 }
 
 *:has(> [class*="material"]:not(.inline)) {
@@ -58,7 +57,7 @@ h3,
 }
 
 .small:not(button) {
-  font-size: 0.85rem;
+  font-size: 0.85rem !important;
 }
 
 .nowraps {

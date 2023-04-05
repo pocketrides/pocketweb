@@ -3,6 +3,7 @@
   import { writable } from 'svelte/store';
   import Button from './Button.svelte';
   import Container from './Container.svelte';
+  import Icon from './Icon.svelte';
 
   export let has_more = true;
   export let no_more = false;
@@ -31,10 +32,8 @@
     <div class="wrap">
       <Container padded rounded bordered fill="superlight">
         <div class="none" data-flex="v je">
-          <h2 class="h1 jumbo half thin" data-flex="v" data-gap="0">
-            <span class="material-icons-outlined inline">
-              sentiment_dissatisfied
-            </span>
+          <h2 class="h1 jumbo half thin" data-flex="v" data-gap>
+            <Icon icon="sentiment_content" inline />
             <span>Nothing here… <span class="half">yet!</span></span>
           </h2>
         </div>

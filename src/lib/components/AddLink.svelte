@@ -6,6 +6,7 @@
   import Button from './Button.svelte';
 
   export let controller: Writable<string>;
+  export let large: boolean = false;
 
   const dispatch = createEventDispatcher();
   const adding = writable(false);
@@ -29,8 +30,12 @@
           $adding = false;
           dispatch('added', res.link);
         } else {
-          $try_again = true;
+          // it's fine it just couldn't get a preview
+          $try_again = false;
           $adding = false;
+          dispatch('added', {
+            url: link
+          });
         }
       } else {
         $try_again = true;
@@ -41,13 +46,14 @@
 </script>
 
 {#if $adding}
-  <Button disabled icon="autorenew" icon_spins label="Adding…" />
+  <Button disabled icon="autorenew" icon_spins label="Adding…" {large} />
 {:else}
   <Button
     id="add_links"
     label={$try_again ? 'Try again' : 'Add link'}
     icon="add_link"
     {controller}
+    {large}
     on:click={handleClick}
   />
 {/if}

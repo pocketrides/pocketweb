@@ -12,6 +12,9 @@
   export let likeClick: () => void;
   export let repliesClick: () => void;
   export let showing_mod_result: Writable<boolean>;
+
+  // @ts-ignore
+  $: has_browser_share = browser && typeof navigator?.share === 'function';
 </script>
 
 {#if $post_controller && $post_controller.stats}
@@ -19,10 +22,11 @@
     {#if $post_controller.settings.enable_likes === true}
       <Button
         id="likes"
-        icon="favorite_border"
+        icon={$post_controller.is_liked ? 'favorite' : 'favorite_border'}
         disabled={$is_liking}
         small
         primary={$post_controller.is_liked}
+        icon_filled={$post_controller.is_liked}
         count={$post_controller.stats?.likes}
         label=""
         on:click={likeClick}
@@ -53,8 +57,7 @@
       />
     {/if}
 
-    {#if browser && // @ts-ignore
-      typeof navigator?.share === 'function'}
+    {#if has_browser_share}
       <Button
         id="share"
         label=""

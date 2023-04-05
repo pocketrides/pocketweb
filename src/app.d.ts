@@ -47,6 +47,8 @@ declare global {
 
         MAGIC_NAMETAG_ID: string;
         MAGIC_POST_ID: string;
+
+        GOOGLE_MAPS_API_KEY: string;
       };
     }
   }

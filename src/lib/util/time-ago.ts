@@ -13,8 +13,51 @@ export const getTimeAgo = (date: DateInput, style?: FormatStyleName | Style) => 
   return ta.format(date, style);
 };
 
-export const formatDate = (date: Date, short?: boolean) => {
+export const formatDate = (
+  date: Date,
+  dateStyle?: Intl.DateTimeFormatOptions['dateStyle'],
+  timeStyle?: Intl.DateTimeFormatOptions['timeStyle']
+) => {
   return new Intl.DateTimeFormat('en-US', {
-    dateStyle: short ? 'short' : 'medium'
+    dateStyle,
+    timeStyle
   }).format(date);
+};
+
+// expects a string yyyy-mm-dd and returns a Date for it
+export const dateForDate = (value: string) => {
+  let d = new Date();
+  const [yyyy, mm, dd] = value.split('-');
+  d.setFullYear(Number(yyyy));
+  d.setMonth(Number(mm) - 1);
+  d.setDate(Number(dd));
+
+  return d;
+};
+
+// expects a string hh:mm and returns a Date for it
+export const dateForTime = (value: string) => {
+  let d = new Date();
+  const [hh, mm] = value.split(':');
+  d.setHours(Number(hh));
+  d.setMinutes(Number(mm));
+
+  return d;
+};
+
+// expects a value like YYYY-MM-DD (10 digits)
+export const formatInputTypeDate = (value: string) => {
+  return formatDate(dateForDate(value), 'short');
+};
+
+// expects a value like 18:06 (5 digits)
+export const formatInputTypeTime = (value: string) => {
+  return formatDate(dateForTime(value), undefined, 'short');
+};
+
+// expects a value like YYYY-MM-DDTHH:MM (16 digits)
+export const formatInputTypeDatetime = (value: string) => {
+  const [date, time] = value.split('T');
+  if (date === '' || time === '') return value;
+  return [formatInputTypeDate(date), formatInputTypeTime(time)].join(' at ');
 };

@@ -4,6 +4,8 @@
   export let initial: string | undefined = undefined;
 
   const controller = writable(initial);
+
+  $: if (initial) $controller = initial;
 </script>
 
 <div data-button-row>

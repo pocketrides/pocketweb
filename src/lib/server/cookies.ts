@@ -12,7 +12,7 @@ const opts: CookieSerializeOptions = {
   maxAge: MAX_AGE_SECONDS,
   path: '/',
   httpOnly: true,
-  secure: true,
+  secure: false,
   sameSite: 'lax'
 };
 

@@ -186,7 +186,7 @@
       position: sticky;
       top: 0;
       border-bottom: 1px solid rgba(var(--dark), 0.25);
-      z-index: 1;
+      z-index: 50;
     }
 
     @media (max-width: 640px) {

@@ -6,9 +6,17 @@
   export let padded: boolean = true;
   export let bordered: boolean = false;
   export let bottombordered: boolean = false;
+  export let fullwidth: boolean = false;
 </script>
 
-<div data-fill={fill} class:rounded class:padded class:bordered class:bottombordered>
+<div
+  data-fill={fill}
+  class:rounded
+  class:padded
+  class:bordered
+  class:bottombordered
+  class:fullwidth
+>
   <slot />
 </div>
 
@@ -17,6 +25,10 @@
     width: 100%;
     max-width: 640px;
     margin: auto;
+
+    &.fullwidth {
+      max-width: none;
+    }
   }
 
   .padded {
@@ -61,5 +73,14 @@
 
   .bottombordered {
     border-bottom: 1px solid rgba(var(--dark), 0.25);
+
+    &:last-child {
+      border-bottom: 0 none;
+    }
+
+    &.padded + :global(.bottombordered.padded),
+    &.padded + :global(.bottombordered[data-padded]) {
+      padding-top: 1rem;
+    }
   }
 </style>

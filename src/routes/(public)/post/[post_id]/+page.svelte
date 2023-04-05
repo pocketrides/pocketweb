@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { browser } from '$app/environment';
+  import { invalidateAll } from '$app/navigation';
   import { page } from '$app/stores';
   import { ReplyToPostRequest } from '$lib/api/reply/reply_to_post';
   import { Room, type RoomConnection } from '$lib/api/room';
@@ -24,7 +26,7 @@
   import { getTimeAgo } from '$lib/util/time-ago';
   import type { MessageComposerEvent } from '$lib/zod/Message';
   import type { ClientReply } from '$lib/zod/Reply';
-  import { onDestroy, onMount } from 'svelte';
+  import { afterUpdate, onDestroy, onMount, tick } from 'svelte';
   import type { PageData } from './$types';
 
   export let data: PageData;
@@ -32,6 +34,7 @@
   $App.fill =
     data.post.audience === 'close_friends' ? 'superlight' : 'system-superlight';
 
+  let current_post_id = data.post.id;
   let room: RoomConnection | undefined;
   let page_title = data.post.contents[0].content_raw;
   if (page_title.length > 40) page_title = page_title.substring(0, 40) + '…';
@@ -43,11 +46,21 @@
     : undefined;
 
   onMount(async () => {
-    if (data.post.settings.enable_replies) {
+    if (browser && data.post.settings.enable_replies) {
+      // get around stupid sveltekit
+      // console warning bc we load this at the same time
+      await tick();
+
       await Promise.all([
         RepliesManager.loadReplies(data.post.id, data.post.stats!.replies),
         connect()
       ]);
+    }
+  });
+
+  afterUpdate(async () => {
+    if (current_post_id !== data.post.id) {
+      location.reload();
     }
   });
 

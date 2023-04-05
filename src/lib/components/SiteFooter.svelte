@@ -1,5 +1,6 @@
 <script lang="ts">
   import { page } from '$app/stores';
+  import { App } from '$lib/stores/app';
   import Container from './Container.svelte';
 
   const year = new Date().getFullYear();
@@ -11,7 +12,9 @@
       <div data-flex="v" data-gap>
         <h2 data-flex="ac" data-gap>
           <img
-            src={`/pocketrides-${$page.data.page_theme ?? 'system'}.png`}
+            src={`/pocketrides-${
+              $page.data.page_theme ?? $App.theme ?? 'system'
+            }.png`}
             alt="pocket logo"
             aria-hidden="true"
           />

@@ -34,6 +34,15 @@
   export let controller: Writable<string> = writable(id);
 
   const label_store = writable(label);
+  const icon_store = writable({
+    icon,
+    icon_filled,
+    icon_spins
+  });
+
+  $: $icon_store.icon = icon;
+  $: $icon_store.icon_filled = icon_filled;
+  $: $icon_store.icon_spins = icon_spins;
 
   const controllerClick = (e: any) => {
     if ($controller !== id) {
@@ -86,12 +95,22 @@
   on:click
   on:click={hrefClick}
 >
-  <Icon {icon} filled={icon_filled} spins={icon_spins} />
+  <Icon
+    icon={$icon_store.icon}
+    filled={($icon_store.icon_filled || primary) &&
+      $icon_store.icon !== 'signpost' &&
+      $icon_store.icon != 'airline_stops' &&
+      $icon_store.icon != 'hail'}
+    spins={$icon_store.icon_spins}
+  />
   {#if count !== undefined && ($controller !== id || $label_store === '')}
     <span>{count}</span>
   {/if}
   {#if $controller === id}
-    <span in:typewriter|local out:typewriter|local>
+    <span
+      in:typewriter|local={{ duration: 50 }}
+      out:typewriter|local={{ duration: 50 }}
+    >
       {$label_store}
     </span>
   {/if}
@@ -139,5 +158,9 @@
   button.small {
     padding: 0 0.5rem;
     height: 32px !important;
+  }
+
+  button[data-fill='superdark'] {
+    color: rgb(var(--base));
   }
 </style>
