@@ -20,7 +20,7 @@
   const change = () => {
     if (sanitize) {
       $store.name_html = sanitize(
-        $store.name_raw.replace(/\n/g, `<br/>`),
+        $store.name_raw.replace(/\n/g, `<br>`).replace(/<br>$/g, '<br>&nbsp;'),
         dompurify_config_only_text
       ) as string;
     }

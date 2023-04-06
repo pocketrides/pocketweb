@@ -42,7 +42,6 @@
   $App.fill = 'dark';
 
   $: valid = draft_pocket_validator.safeParse($page_controller).success;
-  $: console.log($page_controller);
 
   const themeChange = () => {
     $page.data.page_theme = $App.theme = $page_controller.theme;

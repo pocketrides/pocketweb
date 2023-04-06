@@ -9,13 +9,15 @@
   import type { Writable } from 'svelte/store';
   import { z } from 'zod';
   import { page_label } from '../store';
+  import { getDatetimeStringForNow } from '$lib/util/time-ago';
 
   export let page_controller: Writable<DraftPocket>;
 
+  let now = getDatetimeStringForNow();
   let start_date = $page_controller.details.start_date || '';
-  let start_datetime = $page_controller.details.start_datetime || '';
+  let start_datetime = $page_controller.details.start_datetime || now;
   let end_date = $page_controller.details.end_date || '';
-  let end_datetime = $page_controller.details.end_datetime || '';
+  let end_datetime = $page_controller.details.end_datetime || now;
   let all_day = $page_controller.details.all_day || false;
   let whenever = $page_controller.details.whenever || false;
   let whenever_reason = $page_controller.details.whenever_reason || '';
@@ -43,6 +45,8 @@
       delete prev.details.start_datetime;
       delete prev.details.end_datetime;
       delete prev.details.all_day;
+      delete prev.details.whenever;
+      delete prev.details.whenever_reason;
       return prev;
     });
   };

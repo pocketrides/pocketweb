@@ -61,3 +61,18 @@ export const formatInputTypeDatetime = (value: string) => {
   if (date === '' || time === '') return value;
   return [formatInputTypeDate(date), formatInputTypeTime(time)].join(' at ');
 };
+
+const pad = (n: any) => {
+  if (Number(n) < 10) return `0${n}`;
+  return n;
+};
+
+export const getDatetimeStringForNow = () => {
+  const d = new Date();
+  const now = d.toLocaleString();
+  const [date] = now.split(', ');
+  const [month, day, year] = date.split('/');
+  return `${year}-${pad(month)}-${pad(day)}T${pad(d.getHours())}:${pad(
+    d.getMinutes()
+  )}`;
+};
