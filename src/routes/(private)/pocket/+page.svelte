@@ -14,7 +14,6 @@
   import SiteHeader from '$lib/components/SiteHeader.svelte';
   import UtilityNav from '$lib/components/UtilityNav.svelte';
   import Cohosts from '$lib/sheets/pockets/Cohosts.svelte';
-  import Guide from '$lib/sheets/pockets/Guide.svelte';
   import { App } from '$lib/stores/app';
   import type { CloudinaryPhoto } from '$lib/zod/CloudinaryPhoto';
   import {
@@ -25,6 +24,7 @@
   import { THEME_NAMES, THEME_VALUES } from '$lib/zod/Theme';
   import { writable } from 'svelte/store';
   import type { PageData } from './$types';
+  import Guide from './ui/Guide.svelte';
   import DetailsNav from './ui/DetailsNav.svelte';
   import Description from './ui/form/Description.svelte';
   import Links from './ui/form/Links.svelte';
@@ -32,20 +32,21 @@
   import Place from './ui/form/Place.svelte';
   import Time from './ui/form/Time.svelte';
   import { page_label } from './ui/store';
+  import { NewPocketRequest } from '$lib/api/pocket/new';
+  import { goto } from '$app/navigation';
 
   export let data: PageData;
 
   $page_label = 'directions';
 
   const page_controller = writable<DraftPocket>(blankPocket(data.my_nametag.theme));
+  const publishing = writable(false);
+  const publish_error = writable(false);
 
+  $: $App.theme = $page_controller.theme;
   $App.fill = 'dark';
 
   $: valid = draft_pocket_validator.safeParse($page_controller).success;
-
-  const themeChange = () => {
-    $page.data.page_theme = $App.theme = $page_controller.theme;
-  };
 
   const handlePicsUploaded = (e: CustomEvent<CloudinaryPhoto[]>) => {
     page_controller.update((prev) => {
@@ -60,6 +61,21 @@
       prev.cover_art.splice(i, 1);
       return prev;
     });
+  };
+
+  const handlePublishClick = async () => {
+    $publishing = true;
+    $publish_error = false;
+
+    const res = await NewPocketRequest.post($page_controller);
+
+    if (res.success) {
+      goto(`/pocket/${res.pocket_id}`, { invalidateAll: true });
+    } else {
+      $publish_error = true;
+    }
+
+    $publishing = false;
   };
 </script>
 
@@ -141,11 +157,7 @@
       <ButtonRow>
         <div data-3d-container>
           {#if $page_label === 'theme'}
-            <select
-              data-sham
-              bind:value={$page_controller.theme}
-              on:change={themeChange}
-            >
+            <select data-sham bind:value={$page_controller.theme}>
               <optgroup label="Pick!">
                 {#if data.my_nametag.theme === 'system'}
                   <option value="system">System</option>
@@ -192,7 +204,12 @@
 
 <Guide />
 <Cohosts {page_controller} />
-<Sheet id="pocket_publish" header="Publish Pocket" icon="hail">
+<Sheet
+  id="pocket_publish"
+  header="Publish Pocket"
+  icon="hail"
+  dismissable={!$publishing}
+>
   <div data-flex="v" data-gap="1">
     <div data-flex="v" data-gap>
       <p class="h2" id="pocket_visibility">Who can see it?</p>
@@ -251,10 +268,22 @@
         {/if}
       </p>
     </div>
-    <Button label="Publish" xlarge primary />
+    <Button
+      label={$publishing ? 'One sec!' : 'Publish'}
+      disabled={$publishing}
+      xlarge
+      primary
+      on:click={handlePublishClick}
+    />
+    {#if $publish_error}
+      <div>
+        <p class="h3">Something went wrong! Try again.</p>
+      </div>
+    {/if}
     <div data-flex="cc">
       <Button
         label="Go back"
+        disabled={$publishing}
         on:click={() => {
           $App.sheet_id = '';
         }}

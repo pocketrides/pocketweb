@@ -35,9 +35,12 @@
   $: if (browser) {
     document.documentElement.setAttribute(
       'data-theme',
-      $page.data.page_theme || $App.theme
+      $App.theme || $page.data.page_theme
     );
-    document.documentElement.setAttribute('data-fill', $App.fill);
+    document.documentElement.setAttribute(
+      'data-fill',
+      $App.fill || $page.data.page_fill
+    );
     document.documentElement.setAttribute(
       'data-locked',
       $App.sheet_id === '' ? 'false' : 'true'

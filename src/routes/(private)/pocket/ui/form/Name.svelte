@@ -1,10 +1,9 @@
 <script lang="ts">
   import { dompurify_config_only_text } from '$lib/util/dompurify';
-  import type { DraftPocket } from '$lib/zod/Pocket';
   import { onMount } from 'svelte';
   import type { Writable } from 'svelte/store';
 
-  export let store: Writable<DraftPocket>;
+  export let store: Writable<{ name_html: string; name_raw: string }>;
 
   let placeholder = `Start typing…`;
   let focused: boolean = false;

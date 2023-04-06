@@ -9,6 +9,7 @@
   import Container from './Container.svelte';
   import Icon from './Icon.svelte';
   import Row from './Row.svelte';
+  import type { Fill } from '$lib/zod/Fill';
 
   export let id: string;
   export let icon: string | undefined = undefined;
@@ -17,6 +18,8 @@
   export let dismissable: boolean = true;
   export let padded: boolean = true;
   export let nav_height: number = 0;
+  export let fill: Fill = 'system-light';
+  export let header_fill: Fill = 'system-superlight';
 
   let dialog: HTMLDialogElement;
   let scrolls: HTMLDivElement;
@@ -65,6 +68,8 @@
   };
 
   afterUpdate(() => {
+    $context.dismissable = dismissable;
+
     if ($App.sheet_id === id && dialog.open === false) {
       dispatch('activate');
       dialog.showModal();
@@ -90,7 +95,7 @@
   {#if $App.sheet_id === id}
     <div
       class="wrapper"
-      data-fill="system-light"
+      data-fill={fill}
       bind:this={scrolls}
       on:scroll
       on:focus|capture={focus}
@@ -98,7 +103,7 @@
       out:fly|local={{ y: '100vh', opacity: 1, duration: 300 }}
       style={`--nav-height: ${nav_height}px`}
     >
-      <header class="header" data-fill="system-superlight">
+      <header class="header" data-fill={header_fill}>
         <Container>
           <Row>
             <div slot="left">

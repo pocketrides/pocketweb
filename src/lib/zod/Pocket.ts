@@ -4,6 +4,8 @@ import { cloudinary_photo_validator } from './CloudinaryPhoto';
 import { google_place_validator } from './GooglePlace';
 import { link_validator } from './Link';
 import { client_nametag_validator, type ClientNametag } from './Nametag';
+import type { ClientRef } from './Fauna';
+import type { Expr } from 'faunadb';
 
 export const POCKET_MAX_COHOSTS = 5;
 export const pocket_name_html_validator = z.string().min(1).max(60);
@@ -49,13 +51,21 @@ export const draft_pocket_validator = z.object({
 });
 
 export const server_pocket_validator = draft_pocket_validator.extend({
+  id: z.string(),
+  ts: z.number(),
   nametag_ref: client_nametag_validator,
   hosts: z.array(client_nametag_validator)
 });
 
 export type DraftPocket = z.infer<typeof draft_pocket_validator>;
 export type DraftPocketDetails = z.infer<typeof draft_pocket_details_validator>;
-export type ServerPocket = z.infer<typeof server_pocket_validator>;
+export type ServerPocket = DraftPocket & {
+  id: string;
+  ts: number;
+  nametag_ref: ClientRef | Expr;
+  nametag: ClientNametag;
+  hosts: ClientNametag[];
+};
 
 export const blankPocket = (theme: ThemeValue): DraftPocket => {
   return {
