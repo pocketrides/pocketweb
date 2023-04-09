@@ -5,6 +5,7 @@
   export let spins: boolean = false;
   export let inline: boolean = false;
   export let small: boolean = false;
+  export let multiline: boolean = false;
 </script>
 
 {#if icon}
@@ -15,6 +16,7 @@
     class:spins
     class:inline
     class:small
+    class:multiline
   >
     {icon}
   </span>

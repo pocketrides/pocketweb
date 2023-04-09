@@ -17,14 +17,14 @@
     </Container>
   </div>
   <slot name="utility-nav">
-    {#if $page.data.my_nametag === undefined}
+    {#if $page.data.my_nametag === undefined && $page.route.id?.startsWith('/(public)/pocket') === false}
       <DefaultUtilityNav />
     {/if}
   </slot>
 </main>
 
 <style lang="scss">
-  .fullheight {
+  .fullheight:not(:has([data-nothing-here])) {
     min-height: 100vh;
   }
 </style>

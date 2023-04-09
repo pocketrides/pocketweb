@@ -19,7 +19,6 @@
 
   export let data: PageData;
 
-  if (data.page_theme) $App.theme = data.page_theme;
   $App.fill = 'system-superlight';
 
   let scroll_list: HTMLDivElement | undefined;
@@ -82,7 +81,7 @@
 
 <svelte:window on:scroll={saveScrollY} />
 
-<SiteHeader fill="system-superlight" outer_fill="none" huddable />
+<SiteHeader fill="system-superlight" huddable />
 <div class:chill>
   <Main fill="system-light" padded={false} fullheight>
     <ScrollList

@@ -32,6 +32,8 @@
 
   Room.host = data.room_host;
 
+  if ($page.data.page_theme) $App.theme = $page.data.page_theme;
+
   $: if (browser) {
     document.documentElement.setAttribute(
       'data-theme',
@@ -118,17 +120,19 @@
 <svelte:head>
   <link
     rel="icon"
-    href={`/pocketrides-${$page.data.page_theme ?? 'system'}.png`}
+    href={`/pocketrides-${$App.theme || $page.data.page_theme || 'system'}.png`}
     type="image/png"
   />
   <link
     rel="apple-touch-icon"
     sizes="any"
-    href={`/pocketrides-${$page.data.page_theme ?? 'system'}.png`}
+    href={`/pocketrides-${$App.theme || $page.data.page_theme || 'system'}.png`}
   />
   <link
     rel="manifest"
-    href={`/manifest.webmanifest?theme=${$page.data.page_theme ?? 'system'}`}
+    href={`/manifest.webmanifest?theme=${
+      $App.theme || $page.data.page_theme || 'system'
+    }`}
   />
 </svelte:head>
 

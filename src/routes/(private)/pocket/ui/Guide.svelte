@@ -1,10 +1,10 @@
 <script lang="ts">
-  import Container from '$lib/components/Container.svelte';
   import Sheet from '$lib/components/Sheet.svelte';
   import { THEME_NAMES, THEME_VALUES } from '$lib/zod/Theme';
   import { onDestroy } from 'svelte';
   import Name from './form/Name.svelte';
   import { writable } from 'svelte/store';
+  import PocketIntro from '$lib/components/pockets/PocketIntro.svelte';
 
   const store = writable<{ name_html: string; name_raw: string }>({
     name_html: '',
@@ -64,6 +64,7 @@
   <Sheet
     id="pocket_guide"
     header="How Pockets work"
+    icon="hail"
     fill="dark"
     header_fill="dark"
     on:activate={activate}
@@ -73,29 +74,7 @@
       <div data-mock>
         <Name {store} />
       </div>
-      <Container padded bordered rounded fill="system-superlight">
-        <p class="h2">Pockets are great for IRL.</p>
-        <p>
-          Get out of DMs or group chats and into a central place for planning stuff -
-          and sharing the recap. Think of a pocket like you're making a group memory
-          in your own private social network.
-        </p>
-      </Container>
-      <Container padded>
-        <p class="h2">Pockets are free to join.</p>
-        <p>
-          Everyone deserves a great, centralized place with the flexibility to plan &
-          organize whatever's happening.
-        </p>
-      </Container>
-      <Container padded>
-        <p class="h2">So many other uses, too.</p>
-        <p>
-          Have a niche only some of your followers care about? Put your Pocket in
-          broadcast mode and share whatever you want - people who care can follow, or
-          not.
-        </p>
-      </Container>
+      <PocketIntro />
     </div>
   </Sheet>
 </div>

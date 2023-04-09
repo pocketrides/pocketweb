@@ -29,9 +29,7 @@
       <div data-flex="v" data-gap>
         <div class="h3 half"><a href="/privacy-policy">Privacy Policy</a></div>
         <div class="h3 half"><a href="/terms-of-use">Terms of Use</a></div>
-        <div class="h3 half">
-          <a href="mailto:hello@pocketrides.cc?subject=Hello!">Contact us</a>
-        </div>
+        <div class="h3 half"><a href="/help">Contact us</a></div>
         <p class="half">
           <small>&copy; {year} Pocketrides, Inc.</small>
         </p>

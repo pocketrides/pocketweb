@@ -175,13 +175,8 @@
 
 <SiteHeader
   fill={data.post.audience === 'close_friends' ? 'superlight' : 'system-superlight'}
-  outer_fill={data.post.audience === 'close_friends'
-    ? 'superlight'
-    : 'system-superlight'}
 >
-  <div slot="bottom">
-    <Gallery photos={data.post.contents[0].photos} square={false} />
-  </div>
+  <Gallery slot="bottom" photos={data.post.contents[0].photos} square={false} />
 </SiteHeader>
 
 <Post

@@ -10,16 +10,15 @@
   import { Notifications } from '$lib/stores/notifications';
   import { onMount } from 'svelte';
   import ButtonRow from './ButtonRow.svelte';
+  import { afterNavigate, beforeNavigate } from '$app/navigation';
 
   export let sticky: boolean = false;
   export let utility: boolean = false;
-  export let rounded: boolean = false;
-  export let outer_fill: Fill | 'none' = 'light';
-  export let fill: Fill = $App.fill;
+  export let fill: Fill | 'none' = $App.fill;
   export let huddable: boolean = false;
-  export let border_disabled: boolean = false;
 
   let interval_id: any;
+  let has_init = false;
   let hud = false;
 
   const checkForScrollingUp = () => {
@@ -40,153 +39,166 @@
     }, 650);
   };
 
-  onMount(checkForScrollingUp);
+  onMount(() => {
+    checkForScrollingUp();
+
+    if (huddable) {
+      setTimeout(() => {
+        has_init = true;
+      }, 1);
+    }
+  });
+
+  beforeNavigate(() => {
+    if (huddable) {
+      has_init = false;
+      hud = true;
+      setTimeout(() => {
+        has_init = true;
+      }, 1);
+    }
+  });
+
+  afterNavigate(() => {
+    if (huddable) {
+      has_init = false;
+      hud = true;
+      setTimeout(() => {
+        has_init = true;
+      }, 1);
+      checkForScrollingUp();
+    }
+  });
 </script>
 
 <svelte:window on:scroll={checkForScrollingUp} />
 
-<div
-  class="wrapper"
-  data-site-header
-  data-fill={outer_fill}
+<header
+  data-fill={fill}
   class:utility
-  class:rounded
   class:sticky
   class:huddable
   class:hud
-  class:border_disabled
+  class:has_init
 >
-  <header data-fill={fill}>
-    <div class="header-inner">
-      <Container>
-        <Row>
-          <slot name="left" slot="left"><Logo /></slot>
-          <slot name="right" slot="right">
-            <div data-flex data-button-row>
-              {#if $page.data.my_nametag}
-                <Button
-                  icon={$Notifications.unread_count === 0
-                    ? 'notifications'
-                    : 'notifications_active'}
-                  label=""
-                  count={$Notifications.unread_count}
-                  on:click={() => {
-                    $App.sheet_id = 'notifications';
-                  }}
-                />
-                {#if $page.url.pathname === `/profile/${$page.data.my_nametag.id}`}
-                  <Button
-                    href="/settings"
-                    label="Settings"
-                    icon="settings_suggest"
-                  />
-                {:else}
-                  <Nametag nametag={$page.data.my_nametag} />
-                {/if}
-              {:else}
-                <ButtonRow>
-                  <Button
-                    label="Sign in"
-                    on:click={() => ($App.sheet_id = 'onboarding')}
-                  />
-                  <Button
-                    label="Get account"
-                    primary
-                    small
-                    on:click={() => ($App.sheet_id = 'onboarding')}
-                  />
-                </ButtonRow>
-              {/if}
-            </div>
-          </slot>
-        </Row>
-        <slot />
-      </Container>
-    </div>
-    <slot name="bottom" />
-  </header>
+  <Container>
+    <Row>
+      <slot name="left" slot="left"><Logo /></slot>
+      <slot name="right" slot="right">
+        <div data-flex data-button-row>
+          {#if $page.data.my_nametag}
+            <Button
+              icon={$Notifications.unread_count === 0
+                ? 'notifications'
+                : 'notifications_active'}
+              label=""
+              count={$Notifications.unread_count}
+              on:click={() => {
+                $App.sheet_id = 'notifications';
+              }}
+            />
+            {#if $page.url.pathname === `/profile/${$page.data.my_nametag.id}`}
+              <Button href="/settings" label="Settings" icon="settings_suggest" />
+            {:else}
+              <Nametag nametag={$page.data.my_nametag} />
+            {/if}
+          {:else}
+            <ButtonRow>
+              <Button
+                label="Sign in"
+                on:click={() => ($App.sheet_id = 'onboarding')}
+              />
+              <Button
+                label="Get account"
+                primary
+                small
+                on:click={() => ($App.sheet_id = 'onboarding')}
+              />
+            </ButtonRow>
+          {/if}
+        </div>
+      </slot>
+    </Row>
+  </Container>
+</header>
+<div data-slot data-fill={fill}>
+  <slot />
+</div>
+<div data-nav data-fill={fill} class:sticky class:huddable class:hud class:has_init>
+  <slot name="nav" />
+</div>
+<div data-bottom>
+  <slot name="bottom" />
 </div>
 
 <style lang="scss">
-  .wrapper {
-    position: relative;
-    top: 0;
-    z-index: 16;
-
-    &.huddable,
-    &.sticky {
-      position: sticky;
-    }
-
-    &.huddable {
-      transition: transform 0.25s ease-in-out;
-      transform: translateY(-120%);
-    }
-
-    &.hud {
-      transform: translateY(0%);
-    }
-  }
-
-  @media (min-width: 640px) {
-    .wrapper[data-fill]:not([data-fill='base']) {
-      background-color: transparent;
-    }
-  }
-
-  header {
+  header:has(~ [data-slot]:empty),
+  [data-nav]:not(:empty),
+  [data-bottom]:not(:empty) {
     border-bottom-left-radius: 1rem;
     border-bottom-right-radius: 1rem;
 
     border-bottom: 1px solid rgba(var(--dark), 0.5);
     box-shadow: 0 16px 16px -24px rgba(var(--dark), 0.75);
 
+    overflow: hidden;
     position: relative;
+    z-index: 1;
+  }
 
-    .header-inner {
-      position: relative;
-      width: 100%;
+  header.utility {
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+  }
+
+  header.sticky,
+  header.huddable,
+  header:has(~ [data-slot]:empty).huddable {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+  }
+
+  [data-nav].sticky,
+  [data-nav].huddable {
+    position: sticky;
+    top: 92px;
+    z-index: 38;
+  }
+
+  .huddable {
+    transform: translateY(-110%);
+  }
+
+  [data-nav].huddable {
+    transform: translateY(calc(-110% - 85px));
+  }
+
+  .huddable.hud {
+    transform: translateY(0);
+  }
+
+  .huddable.has_init {
+    transition: transform 0.35s ease-in-out;
+  }
+
+  header:has(~ [data-bottom]:not(:empty)) {
+    position: absolute;
+    width: 100%;
+
+    background-color: transparent;
+    box-shadow: none;
+    border: 0 none;
+    z-index: 40;
+
+    &.huddable.hud {
+      position: fixed;
+      top: 0;
     }
-
-    &:has([slot='bottom']:not(:empty)) {
-      border-bottom-color: rgba(var(--dark), 0.85);
-      box-shadow: 0 16px 16px -18px rgba(var(--dark), 0.75);
-
-      .header-inner {
-        position: absolute;
-        z-index: 1;
-        width: 100%;
-      }
-    }
   }
 
-  .utility {
-    min-height: 62px;
-  }
-
-  .utility header {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-
-  .rounded header {
-    border-bottom-left-radius: 1rem !important;
-    border-bottom-right-radius: 1rem !important;
-  }
-
-  .border_disabled header {
-    border-bottom: 0 none;
-  }
-
-  @media (min-width: 640px) {
-    .wrapper:not(.utility) {
-      display: flex;
-      justify-content: center;
-      max-width: 100vw;
-
-      header {
-        min-width: 672px;
-      }
-    }
+  [data-bottom] {
+    max-width: 720px;
+    margin: auto;
   }
 </style>

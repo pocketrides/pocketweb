@@ -18,7 +18,7 @@
 }
 
 @media (min-width: 640px) {
-  html[data-fill] {
+  html[data-fill]:not([data-fill="dark"]) {
     background-color: rgb(var(--system-light));
 
     &:has([data-site-header].utility) {

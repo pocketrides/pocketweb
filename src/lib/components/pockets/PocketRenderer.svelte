@@ -1,7 +1,10 @@
 <script lang="ts">
+  import type { Fill } from '$lib/zod/Fill';
   import type { PocketEnabledDetails } from '$lib/zod/Pocket';
 
   export let details_enabled: PocketEnabledDetails;
+  export let always_show_slot = false;
+  export let default_fill: Fill | 'none' = 'none';
 
   $: has_section2 = details_enabled.length;
   $: has_section3 = details_enabled.length > 2;
@@ -11,13 +14,13 @@
   let section3_fill = 'superlight';
 </script>
 
-<div data-fill={has_section2 ? section2_fill : 'none'}>
+<div data-fill={has_section2 ? section2_fill : default_fill}>
   <div data-fill={section1_fill} data-rounded>
     <slot name="name" />
   </div>
 </div>
 {#if has_section2}
-  <div data-fill={has_section3 ? section3_fill : 'none'}>
+  <div data-fill={has_section3 ? section3_fill : default_fill}>
     <div data-fill={section2_fill} data-rounded>
       {#each details_enabled as detail, i (detail)}
         {#if i < 2}
@@ -58,6 +61,6 @@
     {/each}
   </div>
 {/if}
-{#if details_enabled.length < 4}
+{#if details_enabled.length < 4 || always_show_slot === true}
   <slot />
 {/if}

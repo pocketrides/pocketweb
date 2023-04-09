@@ -43,6 +43,10 @@
   flex: 1;
 }
 
+[data-flex*="w"] {
+  flex-wrap: wrap;
+}
+
 [data-flex*="vs"] {
   @media (min-width: 640px) {
     flex-direction: row;

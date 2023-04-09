@@ -9,9 +9,9 @@
   import ButtonRow from '$lib/components/ButtonRow.svelte';
   import UtilityNav from '$lib/components/UtilityNav.svelte';
   import { writable, type Writable } from 'svelte/store';
-  import type { PageData } from '../$types';
+  import type { LayoutData } from '../$types';
 
-  export let page_controller: Writable<PageData>;
+  export let page_controller: Writable<LayoutData>;
 
   const controller: Writable<string> = writable('follow');
 

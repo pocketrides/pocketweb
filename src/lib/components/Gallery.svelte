@@ -21,6 +21,22 @@
       Math.floor(gallery.scrollLeft / gallery.clientWidth) + 1
     );
   };
+
+  // test mode
+  // photos = [
+  //   {
+  //     public_id: 'Y9bSrRZTjCkcZz2so6Ofd',
+  //     version: 1680545132,
+  //     aws_rek_status: 'approved',
+  //     alt_text: ''
+  //   },
+  //   {
+  //     public_id: 'W4-yXrMGctYVG0fwtmvmA',
+  //     version: 1680543327,
+  //     aws_rek_status: 'approved',
+  //     alt_text: ''
+  //   }
+  // ];
 </script>
 
 {#if photos.length}

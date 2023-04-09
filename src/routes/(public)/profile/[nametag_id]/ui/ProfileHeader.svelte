@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { PageData } from '../$types';
+  import type { LayoutData } from '../$types';
   import Nametag from '$lib/components/Nametag.svelte';
   import { plural } from '$lib/util/plural';
   import { page } from '$app/stores';
@@ -11,7 +11,7 @@
   import { browser } from '$app/environment';
   import { App } from '$lib/stores/app';
 
-  export let page_controller: Writable<PageData>;
+  export let page_controller: Writable<LayoutData>;
 
   const share_controller = writable('');
 </script>
@@ -29,7 +29,7 @@
         <ul data-flex="v" data-unstyle>
           {#if $page_controller.relationship.is_close_friend}
             <li class="h3" data-color="base">
-              <Icon icon="favorite" />Close Friends
+              <Icon icon="favorite" filled />Close Friends
             </li>
           {/if}
           <li>
@@ -97,10 +97,6 @@
 </div>
 
 <style lang="scss">
-  .header {
-    margin-top: 2rem;
-  }
-
   .share-wrapper {
     width: 100%;
   }

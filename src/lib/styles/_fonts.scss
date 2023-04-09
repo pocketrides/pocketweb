@@ -48,6 +48,14 @@ h3,
   transform: translateY(0.2em);
 }
 
+*:has(> [class*="material"].multiline) {
+  align-items: baseline;
+
+  > [class*="material"] {
+    transform: translateY(0.25em);
+  }
+}
+
 .half {
   opacity: 0.5;
 }

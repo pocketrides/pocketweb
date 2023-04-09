@@ -1,11 +1,10 @@
 import { z } from 'zod';
 import { THEME_VALUES, type ThemeValue } from './Theme';
-import { cloudinary_photo_validator } from './CloudinaryPhoto';
+import { cloudinary_photo_validator, type CloudinaryPhoto } from './CloudinaryPhoto';
 import { google_place_validator } from './GooglePlace';
 import { link_validator } from './Link';
 import { client_nametag_validator, type ClientNametag } from './Nametag';
 import type { ClientRef } from './Fauna';
-import type { Expr } from 'faunadb';
 
 export const POCKET_MAX_COHOSTS = 5;
 export const pocket_name_html_validator = z.string().min(1).max(60);
@@ -62,9 +61,10 @@ export type DraftPocketDetails = z.infer<typeof draft_pocket_details_validator>;
 export type ServerPocket = DraftPocket & {
   id: string;
   ts: number;
-  nametag_ref: ClientRef | Expr;
+  nametag_ref: ClientRef;
   nametag: ClientNametag;
   hosts: ClientNametag[];
+  members_count: number;
 };
 
 export const blankPocket = (theme: ThemeValue): DraftPocket => {

@@ -10,7 +10,7 @@ export const nametagCreateComplete = async (
   await IDBCache.clear();
   await IDBFeedCache.clear();
 
-  if (e.detail.first_time === true) {
+  if (e.detail.first_time === true && /\/pocket/.test(location.pathname) === false) {
     location.href = `/profile/${e.detail.nametag_id}`;
   } else {
     if (HomepageHelper.isHomepagePath()) location.href = `/home`;

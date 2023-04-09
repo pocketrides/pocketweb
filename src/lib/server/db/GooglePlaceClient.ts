@@ -30,7 +30,6 @@ export class GooglePlaceClient {
 
     const req = await fetch(`${this.SERVICE_URL}?${qs.toString()}`);
     const data = await req.json();
-    console.log(data);
     const parsed = google_place_api_result_validator.safeParse(data);
 
     if (parsed.success && parsed.data.results) {

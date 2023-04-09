@@ -42,6 +42,7 @@
   const page_controller = writable<DraftPocket>(blankPocket(data.my_nametag.theme));
   const publishing = writable(false);
   const publish_error = writable(false);
+  const redirecting = writable(false);
 
   $: $App.theme = $page_controller.theme;
   $App.fill = 'dark';
@@ -70,12 +71,12 @@
     const res = await NewPocketRequest.post($page_controller);
 
     if (res.success) {
+      $redirecting = true;
       goto(`/pocket/${res.pocket_id}`, { invalidateAll: true });
     } else {
+      $publishing = false;
       $publish_error = true;
     }
-
-    $publishing = false;
   };
 </script>
 
@@ -83,20 +84,19 @@
   <title>new pocket | on pocketrides!</title>
 </svelte:head>
 
-<SiteHeader fill="dark" outer_fill="dark" utility border_disabled>
+<SiteHeader fill="dark" utility>
   <h2 slot="left" class:half={!$page_controller.cover_art.length}>
     <Icon icon="hail" />
     New Pocket
   </h2>
   <div slot="right" />
-  <div slot="bottom">
-    <Gallery
-      photos={$page_controller.cover_art}
-      square={false}
-      allow_delete
-      on:delete={photoDeleted}
-    />
-  </div>
+  <Gallery
+    photos={$page_controller.cover_art}
+    square={false}
+    allow_delete
+    slot="bottom"
+    on:delete={photoDeleted}
+  />
 </SiteHeader>
 <Main fullheight fullwidth padded={false}>
   <PocketRenderer details_enabled={$page_controller.details_enabled}>
@@ -105,10 +105,7 @@
         <Name store={page_controller} />
         {#if $page_controller.hosts.length}
           <div data-flex="v" data-gap>
-            <h2>
-              <Icon icon="campaign" />
-              Hosted by:
-            </h2>
+            <h2>Hosted by:</h2>
             <div data-flex="scroll-h" data-gap>
               {#if $page.data.my_nametag}
                 <NametagWithPic nametag={$page.data.my_nametag} large />
@@ -122,7 +119,7 @@
         <ButtonRow>
           <Button
             id="directions"
-            label="Need a hint?"
+            label="Want a hint?"
             icon="directions_run"
             superdark
             controller={page_label}
@@ -227,7 +224,7 @@
         labelled_by="pocket_visibility"
         xlarge
       />
-      <p class="half ">
+      <p class="half h3">
         {#if $page_controller.settings.visibility === 'listed'}
           Your pocket will show up on your profile page.
         {:else}
@@ -258,19 +255,21 @@
         labelled_by="pocket_joinability"
         xlarge
       />
-      <p class="half ">
+      <p class="half h3">
         {#if $page_controller.settings.joinability === 'anyone'}
           Anyone can join automatically.
         {:else if $page_controller.settings.joinability === 'moderated'}
           Hosts approve each person requesting to join.
         {:else}
-          Friends can join, but not post.
+          <Icon icon="info" multiline />
+          Friends will follow your Pocket instead of joining. This means they won't be
+          able to post or chat.
         {/if}
       </p>
     </div>
     <Button
-      label={$publishing ? 'One sec!' : 'Publish'}
-      disabled={$publishing}
+      label={$publishing ? ($redirecting ? 'Almost done!' : 'One sec!') : 'Publish'}
+      disabled={$publishing || $redirecting}
       xlarge
       primary
       on:click={handlePublishClick}

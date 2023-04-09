@@ -11,7 +11,6 @@ export const POST = (async (event) => {
 
   if (payload.success && event.locals.nametag_id) {
     res = await Pocket.create(event.locals.nametag_id, payload.data);
-    console.log('>> success', res);
   }
 
   return json(res);
