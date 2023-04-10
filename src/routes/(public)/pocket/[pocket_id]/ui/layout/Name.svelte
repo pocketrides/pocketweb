@@ -14,7 +14,12 @@
 
 <Container padded={false}>
   <div data-flex="v" data-gap data-padded="v">
-    <div data-name data-flex="ae" data-padded="h">
+    <div
+      data-name
+      data-flex="ae"
+      data-padded="h"
+      class:normal={$pocket.cover_art.length > 0}
+    >
       <div>
         {#if $pocket.settings.visibility === 'unlisted'}
           <p class="half small">
@@ -66,7 +71,9 @@
 
 <style lang="scss">
   [data-name] {
-    min-height: 148px;
+    &:not(.normal) {
+      min-height: 148px;
+    }
 
     > div {
       width: 100%;

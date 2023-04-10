@@ -20,19 +20,20 @@
   let interval_id: any;
   let has_init = false;
   let hud = false;
+  let safehud = false;
 
   const checkForScrollingUp = () => {
     if (!huddable) return;
     const start_y = window.scrollY;
-    if (start_y < 640) hud = true;
+    let header_height = document.querySelector('main')?.offsetTop || 640;
+    if (start_y < header_height) hud = true;
     if (interval_id) return;
     clearInterval(interval_id);
     interval_id = setTimeout(() => {
       if (start_y > window.scrollY || window.scrollY < 100) hud = true;
 
-      if (window.scrollY > start_y) hud = false;
-
-      if (window.scrollY < 640) hud = true;
+      hud = window.scrollY < header_height || window.scrollY < start_y;
+      safehud = window.scrollY > 110;
 
       clearInterval(interval_id);
       interval_id = undefined;
@@ -80,6 +81,7 @@
   class:huddable
   class:hud
   class:has_init
+  class:safehud
 >
   <Container>
     <Row>
@@ -121,20 +123,20 @@
     </Row>
   </Container>
 </header>
+<div data-gallery data-fill={fill}>
+  <slot name="gallery" />
+</div>
 <div data-slot data-fill={fill}>
   <slot />
 </div>
 <div data-nav data-fill={fill} class:sticky class:huddable class:hud class:has_init>
   <slot name="nav" />
 </div>
-<div data-bottom>
-  <slot name="bottom" />
-</div>
 
 <style lang="scss">
   header:has(~ [data-slot]:empty),
   [data-nav]:not(:empty),
-  [data-bottom]:not(:empty) {
+  [data-gallery]:not(:empty) {
     border-bottom-left-radius: 1rem;
     border-bottom-right-radius: 1rem;
 
@@ -142,6 +144,10 @@
     box-shadow: 0 16px 16px -24px rgba(var(--dark), 0.75);
 
     overflow: hidden;
+  }
+
+  [data-nav]:not(:empty),
+  [data-gallery]:not(:empty) {
     position: relative;
     z-index: 1;
   }
@@ -152,8 +158,7 @@
   }
 
   header.sticky,
-  header.huddable,
-  header:has(~ [data-slot]:empty).huddable {
+  header.huddable {
     position: sticky;
     top: 0;
     z-index: 40;
@@ -182,22 +187,22 @@
     transition: transform 0.35s ease-in-out;
   }
 
-  header:has(~ [data-bottom]:not(:empty)) {
-    position: absolute;
+  header:has(~ [data-gallery]:not(:empty)) {
+    position: fixed;
     width: 100%;
-
-    background-color: transparent;
-    box-shadow: none;
-    border: 0 none;
     z-index: 40;
 
-    &.huddable.hud {
-      position: fixed;
-      top: 0;
+    transition: all 0.25s ease-in-out;
+
+    &:not(.safehud) {
+      background-color: transparent;
+      box-shadow: none;
+      border: 0 none;
+      z-index: 40;
     }
   }
 
-  [data-bottom] {
+  [data-gallery] {
     max-width: 720px;
     margin: auto;
   }

@@ -12,15 +12,66 @@ export class PocketMember {
         ['data'],
         q.Count(
           q.Paginate(
-            q.Match(q.Index('pocket_members_by_pocket_ref'), [
-              q.Select(['id'], q.Var(ref_var))
-            ]),
+            q.Match(q.Index('pocket_members_by_pocket_ref'), [q.Var(ref_var)]),
             { size: 500 }
           )
         )
       );
+    },
+
+    joined_pockets: (nametag_id: string) => {
+      return q.Map(
+        q.Paginate(
+          q.Match(q.Index('pocket_members_by_nametag_ref'), [
+            Nametag.toRef(nametag_id)
+          ])
+        ),
+        q.Lambda(
+          'member_ref',
+          q.Let(
+            {
+              member: q.Get(q.Var('member_ref')),
+              pocket_ref: q.Select(['data', 'pocket_ref'], q.Var('member'))
+            },
+            Pocket.fql_for.get_pocket()
+          )
+        )
+      );
+    },
+
+    delete_all: (pocket_id: string) => {
+      return q.Map(
+        q.Paginate(
+          q.Match(q.Index('pocket_members_by_pocket_ref'), [
+            Pocket.toRef(pocket_id)
+          ]),
+          { size: 2500 }
+        ),
+        q.Lambda('member_ref', q.Delete(q.Var('member_ref')))
+      );
     }
   };
+
+  static async canFreeNametagJoin(nametag_id: string): Promise<boolean> {
+    try {
+      const query = await Fauna.client().query<{ data: number[] }>(
+        q.Count(
+          q.Paginate(
+            q.Match(q.Index('pocket_members_by_nametag_ref'), [
+              Nametag.toRef(nametag_id)
+            ]),
+            { size: 10 }
+          )
+        )
+      );
+
+      if (query.data[0] >= 3) return false;
+      return true;
+    } catch (e) {
+      console.error('db/PocketMember.canFreeNametagJoin()', e);
+      return false;
+    }
+  }
 
   static async getMember(
     pocket_id: string,

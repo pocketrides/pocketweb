@@ -8,6 +8,14 @@
   import PocketRenderer from '$lib/components/pockets/PocketRenderer.svelte';
   import Name from './ui/layout/Name.svelte';
   import type { ClientPocketMember } from '$lib/zod/PocketMember';
+  import Place from './ui/layout/Place.svelte';
+  import Time from './ui/layout/Time.svelte';
+  import Description from './ui/layout/Description.svelte';
+  import Links from './ui/layout/Links.svelte';
+  import PocketMembersSheet from './ui/PocketMembersSheet.svelte';
+  import Gallery from '$lib/components/Gallery.svelte';
+  import JoinedMaxFree from '$lib/sheets/pockets/JoinedMaxFree.svelte';
+  import { page } from '$app/stores';
 
   export let data: LayoutData;
 
@@ -48,11 +56,16 @@
 </svelte:head>
 
 <SiteHeader fill="dark" huddable>
+  <Gallery slot="gallery" photos={$pocket.cover_art} square={false} />
   <PocketRenderer
     details_enabled={$pocket.details_enabled}
     default_fill="superlight"
   >
     <Name {pocket} slot="name" />
+    <Time {pocket} slot="time" />
+    <Place {pocket} slot="place" />
+    <Description {pocket} slot="desc" />
+    <Links {pocket} slot="links" />
   </PocketRenderer>
   <PocketNav slot="nav" {pocket} {my_membership} />
 </SiteHeader>
@@ -60,6 +73,11 @@
 <div data-fill="light">
   <slot />
 </div>
+
+<PocketMembersSheet {pocket} {my_membership} />
+{#if $page.data.my_nametag?.stripe?.has_sub !== true}
+  <JoinedMaxFree />
+{/if}
 
 <style lang="scss">
   div {

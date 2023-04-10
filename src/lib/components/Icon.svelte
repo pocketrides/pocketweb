@@ -25,6 +25,8 @@
 <style lang="scss">
   span {
     max-width: 1em;
+    font-weight: 500;
+    font-size: 1.25em;
   }
 
   @keyframes icon-spins {

@@ -14,7 +14,7 @@
       </p>
       <p>
         When you're ready, tap Subscribe. You won't be able to post content or create
-        pockets of your own until you subscribe..
+        pockets of your own until you subscribe.
       </p>
     </div>
   </Container>

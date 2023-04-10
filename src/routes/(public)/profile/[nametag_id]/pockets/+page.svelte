@@ -10,6 +10,22 @@
   export let data: PageData;
 </script>
 
+{#if data.is_my_profile_page && data.joined_pockets.length}
+  <Row padded bordered fill="system-light">
+    <h2 slot="left">
+      <Icon icon="hail" />
+      Joined
+    </h2>
+  </Row>
+  <Container>
+    <div data-flex="w" data-gap>
+      {#each data.joined_pockets as pocket (pocket)}
+        <PocketDisplay {pocket} />
+      {/each}
+    </div>
+  </Container>
+{/if}
+
 {#if !data.pockets.length && !data.cohosted_pockets.length && !data.unlisted_pockets.length}
   <Row padded bordered fill="system-light">
     <h2 slot="left">

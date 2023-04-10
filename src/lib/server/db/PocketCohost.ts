@@ -1,6 +1,7 @@
 import type { ClientPocketCohost, FaunaPocketCohost } from '$lib/zod/PocketCohost';
 import { Fauna, q } from './Fauna';
 import { Nametag } from './Nametag';
+import { Pocket } from './Pocket';
 
 export class PocketCohost {
   static collection = 'pocket_cohosts';
@@ -43,6 +44,14 @@ export class PocketCohost {
             )
           )
         )
+      );
+    },
+    delete_all: (pocket_id: string) => {
+      return q.Map(
+        q.Paginate(
+          q.Match(q.Index('pocket_cohosts_by_pocket_ref'), [Pocket.toRef(pocket_id)])
+        ),
+        q.Lambda('cohost_ref', q.Delete(q.Var('cohost_ref')))
       );
     }
   };

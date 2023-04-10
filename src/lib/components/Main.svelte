@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { page } from '$app/stores';
-  import DefaultUtilityNav from '$lib/utility-navs/DefaultUtilityNav.svelte';
   import type { Fill } from '$lib/zod/Fill';
   import Container from './Container.svelte';
 
@@ -16,11 +14,7 @@
       <slot />
     </Container>
   </div>
-  <slot name="utility-nav">
-    {#if $page.data.my_nametag === undefined && $page.route.id?.startsWith('/(public)/pocket') === false}
-      <DefaultUtilityNav />
-    {/if}
-  </slot>
+  <slot name="utility-nav" />
 </main>
 
 <style lang="scss">

@@ -1,4 +1,6 @@
+import type { DeletePocketResponse } from '$lib/api/pocket/delete';
 import type { NewPocketResponse } from '$lib/api/pocket/new';
+import type { UpdatePocketResponse } from '$lib/api/pocket/update';
 import type { DraftPocket, ServerPocket } from '$lib/zod/Pocket';
 import type { FaunaPocketCohost } from '$lib/zod/PocketCohost';
 import { Fauna, q } from './Fauna';
@@ -89,6 +91,44 @@ export class Pocket {
     }
   }
 
+  static async update(
+    pocket_id: string,
+    payload: DraftPocket
+  ): Promise<UpdatePocketResponse> {
+    try {
+      const hosts = payload.hosts;
+
+      let data: any = Object.assign(payload);
+
+      delete data.hosts;
+
+      return await Fauna.client().query<UpdatePocketResponse>(
+        q.Do(
+          PocketCohost.fql_for.delete_all(pocket_id),
+          q.Let(
+            {
+              pocket: q.Update(this.toRef(pocket_id), { data }),
+              pocket_ref: q.Select(['ref'], q.Var('pocket'))
+            },
+            q.Do(
+              q.Foreach(
+                hosts.map((h) => h.id),
+                q.Lambda('nametag_id', PocketCohost.fql_for.create())
+              ),
+              {
+                success: true,
+                pocket_id: q.Select(['ref', 'id'], q.Var('pocket'))
+              }
+            )
+          )
+        )
+      );
+    } catch (e) {
+      console.error('db/Pocket.update()', e);
+      return { success: false };
+    }
+  }
+
   static async retrieve(id: string): Promise<ServerPocket | undefined> {
     try {
       const query = await Fauna.client().query<GetPocketQueryResponse>(
@@ -122,6 +162,24 @@ export class Pocket {
     }
   }
 
+  static async safeRetrieve(
+    nametag_id: string,
+    pocket_id: string
+  ): Promise<ServerPocket | undefined> {
+    const pocket = await this.retrieve(pocket_id);
+
+    if (pocket) {
+      if (
+        pocket.nametag.id === nametag_id ||
+        pocket.hosts.filter((h) => h.id === nametag_id).length === 1
+      ) {
+        return pocket;
+      }
+    }
+
+    return undefined;
+  }
+
   static async list(
     nametag_id: string,
     include_unlisted: boolean = false
@@ -129,12 +187,14 @@ export class Pocket {
     pockets: ServerPocket[];
     cohosted_pockets: ServerPocket[];
     unlisted_pockets: ServerPocket[];
+    joined_pockets: ServerPocket[];
   }> {
     try {
       const query = await Fauna.client().query<{
         pockets: GetPocketQueryResponse[];
         cohosted_pockets: GetPocketQueryResponse[];
         unlisted_pockets?: GetPocketQueryResponse[];
+        joined_pockets?: GetPocketQueryResponse[];
       }>(
         q.Let(
           {
@@ -176,6 +236,11 @@ export class Pocket {
                 q.Lambda('pocket_ref', this.fql_for.get_pocket())
               ),
               { data: [] }
+            ),
+            joined_pockets: q.If(
+              include_unlisted,
+              PocketMember.fql_for.joined_pockets(nametag_id),
+              { data: [] }
             )
           },
           {
@@ -185,6 +250,11 @@ export class Pocket {
               include_unlisted,
               q.Select(['data'], q.Var('unlisted_pockets')),
               []
+            ),
+            joined_pockets: q.If(
+              include_unlisted,
+              q.Select(['data'], q.Var('joined_pockets')),
+              []
             )
           }
         )
@@ -193,7 +263,8 @@ export class Pocket {
       let response = {
         pockets: this.assemblePocket(query.pockets),
         cohosted_pockets: this.assemblePocket(query.cohosted_pockets),
-        unlisted_pockets: this.assemblePocket(query.unlisted_pockets || [])
+        unlisted_pockets: this.assemblePocket(query.unlisted_pockets || []),
+        joined_pockets: this.assemblePocket(query.joined_pockets || [])
       };
 
       return response;
@@ -202,7 +273,37 @@ export class Pocket {
       return {
         pockets: [],
         cohosted_pockets: [],
-        unlisted_pockets: []
+        unlisted_pockets: [],
+        joined_pockets: []
+      };
+    }
+  }
+
+  static async delete(
+    nametag_id: string,
+    pocket_id: string
+  ): Promise<DeletePocketResponse> {
+    try {
+      const pocket = await this.safeRetrieve(nametag_id, pocket_id);
+
+      if (!pocket) {
+        throw new Error('not authorized to delete this pocket');
+      }
+
+      return await Fauna.client().query<DeletePocketResponse>(
+        q.Do(
+          PocketCohost.fql_for.delete_all(pocket_id),
+          PocketMember.fql_for.delete_all(pocket_id),
+          q.Delete(this.toRef(pocket_id)),
+          {
+            success: true
+          }
+        )
+      );
+    } catch (e) {
+      console.error('db/Pocket.delete()', e);
+      return {
+        success: false
       };
     }
   }

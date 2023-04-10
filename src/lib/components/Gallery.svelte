@@ -48,7 +48,7 @@
       on:scroll={handleScroll}
     >
       {#each photos as photo (photo)}
-        <div class="gallery-item" data-flex="as jc">
+        <div class="gallery-item" data-flex="ac jc">
           <CloudinaryImg
             {photo}
             square={square === true}
@@ -92,13 +92,17 @@
 
     .gallery-item {
       max-width: 720px;
-      max-height: 640px;
+      max-height: 840px;
       // min-width: 50%;
       scroll-snap-align: center !important;
       min-height: 320px;
 
       @media (max-width: 640px) {
         min-width: 100%;
+      }
+
+      @media (min-width: 640px) {
+        max-height: 100vh;
       }
 
       :global(img) {

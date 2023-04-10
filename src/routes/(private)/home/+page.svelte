@@ -19,7 +19,8 @@
 
   export let data: PageData;
 
-  $App.fill = 'system-superlight';
+  $: $App.theme = data.my_nametag.theme;
+  $: $App.fill = 'system-superlight';
 
   let scroll_list: HTMLDivElement | undefined;
   let can_save_scroll = false;

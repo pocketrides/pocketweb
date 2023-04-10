@@ -34,15 +34,21 @@
   import { page_label } from './ui/store';
   import { NewPocketRequest } from '$lib/api/pocket/new';
   import { goto } from '$app/navigation';
+  import { UpdatePocketRequest } from '$lib/api/pocket/update';
+  import { DeletePocketRequest } from '$lib/api/pocket/delete';
 
   export let data: PageData;
 
   $page_label = 'directions';
 
-  const page_controller = writable<DraftPocket>(blankPocket(data.my_nametag.theme));
+  const page_controller = writable<DraftPocket>(
+    data.editing_pocket || blankPocket(data.my_nametag.theme)
+  );
   const publishing = writable(false);
   const publish_error = writable(false);
   const redirecting = writable(false);
+  const saving = writable(false);
+  const deleting = writable(false);
 
   $: $App.theme = $page_controller.theme;
   $App.fill = 'dark';
@@ -78,23 +84,73 @@
       $publish_error = true;
     }
   };
+
+  const handleEditSaveClick = async () => {
+    if (!data.editing_pocket || !data.editing_pocket_id) return;
+
+    $saving = true;
+    $publish_error = false;
+
+    const res = await UpdatePocketRequest.post({
+      pocket_id: data.editing_pocket_id,
+      pocket: $page_controller
+    });
+
+    if (res.success) {
+      $redirecting = true;
+      goto(`/pocket/${res.pocket_id}`, { invalidateAll: true });
+    } else {
+      $saving = false;
+      $publish_error = true;
+    }
+  };
+
+  const handlePocketDeleteClick = async () => {
+    if (!data.editing_pocket || !data.editing_pocket_id) return;
+
+    if (!confirm('Are you sure?')) return;
+
+    $deleting = true;
+
+    const res = await DeletePocketRequest.post({
+      pocket_id: data.editing_pocket_id
+    });
+
+    if (res.success) {
+      $redirecting = true;
+      goto(`/profile/${$page.data.my_nametag?.id}/pockets`, { invalidateAll: true });
+    } else {
+      $deleting = false;
+      alert('Try again, something went wrong.');
+    }
+  };
 </script>
 
 <svelte:head>
   <title>new pocket | on pocketrides!</title>
 </svelte:head>
 
-<SiteHeader fill="dark" utility>
-  <h2 slot="left" class:half={!$page_controller.cover_art.length}>
+<SiteHeader fill="dark" huddable>
+  <h2 slot="left" class:half={!$page_controller.cover_art.length} class="nowraps">
     <Icon icon="hail" />
-    New Pocket
+    {#if data.editing_pocket}
+      <span class="nowraps">
+        Editing "{data.editing_pocket.name_raw.replace(/\n/g, ' ')}"
+      </span>
+    {:else}
+      New Pocket
+    {/if}
   </h2>
-  <div slot="right" />
+  <div slot="right">
+    {#if data.editing_pocket_id}
+      <Button label="Cancel" href={`/pocket/${data.editing_pocket_id}`} />
+    {/if}
+  </div>
   <Gallery
     photos={$page_controller.cover_art}
     square={false}
     allow_delete
-    slot="bottom"
+    slot="gallery"
     on:delete={photoDeleted}
   />
 </SiteHeader>
@@ -173,28 +229,51 @@
             controller={page_label}
           />
         </div>
-        <Button
-          id="discard"
-          icon="delete"
-          label="Discard"
-          large
-          href="/home"
-          controller={page_label}
-        />
+        {#if data.editing_pocket_id}
+          <Button
+            id="discard"
+            icon="delete"
+            label="Delete"
+            large
+            controller={page_label}
+            on:click={handlePocketDeleteClick}
+          />
+        {:else}
+          <Button
+            id="discard"
+            icon="delete"
+            label="Discard"
+            large
+            href="/home"
+            controller={page_label}
+          />
+        {/if}
       </ButtonRow>
     </div>
     <div slot="right">
-      <Button
-        id="publish"
-        label="Publish…"
-        icon="hail"
-        disabled={valid !== true}
-        primary
-        controller={page_label}
-        on:click={() => {
-          $App.sheet_id = 'pocket_publish';
-        }}
-      />
+      {#if typeof data.editing_pocket === 'undefined'}
+        <Button
+          id="publish"
+          label="Publish…"
+          icon="hail"
+          disabled={valid !== true}
+          primary
+          controller={page_label}
+          on:click={() => {
+            $App.sheet_id = 'pocket_publish';
+          }}
+        />
+      {:else}
+        <Button
+          id="save"
+          label={$saving ? ($redirecting ? 'Almost done!' : 'One sec!') : 'Save'}
+          icon="hail"
+          disabled={valid !== true || $saving}
+          primary
+          controller={page_label}
+          on:click={handleEditSaveClick}
+        />
+      {/if}
     </div>
   </UtilityNav>
 </Main>

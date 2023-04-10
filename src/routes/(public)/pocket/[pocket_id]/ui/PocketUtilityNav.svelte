@@ -22,7 +22,16 @@
   const joinClick = async () => {
     if ($page.data.my_nametag) {
       $joining = true;
-      await NewPocketMemberRequest.post($pocket.id);
+      const res = await NewPocketMemberRequest.post($pocket.id);
+      if (res.success === false && res.reason === 'max_free') {
+        $joining = false;
+
+        if ($page.data.my_nametag?.stripe?.has_sub !== true) {
+          $App.sheet_id = 'joined_max_free_pockets';
+        }
+
+        return;
+      }
       await invalidateAll();
       $joining = false;
     } else {
@@ -55,7 +64,13 @@
         />
       </ButtonRow>
       <ButtonRow slot="right">
-        <Button label="Members" />
+        <Button
+          label="Edit"
+          icon="edit"
+          href={`/pocket?edit=${$pocket.id}`}
+          large
+          {controller}
+        />
       </ButtonRow>
     </UtilityNav>
   {:else if $my_membership.status === 'pending'}

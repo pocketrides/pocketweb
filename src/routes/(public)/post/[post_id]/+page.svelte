@@ -31,7 +31,8 @@
 
   export let data: PageData;
 
-  $App.fill =
+  $: $App.theme = data.post.nametag.theme;
+  $: $App.fill =
     data.post.audience === 'close_friends' ? 'superlight' : 'system-superlight';
 
   let current_post_id = data.post.id;
@@ -174,9 +175,10 @@
 </svelte:head>
 
 <SiteHeader
+  huddable
   fill={data.post.audience === 'close_friends' ? 'superlight' : 'system-superlight'}
 >
-  <Gallery slot="bottom" photos={data.post.contents[0].photos} square={false} />
+  <Gallery slot="gallery" photos={data.post.contents[0].photos} square={false} />
 </SiteHeader>
 
 <Post

@@ -13,6 +13,7 @@
 
   export let id: string;
   export let icon: string | undefined = undefined;
+  export let icon_filled: boolean | undefined = undefined;
   export let header: string | undefined = undefined;
   export let close: string = 'Close';
   export let dismissable: boolean = true;
@@ -109,7 +110,7 @@
             <div slot="left">
               {#if $context.header}
                 <h2>
-                  <Icon icon={$context.icon} />
+                  <Icon icon={$context.icon} filled={icon_filled} />
                   {$context.header}
                 </h2>
               {/if}
