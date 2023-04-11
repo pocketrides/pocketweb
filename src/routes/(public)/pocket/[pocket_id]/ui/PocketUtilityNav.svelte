@@ -18,6 +18,7 @@
   const controller = writable('new_post');
   const joining = writable(false);
   const leaving = writable(false);
+  const checking = writable(false);
 
   const joinClick = async () => {
     if ($page.data.my_nametag) {
@@ -48,6 +49,12 @@
     } else {
       $App.sheet_id = 'onboarding';
     }
+  };
+
+  const checkClick = async () => {
+    $checking = true;
+    await invalidateAll();
+    $checking = false;
   };
 </script>
 
@@ -82,13 +89,27 @@
             Waiting for the {$pocket.hosts.length ? `hosts` : 'host'} to approve you.
           </p>
         </div>
-        <Button
-          label={$leaving ? 'One sec!' : 'Cancel request'}
-          disabled={$leaving}
-          icon="cancel"
-          primary
-          on:click={leaveClick}
-        />
+        <ButtonRow let:controller initial="refresh">
+          <Button
+            id="refresh"
+            label={$checking ? 'One sec!' : 'Check now'}
+            disabled={$checking}
+            icon_spins={$checking}
+            icon={$checking ? 'autorenew' : 'refresh'}
+            primary
+            {controller}
+            on:click={checkClick}
+          />
+
+          <Button
+            label={$leaving ? 'One sec!' : 'Cancel request'}
+            disabled={$leaving}
+            icon="cancel"
+            {controller}
+            large
+            on:click={leaveClick}
+          />
+        </ButtonRow>
       </div>
     </UtilityNav>
   {:else if $my_membership.status === 'joined'}

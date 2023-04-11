@@ -32,7 +32,13 @@
     : undefined;
 
   $: $App.theme = $pocket.theme;
-  $App.fill = 'dark';
+  $: $App.fill = 'dark';
+  $: privacy_mode =
+    $pocket.settings.joinability === 'moderated'
+      ? $my_membership?.status === 'joined' || $my_membership?.status === 'admin'
+        ? false
+        : true
+      : false;
 </script>
 
 <svelte:head>
@@ -59,20 +65,26 @@
   <Gallery slot="gallery" photos={$pocket.cover_art} square={false} />
   <PocketRenderer
     details_enabled={$pocket.details_enabled}
-    default_fill="superlight"
+    default_fill={privacy_mode ? 'light' : 'superlight'}
+    round_last={false}
+    bind:privacy_mode
   >
-    <Name {pocket} slot="name" />
+    <Name {pocket} {my_membership} slot="name" bind:privacy_mode />
     <Time {pocket} slot="time" />
     <Place {pocket} slot="place" />
     <Description {pocket} slot="desc" />
     <Links {pocket} slot="links" />
   </PocketRenderer>
-  <PocketNav slot="nav" {pocket} {my_membership} />
+  <PocketNav slot="nav" {pocket} bind:privacy_mode />
 </SiteHeader>
 
-<div data-fill="light">
+{#if privacy_mode === false}
+  <div data-fill="light">
+    <slot />
+  </div>
+{:else}
   <slot />
-</div>
+{/if}
 
 <PocketMembersSheet {pocket} {my_membership} />
 {#if $page.data.my_nametag?.stripe?.has_sub !== true}

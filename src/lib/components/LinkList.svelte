@@ -10,4 +10,8 @@
   [data-flex] {
     scroll-padding-left: 1rem;
   }
+
+  [data-padded='h'] {
+    padding-bottom: 1px;
+  }
 </style>

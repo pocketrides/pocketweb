@@ -3,13 +3,15 @@
   import Container from '$lib/components/Container.svelte';
   import Icon from '$lib/components/Icon.svelte';
   import NametagWithPic from '$lib/components/NametagWithPic.svelte';
-  import Row from '$lib/components/Row.svelte';
   import { App } from '$lib/stores/app';
   import { plural } from '$lib/util/plural';
   import type { ServerPocket } from '$lib/zod/Pocket';
+  import type { ClientPocketMember } from '$lib/zod/PocketMember';
   import type { Writable } from 'svelte/store';
 
   export let pocket: Writable<ServerPocket>;
+  export let my_membership: Writable<ClientPocketMember | undefined>;
+  export let privacy_mode: boolean = false;
 </script>
 
 <Container padded={false}>
@@ -39,30 +41,52 @@
     </div>
     <div data-flex="v" data-gap>
       <div data-padded="h" data-flex="v as">
-        <a
-          href="#followers"
-          data-unstyle
-          class="h2 half"
-          on:click|preventDefault={() => {
-            $App.sheet_id = 'pocket_members';
-          }}
-        >
-          <Icon icon="emoji_people" />
-          {#if $pocket.settings.joinability === 'broadcast'}
-            {plural($pocket.members_count, 'follower', 'followers', true)}
-          {:else}
-            {plural($pocket.members_count, 'person', 'people', true)} here
-          {/if}
-        </a>
-        <h2 class="half">
+        {#if privacy_mode === false}
+          <div data-flex data-gap>
+            <a
+              href="#followers"
+              data-unstyle
+              class="h3 half"
+              on:click|preventDefault={() => {
+                $App.sheet_id = 'pocket_members';
+              }}
+            >
+              <Icon icon="emoji_people" />
+              {#if $pocket.settings.joinability === 'broadcast'}
+                {plural($pocket.members_count, 'follower', 'followers', true)}
+              {:else}
+                {plural($pocket.members_count, 'person', 'people', true)} here
+              {/if}
+            </a>
+            {#if $my_membership?.status === 'admin'}
+              <a
+                href="#followers"
+                data-unstyle
+                class="h3"
+                on:click|preventDefault={() => {
+                  $App.sheet_id = 'pocket_members';
+                }}
+              >
+                Manage
+              </a>
+            {/if}
+          </div>
+        {/if}
+        {#if privacy_mode}
+          <h3 class="half">
+            <Icon icon="visibility_off" />
+            Private, request to join.
+          </h3>
+        {/if}
+        <h3 class="half">
           <Icon icon="campaign" />
           Hosted by:
-        </h2>
+        </h3>
       </div>
       <div data-flex="scroll-h" data-gap data-padded="h">
-        <NametagWithPic nametag={$pocket.nametag} large />
+        <NametagWithPic nametag={$pocket.nametag} />
         {#each $pocket.hosts as host (host)}
-          <NametagWithPic nametag={host} large />
+          <NametagWithPic nametag={host} />
         {/each}
       </div>
     </div>

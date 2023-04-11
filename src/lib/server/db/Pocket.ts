@@ -162,6 +162,9 @@ export class Pocket {
     }
   }
 
+  /**
+   * Only successfully retrieves a pocket if you're an admin.
+   */
   static async safeRetrieve(
     nametag_id: string,
     pocket_id: string

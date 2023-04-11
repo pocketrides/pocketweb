@@ -152,6 +152,14 @@
     z-index: 1;
   }
 
+  header[data-fill='dark'],
+  header:has(~ [data-slot]:empty)[data-fill='dark'] {
+    border-bottom: 0 none;
+    border-radius: 0;
+    box-shadow: none;
+    margin-bottom: -1px;
+  }
+
   header.utility {
     border-bottom-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;

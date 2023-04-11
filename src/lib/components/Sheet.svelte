@@ -33,6 +33,10 @@
     writable({ icon, header, dismissable })
   );
 
+  $: $context.icon = icon;
+  $: $context.header = header;
+  $: $context.dismissable = dismissable;
+
   const dismiss = () => {
     if ($context.dismissable === false) return;
     $App.sheet_id = '';
@@ -69,8 +73,6 @@
   };
 
   afterUpdate(() => {
-    $context.dismissable = dismissable;
-
     if ($App.sheet_id === id && dialog.open === false) {
       dispatch('activate');
       dialog.showModal();

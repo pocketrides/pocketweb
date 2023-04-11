@@ -121,6 +121,7 @@
     padding: 0 0.5rem;
     height: 32px;
     white-space: nowrap;
+    touch-action: manipulation;
 
     span:empty {
       display: none;

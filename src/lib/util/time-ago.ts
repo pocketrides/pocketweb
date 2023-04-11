@@ -24,9 +24,18 @@ export const formatDate = (
   }).format(date);
 };
 
+// expects a string yyyy-mm-ddThh:mm
+export const dateForDatetime = (value: string) => {
+  const [date, time] = value.split('T');
+
+  let d = dateForDate(date);
+  d = dateForTime(time, d);
+
+  return d;
+};
+
 // expects a string yyyy-mm-dd and returns a Date for it
-export const dateForDate = (value: string) => {
-  let d = new Date();
+export const dateForDate = (value: string, d = new Date()) => {
   const [yyyy, mm, dd] = value.split('-');
   d.setFullYear(Number(yyyy));
   d.setMonth(Number(mm) - 1);
@@ -36,8 +45,7 @@ export const dateForDate = (value: string) => {
 };
 
 // expects a string hh:mm and returns a Date for it
-export const dateForTime = (value: string) => {
-  let d = new Date();
+export const dateForTime = (value: string, d = new Date()) => {
   const [hh, mm] = value.split(':');
   d.setHours(Number(hh));
   d.setMinutes(Number(mm));

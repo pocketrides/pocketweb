@@ -23,8 +23,9 @@
   let whenever_reason = $page_controller.details.whenever_reason || '';
 
   $: start_date =
-    start_datetime !== '' ? start_datetime.substring(0, 10) : start_date;
-  $: end_date = end_datetime !== '' ? end_datetime.substring(0, 10) : end_date;
+    !all_day && start_datetime !== '' ? start_datetime.substring(0, 10) : start_date;
+  $: end_date =
+    !all_day && end_datetime !== '' ? end_datetime.substring(0, 10) : end_date;
   $: end_datetime =
     start_datetime !== '' && end_datetime === '' ? start_datetime : end_datetime;
 

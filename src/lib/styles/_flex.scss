@@ -67,8 +67,4 @@
   &::-webkit-scrollbar {
     display: none;
   }
-
-  &:has(> [data-3d]) {
-    padding-bottom: 1px !important;
-  }
 }

@@ -47,7 +47,6 @@
   const publishing = writable(false);
   const publish_error = writable(false);
   const redirecting = writable(false);
-  const saving = writable(false);
   const deleting = writable(false);
 
   $: $App.theme = $page_controller.theme;
@@ -88,7 +87,7 @@
   const handleEditSaveClick = async () => {
     if (!data.editing_pocket || !data.editing_pocket_id) return;
 
-    $saving = true;
+    $publishing = true;
     $publish_error = false;
 
     const res = await UpdatePocketRequest.post({
@@ -100,7 +99,7 @@
       $redirecting = true;
       goto(`/pocket/${res.pocket_id}`, { invalidateAll: true });
     } else {
-      $saving = false;
+      $publishing = false;
       $publish_error = true;
     }
   };
@@ -266,12 +265,14 @@
       {:else}
         <Button
           id="save"
-          label={$saving ? ($redirecting ? 'Almost done!' : 'One sec!') : 'Save'}
+          label="Save…"
           icon="hail"
-          disabled={valid !== true || $saving}
+          disabled={valid !== true}
           primary
           controller={page_label}
-          on:click={handleEditSaveClick}
+          on:click={() => {
+            $App.sheet_id = 'pocket_publish';
+          }}
         />
       {/if}
     </div>
@@ -346,13 +347,27 @@
         {/if}
       </p>
     </div>
-    <Button
-      label={$publishing ? ($redirecting ? 'Almost done!' : 'One sec!') : 'Publish'}
-      disabled={$publishing || $redirecting}
-      xlarge
-      primary
-      on:click={handlePublishClick}
-    />
+    {#if typeof data.editing_pocket_id === 'undefined'}
+      <Button
+        label={$publishing
+          ? $redirecting
+            ? 'Almost done!'
+            : 'One sec!'
+          : 'Publish'}
+        disabled={$publishing || $redirecting}
+        xlarge
+        primary
+        on:click={handlePublishClick}
+      />
+    {:else}
+      <Button
+        label={$publishing ? ($redirecting ? 'Almost done!' : 'One sec!') : 'Save'}
+        disabled={$publishing || $redirecting}
+        xlarge
+        primary
+        on:click={handleEditSaveClick}
+      />
+    {/if}
     {#if $publish_error}
       <div>
         <p class="h3">Something went wrong! Try again.</p>

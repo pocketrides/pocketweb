@@ -17,6 +17,8 @@ export const load = (async (event) => {
       pocket.hosts.filter((h) => h.id === event.locals.nametag_id).length === 1
     ) {
       my_membership = {
+        id: '',
+        ts: 0,
         pocket_ref: { id: event.params.pocket_id },
         nametag_ref: { id: event.locals.nametag_id },
         nametag: event.locals.nametag,
@@ -39,13 +41,15 @@ export const load = (async (event) => {
     }
   }
 
-  if (
-    pocket.settings.joinability === 'moderated' &&
-    my_membership?.status !== 'admin'
-  ) {
-    let redirect_url = `/pocket/${pocket.id}/pending`;
-    let can_redirect = event.route.id !== '/(public)/pocket/[pocket_id]/pending';
-    if (can_redirect) throw redirect(302, redirect_url);
+  if (pocket.settings.joinability === 'moderated') {
+    if (
+      typeof my_membership === 'undefined' ||
+      my_membership?.status === 'pending'
+    ) {
+      let redirect_url = `/pocket/${pocket.id}/pending`;
+      let can_redirect = event.route.id !== '/(public)/pocket/[pocket_id]/pending';
+      if (can_redirect) throw redirect(302, redirect_url);
+    }
   }
 
   return {

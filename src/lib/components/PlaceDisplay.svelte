@@ -7,6 +7,7 @@
   export let h2: boolean = true;
   export let h3: boolean = false;
   export let include_address = true;
+  export let icon: string | undefined = undefined;
 </script>
 
 <div class:h2 class:h3 data-flex="sb ac">
@@ -19,10 +20,13 @@
       data-unstyle
       on:click
     >
-      <p>{place.name}</p>
+      <p>
+        <Icon {icon} />
+        {place.name}
+      </p>
       {#if include_address}
         <div data-flex="sb ab" data-gap>
-          <p class="thin half">
+          <p class="half">
             {place.formatted_address}
           </p>
           <Icon icon="open_in_new" inline half />

@@ -183,7 +183,7 @@
             </div>
           {/if}
           {#if message.type === 'link'}
-            <div class="link-wrapper">
+            <div class="link-wrapper" data-flex>
               <LinkPreview link={message.link} on:delete={handleDeleteLink} />
             </div>
           {/if}

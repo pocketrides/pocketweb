@@ -3,17 +3,14 @@
   import Button from '$lib/components/Button.svelte';
   import Container from '$lib/components/Container.svelte';
   import { nav_items } from './nav_items';
-  import type { Fill } from '$lib/zod/Fill';
   import type { Writable } from 'svelte/store';
   import type { ServerPocket } from '$lib/zod/Pocket';
-  import type { ClientPocketMember } from '$lib/zod/PocketMember';
 
   export let pocket: Writable<ServerPocket>;
-  export let my_membership: Writable<ClientPocketMember | undefined>;
-  export let outer_fill: Fill = 'light';
+  export let privacy_mode: boolean = false;
 </script>
 
-{#if $pocket.settings.joinability !== 'broadcast'}
+{#if $pocket.settings.joinability !== 'broadcast' && privacy_mode === false}
   <div data-fill="superlight">
     <Container>
       <nav data-flex="ac">

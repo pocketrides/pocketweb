@@ -19,17 +19,13 @@
         {/if}
       </div>
       {#if step1_done}
-        <Container rounded padded bordered fill="system-superlight">
-          <div data-flex="v as">
-            <h3 class="h2 thin half">
-              <Icon icon="done" />
-              Step 1: Get 500 likes.
-            </h3>
-          </div>
-        </Container>
+        <h3 class="h2 thin half" data-gap="0">
+          <Icon icon="done" />
+          Step 1: Get 500 likes.
+        </h3>
       {:else}
         <div>
-          <h3 class="h2">Step 1: <span class="half">Get 500 likes.</span></h3>
+          <h3 class="h2">Step 1: Get 500 likes.</h3>
           <p>
             Our bank transfer minimum is $5, and it looks like you don't have enough
             likes yet. Don't worry! The likes you earn will never expire.
@@ -37,17 +33,13 @@
         </div>
       {/if}
       {#if step2_done}
-        <Container rounded padded bordered fill="system-superlight">
-          <div data-flex="v as">
-            <h3 class="h2 thin half">
-              <Icon icon="done" />
-              Step 2: Stripe account
-            </h3>
-          </div>
-        </Container>
+        <h3 class="h2 thin half" data-gap="0">
+          <Icon icon="done" />
+          Step 2: Get a Stripe account
+        </h3>
       {:else}
         <div>
-          <h3 class="h2">Step 2: <span class="half">Stripe account</span></h3>
+          <h3 class="h2">Step 2: Get a Stripe account</h3>
           <p>
             We partner with <a
               href="https://stripe.com"
@@ -61,17 +53,13 @@
         </div>
       {/if}
       {#if step3_hidden}
-        <Container rounded padded bordered fill="superlight">
-          <div data-flex="v as">
-            <h3 class="h2">
-              <Icon icon={step3_hidden_icon} />
-              {step3_hidden_reason}
-            </h3>
-          </div>
-        </Container>
+        <h3 class="h2">
+          <Icon icon={step3_hidden_icon} />
+          {step3_hidden_reason}
+        </h3>
       {:else}
         <div>
-          <h3 class="h2">Step 3: <span class="half">Start a Payout</span></h3>
+          <h3 class="h2">Step 3: Start a Payout</h3>
           <p>
             We'll start a payout for all the likes you've received so far, add them
             up, and transfer them to your Stripe account.

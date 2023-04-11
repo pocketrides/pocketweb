@@ -1,12 +1,24 @@
-import type { ClientPocketMember } from '$lib/zod/PocketMember';
+import type { PocketMemberListResponse } from '$lib/api/pocket/members/list';
+import type { ClientPocketMember, PocketMemberStatus } from '$lib/zod/PocketMember';
 import { Fauna, q } from './Fauna';
 import { Nametag } from './Nametag';
 import { Pocket } from './Pocket';
+
+type QueryClientPocketMemberReturnType = {
+  member: any;
+  nametag: any;
+};
 
 export class PocketMember {
   static collection = 'pocket_members';
 
   static fql_for = {
+    client_pocket_member: (member_var: string = 'member') => {
+      return {
+        member: q.Var(member_var),
+        nametag: q.Get(q.Select(['data', 'nametag_ref'], q.Var(member_var)))
+      };
+    },
     members_count: (ref_var: string = 'pocket_ref') => {
       return q.Select(
         ['data'],
@@ -78,26 +90,20 @@ export class PocketMember {
     nametag_id: string
   ): Promise<ClientPocketMember | undefined> {
     try {
-      const query = await Fauna.client().query<{ member: any; nametag: any } | null>(
-        q.Let(
-          {
-            match: q.Match(q.Index('pocket_members_by_pocket_ref_and_nametag_ref'), [
-              Pocket.toRef(pocket_id),
-              Nametag.toRef(nametag_id)
-            ]),
-            exists: q.Exists(q.Var('match')),
-            member: q.If(q.Var('exists'), q.Get(q.Var('match')), null)
-          },
-          q.If(
-            q.Var('exists'),
+      const query =
+        await Fauna.client().query<QueryClientPocketMemberReturnType | null>(
+          q.Let(
             {
-              member: q.Var('member'),
-              nametag: q.Get(q.Select(['data', 'nametag_ref'], q.Var('member')))
+              match: q.Match(
+                q.Index('pocket_members_by_pocket_ref_and_nametag_ref'),
+                [Pocket.toRef(pocket_id), Nametag.toRef(nametag_id)]
+              ),
+              exists: q.Exists(q.Var('match')),
+              member: q.If(q.Var('exists'), q.Get(q.Var('match')), null)
             },
-            null
+            q.If(q.Var('exists'), this.fql_for.client_pocket_member(), null)
           )
-        )
-      );
+        );
 
       if (query) {
         return this.parseFQL(query.member, query.nametag);
@@ -187,6 +193,66 @@ export class PocketMember {
       );
     } catch (e) {
       return false;
+    }
+  }
+
+  static async list(pocket_id: string): Promise<PocketMemberListResponse> {
+    try {
+      const query = await Fauna.client().query<{
+        data: QueryClientPocketMemberReturnType[];
+      }>(
+        q.Map(
+          q.Paginate(
+            q.Match(q.Index('pocket_members_by_pocket_ref'), [
+              Pocket.toRef(pocket_id)
+            ])
+          ),
+          q.Lambda(
+            'member_ref',
+            q.Let(
+              {
+                member: q.Get(q.Var('member_ref'))
+              },
+              this.fql_for.client_pocket_member()
+            )
+          )
+        )
+      );
+
+      return {
+        success: true,
+        members: query.data.map((v) => this.parseFQL(v.member, v.nametag))
+      };
+    } catch (e) {
+      console.error('db/PocketMember.list()', e);
+      return { success: false, members: [] };
+    }
+  }
+
+  static async updateStatus(
+    member_id: string,
+    new_status: PocketMemberStatus | 'deleted'
+  ): Promise<ClientPocketMember | undefined> {
+    try {
+      if (new_status === 'deleted') {
+        await Fauna.client().query(q.Delete(this.toRef(member_id)));
+        return undefined;
+      } else {
+        const query = await Fauna.client().query<QueryClientPocketMemberReturnType>(
+          q.Let(
+            {
+              member_ref: this.toRef(member_id),
+              member: q.Update(q.Var('member_ref'), { data: { status: new_status } })
+            },
+            this.fql_for.client_pocket_member()
+          )
+        );
+
+        return this.parseFQL(query.member, query.nametag);
+      }
+    } catch (e) {
+      console.error('db/PocketMember.updateStatus()', e);
+      return undefined;
     }
   }
 

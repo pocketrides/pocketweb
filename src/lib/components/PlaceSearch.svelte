@@ -52,7 +52,7 @@
       }
 
       $searching = false;
-    }, 250);
+    }, 500);
   };
 </script>
 

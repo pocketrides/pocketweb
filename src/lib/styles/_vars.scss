@@ -71,6 +71,8 @@ $theme-sky: (
       color: rgb(var(--allwhite));
     } @else if $name == "superdark" {
       color: rgba(var(--allwhite), 1);
+    } @else if $name == "superlight" {
+      color: rgb(var(--dark));
     } @else {
       color: rgb(var(--black));
     }

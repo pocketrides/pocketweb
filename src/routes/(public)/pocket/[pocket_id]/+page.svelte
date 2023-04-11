@@ -5,6 +5,10 @@
   import Main from '$lib/components/Main.svelte';
   import PocketUtilityNav from './ui/PocketUtilityNav.svelte';
   import type { ClientPocketMember } from '$lib/zod/PocketMember';
+  import Row from '$lib/components/Row.svelte';
+  import Icon from '$lib/components/Icon.svelte';
+  import NothingHere from '$lib/components/NothingHere.svelte';
+  import Container from '$lib/components/Container.svelte';
 
   export let data: PageData;
 
@@ -18,7 +22,15 @@
   $App.fill = 'dark';
 </script>
 
-<Main fullheight>
-  <h2>Posts</h2>
+<Main fullheight padded={false}>
+  <Row padded bordered>
+    <h2 slot="left">
+      <Icon icon="signpost" />
+      Posts
+    </h2>
+  </Row>
+  <Container>
+    <NothingHere />
+  </Container>
   <PocketUtilityNav slot="utility-nav" {pocket} {my_membership} />
 </Main>
