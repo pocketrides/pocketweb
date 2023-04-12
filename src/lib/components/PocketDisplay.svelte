@@ -46,7 +46,7 @@
     min-height: 128px;
 
     h2 {
-      max-width: 80%;
+      max-width: 90%;
 
       display: -webkit-box;
       -webkit-box-orient: vertical;

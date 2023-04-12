@@ -28,7 +28,7 @@
   {#if details.whenever}
     <p class:nowraps={summary}>
       {#if !summary}
-        <Icon icon="event" />
+        <Icon icon="event" multiline />
       {/if}
       {details.whenever_reason || 'Whenever'}
     </p>

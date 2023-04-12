@@ -18,7 +18,7 @@
     `😻<br>Milky & Phoebe`,
     `Tuesday<br>Night<br>Thunder`,
     `Trip to SF`,
-    `Format Fest Crew`
+    `🏕️<br>Red Rocks Camping`
   ];
 
   let i = Math.round(Math.random() * reasons.length - 1);

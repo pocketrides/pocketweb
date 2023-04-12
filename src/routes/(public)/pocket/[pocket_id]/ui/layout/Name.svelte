@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { browser } from '$app/environment';
   import { goto } from '$app/navigation';
   import Container from '$lib/components/Container.svelte';
   import Icon from '$lib/components/Icon.svelte';
@@ -12,6 +13,9 @@
   export let pocket: Writable<ServerPocket>;
   export let my_membership: Writable<ClientPocketMember | undefined>;
   export let privacy_mode: boolean = false;
+
+  // @ts-ignore
+  $: has_browser_share = browser && typeof navigator?.share === 'function';
 </script>
 
 <Container padded={false}>
@@ -23,12 +27,36 @@
       class:normal={$pocket.cover_art.length > 0}
     >
       <div>
-        {#if $pocket.settings.visibility === 'unlisted'}
-          <p class="half small">
-            <Icon icon="visibility_off" />
-            Unlisted
-          </p>
-        {/if}
+        <div data-flex data-gap>
+          {#if $pocket.settings.visibility === 'unlisted'}
+            <a
+              href="#unlisted"
+              class="half small"
+              aria-label="Tap to learn about unlisted pockets"
+              data-unstyle
+              on:click|preventDefault={() => {
+                $App.sheet_id = 'unlisted_howto';
+              }}
+            >
+              <Icon icon="visibility_off" />
+              Unlisted
+            </a>
+          {/if}
+          {#if $pocket.settings.joinability === 'broadcast'}
+            <a
+              href="#broadcast"
+              class="half small"
+              aria-label="Tap to learn about broadcast mode"
+              data-unstyle
+              on:click|preventDefault={() => {
+                $App.sheet_id = 'broadcast_howto';
+              }}
+            >
+              <Icon icon="edit_off" />
+              Broadcast Mode
+            </a>
+          {/if}
+        </div>
         <h1
           class="jumbo"
           on:mouseup={() => {
@@ -70,6 +98,22 @@
                 Manage
               </a>
             {/if}
+            {#if $my_membership && has_browser_share}
+              <a
+                href="#share"
+                data-unstyle
+                class="h3"
+                on:click|preventDefault={() => {
+                  // @ts-ignore
+                  navigator.share({
+                    url: `https://${window.location.host}/pocket/${$pocket.id}`
+                  });
+                }}
+              >
+                <Icon icon="ios_share" />
+                Invite
+              </a>
+            {/if}
           </div>
         {/if}
         {#if privacy_mode}
@@ -105,7 +149,7 @@
   }
 
   h1 {
-    max-width: 80%;
+    max-width: 90%;
   }
 
   [data-flex='scroll-h'] {

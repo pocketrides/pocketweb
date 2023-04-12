@@ -16,6 +16,8 @@
   import Gallery from '$lib/components/Gallery.svelte';
   import JoinedMaxFree from '$lib/sheets/pockets/JoinedMaxFree.svelte';
   import { page } from '$app/stores';
+  import Sheet from '$lib/components/Sheet.svelte';
+  import Container from '$lib/components/Container.svelte';
 
   export let data: LayoutData;
 
@@ -79,7 +81,7 @@
 </SiteHeader>
 
 {#if privacy_mode === false}
-  <div data-fill="light">
+  <div class:hoist={$pocket.settings.joinability !== 'broadcast'} data-fill="light">
     <slot />
   </div>
 {:else}
@@ -91,8 +93,42 @@
   <JoinedMaxFree />
 {/if}
 
+{#if $pocket.settings.visibility === 'unlisted'}
+  <Sheet
+    id="unlisted_howto"
+    header="Unlisted pockets"
+    icon="visibility_off"
+    close="Done"
+  >
+    <div data-flex="v" data-gap>
+      <h2>This pocket is unlisted.</h2>
+      <p>
+        Hosts could unlist their pocket for any number of reasons. Bottom line is, if
+        it's unlisted, you should probably ask before sharing the link.
+      </p>
+    </div>
+  </Sheet>
+{/if}
+
+{#if $pocket.settings.joinability === 'broadcast'}
+  <Sheet id="broadcast_howto" header="Broadcast Mode" icon="edit_off" close="Done">
+    <div data-flex="v" data-gap>
+      <h2>How Broadcast Mode works</h2>
+      <p>
+        Hosts put their pocket in Broadcast Mode so you can follow it without being
+        able to post or chat.
+      </p>
+      <p>
+        Broadcast Mode is a great way to group content on Pocketrides: what's shared
+        in a pocket only shows up on your home feed when you're following it and have
+        notifications enabled.
+      </p>
+    </div>
+  </Sheet>
+{/if}
+
 <style lang="scss">
-  div {
+  .hoist {
     margin-top: -2rem;
     padding-top: 2rem;
   }

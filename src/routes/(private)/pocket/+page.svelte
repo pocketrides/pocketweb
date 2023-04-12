@@ -329,7 +329,7 @@
         xlarge
       />
       <Radio
-        label="Broadcast only"
+        label="Broadcast Mode"
         value="broadcast"
         bind:group={$page_controller.settings.joinability}
         labelled_by="pocket_joinability"
