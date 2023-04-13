@@ -18,11 +18,7 @@ export const POST = (async (event) => {
       payload.data.pocket_id
     );
 
-    if (
-      pocket &&
-      (pocket.nametag.id === event.locals.nametag_id ||
-        pocket.hosts.filter((h) => h.id === event.locals.nametag_id).length === 1)
-    )
+    if (pocket && Pocket.isPocketAdmin(event.locals.nametag_id, pocket))
       res = await Pocket.update(payload.data.pocket_id, payload.data.pocket);
   }
 

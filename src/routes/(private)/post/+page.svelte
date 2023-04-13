@@ -17,11 +17,28 @@
   import Container from '$lib/components/Container.svelte';
   import { afterUpdate } from 'svelte';
   import ButtonRow from '$lib/components/ButtonRow.svelte';
+  import type { PageData } from './$types';
+  import { page } from '$app/stores';
 
-  const page_controller = writable<PageController>(blankPost());
+  export let data: PageData;
+
+  $: $App.fill = 'system-superlight';
+
+  const page_controller = writable<PageController>(
+    blankPost(data.pocket ? data.pocket.id : undefined)
+  );
   const is_publishing = writable(false);
   const publish_error = writable(false);
   const nav_controller = writable('publish');
+  const almost_done = writable(false);
+
+  let publish_target = data.pocket ? `pocket:${data.pocket.id}` : 'friends'; // pocket:123…
+  $: target_and_pocket = publish_target.split(':');
+  $: $page_controller.audience = target_and_pocket[0] as
+    | 'friends'
+    | 'close_friends'
+    | 'pocket';
+  $: $page_controller.pocket_id = target_and_pocket[1] || undefined;
 
   const settingsSheetClick = () => {
     $App.sheet_id = 'post_settings';
@@ -37,6 +54,7 @@
     const post = await NewPostRequest.post($page_controller);
 
     if (post.success) {
+      $almost_done = true;
       goto(`/post/${post.post_id}`, { invalidateAll: true });
     }
 
@@ -96,8 +114,10 @@
           icon="delete"
           label="Discard"
           large
-          href="/home"
           controller={nav_controller}
+          on:click={() => {
+            history.go(-1);
+          }}
         />
       </ButtonRow>
     </div>
@@ -163,29 +183,85 @@
   </div>
 </Sheet>
 <Sheet id="post_publish" header="Publish" icon="signpost">
-  <div data-flex="v" data-gap>
-    <Radio
-      bind:group={$page_controller.audience}
-      value="friends"
-      label="Friends"
-      xlarge
-    />
-    <Radio
-      bind:group={$page_controller.audience}
-      value="close_friends"
-      label="Close Friends"
-      xlarge
-    />
-    <Button
-      label={$is_publishing ? 'One sec!' : 'Publish'}
-      primary
-      xlarge
-      disabled={$is_publishing}
-      on:click={publishClick}
-    />
-    {#if $publish_error}
-      <p data-error>Something went wrong! Try again?</p>
+  <div data-flex="v" data-gap="1">
+    {#if $page.data.my_nametag?.stripe?.has_sub}
+      <div data-flex="v" data-gap>
+        <Radio
+          bind:group={publish_target}
+          value="friends"
+          label="Followers"
+          icon="public"
+          xlarge
+        />
+        <Radio
+          bind:group={publish_target}
+          value="close_friends"
+          label="Close Friends"
+          icon="favorite"
+          icon_filled
+          xlarge
+        />
+      </div>
     {/if}
+    <div data-flex="v" data-gap>
+      <h2>Pockets:</h2>
+      {#each data.all_pockets.pockets as pocket (pocket)}
+        <Radio
+          bind:group={publish_target}
+          value={`pocket:${pocket.id}`}
+          icon="hail"
+          label={pocket.name_raw.replace(/\n/g, ' ')}
+          xlarge
+        />
+      {/each}
+      {#each data.all_pockets.cohosted_pockets as pocket (pocket)}
+        <Radio
+          bind:group={publish_target}
+          value={`pocket:${pocket.id}`}
+          icon="hail"
+          label={pocket.name_raw.replace(/\n/g, ' ')}
+          xlarge
+        />
+      {/each}
+      {#each data.all_pockets.unlisted_pockets as pocket (pocket)}
+        <Radio
+          bind:group={publish_target}
+          value={`pocket:${pocket.id}`}
+          icon="hail"
+          label={pocket.name_raw.replace(/\n/g, ' ')}
+          xlarge
+        />
+      {/each}
+      {#each data.all_pockets.joined_pockets as pocket (pocket)}
+        <Radio
+          bind:group={publish_target}
+          value={`pocket:${pocket.id}`}
+          icon="hail"
+          label={pocket.name_raw.replace(/\n/g, ' ')}
+          xlarge
+        />
+      {/each}
+    </div>
+  </div>
+  <div slot="nav" data-fill="system-superlight">
+    <Container padded>
+      <div data-flex="v" data-gap>
+        <Button
+          label={$is_publishing
+            ? $almost_done
+              ? 'Almost done!'
+              : 'One sec!'
+            : 'Publish'}
+          primary
+          xlarge
+          disabled={!valid || $is_publishing}
+          on:click={publishClick}
+        />
+        {#if $publish_error}
+          <p data-error>Something went wrong! Try again?</p>
+        {/if}
+      </div>
+    </Container>
   </div>
 </Sheet>
 <Sheet id="has_rejected_media" header="Heads up" icon="info">

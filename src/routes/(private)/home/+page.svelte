@@ -22,7 +22,6 @@
   $: $App.theme = data.my_nametag.theme;
   $: $App.fill = 'system-superlight';
 
-  let scroll_list: HTMLDivElement | undefined;
   let can_save_scroll = false;
   let chill = true;
 
@@ -88,7 +87,6 @@
     <ScrollList
       has_none={$page_controller.post_ids.length === 0}
       load_more_label="Load newest"
-      bind:el={scroll_list}
       on:loadmore={async () => {
         await loadMore();
       }}

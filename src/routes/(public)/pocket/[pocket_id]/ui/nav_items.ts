@@ -11,6 +11,6 @@ export const nav_items = [
     href: '/pocket/[pocket_id]/chat',
     id: 'chat',
     label: 'Chat',
-    icon: 'chat_bubble'
+    icon: 'chat'
   }
 ];

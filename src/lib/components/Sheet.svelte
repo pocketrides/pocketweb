@@ -225,4 +225,8 @@
   :global([data-standalone='true']) dialog .nav > :global([data-fill]) {
     padding-bottom: env(safe-area-inset-bottom);
   }
+
+  .content:has(~ .nav:not(:empty)) {
+    padding-bottom: 120px;
+  }
 </style>

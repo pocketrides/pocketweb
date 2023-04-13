@@ -3,6 +3,7 @@ import type { NewPocketResponse } from '$lib/api/pocket/new';
 import type { UpdatePocketResponse } from '$lib/api/pocket/update';
 import type { DraftPocket, ServerPocket } from '$lib/zod/Pocket';
 import type { FaunaPocketCohost } from '$lib/zod/PocketCohost';
+import { Chat } from './Chat';
 import { Fauna, q } from './Fauna';
 import { Nametag } from './Nametag';
 import { PocketCohost } from './PocketCohost';
@@ -172,10 +173,7 @@ export class Pocket {
     const pocket = await this.retrieve(pocket_id);
 
     if (pocket) {
-      if (
-        pocket.nametag.id === nametag_id ||
-        pocket.hosts.filter((h) => h.id === nametag_id).length === 1
-      ) {
+      if (this.isPocketAdmin(nametag_id, pocket)) {
         return pocket;
       }
     }
@@ -297,6 +295,7 @@ export class Pocket {
         q.Do(
           PocketCohost.fql_for.delete_all(pocket_id),
           PocketMember.fql_for.delete_all(pocket_id),
+          Chat.fql_for.delete_all(pocket_id),
           q.Delete(this.toRef(pocket_id)),
           {
             success: true
@@ -320,6 +319,13 @@ export class Pocket {
     return only_success.map((p: any) => {
       return this.parseFQL(p.pocket, p.nametag, p.hosts, p.members_count[0]);
     }) as ServerPocket[];
+  }
+
+  static isPocketAdmin(nametag_id: string, pocket: ServerPocket) {
+    return (
+      pocket.nametag.id === nametag_id ||
+      pocket.hosts.filter((h) => h.id === nametag_id).length === 1
+    );
   }
 
   static parseFQL(

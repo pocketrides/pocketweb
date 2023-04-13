@@ -19,6 +19,7 @@
   const joining = writable(false);
   const leaving = writable(false);
   const checking = writable(false);
+  const toggling_notifs = writable(false);
 
   const joinClick = async () => {
     if ($page.data.my_nametag) {
@@ -68,6 +69,7 @@
           icon="signpost"
           {controller}
           primary
+          href={`/post?pocket=${$pocket.id}`}
         />
       </ButtonRow>
       <ButtonRow slot="right">
@@ -133,9 +135,8 @@
             icon="signpost"
             {controller}
             primary
+            href={`/post?pocket=${$pocket.id}`}
           />
-        </ButtonRow>
-        <ButtonRow slot="right">
           <Button
             id="leave"
             label={$leaving ? 'One sec!' : 'Leave'}
@@ -144,6 +145,37 @@
             {controller}
             large
             on:click={leaveClick}
+          />
+        </ButtonRow>
+        <ButtonRow slot="right">
+          <Button
+            icon="keyboard_arrow_up"
+            label="Top"
+            {controller}
+            on:click={() => {
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+              controller.update(() => '');
+            }}
+          />
+          <Button
+            icon="keyboard_arrow_down"
+            label="Bottom"
+            {controller}
+            on:click={() => {
+              const main = document.querySelector('main');
+              if (!main) return;
+              window.scrollTo({
+                top:
+                  (main.offsetTop + main.clientHeight || Infinity) -
+                  window.innerHeight -
+                  16 -
+                  // @ts-ignore
+                  (navigator.standalone ? 32 : 0),
+                behavior: 'smooth'
+              });
+
+              controller.update(() => '');
+            }}
           />
         </ButtonRow>
       </UtilityNav>

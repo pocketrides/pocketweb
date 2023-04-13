@@ -45,7 +45,7 @@
   let summary: HTMLDivElement;
   $: can_read_more =
     summary &&
-    summary.getBoundingClientRect().height > 100 &&
+    summary.getBoundingClientRect().height > 110 &&
     $post_controller?.contents?.length === 1;
 
   $: should_be_hidden = $post_controller
@@ -227,6 +227,15 @@
               <Icon icon="favorite" />
               Close Friends
             </p>
+          {:else if $post_controller.audience === 'pocket' && $post_controller.pocket_ref}
+            <a
+              href={`/pocket/${$post_controller.pocket_ref.id}`}
+              data-unstyle
+              class="h3 half small nowraps"
+            >
+              <Icon icon="hail" />
+              {$post_controller.pocket_name || 'Pocket'}
+            </a>
           {:else}
             <p class="h3 half small">
               <Icon icon="signpost" />

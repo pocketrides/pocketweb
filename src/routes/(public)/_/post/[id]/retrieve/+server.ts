@@ -11,6 +11,7 @@ export const GET = (async (event) => {
       event.params.id,
       event.locals.nametag_id || null
     );
+
     response = json(res);
 
     putCachedResponse(event, response, 'short');

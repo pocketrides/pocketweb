@@ -4,9 +4,10 @@ import { IDBCache } from '$lib/util/idb-cache';
 export class LoadPostRequest {
   static async load(
     post_id: string,
-    _fetch = fetch
+    _fetch = fetch,
+    skip_cache = false
   ): Promise<ServerPost | undefined> {
-    let post = await IDBCache.get<ServerPost>(post_id);
+    let post = skip_cache ? undefined : await IDBCache.get<ServerPost>(post_id);
 
     if (!post) {
       const req = await _fetch(`/_/post/${post_id}/retrieve`);

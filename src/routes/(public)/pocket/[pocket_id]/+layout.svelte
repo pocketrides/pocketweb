@@ -17,7 +17,6 @@
   import JoinedMaxFree from '$lib/sheets/pockets/JoinedMaxFree.svelte';
   import { page } from '$app/stores';
   import Sheet from '$lib/components/Sheet.svelte';
-  import Container from '$lib/components/Container.svelte';
 
   export let data: LayoutData;
 
@@ -81,7 +80,10 @@
 </SiteHeader>
 
 {#if privacy_mode === false}
-  <div class:hoist={$pocket.settings.joinability !== 'broadcast'} data-fill="light">
+  <div
+    class:hoist={$pocket.settings.joinability !== 'broadcast'}
+    data-fill="system-light"
+  >
     <slot />
   </div>
 {:else}

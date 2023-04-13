@@ -57,6 +57,10 @@
         connect()
       ]);
     }
+
+    if (new URLSearchParams(location.search).has('ok')) {
+      history.replaceState({}, '', location.toString().replace('?ok=1', ''));
+    }
   });
 
   afterUpdate(async () => {
@@ -214,6 +218,15 @@
             <Icon icon="favorite" />
             Close Friends
           </p>
+        {:else if post.audience === 'pocket' && post.pocket_ref}
+          <a
+            href={`/pocket/${post.pocket_ref.id}`}
+            data-unstyle
+            class="h3 half small nowraps"
+          >
+            <Icon icon="hail" />
+            {post.pocket_name || 'Pocket'}
+          </a>
         {:else}
           <p class="h3 half small">
             <Icon icon="signpost" />

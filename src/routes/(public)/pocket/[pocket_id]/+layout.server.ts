@@ -12,10 +12,7 @@ export const load = (async (event) => {
   let my_membership: ClientPocketMember | undefined = undefined;
 
   if (event.locals.nametag_id && event.locals.nametag) {
-    if (
-      pocket.nametag_ref.id === event.locals.nametag_id ||
-      pocket.hosts.filter((h) => h.id === event.locals.nametag_id).length === 1
-    ) {
+    if (Pocket.isPocketAdmin(event.locals.nametag_id, pocket)) {
       my_membership = {
         id: '',
         ts: 0,
@@ -54,6 +51,8 @@ export const load = (async (event) => {
 
   return {
     pocket,
-    my_membership
+    my_membership,
+    page_theme: pocket.theme,
+    page_fill: 'dark'
   };
 }) satisfies LayoutServerLoad;

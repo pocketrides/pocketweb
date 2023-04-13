@@ -9,6 +9,7 @@
   import { page } from '$app/stores';
   import { browser } from '$app/environment';
 
+  $App.theme = 'system';
   $App.fill = 'superlight';
   $App.loading = false;
 

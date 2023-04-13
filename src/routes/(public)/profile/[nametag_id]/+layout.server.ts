@@ -1,4 +1,3 @@
-import { Feed } from '$lib/server/db/Feed';
 import { NametagStats } from '$lib/server/db/NametagStats';
 import { Relationship } from '$lib/server/db/Relationship';
 import { blankNametagStats } from '$lib/zod/NametagStats';
