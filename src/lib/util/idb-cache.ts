@@ -5,7 +5,7 @@ export class IDBCache {
     return new Promise((resolve) => {
       if (IDBCache.#db) return resolve(undefined);
 
-      const request = indexedDB.open('cache', 2);
+      const request = indexedDB.open('cache', 3);
 
       request.onupgradeneeded = (e: any) => {
         const db: IDBDatabase = e.target.result;

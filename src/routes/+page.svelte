@@ -184,9 +184,7 @@
 <style lang="scss">
   .home {
     h1,
-    h2,
-    .h1,
-    .h2 {
+    h2 {
       color: rgb(var(--dark));
     }
 
