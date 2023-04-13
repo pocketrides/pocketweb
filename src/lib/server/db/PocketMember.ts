@@ -4,7 +4,7 @@ import { Fauna, q } from './Fauna';
 import { Nametag } from './Nametag';
 import { Pocket } from './Pocket';
 
-type QueryClientPocketMemberReturnType = {
+export type QueryClientPocketMemberReturnType = {
   member: any;
   nametag: any;
 };

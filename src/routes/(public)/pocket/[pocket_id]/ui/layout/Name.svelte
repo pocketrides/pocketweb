@@ -130,12 +130,6 @@
             {/if}
           </div>
         {/if}
-        {#if privacy_mode}
-          <h3 class="half">
-            <Icon icon="visibility_off" />
-            Private, request to join.
-          </h3>
-        {/if}
         <h3 class="half">
           <Icon icon="campaign" />
           Hosted by:

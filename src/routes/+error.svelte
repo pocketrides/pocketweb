@@ -33,6 +33,14 @@
     <h1 class="h2">Something broke!</h1>
     <p>We'll try and fix it.</p>
     <Button href="/" label="Back home" />
+    {#if !$page.data.my_nametag}
+      <Button
+        label="Try signing in"
+        on:click={() => {
+          $App.sheet_id = 'onboarding';
+        }}
+      />
+    {/if}
   </Container>
 </Main>
 

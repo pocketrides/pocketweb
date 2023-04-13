@@ -9,7 +9,7 @@ import { Nametag } from './Nametag';
 import { PocketCohost } from './PocketCohost';
 import { PocketMember } from './PocketMember';
 
-type GetPocketQueryResponse =
+export type GetPocketQueryResponse =
   | {
       success: true;
       pocket: any;
