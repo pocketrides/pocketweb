@@ -81,7 +81,7 @@
   <title>welcome welcome! it's pocketrides!</title>
 </svelte:head>
 
-<SiteHeader>
+<SiteHeader huddable>
   <div slot="right">
     <Button label="Sign in" on:click={() => ($App.sheet_id = 'onboarding')} />
   </div>

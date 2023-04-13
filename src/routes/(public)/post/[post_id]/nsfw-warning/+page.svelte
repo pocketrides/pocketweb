@@ -16,7 +16,7 @@
   <meta property="og:title" content={`this post may be spicy | on pocketrides!`} />
 </svelte:head>
 
-<SiteHeader />
+<SiteHeader huddable />
 <Main fullheight>
   <Container>
     <div data-flex="v as" data-gap="1">

@@ -5,7 +5,7 @@
   import SiteHeader from '$lib/components/SiteHeader.svelte';
 </script>
 
-<SiteHeader />
+<SiteHeader huddable />
 <Main fullheight>
   <div data-flex="v" data-gap="1">
     <h1>Contact Pocketrides</h1>

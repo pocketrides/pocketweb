@@ -27,7 +27,7 @@
   <title>Something broke! | on pocketrides!</title>
 </svelte:head>
 
-<SiteHeader />
+<SiteHeader huddable />
 <Main fullheight>
   <Container fill="dark" rounded>
     <h1 class="h2">Something broke!</h1>
