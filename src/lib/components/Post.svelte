@@ -337,11 +337,15 @@
               <h3 class="half">You quarantined it.</h3>
             {/if}
             {#if $post_controller.settings.is_nsfw}
-              <h3 class="half">It's NSFW.</h3>
+              {#if $page.data.my_nametag?.stripe?.has_sub !== true}
+                <h3 class="half">You'll need a subscription to see it.</h3>
+              {:else}
+                <h3 class="half">It's NSFW.</h3>
+              {/if}
             {/if}
             <div data-flex data-gap>
-              <Button label="Tap to show" superdark on:click={showPost} />
-              <div>
+              {#if $page.data.my_nametag?.stripe?.has_sub === true}
+                <Button label="Tap to show" superdark on:click={showPost} />
                 {#if $post_controller.settings.is_nsfw}
                   <Button
                     label="Change settings"
@@ -349,7 +353,7 @@
                     href="/settings/content"
                   />
                 {/if}
-              </div>
+              {/if}
             </div>
           </div>
         </div>

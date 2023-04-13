@@ -95,12 +95,18 @@ export const load = (async (event) => {
     }
   }
 
-  if (
-    post.settings.is_nsfw &&
-    parent.my_nametag?.content_prefs?.allow_nsfw_posts !== true &&
-    event.url.searchParams.has('ok') !== true
-  )
-    throw redirect(302, `/post/${post.id}/nsfw-warning`);
+  if (post.settings.is_nsfw) {
+    const warning_url = `/post/${post.id}/nsfw-warning`;
+
+    if (parent.my_nametag?.stripe?.has_sub !== true)
+      throw redirect(302, warning_url);
+
+    if (
+      parent.my_nametag?.content_prefs?.allow_nsfw_posts !== true &&
+      event.url.searchParams.has('ok') === false
+    )
+      throw redirect(302, warning_url);
+  }
 
   return {
     post,

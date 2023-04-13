@@ -25,7 +25,9 @@
           <Icon icon="info" />
           Heads up! <span class="half">This post is NSFW.</span>
         </h2>
-        <p>By continuing, you acknowledge you're at least 18 years old.</p>
+        {#if $page.data.my_nametag?.stripe?.has_sub !== true}
+          <p>You need a subscription to see NSFW content.</p>
+        {/if}
       </div>
       <ButtonRow let:controller initial="safety">
         <Button
@@ -36,16 +38,18 @@
           {controller}
           href="/"
         />
-        <Button
-          id="continue"
-          icon="visibility"
-          label="Continue"
-          large
-          href={`/post/${data.post_id}?ok=1`}
-          {controller}
-        />
+        {#if $page.data.my_nametag?.stripe?.has_sub === true}
+          <Button
+            id="continue"
+            icon="visibility"
+            label="Continue"
+            large
+            href={`/post/${data.post_id}?ok=1`}
+            {controller}
+          />
+        {/if}
       </ButtonRow>
-      {#if $page.data.my_nametag}
+      {#if $page.data.my_nametag?.stripe?.has_sub === true}
         <div data-ph class="half small">
           Rather not be warned?
           <a href="/settings/content" class="h3 small"> Edit in Settings. </a>
