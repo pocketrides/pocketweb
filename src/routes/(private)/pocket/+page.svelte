@@ -295,6 +295,7 @@
         bind:group={$page_controller.settings.visibility}
         value="listed"
         labelled_by="pocket_visibility"
+        icon="public"
         xlarge
       />
       <Radio
@@ -302,18 +303,20 @@
         bind:group={$page_controller.settings.visibility}
         value="unlisted"
         labelled_by="pocket_visibility"
+        icon="visibility_off"
         xlarge
       />
       <p class="half h3">
         {#if $page_controller.settings.visibility === 'listed'}
           Your pocket will show up on your profile page.
         {:else}
-          You'll have to send a link to your friends.
+          <Icon icon="visibility_off" multiline />
+          Unlisted. Your pocket's only visible to you, or people you send the link to.
         {/if}
       </p>
     </div>
     <div data-flex="v" data-gap>
-      <p class="h2" id="pocket_joinability">Who can join?</p>
+      <p class="h2" id="pocket_joinability">Who can join it?</p>
       <Radio
         label="Anyone, automatically"
         value="anyone"
@@ -337,13 +340,18 @@
       />
       <p class="half h3">
         {#if $page_controller.settings.joinability === 'anyone'}
-          Anyone can join automatically.
+          {#if $page_controller.settings.visibility === 'unlisted'}
+            Anyone with the link can join automatically.
+          {:else}
+            Anyone who can join automatically.
+          {/if}
         {:else if $page_controller.settings.joinability === 'moderated'}
-          Hosts approve each person requesting to join.
+          <Icon icon="shield_with_heart" multiline />
+          Private Mode. Hosts approve each person requesting to join.
         {:else}
-          <Icon icon="info" multiline />
-          Friends will follow your Pocket instead of joining. This means they won't be
-          able to post or chat.
+          <Icon icon="edit_off" multiline />
+          Broadcast Mode. Friends will follow your Pocket instead of joining. This means
+          they won't be able to make posts of their own, and Chat is disabled.
         {/if}
       </p>
     </div>

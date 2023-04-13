@@ -129,6 +129,23 @@
   </Sheet>
 {/if}
 
+{#if $pocket.settings.joinability === 'moderated'}
+  <Sheet
+    id="moderated_howto"
+    header="Private Mode"
+    icon="shield_with_heart"
+    close="Done"
+  >
+    <div data-flex="v" data-gap>
+      <h2>How Private Mode works</h2>
+      <p>
+        Need to keep the group small? When a pocket's in Private Mode, you'll have to
+        request to join.
+      </p>
+    </div>
+  </Sheet>
+{/if}
+
 <style lang="scss">
   .hoist {
     margin-top: -2rem;

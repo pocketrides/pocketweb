@@ -268,6 +268,22 @@ export class Pocket {
         joined_pockets: this.assemblePocket(query.joined_pockets || [])
       };
 
+      if (include_unlisted === false) {
+        response.cohosted_pockets = response.cohosted_pockets.filter(
+          (p) => p.settings.visibility === 'listed'
+        );
+
+        response.unlisted_pockets = [];
+
+        response.joined_pockets = response.joined_pockets.filter(
+          (p) => p.settings.visibility === 'listed'
+        );
+
+        response.pockets = response.pockets.filter(
+          (p) => p.settings.visibility === 'listed'
+        );
+      }
+
       return response;
     } catch (e) {
       console.error('db/Pocket.list()', nametag_id, include_unlisted, e);

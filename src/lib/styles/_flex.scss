@@ -24,6 +24,10 @@
 
 [data-flex*="sb"] {
   justify-content: space-between;
+
+  > * {
+    min-width: 0;
+  }
 }
 
 [data-flex*="je"] {

@@ -64,12 +64,16 @@ h3,
   font-size: 0.85rem !important;
 }
 
-.nowraps {
+*:has(> .nowraps) {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.nowraps,
+.nowraps > * {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  width: 100%;
-  min-width: 0;
 }
 
 [data-error] {

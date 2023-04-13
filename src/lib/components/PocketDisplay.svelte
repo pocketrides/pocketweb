@@ -16,7 +16,28 @@
       default_fill="superlight"
     >
       <div slot="name" data-padded data-flex="ae">
-        <h2>{@html pocket.name_html}</h2>
+        <div data-flex="v">
+          <div data-flex="v" data-gap>
+            {#if pocket.settings.visibility === 'unlisted'}
+              <p class="small half">
+                <Icon icon="visibility_off" />
+                Unlisted
+              </p>
+            {/if}
+            {#if pocket.settings.joinability === 'broadcast'}
+              <p class="small half">
+                <Icon icon="edit_off" />
+                Broadcast Mode
+              </p>
+            {:else if pocket.settings.joinability === 'moderated'}
+              <p class="small half">
+                <Icon icon="shield_with_heart" />
+                Private Mode
+              </p>
+            {/if}
+          </div>
+          <h2>{@html pocket.name_html}</h2>
+        </div>
       </div>
       <div slot="time" data-padded>
         <PocketTimeRenderer h3 summary details={pocket.details} />
@@ -44,6 +65,10 @@
 
   [slot='name'] {
     min-height: 128px;
+
+    > div {
+      width: 100%;
+    }
 
     h2 {
       max-width: 90%;

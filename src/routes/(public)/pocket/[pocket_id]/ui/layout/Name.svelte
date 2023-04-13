@@ -56,6 +56,20 @@
               Broadcast Mode
             </a>
           {/if}
+          {#if $pocket.settings.joinability === 'moderated'}
+            <a
+              href="#moderated"
+              class="half small"
+              aria-label="Tap to learn about private mode"
+              data-unstyle
+              on:click|preventDefault={() => {
+                $App.sheet_id = 'moderated_howto';
+              }}
+            >
+              <Icon icon="shield_with_heart" />
+              Private Mode
+            </a>
+          {/if}
         </div>
         <h1
           class="jumbo"
