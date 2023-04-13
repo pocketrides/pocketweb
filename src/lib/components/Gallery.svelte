@@ -5,9 +5,11 @@
   import CloudinaryImg from './CloudinaryImg.svelte';
   import FloatButton from './FloatButton.svelte';
   import FloatButtonContainer from './FloatButtonContainer.svelte';
+  import { Photos } from '$lib/stores/gallery';
 
   export let photos: CloudinaryPhoto[];
   export let square: boolean = true;
+  export let contain: boolean = false;
   export let allow_delete: boolean = false;
 
   let gallery: HTMLDivElement;
@@ -20,6 +22,13 @@
       1,
       Math.floor(gallery.scrollLeft / gallery.clientWidth) + 1
     );
+  };
+
+  const itemClick = (photo: CloudinaryPhoto) => {
+    $Photos = {
+      photos,
+      selected: photo
+    };
   };
 
   // test mode
@@ -40,7 +49,7 @@
 </script>
 
 {#if photos.length}
-  <div class="gallery-outer" class:square>
+  <div class="gallery-outer" class:square class:contain>
     <div
       class="gallery"
       data-flex={photos.length === 1 ? 'cc' : 'scroll-h'}
@@ -48,7 +57,13 @@
       on:scroll={handleScroll}
     >
       {#each photos as photo (photo)}
-        <div class="gallery-item" data-flex="ac jc">
+        <div
+          class="gallery-item"
+          data-flex="ac jc"
+          on:mouseup={() => {
+            itemClick(photo);
+          }}
+        >
           <CloudinaryImg
             {photo}
             square={square === true}
@@ -90,7 +105,7 @@
       border-bottom: 0;
     }
 
-    .gallery-item {
+    &:not(.contain) .gallery-item {
       max-width: 720px;
       max-height: 840px;
       // min-width: 50%;
@@ -126,6 +141,20 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
+      }
+    }
+
+    &.contain .gallery-item {
+      flex-shrink: 0;
+      width: 100%;
+      aspect-ratio: 1/1;
+      max-width: 640px;
+      max-height: 640px;
+
+      :global(img) {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
       }
     }
   }

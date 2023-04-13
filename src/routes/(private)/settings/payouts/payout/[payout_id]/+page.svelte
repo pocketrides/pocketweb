@@ -28,7 +28,7 @@
     <PayoutDetail payout={data.payout} />
     {#if data.payout.status === 'transferred'}
       <h2>
-        Transferred! <span class="thin">You did it!</span>
+        Transferred! <span class="half">You did it!</span>
       </h2>
       <p>
         Watch for funds to hit your Stripe account around {formatDate(
