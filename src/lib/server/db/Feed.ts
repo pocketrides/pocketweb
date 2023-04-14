@@ -31,49 +31,65 @@ export class Feed {
 
     try {
       const res = await Fauna.client().query<FaunaQueryResponse>(
-        q.Map(
-          q.Paginate(
-            q.Union(
-              q.Join(
-                q.Match(q.Index('feed_friends'), [Nametag.toRef(nametag_id)]),
-                q.Lambda(
-                  'n_ref',
-                  q.Match(q.Index('feed_posts_v2'), [q.Var('n_ref'), 'friends'])
-                )
-              ),
-              q.Join(
-                q.Match(q.Index('feed_close_friends'), [Nametag.toRef(nametag_id)]),
-                q.Lambda(
-                  'n_ref',
-                  q.Match(q.Index('feed_posts_v2'), [
-                    q.Var('n_ref'),
-                    'close_friends'
-                  ])
-                )
-              ),
-              q.Join(
-                q.Match(q.Index('feed_my_pockets'), [
+        q.Distinct(
+          q.Map(
+            q.Paginate(
+              q.Union(
+                q.Join(
+                  q.Match(q.Index('feed_friends'), [Nametag.toRef(nametag_id)]),
+                  q.Lambda(
+                    'n_ref',
+                    q.Match(q.Index('feed_posts_v2'), [q.Var('n_ref'), 'friends'])
+                  )
+                ),
+                q.Join(
+                  q.Match(q.Index('feed_close_friends_v2'), [
+                    Nametag.toRef(nametag_id)
+                  ]),
+                  q.Lambda(
+                    'n_ref',
+                    q.Match(q.Index('feed_posts_v2'), [
+                      q.Var('n_ref'),
+                      'close_friends'
+                    ])
+                  )
+                ),
+                q.Join(
+                  q.Match(q.Index('feed_my_pockets'), [
+                    Nametag.toRef(nametag_id),
+                    true
+                  ]),
+                  q.Index('feed_posts_by_pocket_ref')
+                ),
+                q.Join(
+                  q.Match(q.Index('feed_admin_pockets'), [
+                    Nametag.toRef(nametag_id)
+                  ]),
+                  q.Index('feed_posts_by_pocket_ref')
+                ),
+                q.Join(
+                  q.Match(q.Index('feed_cohosted_pockets'), [
+                    Nametag.toRef(nametag_id)
+                  ]),
+                  q.Index('feed_posts_by_pocket_ref')
+                ),
+                q.Match(q.Index('feed_posts_v2'), [
                   Nametag.toRef(nametag_id),
-                  true
+                  'friends'
                 ]),
-                q.Index('feed_posts_by_pocket_ref')
+                q.Match(q.Index('feed_posts_v2'), [
+                  Nametag.toRef(nametag_id),
+                  'close_friends'
+                ]),
+                q.Match(q.Index('feed_posts_v2'), [
+                  Nametag.toRef(nametag_id),
+                  'pocket'
+                ])
               ),
-              q.Match(q.Index('feed_posts_v2'), [
-                Nametag.toRef(nametag_id),
-                'friends'
-              ]),
-              q.Match(q.Index('feed_posts_v2'), [
-                Nametag.toRef(nametag_id),
-                'close_friends'
-              ]),
-              q.Match(q.Index('feed_posts_v2'), [
-                Nametag.toRef(nametag_id),
-                'pocket'
-              ])
+              paginate_opts
             ),
-            paginate_opts
-          ),
-          q.Lambda('x', q.Select([0, 'id'], q.Var('x')))
+            q.Lambda('x', q.Select([0, 'id'], q.Var('x')))
+          )
         )
       );
 
