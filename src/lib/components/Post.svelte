@@ -224,7 +224,7 @@
           </div>
           {#if $post_controller.audience === 'close_friends'}
             <p class="h3 half small">
-              <Icon icon="favorite" />
+              <Icon icon="favorite" filled />
               Close Friends
             </p>
           {:else if $post_controller.audience === 'pocket' && $post_controller.pocket_ref}

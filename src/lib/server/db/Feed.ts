@@ -24,9 +24,9 @@ export class Feed {
     let paginate_opts: any = { size: 60 };
 
     if (after_id) {
-      paginate_opts.after = [Post.toRef(after_id)];
+      paginate_opts.after = [Post.toRef(after_id), null, null, null];
     } else {
-      paginate_opts.before = null; // get the last page of results
+      paginate_opts.before = [null, null, null, null]; // get the last page of results
     }
 
     try {
@@ -36,11 +36,20 @@ export class Feed {
             q.Union(
               q.Join(
                 q.Match(q.Index('feed_friends'), [Nametag.toRef(nametag_id)]),
-                q.Index('feed_posts')
+                q.Lambda(
+                  'n_ref',
+                  q.Match(q.Index('feed_posts_v2'), [q.Var('n_ref'), 'friends'])
+                )
               ),
               q.Join(
                 q.Match(q.Index('feed_close_friends'), [Nametag.toRef(nametag_id)]),
-                q.Index('feed_posts')
+                q.Lambda(
+                  'n_ref',
+                  q.Match(q.Index('feed_posts_v2'), [
+                    q.Var('n_ref'),
+                    'close_friends'
+                  ])
+                )
               ),
               q.Join(
                 q.Match(q.Index('feed_my_pockets'), [
@@ -49,7 +58,18 @@ export class Feed {
                 ]),
                 q.Index('feed_posts_by_pocket_ref')
               ),
-              q.Match(q.Index('feed_posts'), [Nametag.toRef(nametag_id)])
+              q.Match(q.Index('feed_posts_v2'), [
+                Nametag.toRef(nametag_id),
+                'friends'
+              ]),
+              q.Match(q.Index('feed_posts_v2'), [
+                Nametag.toRef(nametag_id),
+                'close_friends'
+              ]),
+              q.Match(q.Index('feed_posts_v2'), [
+                Nametag.toRef(nametag_id),
+                'pocket'
+              ])
             ),
             paginate_opts
           ),
