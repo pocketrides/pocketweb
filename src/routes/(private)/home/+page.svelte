@@ -34,8 +34,6 @@
 
       await tick();
 
-      loadMore(true).then(() => {});
-
       scrollToEnhanced(
         () => {
           const y = localStorage?.getItem(`${scroll_key}-home-y`);
@@ -49,19 +47,32 @@
           chill = false;
         }
       );
+
+      loadMore(true).then(() => {});
     }
   });
 
   const loadMore = async (and_overwrite: boolean = false) => {
     const feed = await LoadHomeFeedRequest.load(
-      $page_controller.post_ids[$page_controller.post_ids.length - 1]
+      and_overwrite
+        ? undefined
+        : $page_controller.post_ids[$page_controller.post_ids.length - 1]
     );
 
-    page_controller.update((prev) => {
-      prev.post_ids.push.apply(prev.post_ids, feed.post_ids);
+    if (and_overwrite) {
+      page_controller.update((prev) => {
+        prev.post_ids = feed.post_ids;
+        prev.after_id = feed.after_id;
 
-      return prev;
-    });
+        return prev;
+      });
+    } else {
+      page_controller.update((prev) => {
+        prev.post_ids.push.apply(prev.post_ids, feed.post_ids);
+
+        return prev;
+      });
+    }
 
     if (and_overwrite) {
       await IDBFeedCache.clear();

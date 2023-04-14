@@ -61,6 +61,13 @@
         data-3d
       />
     </div>
+    <p class="half small">
+      Didn't get a code? <a
+        href="#reset"
+        class="h3 small"
+        on:click|preventDefault={startOverClick}>Start over</a
+      >.
+    </p>
     {#if valid === false && code !== ''}
       <label for="secret-code" data-error>That doesn't look right.</label>
     {/if}

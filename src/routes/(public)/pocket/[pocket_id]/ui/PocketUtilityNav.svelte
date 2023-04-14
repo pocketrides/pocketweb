@@ -71,14 +71,43 @@
           primary
           href={`/post?pocket=${$pocket.id}`}
         />
-      </ButtonRow>
-      <ButtonRow slot="right">
         <Button
           label="Edit"
           icon="edit"
           href={`/pocket?edit=${$pocket.id}`}
           large
           {controller}
+        />
+      </ButtonRow>
+      <ButtonRow slot="right">
+        <Button
+          icon="keyboard_arrow_up"
+          label="Top"
+          {controller}
+          on:click={() => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            controller.update(() => '');
+          }}
+        />
+        <Button
+          icon="keyboard_arrow_down"
+          label="Bottom"
+          {controller}
+          on:click={() => {
+            const main = document.querySelector('main');
+            if (!main) return;
+            window.scrollTo({
+              top:
+                (main.offsetTop + main.clientHeight || Infinity) -
+                window.innerHeight -
+                16 -
+                // @ts-ignore
+                (navigator.standalone ? 32 : 0),
+              behavior: 'smooth'
+            });
+
+            controller.update(() => '');
+          }}
         />
       </ButtonRow>
     </UtilityNav>
@@ -117,14 +146,47 @@
   {:else if $my_membership.status === 'joined'}
     {#if $pocket.settings.joinability === 'broadcast'}
       <UtilityNav>
-        <Button
-          slot="left"
-          label={$leaving ? 'One sec!' : 'Unfollow'}
-          icon="group_remove"
-          disabled={$leaving}
-          large
-          on:click={leaveClick}
-        />
+        <ButtonRow slot="left">
+          <Button
+            label={$leaving ? 'One sec!' : 'Unfollow'}
+            icon="group_remove"
+            disabled={$leaving}
+            {controller}
+            large
+            on:click={leaveClick}
+          />
+        </ButtonRow>
+        <ButtonRow slot="right">
+          <Button
+            icon="keyboard_arrow_up"
+            label="Top"
+            {controller}
+            on:click={() => {
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+              controller.update(() => '');
+            }}
+          />
+          <Button
+            icon="keyboard_arrow_down"
+            label="Bottom"
+            {controller}
+            on:click={() => {
+              const main = document.querySelector('main');
+              if (!main) return;
+              window.scrollTo({
+                top:
+                  (main.offsetTop + main.clientHeight || Infinity) -
+                  window.innerHeight -
+                  16 -
+                  // @ts-ignore
+                  (navigator.standalone ? 32 : 0),
+                behavior: 'smooth'
+              });
+
+              controller.update(() => '');
+            }}
+          />
+        </ButtonRow>
       </UtilityNav>
     {:else}
       <UtilityNav>
@@ -195,14 +257,19 @@
                 This is a self-contained social network for whatever your {plural(
                   $pocket.hosts.length + 1,
                   'friend has',
-                  'friends have'
+                  'friends have',
+                  false
                 )}
-                planned. It's free to join with just your phone number.
+                planned. It's free to join with a Pocketrides account.
               </p>
             </div>
           {/if}
           <Button
-            label={$joining ? 'One sec!' : 'Join for free'}
+            label={$joining
+              ? 'One sec!'
+              : $page.data.my_nametag
+              ? 'Join'
+              : 'Sign up or Sign in'}
             disabled={$joining}
             icon="hail"
             primary
