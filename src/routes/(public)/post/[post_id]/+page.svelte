@@ -215,7 +215,7 @@
         </div>
         {#if post.audience === 'close_friends'}
           <p class="h3 half small">
-            <Icon icon="favorite" />
+            <Icon icon="favorite" filled />
             Close Friends
           </p>
         {:else if post.audience === 'pocket' && post.pocket_ref}
