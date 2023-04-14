@@ -32,9 +32,9 @@
       const cached_ids = await IDBFeedCache.getFeed();
       $page_controller.post_ids = cached_ids;
 
-      if ($page_controller.post_ids.length === 0) loadMore().then(() => {});
-
       await tick();
+
+      loadMore(true).then(() => {});
 
       scrollToEnhanced(
         () => {
@@ -52,7 +52,7 @@
     }
   });
 
-  const loadMore = async () => {
+  const loadMore = async (and_overwrite: boolean = false) => {
     const feed = await LoadHomeFeedRequest.load(
       $page_controller.post_ids[$page_controller.post_ids.length - 1]
     );
@@ -62,6 +62,10 @@
 
       return prev;
     });
+
+    if (and_overwrite) {
+      await IDBFeedCache.clear();
+    }
 
     await IDBFeedCache.save(feed.post_ids);
   };
