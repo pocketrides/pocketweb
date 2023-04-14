@@ -28,6 +28,10 @@
   > * {
     min-width: 0;
   }
+
+  > [slot="right"] {
+    flex-shrink: 0;
+  }
 }
 
 [data-flex*="je"] {
