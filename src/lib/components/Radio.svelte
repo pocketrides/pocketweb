@@ -1,14 +1,20 @@
 <script lang="ts">
+  import { createEventDispatcher } from 'svelte';
   import Icon from './Icon.svelte';
+  import type { ThemeAnyValue } from '$lib/zod/Theme';
 
   export let group: string;
   export let value: string;
   export let label: string;
   export let labelled_by: string | undefined = undefined;
   export let icon: string | undefined = undefined;
+  export let icon_filled: boolean = false;
   export let xlarge: boolean = false;
 
+  const dispatch = createEventDispatcher();
+
   $: checked = group === value;
+  $: dispatch('change', { checked });
 </script>
 
 <label
@@ -23,8 +29,11 @@
     filled={checked}
     icon={checked ? 'radio_button_checked' : 'radio_button_unchecked'}
   />
-  <Icon {icon} />
-  {label}
+  <Icon {icon} filled={icon_filled} />
+  <span class="nowraps">{label}</span>
+  <span class="vh">
+    <Icon filled icon={'radio_button_checked'} />
+  </span>
 </label>
 
 <style lang="scss">

@@ -10,6 +10,7 @@
   export let exclude_ids: string[] = [];
   export let flex: string = `v as`;
   export let gap: boolean = true;
+  export let padded: boolean = false;
 
   const friends = writable<ClientNametag[]>([]);
 
@@ -30,7 +31,7 @@
 
 <ul data-unstyle data-flex={flex} data-gap={gap || undefined}>
   {#if $friends.length === 0}
-    <li>
+    <li data-padded={padded === true || undefined}>
       <p class="h3 half">Nothing here… <span class="half">yet!</span></p>
     </li>
   {/if}

@@ -11,13 +11,15 @@ import {
 import { OpenAI } from '$lib/server/OpenAI';
 import { MagicbellConfig } from '$lib/server/MagicbellConfig';
 import { Toucan } from 'toucan-js';
+import { GooglePlaceClient } from '$lib/server/db/GooglePlaceClient';
 
 export const handle = (async ({ event, resolve }) => {
   new Toucan({
     dsn: 'https://e3db4eb46baa4f43a32d1b98567638e4@o4504929428766720.ingest.sentry.io/4504929430274048',
     context: event.platform?.context,
     request: event.request,
-    tracesSampleRate: 0.5
+    tracesSampleRate: 0.5,
+    denyUrls: ['10.0.0.16:5147']
   });
 
   loadSecrets(
@@ -68,6 +70,7 @@ type AppSecrets = {
   ROOM_HOST: string;
   MAGIC_NAMETAG_ID: string;
   MAGIC_POST_ID: string;
+  GOOGLE_MAPS_API_KEY: string;
 };
 
 const loadSecrets = (event: RequestEvent, env: AppSecrets) => {
@@ -99,4 +102,6 @@ const loadSecrets = (event: RequestEvent, env: AppSecrets) => {
 
   // Homepage post ID
   event.locals.magic_post_id = env.MAGIC_POST_ID;
+
+  GooglePlaceClient.GOOGLE_MAPS_API_KEY = env.GOOGLE_MAPS_API_KEY;
 };

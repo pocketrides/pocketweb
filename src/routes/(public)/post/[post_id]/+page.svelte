@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { browser } from '$app/environment';
+  import { invalidateAll } from '$app/navigation';
   import { page } from '$app/stores';
   import { ReplyToPostRequest } from '$lib/api/reply/reply_to_post';
   import { Room, type RoomConnection } from '$lib/api/room';
@@ -24,14 +26,16 @@
   import { getTimeAgo } from '$lib/util/time-ago';
   import type { MessageComposerEvent } from '$lib/zod/Message';
   import type { ClientReply } from '$lib/zod/Reply';
-  import { onDestroy, onMount } from 'svelte';
+  import { afterUpdate, onDestroy, onMount, tick } from 'svelte';
   import type { PageData } from './$types';
 
   export let data: PageData;
 
-  $App.fill =
+  $: $App.theme = data.post.nametag.theme;
+  $: $App.fill =
     data.post.audience === 'close_friends' ? 'superlight' : 'system-superlight';
 
+  let current_post_id = data.post.id;
   let room: RoomConnection | undefined;
   let page_title = data.post.contents[0].content_raw;
   if (page_title.length > 40) page_title = page_title.substring(0, 40) + '…';
@@ -43,11 +47,25 @@
     : undefined;
 
   onMount(async () => {
-    if (data.post.settings.enable_replies) {
+    if (browser && data.post.settings.enable_replies) {
+      // get around stupid sveltekit
+      // console warning bc we load this at the same time
+      await tick();
+
       await Promise.all([
         RepliesManager.loadReplies(data.post.id, data.post.stats!.replies),
         connect()
       ]);
+    }
+
+    if (new URLSearchParams(location.search).has('ok')) {
+      history.replaceState({}, '', location.toString().replace('?ok=1', ''));
+    }
+  });
+
+  afterUpdate(async () => {
+    if (current_post_id !== data.post.id) {
+      location.reload();
     }
   });
 
@@ -161,14 +179,10 @@
 </svelte:head>
 
 <SiteHeader
+  huddable
   fill={data.post.audience === 'close_friends' ? 'superlight' : 'system-superlight'}
-  outer_fill={data.post.audience === 'close_friends'
-    ? 'superlight'
-    : 'system-superlight'}
 >
-  <div slot="bottom">
-    <Gallery photos={data.post.contents[0].photos} square={false} />
-  </div>
+  <Gallery slot="gallery" photos={data.post.contents[0].photos} square={false} />
 </SiteHeader>
 
 <Post
@@ -201,9 +215,18 @@
         </div>
         {#if post.audience === 'close_friends'}
           <p class="h3 half small">
-            <Icon icon="favorite" />
+            <Icon icon="favorite" filled />
             Close Friends
           </p>
+        {:else if post.audience === 'pocket' && post.pocket_ref}
+          <a
+            href={`/pocket/${post.pocket_ref.id}`}
+            data-unstyle
+            class="h3 half small nowraps"
+          >
+            <Icon icon="hail" />
+            {post.pocket_name || 'Pocket'}
+          </a>
         {:else}
           <p class="h3 half small">
             <Icon icon="signpost" />

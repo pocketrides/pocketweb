@@ -86,7 +86,7 @@ select {
   border: 0 none;
   padding: 0;
   background: transparent;
-  color: rgb(var(--black));
+  color: currentColor;
   user-select: none;
 
   &:focus {

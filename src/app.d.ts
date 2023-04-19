@@ -16,6 +16,7 @@ declare global {
     }
     interface PageData {
       page_theme?: import('$lib/zod/Theme').ThemeAnyValue;
+      page_fill?: import('$lib/zod/Fill').Fill;
       my_nametag?: import('$lib/zod/Nametag').ServerNametag;
       mb_config?: import('@magicbell/core/dist/MagicBellClient').MagicBellConfigOptions;
       room_host: string;
@@ -47,6 +48,8 @@ declare global {
 
         MAGIC_NAMETAG_ID: string;
         MAGIC_POST_ID: string;
+
+        GOOGLE_MAPS_API_KEY: string;
       };
     }
   }

@@ -26,19 +26,20 @@
           href="/post"
         />
         <!-- <Button
-        id="new_status"
-        icon="airline_stops"
-        label="New status"
-        controller={button_row}
-        large
-      />
-      <Button
-        id="new_pocket"
-        icon="hail"
-        label="New pocket"
-        controller={button_row}
-        large
-      /> -->
+          id="new_status"
+          icon="airline_stops"
+          label="New status"
+          controller={button_row}
+          large
+        /> -->
+        <Button
+          id="new_pocket"
+          icon="hail"
+          label="New pocket"
+          controller={button_row}
+          large
+          href="/pocket"
+        />
       {:else}
         <Button
           id="sub_now"

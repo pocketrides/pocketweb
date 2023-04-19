@@ -77,3 +77,9 @@
     </div>
   </div>
 </Container>
+
+<style lang="scss">
+  [data-padded] + [data-padded] {
+    padding-top: 1rem;
+  }
+</style>

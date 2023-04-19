@@ -57,7 +57,7 @@
   <title>your payouts | on pocketrides!</title>
 </svelte:head>
 
-<SiteHeader utility>
+<SiteHeader utility sticky>
   <div slot="left">
     <Button icon="arrow_back_ios" label="Settings" href="/settings" />
   </div>

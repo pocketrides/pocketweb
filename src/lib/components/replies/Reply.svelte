@@ -1,8 +1,6 @@
 <script lang="ts">
-  import { App } from '$lib/stores/app';
   import type { ClientReply } from '$lib/zod/Reply';
   import { fly } from 'svelte/transition';
-  import Nametag from '../Nametag.svelte';
   import ReplyActions from './ReplyActions.svelte';
   import ReplyLink from './ReplyLink.svelte';
   import ReplyPhotos from './ReplyPhotos.svelte';

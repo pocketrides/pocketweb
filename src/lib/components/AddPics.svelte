@@ -6,6 +6,7 @@
   import { writable, type Writable } from 'svelte/store';
 
   export let controller: Writable<string>;
+  export let label: string = 'Add pics';
 
   let file_input: HTMLInputElement;
   let files: FileList;
@@ -45,6 +46,23 @@
     file_input.value = '';
   };
 
+  const testValid = () => {
+    dispatch('uploaded', [
+      {
+        public_id: 'Y9bSrRZTjCkcZz2so6Ofd',
+        version: 1680545132,
+        aws_rek_status: 'approved',
+        alt_text: ''
+      },
+      {
+        public_id: 'W4-yXrMGctYVG0fwtmvmA',
+        version: 1680543327,
+        aws_rek_status: 'approved',
+        alt_text: ''
+      }
+    ] as CloudinaryPhoto[]);
+  };
+
   const testRejection = () => {
     dispatch('uploaded', [
       {
@@ -80,7 +98,7 @@
   {:else}
     <Button
       id="add_pics"
-      label={$error ? $current_status : 'Add pics'}
+      label={$error ? $current_status : label}
       icon={$error ? 'sentiment_very_dissatisfied' : 'add_photo_alternate'}
       {controller}
       disabled={$uploading}

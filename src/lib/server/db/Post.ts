@@ -1,3 +1,4 @@
+import { Pocket } from '$lib/server/db/Pocket';
 import { TopicSubscribe } from '$lib/server/Notify';
 import type { ClientRef } from '$lib/zod/Fauna';
 import type { DraftPost, ServerPost } from '$lib/zod/Post';
@@ -22,16 +23,23 @@ export class Post {
         is_liked?: boolean;
         unlike_key?: string;
         is_quarantined?: boolean;
+        pocket_name?: string;
       }>(q.Call('retrieve_post', [post_id, nametag_id]));
 
       if (req.success) {
         let post = Post.parseFQL(req.post);
+
         post.nametag = Nametag.parseClientFQL(req.post_nametag);
         post.stats = PostStats.parseFQL(req.post_stats);
 
         post.is_liked = req.is_liked;
         post.unlike_key = req.unlike_key;
         post.is_quarantined = req.is_quarantined;
+
+        post.pocket_name =
+          typeof req.pocket_name === 'string'
+            ? req.pocket_name.replace(/\n/g, ' ')
+            : undefined;
 
         return { success: true, post };
       } else
@@ -43,7 +51,7 @@ export class Post {
           }
         });
     } catch (e) {
-      // console.error('post/retrieve', e);
+      console.error('post/retrieve', e);
       return { success: false };
     }
   }
@@ -75,9 +83,12 @@ export class Post {
   }
 
   static async create(nametag_id: string, draft: DraftPost) {
-    const data = Object.assign(draft, {
-      nametag_ref: Nametag.toRef(nametag_id)
+    let data: any = Object.assign(draft, {
+      nametag_ref: Nametag.toRef(nametag_id),
+      pocket_ref: draft.pocket_id ? Pocket.toRef(draft.pocket_id) : undefined
     });
+
+    delete data.pocket_id;
 
     let post = await Fauna.create<ServerPost>(Post.collection, data, Post.parseFQL);
 
@@ -138,6 +149,10 @@ export class Post {
   }
 
   static parseFQL(fql: any) {
-    return Fauna.parseFQL<ServerPost>(fql, ['nametag_ref', 'stats_ref']);
+    return Fauna.parseFQL<ServerPost>(fql, [
+      'nametag_ref',
+      'stats_ref',
+      'pocket_ref'
+    ]);
   }
 }

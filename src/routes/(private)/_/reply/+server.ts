@@ -23,7 +23,11 @@ export const POST = (async (event) => {
 
       const content = res.reply.messages
         .map((m) => {
-          if (m.type === 'text') return m.content_raw;
+          if (m.type === 'text') {
+            let content = m.content_raw;
+            if (content.length > 40) content = content.substring(0, 40) + '…';
+            return content;
+          }
           if (m.type === 'photos')
             return `uploaded ${plural(m.photos.length, 'pic', 'pics', true)}`;
           if (m.type === 'link') return `sent a link: ${m.link.url}`;
@@ -33,26 +37,28 @@ export const POST = (async (event) => {
             `<strong>${res.success && res.reply.nametag.nametag}:</strong> ${msg}`
         );
 
-      await Notify({
-        title: `<strong>New reply${
-          post
-            ? ': </strong>' + post.contents[0].content_raw.substring(0, 40)
-            : ' to a post</strong>'
-        }`,
-        content: content.join('<br/>'),
-        topic: payload.data.post_id,
-        action_url: `/post/${payload.data.post_id}`,
-        recipients: [
-          {
-            // @ts-ignore
-            topic: {
-              subscribers: true
-            }
-          }
-        ]
-      });
+      if (post) {
+        let notif_title = post.contents[0].content_raw;
+        if (notif_title.length > 40)
+          notif_title = notif_title.substring(0, 40) + `…`;
 
-      await TopicSubscribe(event.locals.nametag_id, payload.data.post_id);
+        await Notify({
+          title: `<strong>New reply: ${notif_title}</strong>`,
+          content: content.join('<br/>'),
+          topic: payload.data.post_id,
+          action_url: `/post/${payload.data.post_id}`,
+          recipients: [
+            {
+              // @ts-ignore
+              topic: {
+                subscribers: true
+              }
+            }
+          ]
+        });
+
+        await TopicSubscribe(event.locals.nametag_id, post.id);
+      }
     }
   }
 

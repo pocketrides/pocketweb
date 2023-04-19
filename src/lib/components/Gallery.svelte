@@ -1,13 +1,20 @@
 <script lang="ts">
   import type { CloudinaryPhoto } from '$lib/zod/CloudinaryPhoto';
+  import { createEventDispatcher } from 'svelte';
   import { writable } from 'svelte/store';
   import CloudinaryImg from './CloudinaryImg.svelte';
+  import FloatButton from './FloatButton.svelte';
+  import FloatButtonContainer from './FloatButtonContainer.svelte';
+  import { Photos } from '$lib/stores/gallery';
 
   export let photos: CloudinaryPhoto[];
   export let square: boolean = true;
+  export let contain: boolean = false;
+  export let allow_delete: boolean = false;
 
   let gallery: HTMLDivElement;
 
+  const dispatch = createEventDispatcher();
   const current_scroll = writable(1);
 
   const handleScroll = () => {
@@ -16,10 +23,33 @@
       Math.floor(gallery.scrollLeft / gallery.clientWidth) + 1
     );
   };
+
+  const itemClick = (photo: CloudinaryPhoto) => {
+    $Photos = {
+      photos,
+      selected: photo
+    };
+  };
+
+  // test mode
+  // photos = [
+  //   {
+  //     public_id: 'Y9bSrRZTjCkcZz2so6Ofd',
+  //     version: 1680545132,
+  //     aws_rek_status: 'approved',
+  //     alt_text: ''
+  //   },
+  //   {
+  //     public_id: 'W4-yXrMGctYVG0fwtmvmA',
+  //     version: 1680543327,
+  //     aws_rek_status: 'approved',
+  //     alt_text: ''
+  //   }
+  // ];
 </script>
 
 {#if photos.length}
-  <div class="gallery-outer" class:square>
+  <div class="gallery-outer" class:square class:contain>
     <div
       class="gallery"
       data-flex={photos.length === 1 ? 'cc' : 'scroll-h'}
@@ -27,12 +57,28 @@
       on:scroll={handleScroll}
     >
       {#each photos as photo (photo)}
-        <div class="gallery-item" data-flex="cc">
+        <div
+          class="gallery-item"
+          data-flex="ac jc"
+          on:mouseup={() => {
+            itemClick(photo);
+          }}
+        >
           <CloudinaryImg
             {photo}
             square={square === true}
             normal={square === false}
           />
+          {#if allow_delete}
+            <FloatButtonContainer position="inner_right">
+              <FloatButton
+                icon="delete"
+                on:click={() => {
+                  dispatch('delete', photo);
+                }}
+              />
+            </FloatButtonContainer>
+          {/if}
         </div>
       {/each}
     </div>
@@ -59,15 +105,19 @@
       border-bottom: 0;
     }
 
-    .gallery-item {
+    &:not(.contain) .gallery-item {
       max-width: 720px;
-      max-height: 640px;
+      max-height: 840px;
       // min-width: 50%;
       scroll-snap-align: center !important;
       min-height: 320px;
 
       @media (max-width: 640px) {
         min-width: 100%;
+      }
+
+      @media (min-width: 640px) {
+        max-height: 100vh;
       }
 
       :global(img) {
@@ -91,6 +141,20 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
+      }
+    }
+
+    &.contain .gallery-item {
+      flex-shrink: 0;
+      width: 100%;
+      aspect-ratio: 1/1;
+      max-width: 640px;
+      max-height: 640px;
+
+      :global(img) {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
       }
     }
   }

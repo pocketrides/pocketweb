@@ -7,7 +7,7 @@ export class RetrieveRepliesRequest {
   });
 
   static async get(post_id: string) {
-    const req = await fetch(`/_/post/${post_id}/replies?ts=${Date.now()}`);
+    const req = await fetch(`/_/post/${post_id}/replies`);
     return this.response.safeParse(await req.json());
   }
 }

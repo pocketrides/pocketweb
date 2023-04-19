@@ -38,9 +38,9 @@
             }}
           />
         </div>
-        <small class="half">
+        <p class="small half">
           <Icon icon="visibility_off" /> Only you can see this.
-        </small>
+        </p>
       </div>
     </Container>
   </div>

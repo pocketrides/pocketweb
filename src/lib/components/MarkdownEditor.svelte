@@ -11,6 +11,7 @@
   export let placeholder = 'Tell everyone';
   export let too_long = 'Too long!';
   export let max_len: number = MAX_POST_CONTENT_LENGTH;
+  export let class_override: string | undefined = undefined;
 
   let sanitize: DOMPurify.DOMPurifyI['sanitize'];
   let editing = false;
@@ -46,8 +47,9 @@
       bind:value={raw}
       on:focus={focus}
       on:blur={blur}
+      class={class_override || ''}
     />
-    <article data-richtext>
+    <article data-richtext class={class_override || ''}>
       {#if value === ''}
         <p class="half">{placeholder}</p>
       {:else}
@@ -71,6 +73,14 @@
 </div>
 
 <style lang="scss">
+  :global([data-fill='base']) textarea {
+    color: rgb(var(--allwhite));
+
+    &::placeholder {
+      color: rgba(var(--allwhite), 0.5);
+    }
+  }
+
   div {
     position: relative;
 
@@ -87,11 +97,15 @@
     width: 100%;
     height: 100%;
     opacity: 0;
+    line-height: 1.5;
   }
 
   textarea,
   [data-richtext] {
-    font-size: 1.125rem;
+    &:not([class*='h']) {
+      font-size: 1.125rem;
+      line-height: 1.5;
+    }
   }
 
   // article {

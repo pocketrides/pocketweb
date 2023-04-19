@@ -8,5 +8,5 @@ export const scrollToEnhanced = (looper: () => void, final?: () => void) => {
       looper();
       if (final) final();
     } catch (e) {}
-  }, 575);
+  }, 375);
 };

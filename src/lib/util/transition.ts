@@ -1,8 +1,7 @@
 import { quartInOut } from 'svelte/easing';
 
-export function typewriter(node: HTMLElement) {
+export function typewriter(node: HTMLElement, { duration = 50 }) {
   const text = node.textContent as string;
-  const duration = 50;
 
   return {
     duration,

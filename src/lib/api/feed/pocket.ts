@@ -1,0 +1,30 @@
+import {
+  blankFeedResponse,
+  feed_response_validator,
+  type FeedResponse
+} from '$lib/zod/Feed';
+
+export class LoadPocketFeedRequest {
+  static endpoint = '/_/feed/pocket';
+
+  static validator = feed_response_validator;
+
+  static async load(
+    pocket_id: string,
+    after_id?: string,
+    _fetch: typeof fetch = fetch
+  ): Promise<FeedResponse> {
+    const req = await _fetch(`${this.endpoint}/${pocket_id}`, {
+      method: after_id ? 'POST' : 'GET',
+      body: after_id ? JSON.stringify({ after_id }) : undefined
+    });
+
+    const data = this.validator.safeParse(await req.json());
+
+    if (data.success) {
+      return data.data;
+    } else {
+      return blankFeedResponse();
+    }
+  }
+}

@@ -45,7 +45,7 @@
   let summary: HTMLDivElement;
   $: can_read_more =
     summary &&
-    summary.getBoundingClientRect().height > 100 &&
+    summary.getBoundingClientRect().height > 110 &&
     $post_controller?.contents?.length === 1;
 
   $: should_be_hidden = $post_controller
@@ -178,16 +178,6 @@
     $showing_post = true;
   };
 
-  const checkBounds = () => {
-    if (wrapper && !_seen) {
-      const bounds = wrapper.getBoundingClientRect();
-      if (bounds.top < 0) {
-        _seen = true;
-        dispatch('seen');
-      }
-    }
-  };
-
   const repliesClick = async () => {
     if ($post_controller && $post_controller.stats) {
       $replies_loading = true;
@@ -234,9 +224,18 @@
           </div>
           {#if $post_controller.audience === 'close_friends'}
             <p class="h3 half small">
-              <Icon icon="favorite" />
+              <Icon icon="favorite" filled />
               Close Friends
             </p>
+          {:else if $post_controller.audience === 'pocket' && $post_controller.pocket_ref}
+            <a
+              href={`/pocket/${$post_controller.pocket_ref.id}`}
+              data-unstyle
+              class="h3 half small nowraps"
+            >
+              <Icon icon="hail" />
+              {$post_controller.pocket_name || 'Pocket'}
+            </a>
           {:else}
             <p class="h3 half small">
               <Icon icon="signpost" />
@@ -338,11 +337,15 @@
               <h3 class="half">You quarantined it.</h3>
             {/if}
             {#if $post_controller.settings.is_nsfw}
-              <h3 class="half">It's NSFW.</h3>
+              {#if $page.data.my_nametag?.stripe?.has_sub !== true}
+                <h3 class="half">You'll need a subscription to see it.</h3>
+              {:else}
+                <h3 class="half">It's NSFW.</h3>
+              {/if}
             {/if}
             <div data-flex data-gap>
-              <Button label="Tap to show" superdark on:click={showPost} />
-              <div>
+              {#if $page.data.my_nametag?.stripe?.has_sub === true}
+                <Button label="Tap to show" superdark on:click={showPost} />
                 {#if $post_controller.settings.is_nsfw}
                   <Button
                     label="Change settings"
@@ -350,7 +353,7 @@
                     href="/settings/content"
                   />
                 {/if}
-              </div>
+              {/if}
             </div>
           </div>
         </div>

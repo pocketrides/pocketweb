@@ -9,14 +9,18 @@
   import Container from './Container.svelte';
   import Icon from './Icon.svelte';
   import Row from './Row.svelte';
+  import type { Fill } from '$lib/zod/Fill';
 
   export let id: string;
   export let icon: string | undefined = undefined;
+  export let icon_filled: boolean | undefined = undefined;
   export let header: string | undefined = undefined;
   export let close: string = 'Close';
   export let dismissable: boolean = true;
   export let padded: boolean = true;
   export let nav_height: number = 0;
+  export let fill: Fill = 'system-light';
+  export let header_fill: Fill = 'system-superlight';
 
   let dialog: HTMLDialogElement;
   let scrolls: HTMLDivElement;
@@ -28,6 +32,10 @@
     SHEET_CONTEXT_ID,
     writable({ icon, header, dismissable })
   );
+
+  $: $context.icon = icon;
+  $: $context.header = header;
+  $: $context.dismissable = dismissable;
 
   const dismiss = () => {
     if ($context.dismissable === false) return;
@@ -90,7 +98,7 @@
   {#if $App.sheet_id === id}
     <div
       class="wrapper"
-      data-fill="system-light"
+      data-fill={fill}
       bind:this={scrolls}
       on:scroll
       on:focus|capture={focus}
@@ -98,13 +106,13 @@
       out:fly|local={{ y: '100vh', opacity: 1, duration: 300 }}
       style={`--nav-height: ${nav_height}px`}
     >
-      <header class="header" data-fill="system-superlight">
+      <header class="header" data-fill={header_fill}>
         <Container>
           <Row>
             <div slot="left">
               {#if $context.header}
                 <h2>
-                  <Icon icon={$context.icon} />
+                  <Icon icon={$context.icon} filled={icon_filled} />
                   {$context.header}
                 </h2>
               {/if}
@@ -186,7 +194,7 @@
       position: sticky;
       top: 0;
       border-bottom: 1px solid rgba(var(--dark), 0.25);
-      z-index: 1;
+      z-index: 50;
     }
 
     @media (max-width: 640px) {
@@ -216,5 +224,9 @@
 
   :global([data-standalone='true']) dialog .nav > :global([data-fill]) {
     padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .content:has(~ .nav:not(:empty)) {
+    padding-bottom: 120px;
   }
 </style>

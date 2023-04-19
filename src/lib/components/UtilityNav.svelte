@@ -6,15 +6,17 @@
   export let fill: Fill = 'system-superlight';
   export let outer_fill: Fill = 'dark';
   export let border_bottom: boolean = true;
+  export let padded: boolean = true;
 </script>
 
 <div data-util-nav data-fill={outer_fill}>
   <nav data-fill={fill} class:border_bottom>
-    <Container>
+    <Container {padded}>
       <Row>
-        <slot name="left" slot="left">&nbsp;</slot>
-        <slot name="right" slot="right">&nbsp;</slot>
+        <slot name="left" slot="left" />
+        <slot name="right" slot="right" />
       </Row>
+      <slot />
     </Container>
   </nav>
 </div>

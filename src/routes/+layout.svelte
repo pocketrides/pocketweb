@@ -1,5 +1,6 @@
 <script lang="ts">
   import '$lib/styles/global.scss';
+  import 'material-symbols/rounded.scss';
 
   import { browser } from '$app/environment';
   import { afterNavigate, beforeNavigate } from '$app/navigation';
@@ -31,12 +32,17 @@
 
   Room.host = data.room_host;
 
+  if ($page.data.page_theme) $App.theme = $page.data.page_theme;
+
   $: if (browser) {
     document.documentElement.setAttribute(
       'data-theme',
-      $page.data.page_theme || $App.theme
+      $App.theme || $page.data.page_theme
     );
-    document.documentElement.setAttribute('data-fill', $App.fill);
+    document.documentElement.setAttribute(
+      'data-fill',
+      $App.fill || $page.data.page_fill
+    );
     document.documentElement.setAttribute(
       'data-locked',
       $App.sheet_id === '' ? 'false' : 'true'
@@ -114,17 +120,19 @@
 <svelte:head>
   <link
     rel="icon"
-    href={`/pocketrides-${$page.data.page_theme ?? 'system'}.png`}
+    href={`/pocketrides-${$App.theme || $page.data.page_theme || 'system'}.png`}
     type="image/png"
   />
   <link
     rel="apple-touch-icon"
     sizes="any"
-    href={`/pocketrides-${$page.data.page_theme ?? 'system'}.png`}
+    href={`/pocketrides-${$App.theme || $page.data.page_theme || 'system'}.png`}
   />
   <link
     rel="manifest"
-    href={`/manifest.webmanifest?theme=${$page.data.page_theme ?? 'system'}`}
+    href={`/manifest.webmanifest?theme=${
+      $App.theme || $page.data.page_theme || 'system'
+    }`}
   />
 </svelte:head>
 

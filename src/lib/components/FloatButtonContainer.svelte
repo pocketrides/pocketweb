@@ -1,14 +1,23 @@
-<script lang="ts"></script>
+<script lang="ts">
+  export let position: 'outer_top_right' | 'inner_right' = 'outer_top_right';
+</script>
 
-<div data-flex data-gap="sm" data-flow-button-container>
+<div data-flex data-gap="sm" data-flow-button-container data-position={position}>
   <slot />
 </div>
 
 <style lang="scss">
-  div {
+  [data-position='outer_top_right'] {
     position: absolute;
     top: -16px;
     right: -16px;
+    z-index: 1;
+  }
+
+  [data-position='inner_right'] {
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
     z-index: 1;
   }
 

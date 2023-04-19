@@ -4,8 +4,8 @@ import type { ServerPayout } from '$lib/zod/Payout';
 import type { ClientReply } from '$lib/zod/Reply';
 import { Fauna, q } from './Fauna';
 import { Nametag } from './Nametag';
-import { NametagStats } from './NametagStats';
 import { Payout } from './Payout';
+import { Pocket } from './Pocket';
 import { Post } from './Post';
 import { Reply } from './Reply';
 
@@ -24,29 +24,72 @@ export class Feed {
     let paginate_opts: any = { size: 60 };
 
     if (after_id) {
-      paginate_opts.after = [Post.toRef(after_id)];
+      paginate_opts.after = [Post.toRef(after_id), null, null, null];
     } else {
-      paginate_opts.before = null; // get the last page of results
+      paginate_opts.before = [null, null, null, null]; // get the last page of results
     }
 
     try {
       const res = await Fauna.client().query<FaunaQueryResponse>(
-        q.Map(
-          q.Paginate(
-            q.Union(
-              q.Join(
-                q.Match(q.Index('feed_friends'), [Nametag.toRef(nametag_id)]),
-                q.Index('feed_posts')
+        q.Distinct(
+          q.Map(
+            q.Paginate(
+              q.Union(
+                q.Join(
+                  q.Match(q.Index('feed_friends'), [Nametag.toRef(nametag_id)]),
+                  q.Lambda(
+                    'n_ref',
+                    q.Match(q.Index('feed_posts_v2'), [q.Var('n_ref'), 'friends'])
+                  )
+                ),
+                q.Join(
+                  q.Match(q.Index('feed_close_friends_v2'), [
+                    Nametag.toRef(nametag_id)
+                  ]),
+                  q.Lambda(
+                    'n_ref',
+                    q.Match(q.Index('feed_posts_v2'), [
+                      q.Var('n_ref'),
+                      'close_friends'
+                    ])
+                  )
+                ),
+                q.Join(
+                  q.Match(q.Index('feed_my_pockets'), [
+                    Nametag.toRef(nametag_id),
+                    true
+                  ]),
+                  q.Index('feed_posts_by_pocket_ref')
+                ),
+                q.Join(
+                  q.Match(q.Index('feed_admin_pockets'), [
+                    Nametag.toRef(nametag_id)
+                  ]),
+                  q.Index('feed_posts_by_pocket_ref')
+                ),
+                q.Join(
+                  q.Match(q.Index('feed_cohosted_pockets'), [
+                    Nametag.toRef(nametag_id)
+                  ]),
+                  q.Index('feed_posts_by_pocket_ref')
+                ),
+                q.Match(q.Index('feed_posts_v2'), [
+                  Nametag.toRef(nametag_id),
+                  'friends'
+                ]),
+                q.Match(q.Index('feed_posts_v2'), [
+                  Nametag.toRef(nametag_id),
+                  'close_friends'
+                ]),
+                q.Match(q.Index('feed_posts_v2'), [
+                  Nametag.toRef(nametag_id),
+                  'pocket'
+                ])
               ),
-              q.Join(
-                q.Match(q.Index('feed_close_friends'), [Nametag.toRef(nametag_id)]),
-                q.Index('feed_posts')
-              ),
-              q.Match(q.Index('feed_posts'), [Nametag.toRef(nametag_id)])
+              paginate_opts
             ),
-            paginate_opts
-          ),
-          q.Lambda('x', q.Select([0, 'id'], q.Var('x')))
+            q.Lambda('x', q.Select([0, 'id'], q.Var('x')))
+          )
         )
       );
 
@@ -65,6 +108,42 @@ export class Feed {
     }
   }
 
+  static async getPocketFeed(
+    pocket_id: string,
+    after_id?: string
+  ): Promise<FeedResponse> {
+    try {
+      let paginate_opts: any = { size: 20 };
+
+      if (after_id) {
+        paginate_opts.after = [Post.toRef(after_id)];
+      }
+
+      const res = await Fauna.client().query<FaunaQueryResponse>(
+        q.Map(
+          q.Paginate(
+            q.Match(q.Index('pocket_posts'), [Pocket.toRef(pocket_id)]),
+            paginate_opts
+          ),
+          q.Lambda('x', q.Select(['id'], q.Var('x')))
+        )
+      );
+
+      if (res && res.data) {
+        if (res.data[0] === after_id) res.data.shift();
+
+        return {
+          post_ids: res.data,
+          after_id: res.after && res.after[0] ? res.after[0].id : undefined,
+          has_more: res.after && res.after[0] ? true : false
+        };
+      } else return { post_ids: [], has_more: false };
+    } catch (e) {
+      console.error('feed/getPocketFeed', e);
+      return { post_ids: [] };
+    }
+  }
+
   static async getNametagFeed(
     nametag_id: string,
     after_id?: string
@@ -79,10 +158,13 @@ export class Feed {
       const res = await Fauna.client().query<FaunaQueryResponse>(
         q.Map(
           q.Paginate(
-            q.Match(q.Index('feed_posts_ts_reverse'), [Nametag.toRef(nametag_id)]),
+            q.Match(q.Index('posts_by_nametag_and_audience_ts_reversed'), [
+              Nametag.toRef(nametag_id),
+              'friends'
+            ]),
             paginate_opts
           ),
-          q.Lambda('x', q.Select([0, 'id'], q.Var('x')))
+          q.Lambda('x', q.Select(['id'], q.Var('x')))
         )
       );
 

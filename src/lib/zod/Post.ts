@@ -44,30 +44,22 @@ export const draft_post_validator = z.object({
 export const server_post_shape = z.object({
   id: z.string(),
   ts: z.number(),
+  audience: post_audience_validator,
   nametag_ref: client_ref_validator,
   nametag: server_nametag_validator,
   settings: post_settings,
   contents: z.array(draft_post_content_validator).min(1),
   stats_ref: client_ref_validator,
   stats: server_post_stats_validator,
+  pocket_ref: client_ref_validator.optional(),
+  pocket_name: z.string().optional(),
 
   // these are bolted on by Like.isPostLiked()
   is_liked: z.boolean().optional(),
   is_quarantined: z.boolean().optional()
 });
 
-export const server_post_validator = z.discriminatedUnion('audience', [
-  server_post_shape.extend({
-    audience: z.literal('pocket'),
-    pocket: z.object({
-      id: z.string(),
-      name: z.string()
-    })
-  }),
-  server_post_shape.extend({
-    audience: z.enum(['friends', 'close_friends'])
-  })
-]);
+export const server_post_validator = server_post_shape;
 
 export type PostSettings = z.infer<typeof post_settings>;
 export type PostContent = z.infer<typeof draft_post_content_validator>;
@@ -77,6 +69,8 @@ export type ServerPost = {
   id: string;
   ts: number;
   audience: 'friends' | 'close_friends' | 'pocket';
+  pocket_ref?: ClientRef;
+  pocket_name?: string;
   nametag_ref: ClientRef | Expr;
   nametag: ClientNametag;
   settings: PostSettings;
@@ -101,10 +95,10 @@ export const blankPostContent = (): DraftPostContent => {
   };
 };
 
-export const blankPost = (): DraftPost => {
+export const blankPost = (pocket_id?: string): DraftPost => {
   return {
-    audience: 'friends',
-    pocket_id: undefined,
+    audience: pocket_id ? 'pocket' : 'friends',
+    pocket_id,
     settings: {
       is_nsfw: false,
       enable_likes: true,

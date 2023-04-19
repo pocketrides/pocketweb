@@ -1,4 +1,5 @@
 import { IDBCache } from './idb-cache';
+import { IDB_VERSION } from './idb-cacne-version';
 
 export class IDBFeedCache {
   static #db: IDBDatabase;
@@ -7,7 +8,7 @@ export class IDBFeedCache {
     return new Promise((resolve) => {
       if (this.#db) return resolve(undefined);
 
-      const request = indexedDB.open('feed_cache', 2);
+      const request = indexedDB.open('feed_cache', IDB_VERSION);
 
       request.onupgradeneeded = (e: any) => {
         const db: IDBDatabase = e.target.result;

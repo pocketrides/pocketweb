@@ -32,7 +32,7 @@
   <title>content settings | on pocketrides!</title>
 </svelte:head>
 
-<SiteHeader utility>
+<SiteHeader utility sticky>
   <div slot="left">
     <Button
       label="Back"
@@ -64,7 +64,8 @@
             bind:checked={allow_nsfw_posts}
             label="Show by default"
             on:change={updateNSFWPostsPref}
-            disabled={$saving_nsfw_posts_pref}
+            disabled={$page.data.my_nametag?.stripe?.has_sub !== true ||
+              $saving_nsfw_posts_pref}
           />
           {#if $saving_nsfw_posts_pref}
             <p class="half">
@@ -73,6 +74,9 @@
             </p>
           {/if}
         </div>
+        {#if $page.data.my_nametag?.stripe?.has_sub !== true}
+          <h3 class="half">Subscription required.</h3>
+        {/if}
       </div>
     </Container>
   </div>

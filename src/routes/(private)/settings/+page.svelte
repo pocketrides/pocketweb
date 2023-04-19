@@ -37,7 +37,7 @@
   <title>account settings for {data.my_nametag?.nametag} | on pocketrides!</title>
 </svelte:head>
 
-<SiteHeader utility>
+<SiteHeader utility sticky>
   <div slot="left">
     <Button
       label={$page.data.my_nametag?.nametag || ''}

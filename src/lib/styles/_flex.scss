@@ -24,10 +24,22 @@
 
 [data-flex*="sb"] {
   justify-content: space-between;
+
+  > * {
+    min-width: 0;
+  }
+
+  > [slot="right"] {
+    flex-shrink: 0;
+  }
 }
 
 [data-flex*="je"] {
   justify-content: flex-end;
+}
+
+[data-flex*="jc"] {
+  justify-content: center;
 }
 
 [data-flex*="cc"] {
@@ -37,6 +49,10 @@
 
 [data-flex*="g"] {
   flex: 1;
+}
+
+[data-flex*="w"] {
+  flex-wrap: wrap;
 }
 
 [data-flex*="vs"] {
@@ -58,9 +74,5 @@
 
   &::-webkit-scrollbar {
     display: none;
-  }
-
-  &:has(> [data-3d]) {
-    padding-bottom: 1px !important;
   }
 }

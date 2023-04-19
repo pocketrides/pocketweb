@@ -3,6 +3,7 @@
   import SiteHeader from '$lib/components/SiteHeader.svelte';
   import { App } from '$lib/stores/app';
 
+  $App.theme = 'system';
   $App.fill = 'superlight';
 </script>
 
@@ -10,7 +11,7 @@
   <title>Privacy Policy | on pocketrides!</title>
 </svelte:head>
 
-<SiteHeader />
+<SiteHeader huddable />
 <Main fullheight>
   <div data-flex="v" data-gap>
     <div>

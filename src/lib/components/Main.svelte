@@ -1,29 +1,24 @@
 <script lang="ts">
-  import { page } from '$app/stores';
-  import DefaultUtilityNav from '$lib/utility-navs/DefaultUtilityNav.svelte';
   import type { Fill } from '$lib/zod/Fill';
   import Container from './Container.svelte';
 
   export let fill: Fill = 'light';
   export let padded: boolean = true;
   export let fullheight: boolean = false;
+  export let fullwidth: boolean = false;
 </script>
 
 <main data-fill={fill}>
   <div class:fullheight>
-    <Container rounded={false} {padded}>
+    <Container rounded={false} {padded} {fullwidth}>
       <slot />
     </Container>
   </div>
-  <slot name="utility-nav">
-    {#if $page.data.my_nametag === undefined}
-      <DefaultUtilityNav />
-    {/if}
-  </slot>
+  <slot name="utility-nav" />
 </main>
 
 <style lang="scss">
-  .fullheight {
+  .fullheight:not(:has([data-nothing-here])) {
     min-height: 100vh;
   }
 </style>

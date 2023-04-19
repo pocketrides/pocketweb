@@ -33,6 +33,10 @@
 </div>
 
 <style lang="scss">
+  [data-3d] {
+    overflow: hidden;
+  }
+
   img {
     vertical-align: top;
   }

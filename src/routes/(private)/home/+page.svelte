@@ -19,10 +19,9 @@
 
   export let data: PageData;
 
-  if (data.page_theme) $App.theme = data.page_theme;
-  $App.fill = 'system-superlight';
+  $: $App.theme = data.my_nametag.theme;
+  $: $App.fill = 'system-superlight';
 
-  let scroll_list: HTMLDivElement | undefined;
   let can_save_scroll = false;
   let chill = true;
 
@@ -32,8 +31,6 @@
     if (browser) {
       const cached_ids = await IDBFeedCache.getFeed();
       $page_controller.post_ids = cached_ids;
-
-      if ($page_controller.post_ids.length === 0) loadMore().then(() => {});
 
       await tick();
 
@@ -50,19 +47,36 @@
           chill = false;
         }
       );
+
+      loadMore(true).then(() => {});
     }
   });
 
-  const loadMore = async () => {
+  const loadMore = async (and_overwrite: boolean = false) => {
     const feed = await LoadHomeFeedRequest.load(
-      $page_controller.post_ids[$page_controller.post_ids.length - 1]
+      and_overwrite
+        ? undefined
+        : $page_controller.post_ids[$page_controller.post_ids.length - 1]
     );
 
-    page_controller.update((prev) => {
-      prev.post_ids.push.apply(prev.post_ids, feed.post_ids);
+    if (and_overwrite) {
+      page_controller.update((prev) => {
+        prev.post_ids = feed.post_ids;
+        prev.after_id = feed.after_id;
 
-      return prev;
-    });
+        return prev;
+      });
+    } else {
+      page_controller.update((prev) => {
+        prev.post_ids.push.apply(prev.post_ids, feed.post_ids);
+
+        return prev;
+      });
+    }
+
+    if (and_overwrite) {
+      await IDBFeedCache.clear();
+    }
 
     await IDBFeedCache.save(feed.post_ids);
   };
@@ -82,13 +96,12 @@
 
 <svelte:window on:scroll={saveScrollY} />
 
-<SiteHeader fill="system-superlight" outer_fill="none" huddable />
+<SiteHeader fill="system-superlight" huddable />
 <div class:chill>
   <Main fill="system-light" padded={false} fullheight>
     <ScrollList
       has_none={$page_controller.post_ids.length === 0}
       load_more_label="Load newest"
-      bind:el={scroll_list}
       on:loadmore={async () => {
         await loadMore();
       }}
