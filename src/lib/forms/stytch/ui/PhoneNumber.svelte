@@ -54,10 +54,6 @@
 <form on:submit|preventDefault={handleSubmit} data-flex="v" data-gap>
   <div data-flex="v" data-gap>
     <h2>Welcome to Pocketrides!</h2>
-    <p>
-      <strong>We're doing social media a little differently:</strong> no ads, no algorithms,
-      just you, your friends and a like button that earns you cash.
-    </p>
     <p>Use your phone number to get a free account.</p>
   </div>
 

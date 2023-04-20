@@ -58,13 +58,17 @@ export class Worldfeed {
             )
           },
           {
-            post_ids: q.Select(
-              ['data'],
-              q.Map(
-                q.Paginate(q.Var('sorted_set'), { size: 100 }),
-                q.Lambda(
-                  ['ts', 'post_ref', 'stats_ref'],
-                  q.Select(['id'], q.Var('post_ref'))
+            post_ids: q.Reverse(
+              q.Select(
+                ['data'],
+                q.Map(
+                  q.Paginate(q.Var('sorted_set'), {
+                    size: 100
+                  }),
+                  q.Lambda(
+                    ['like_count', 'post_ref', 'stats_ref'],
+                    q.Select(['id'], q.Var('post_ref'))
+                  )
                 )
               )
             ),

@@ -25,6 +25,7 @@
 
   export let data: PageData;
 
+  $: $App.theme = data.my_nametag.theme;
   $: $App.fill = 'system-superlight';
 
   const page_controller = writable<PageController>(
@@ -131,7 +132,7 @@
     {/if}
   </div>
 </SiteHeader>
-<Main padded={false} fullheight>
+<Main padded={false} fullheight fill="system-light">
   <Posts store={page_controller} />
   <UtilityNav slot="utility-nav">
     <div slot="left">

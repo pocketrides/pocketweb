@@ -20,6 +20,7 @@
 
   export let data: PageData;
 
+  $: $App.theme = data.my_nametag?.theme || 'system';
   $: $App.fill = 'system-superlight';
 
   const form_validator = z.object({
@@ -77,7 +78,7 @@
             on:click|preventDefault={handleNewPocketClick}
           >
             List it here</a
-          >{#if !$page.data.my_nametag} with a free Pocketrides account{/if}.
+          >{#if !$page.data.my_nametag}&nbsp;with a free Pocketrides account{/if}.
         </p>
       </div>
     </Container>
