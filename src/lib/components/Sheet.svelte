@@ -69,7 +69,7 @@
   };
 
   const dialogClosed = () => {
-    if ($context.dismissable === true) $App.sheet_id = '';
+    if ($context.dismissable === true && $App.sheet_id === id) $App.sheet_id = '';
   };
 
   afterUpdate(() => {

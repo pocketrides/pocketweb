@@ -1,7 +1,6 @@
 <script lang="ts">
   import type { Link } from '$lib/zod/Link';
   import { onMount } from 'svelte';
-  import Icon from './Icon.svelte';
 
   export let link: Link;
   export let mini: boolean = false;
@@ -17,30 +16,34 @@
   });
 </script>
 
-<div data-3d="ah" data-fill="base" class:mini data-flex={mini ? '' : 'v'}>
-  {#if link.og_image}
+{#if sanitize}
+  <div data-3d="ah" data-fill="base" class:mini data-flex={mini ? '' : 'v'}>
+    {#if link.og_image}
+      <a
+        href={link.url}
+        target="_blank"
+        rel="noreferrer"
+        class="og-image"
+        aria-label={`${link.og_desc || ' '} (link to ${url.hostname})`}
+      >
+        <img src={link.og_image} alt="" />
+      </a>
+    {/if}
     <a
       href={link.url}
       target="_blank"
       rel="noreferrer"
-      class="og-image"
-      aria-label={`${link.og_desc || ' '} (link to ${url.hostname})`}
+      data-flex="v cc"
+      data-gap="0"
+      class="og-link"
     >
-      <img src={link.og_image} alt="" />
+      <h3 class="nowraps">
+        {@html sanitize(link.og_title || url.host + url.pathname)}
+      </h3>
+      <p class="small half nowraps">{@html sanitize(link.og_desc || url.host)}</p>
     </a>
-  {/if}
-  <a
-    href={link.url}
-    target="_blank"
-    rel="noreferrer"
-    data-flex="v cc"
-    data-gap="0"
-    class="og-link"
-  >
-    <h3 class="nowraps">{link.og_title || url.host + url.pathname}</h3>
-    <p class="small half nowraps">{link.og_desc || url.host}</p>
-  </a>
-</div>
+  </div>
+{/if}
 
 <style lang="scss">
   [data-3d] {

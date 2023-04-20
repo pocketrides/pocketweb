@@ -134,7 +134,7 @@
 </div>
 
 <style lang="scss">
-  header:has(~ [data-slot]:empty),
+  header:has(~ [data-slot]:empty):has(~ [data-nav]:empty),
   [data-nav]:not(:empty),
   [data-gallery]:not(:empty) {
     border-bottom-left-radius: 1rem;
@@ -213,5 +213,9 @@
   [data-gallery] {
     max-width: 720px;
     margin: auto;
+  }
+
+  [data-nav] :global(> .padded) {
+    padding-top: 0;
   }
 </style>

@@ -28,6 +28,7 @@
   import type { ClientReply } from '$lib/zod/Reply';
   import { afterUpdate, onDestroy, onMount, tick } from 'svelte';
   import type { PageData } from './$types';
+  import { formatWorldfeedLocation, getWorldfeedLink } from '$lib/util/worldfeed';
 
   export let data: PageData;
 
@@ -260,6 +261,18 @@
         {/if}
       {/each}
     </div>
+    {#if post.settings.worldfeed}
+      <div class="wf-wrapper" data-flex="as">
+        <a
+          href={getWorldfeedLink(post.settings.worldfeed)}
+          data-unstyle
+          class="h3 half small"
+        >
+          <Icon icon="public" />
+          {formatWorldfeedLocation(post.settings.worldfeed)}
+        </a>
+      </div>
+    {/if}
     {#if data.post.settings.enable_replies}
       <Row padded fill="system-superlight" bordered>
         <div slot="left" data-flex="ac">
@@ -313,5 +326,8 @@
   .post-wrapper,
   .replies-wrapper {
     padding-bottom: 1rem;
+  }
+  .wf-wrapper {
+    padding: 0 1rem 0.5rem;
   }
 </style>

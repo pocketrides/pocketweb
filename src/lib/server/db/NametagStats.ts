@@ -5,6 +5,14 @@ import { Nametag } from './Nametag';
 export class NametagStats {
   static collection = 'nametag_stats';
 
+  static fql_for = {
+    get_by_nametag_ref: (nametag_ref_var = 'nametag_ref') => {
+      return q.Get(
+        q.Match(q.Index('nametag_stats_by_nametag_ref'), [q.Var(nametag_ref_var)])
+      );
+    }
+  };
+
   static async get(stats_id: string) {
     return await Fauna.get<ServerNametagStats>(this.toRef(stats_id), this.parseFQL);
   }

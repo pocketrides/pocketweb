@@ -19,13 +19,16 @@
   import ButtonRow from '$lib/components/ButtonRow.svelte';
   import type { PageData } from './$types';
   import { page } from '$app/stores';
+  import AddToWorldfeed from './ui/AddToWorldfeed.svelte';
+  import WorldfeedHelp from '$lib/sheets/worldfeed/WorldfeedHelp.svelte';
+  import { EditPostRequest } from '$lib/api/post/edit';
 
   export let data: PageData;
 
   $: $App.fill = 'system-superlight';
 
   const page_controller = writable<PageController>(
-    blankPost(data.pocket ? data.pocket.id : undefined)
+    data.post ? data.post : blankPost(data.pocket ? data.pocket.id : undefined)
   );
   const is_publishing = writable(false);
   const publish_error = writable(false);
@@ -39,6 +42,8 @@
     | 'close_friends'
     | 'pocket';
   $: $page_controller.pocket_id = target_and_pocket[1] || undefined;
+  $: if ($page_controller.audience !== 'friends')
+    $page_controller.settings.worldfeed = null;
 
   const settingsSheetClick = () => {
     $App.sheet_id = 'post_settings';
@@ -52,6 +57,27 @@
     $is_publishing = true;
 
     const post = await NewPostRequest.post($page_controller);
+
+    if (post.success) {
+      $almost_done = true;
+      goto(`/post/${post.post_id}`, { invalidateAll: true });
+    }
+
+    if (post.success === false) {
+      $is_publishing = false;
+      $publish_error = true;
+    }
+  };
+
+  const saveClick = async () => {
+    if (!data.edit_id) return;
+
+    $is_publishing = true;
+
+    const post = await EditPostRequest.post({
+      edit_id: data.edit_id,
+      post: $page_controller
+    });
 
     if (post.success) {
       $almost_done = true;
@@ -94,7 +120,16 @@
       New post
     </h1>
   </div>
-  <div slot="right" />
+  <div slot="right">
+    {#if data.post}
+      <Button
+        label="Cancel"
+        on:click={() => {
+          history.go(-1);
+        }}
+      />
+    {/if}
+  </div>
 </SiteHeader>
 <Main padded={false} fullheight>
   <Posts store={page_controller} />
@@ -109,28 +144,42 @@
           controller={nav_controller}
           on:click={settingsSheetClick}
         />
-        <Button
-          id="discard"
-          icon="delete"
-          label="Discard"
-          large
-          controller={nav_controller}
-          on:click={() => {
-            history.go(-1);
-          }}
-        />
+        {#if !data.post}
+          <Button
+            id="discard"
+            icon="delete"
+            label="Discard"
+            large
+            controller={nav_controller}
+            on:click={() => {
+              history.go(-1);
+            }}
+          />
+        {/if}
       </ButtonRow>
     </div>
     <div slot="right">
-      <Button
-        id="publish"
-        label="Publish to…"
-        icon="signpost"
-        disabled={!valid}
-        primary
-        controller={nav_controller}
-        on:click={publishSheetClick}
-      />
+      {#if data.post}
+        <Button
+          id="save"
+          label="Save…"
+          icon="signpost"
+          disabled={!valid}
+          primary
+          controller={nav_controller}
+          on:click={publishSheetClick}
+        />
+      {:else}
+        <Button
+          id="publish"
+          label="Publish to…"
+          icon="signpost"
+          disabled={!valid}
+          primary
+          controller={nav_controller}
+          on:click={publishSheetClick}
+        />
+      {/if}
     </div>
   </UtilityNav>
 </Main>
@@ -201,6 +250,9 @@
           icon_filled
           xlarge
         />
+        {#if $page_controller.audience === 'friends'}
+          <AddToWorldfeed {page_controller} />
+        {/if}
       </div>
     {/if}
     <div data-flex="v" data-gap>
@@ -246,17 +298,31 @@
   <div slot="nav" data-fill="system-superlight">
     <Container padded>
       <div data-flex="v" data-gap>
-        <Button
-          label={$is_publishing
-            ? $almost_done
-              ? 'Almost done!'
-              : 'One sec!'
-            : 'Publish'}
-          primary
-          xlarge
-          disabled={!valid || $is_publishing}
-          on:click={publishClick}
-        />
+        {#if data.post}
+          <Button
+            label={$is_publishing
+              ? $almost_done
+                ? 'Almost done!'
+                : 'One sec!'
+              : 'Save'}
+            primary
+            xlarge
+            disabled={!valid || $is_publishing}
+            on:click={saveClick}
+          />
+        {:else}
+          <Button
+            label={$is_publishing
+              ? $almost_done
+                ? 'Almost done!'
+                : 'One sec!'
+              : 'Publish'}
+            primary
+            xlarge
+            disabled={!valid || $is_publishing}
+            on:click={publishClick}
+          />
+        {/if}
         {#if $publish_error}
           <p data-error>Something went wrong! Try again?</p>
         {/if}
@@ -285,3 +351,4 @@
     </div>
   </Container>
 </Sheet>
+<WorldfeedHelp />

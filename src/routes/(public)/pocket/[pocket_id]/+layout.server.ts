@@ -3,9 +3,13 @@ import { error, redirect } from '@sveltejs/kit';
 import type { LayoutServerLoad } from './$types';
 import { PocketMember } from '$lib/server/db/PocketMember';
 import type { ClientPocketMember } from '$lib/zod/PocketMember';
+import { RetrievePocketRequest } from '$lib/api/pocket/retrieve';
 
 export const load = (async (event) => {
-  const pocket = await Pocket.retrieve(event.params.pocket_id);
+  const pocket = await RetrievePocketRequest.get(
+    event.params.pocket_id,
+    event.fetch
+  );
 
   if (!pocket) throw error(404);
 

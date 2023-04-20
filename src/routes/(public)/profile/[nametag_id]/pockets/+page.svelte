@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { page } from '$app/stores';
+  import Button from '$lib/components/Button.svelte';
   import Container from '$lib/components/Container.svelte';
   import Icon from '$lib/components/Icon.svelte';
   import NothingHere from '$lib/components/NothingHere.svelte';
@@ -36,6 +38,11 @@
   <Container>
     {#if data.is_my_profile_page}
       <div data-flex="v" data-gap="1">
+        {#if $page.data.my_nametag && !$page.data.my_nametag.stripe?.has_sub}
+          <div>
+            <Button label="Make your first Pocket" href="/pocket" />
+          </div>
+        {/if}
         <PocketIntro />
         <p class="small half" data-padded>
           <Icon icon="visibility_off" /> Only you can see this.

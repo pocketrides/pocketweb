@@ -1,7 +1,11 @@
 import { Pocket } from '$lib/server/db/Pocket';
 import { TopicSubscribe } from '$lib/server/Notify';
 import type { ClientRef } from '$lib/zod/Fauna';
-import type { DraftPost, ServerPost } from '$lib/zod/Post';
+import {
+  draft_post_validator,
+  type DraftPost,
+  type ServerPost
+} from '$lib/zod/Post';
 import { Fauna, q } from './Fauna';
 import { Nametag } from './Nametag';
 import { NametagStats } from './NametagStats';
@@ -54,6 +58,25 @@ export class Post {
       console.error('post/retrieve', e);
       return { success: false };
     }
+  }
+
+  static async retrieveToEdit(
+    post_id: string,
+    nametag_id: string
+  ): Promise<DraftPost | undefined> {
+    const post = await this.get(post_id);
+
+    if (post) {
+      if ((post.nametag_ref as ClientRef).id === nametag_id) {
+        const p = draft_post_validator.safeParse(post);
+
+        if (p.success) {
+          return p.data;
+        }
+      }
+    }
+
+    return undefined;
   }
 
   static async get(post_id: string) {
@@ -115,12 +138,80 @@ export class Post {
     return post;
   }
 
-  static async update(post_id: string, draft: Partial<DraftPost>) {
-    return await Fauna.update<ServerPost>(Post.toRef(post_id), draft, Post.parseFQL);
+  static async update(
+    post_id: string,
+    nametag_id: string,
+    data: Partial<DraftPost>
+  ): Promise<boolean> {
+    try {
+      const query = await Fauna.client().query<boolean>(
+        q.Let(
+          {
+            post: q.Get(Post.toRef(post_id))
+          },
+          q.If(
+            q.Equals(
+              q.Select(['data', 'nametag_ref'], q.Var('post')),
+              Nametag.toRef(nametag_id)
+            ),
+            q.Do(
+              q.Update(Post.toRef(post_id), {
+                data
+              }),
+              true
+            ),
+            false
+          )
+        )
+      );
+
+      return query;
+    } catch (e) {
+      console.error('db/Post.update()', e);
+      return false;
+    }
   }
 
-  static async delete(post_id: string) {
-    return await Fauna.delete(Post.toRef(post_id));
+  static async delete(post_id: string, nametag_id: string): Promise<boolean> {
+    try {
+      return await Fauna.client().query<boolean>(
+        q.Let(
+          {
+            post_ref: Post.toRef(post_id),
+            post: q.Get(q.Var('post_ref')),
+            stats_ref: q.Select(['data', 'stats_ref'], q.Var('post')),
+            nametag_ref: q.Select(['data', 'nametag_ref'], q.Var('post'))
+          },
+          q.If(
+            q.Equals(q.Var('nametag_ref'), Nametag.toRef(nametag_id)),
+            q.Do(
+              q.Delete(q.Var('post_ref')),
+              q.Delete(q.Var('stats_ref')),
+              q.Let(
+                {
+                  nametag_stats: NametagStats.fql_for.get_by_nametag_ref()
+                },
+                q.Do(
+                  q.Update(q.Select(['ref'], q.Var('nametag_stats')), {
+                    data: {
+                      posts: q.Subtract(
+                        q.Select(['data', 'posts'], q.Var('nametag_stats')),
+                        1
+                      )
+                    }
+                  }),
+                  true
+                )
+              )
+            ),
+            false
+          )
+        )
+      );
+    } catch (e) {
+      console.error('db/Post.delete()', post_id, nametag_id, e);
+      return false;
+    }
   }
 
   static async deleteAll(nametag_id: string) {

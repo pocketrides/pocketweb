@@ -1,9 +1,5 @@
 import { z } from 'zod';
 import { client_ref_validator, type ClientRef } from './Fauna';
-import {
-  server_moderation_result_validator,
-  type ServerModerationResult
-} from './ModerationResult';
 import type { Expr } from 'faunadb';
 
 export const draft_post_stats_validator = z.object({

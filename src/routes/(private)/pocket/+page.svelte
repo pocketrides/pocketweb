@@ -36,6 +36,8 @@
   import { goto } from '$app/navigation';
   import { UpdatePocketRequest } from '$lib/api/pocket/update';
   import { DeletePocketRequest } from '$lib/api/pocket/delete';
+  import AddToWorldfeed from './ui/AddToWorldfeed.svelte';
+  import WorldfeedHelp from '$lib/sheets/worldfeed/WorldfeedHelp.svelte';
 
   export let data: PageData;
 
@@ -53,6 +55,8 @@
   $App.fill = 'dark';
 
   $: valid = draft_pocket_validator.safeParse($page_controller).success;
+  $: if ($page_controller.settings.visibility !== 'listed')
+    $page_controller.settings.worldfeed = null;
 
   const handlePicsUploaded = (e: CustomEvent<CloudinaryPhoto[]>) => {
     page_controller.update((prev) => {
@@ -107,7 +111,12 @@
   const handlePocketDeleteClick = async () => {
     if (!data.editing_pocket || !data.editing_pocket_id) return;
 
-    if (!confirm('Are you sure?')) return;
+    if (
+      !confirm(
+        `You better be sure you wanna delete this 'cause it's gone if you click OK.`
+      )
+    )
+      return;
 
     $deleting = true;
 
@@ -156,6 +165,22 @@
 <Main fullheight fullwidth padded={false}>
   <PocketRenderer details_enabled={$page_controller.details_enabled}>
     <Container slot="name">
+      {#if data.free_mode}
+        <Container rounded fill="superdark">
+          {#if data.can_free_mode_publish}
+            <p class=" half">
+              <Icon icon="info" />
+              <strong>You're in free mode.</strong>
+            </p>
+            <p class=" half">Thanks for trying Pocketrides ♥️</p>
+          {:else}
+            <p class="h3 half">
+              <Icon icon="info" />
+              You're out of free pockets.
+            </p>
+          {/if}
+        </Container>
+      {/if}
       <div data-flex="v" data-gap data-ph>
         <Name store={page_controller} />
         {#if $page_controller.hosts.length}
@@ -243,8 +268,10 @@
             icon="delete"
             label="Discard"
             large
-            href="/home"
             controller={page_label}
+            on:click={() => {
+              history.go(-1);
+            }}
           />
         {/if}
       </ButtonRow>
@@ -255,7 +282,8 @@
           id="publish"
           label="Publish…"
           icon="hail"
-          disabled={valid !== true}
+          disabled={valid !== true ||
+            (data.free_mode === true && data.can_free_mode_publish === false)}
           primary
           controller={page_label}
           on:click={() => {
@@ -308,7 +336,10 @@
       />
       <p class="half h3">
         {#if $page_controller.settings.visibility === 'listed'}
-          Your pocket will show up on your profile page.
+          Your pocket will show up on your profile page{#if $page_controller.settings.worldfeed}
+            &nbsp;or on the Worldfeed, depending on search terms and number of
+            members
+          {/if}.
         {:else}
           <Icon icon="visibility_off" multiline />
           Unlisted. Your pocket's only visible to you, or people you send the link to.
@@ -355,6 +386,9 @@
         {/if}
       </p>
     </div>
+    {#if $page_controller.settings.visibility === 'listed'}
+      <AddToWorldfeed {page_controller} />
+    {/if}
     {#if typeof data.editing_pocket_id === 'undefined'}
       <Button
         label={$publishing
@@ -392,3 +426,4 @@
     </div>
   </div>
 </Sheet>
+<WorldfeedHelp />

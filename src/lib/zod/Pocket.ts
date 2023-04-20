@@ -1,10 +1,11 @@
+import { worldfeed_location_validator } from '$lib/zod/Worldfeed';
 import { z } from 'zod';
 import { THEME_VALUES, type ThemeValue } from './Theme';
 import { cloudinary_photo_validator, type CloudinaryPhoto } from './CloudinaryPhoto';
 import { google_place_validator } from './GooglePlace';
 import { link_validator } from './Link';
 import { client_nametag_validator, type ClientNametag } from './Nametag';
-import type { ClientRef } from './Fauna';
+import { client_ref_validator, type ClientRef } from './Fauna';
 
 export const POCKET_MAX_COHOSTS = 5;
 export const pocket_name_html_validator = z.string().min(1).max(60);
@@ -45,15 +46,18 @@ export const draft_pocket_validator = z.object({
   details: draft_pocket_details_validator,
   settings: z.object({
     joinability: z.enum(['anyone', 'moderated', 'broadcast']),
-    visibility: z.enum(['listed', 'unlisted'])
+    visibility: z.enum(['listed', 'unlisted']),
+    worldfeed: worldfeed_location_validator.optional().nullable()
   })
 });
 
 export const server_pocket_validator = draft_pocket_validator.extend({
   id: z.string(),
   ts: z.number(),
-  nametag_ref: client_nametag_validator,
-  hosts: z.array(client_nametag_validator)
+  nametag_ref: client_ref_validator,
+  nametag: client_nametag_validator,
+  hosts: z.array(client_nametag_validator),
+  members_count: z.number()
 });
 
 export type DraftPocket = z.infer<typeof draft_pocket_validator>;

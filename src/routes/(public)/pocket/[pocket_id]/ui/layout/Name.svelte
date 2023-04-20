@@ -6,6 +6,7 @@
   import NametagWithPic from '$lib/components/NametagWithPic.svelte';
   import { App } from '$lib/stores/app';
   import { plural } from '$lib/util/plural';
+  import { formatWorldfeedLocation, getWorldfeedLink } from '$lib/util/worldfeed';
   import type { ServerPocket } from '$lib/zod/Pocket';
   import type { ClientPocketMember } from '$lib/zod/PocketMember';
   import type { Writable } from 'svelte/store';
@@ -129,6 +130,16 @@
               </a>
             {/if}
           </div>
+        {/if}
+        {#if $pocket.settings.worldfeed}
+          <a
+            href={getWorldfeedLink($pocket.settings.worldfeed)}
+            class="h3 half"
+            data-unstyle=""
+          >
+            <Icon icon="public" />
+            {formatWorldfeedLocation($pocket.settings.worldfeed)}
+          </a>
         {/if}
         <h3 class="half">
           <Icon icon="campaign" />

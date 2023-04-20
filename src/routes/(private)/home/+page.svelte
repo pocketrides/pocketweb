@@ -14,6 +14,7 @@
   import { onMount, tick } from 'svelte';
   import { writable } from 'svelte/store';
   import type { PageData } from './$types';
+    import WorldfeedNav from '$lib/components/worldfeed/WorldfeedNav.svelte';
 
   let scroll_key = $page.data.my_nametag?.id || '';
 
@@ -96,7 +97,9 @@
 
 <svelte:window on:scroll={saveScrollY} />
 
-<SiteHeader fill="system-superlight" huddable />
+<SiteHeader fill="system-superlight" huddable>
+  <WorldfeedNav slot="nav"/>
+</SiteHeader>
 <div class:chill>
   <Main fill="system-light" padded={false} fullheight>
     <ScrollList

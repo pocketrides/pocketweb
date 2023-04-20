@@ -22,6 +22,7 @@
   import PostActionsRight from './PostActionsRight.svelte';
   import PostModResult from './PostModResult.svelte';
   import Row from './Row.svelte';
+  import { formatWorldfeedLocation, getWorldfeedLink } from '$lib/util/worldfeed';
 
   export let post_id: string | undefined = undefined;
   export let post: ServerPost | undefined = undefined;
@@ -297,6 +298,18 @@
                 label={`Read ${$post_controller.contents.length - 1} more…`}
                 href={`/post/${$post_controller.id}`}
               />
+            </div>
+          {/if}
+          {#if $post_controller.settings.worldfeed}
+            <div data-padded data-flex="as">
+              <a
+                href={getWorldfeedLink($post_controller.settings.worldfeed)}
+                data-unstyle
+                class="h3 half small"
+              >
+                <Icon icon="public" />
+                {formatWorldfeedLocation($post_controller.settings.worldfeed)}
+              </a>
             </div>
           {/if}
           {#if $post_controller.stats}

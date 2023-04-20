@@ -6,6 +6,7 @@
   import Main from '$lib/components/Main.svelte';
   import SiteHeader from '$lib/components/SiteHeader.svelte';
   import UtilityNav from '$lib/components/UtilityNav.svelte';
+  import WorldfeedNav from '$lib/components/worldfeed/WorldfeedNav.svelte';
   import { App } from '$lib/stores/app';
   import type { CloudinaryPhoto } from '$lib/zod/CloudinaryPhoto';
   import { onMount } from 'svelte';
@@ -82,9 +83,7 @@
 </svelte:head>
 
 <SiteHeader huddable>
-  <div slot="right">
-    <Button label="Sign in" on:click={() => ($App.sheet_id = 'onboarding')} />
-  </div>
+  <WorldfeedNav slot="nav" />
 </SiteHeader>
 <Main fullheight padded={false}>
   <div data-flex="v" data-gap="1" class="home">
