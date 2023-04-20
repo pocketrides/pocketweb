@@ -17,6 +17,9 @@
   import { z } from 'zod';
   import type { PageData } from './$types';
   import { writable } from 'svelte/store';
+  import GetLocation from './ui/GetLocation.svelte';
+  import type { WorldfeedLocation } from '$lib/zod/Worldfeed';
+  import { tick } from 'svelte';
 
   export let data: PageData;
 
@@ -24,18 +27,20 @@
   $: $App.fill = 'system-superlight';
 
   const form_validator = z.object({
-    c: z.string().min(1),
+    c: z.string(),
     s: z.string().max(2),
-    i: z.literal('US')
+    i: z.string().min(2).max(2)
   });
 
-  const form = writable<z.infer<typeof form_validator>>({
+  $: form = writable<z.infer<typeof form_validator>>({
     c: $page.url.searchParams.get('c') || '',
     s: $page.url.searchParams.get('s') || '',
     i: 'US'
   });
 
   $: valid = form_validator.safeParse($form).success;
+
+  let form_el: HTMLFormElement;
 
   const handleNewPocketClick = () => {
     if ($page.data.my_nametag) {
@@ -45,11 +50,36 @@
     }
   };
 
-  const handleSubmit = () => {};
+  const handleResetClick = async (e: MouseEvent) => {
+    e.preventDefault();
+
+    form.update((prev) => {
+      prev.c = '';
+      prev.s = '';
+      prev.i = 'US';
+
+      return prev;
+    });
+
+    await tick();
+
+    if (form_el) form_el.submit();
+  };
+
+  const handleLocationAdded = async (e: CustomEvent<WorldfeedLocation>) => {
+    $form.c = e.detail.city || '';
+    $form.s = e.detail.state || '';
+    $form.i = e.detail.country || '';
+
+    await tick();
+
+    if (form_el) form_el.submit();
+  };
 </script>
 
 <svelte:head>
   <title>Worldfeed | on Pocketrides!</title>
+  <meta property="og:title" content="Worldfeed" />
   <meta
     property="og:description"
     content="Explore the best content on Pocketrides."
@@ -105,42 +135,47 @@
     {/each}
   {/if}
   <UtilityNav slot="utility-nav">
-    <form slot="left" id="refine" method="get" action="/worldfeed">
-      <ButtonRow>
+    <form id="refine" method="get" action="/worldfeed" bind:this={form_el}>
+      <div data-button-row>
         <input
           type="search"
+          name="c"
           data-3d
           class="h3"
-          name="c"
           class:filled={$form.c.length > 0}
           bind:value={$form.c}
           placeholder="City"
         />
         <input
           type="search"
+          name="s"
           data-3d
           class="h3"
-          name="s"
-          class:filled={$form.s.length > 0 && $form.s.length < 3}
+          class:filled={$form.s.length > 0}
           bind:value={$form.s}
           placeholder="State"
         />
-        <input type="hidden" name="i" value="US" />
-      </ButtonRow>
-    </form>
-    <ButtonRow slot="right">
-      {#if $form.c.length || $form.s.length}
+        <GetLocation on:location={handleLocationAdded} />
         <Button
           type="reset"
           label=""
           icon="clear"
           large
           form="refine"
-          on:click={() => {}}
+          disabled={!valid}
+          on:click={handleResetClick}
         />
-      {/if}
-      <Button type="submit" label="" icon="keyboard_return" large form="refine" />
-    </ButtonRow>
+        <Button
+          type="submit"
+          label=""
+          icon="keyboard_return"
+          primary
+          form="refine"
+          disabled={!valid}
+        />
+        <input type="hidden" name="i" value="US" />
+      </div>
+    </form>
   </UtilityNav>
 </Main>
 
@@ -155,11 +190,20 @@
     }
   }
 
-  [name='c'] {
-    max-width: 10rem;
-  }
+  [data-button-row] {
+    input {
+      display: inline-flex;
+      flex-grow: 0;
+      width: 33%;
 
-  [name='s'] {
-    width: 5rem;
+      &[name='c'] {
+        flex-grow: 1;
+      }
+
+      &[name='s'] {
+        flex-grow: 0;
+        max-width: 5rem;
+      }
+    }
   }
 </style>

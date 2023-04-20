@@ -10,12 +10,12 @@ export const load = async (event) => {
         regionCode,
         country
       }: // @ts-ignore
-      { city: string; country: string; regionCode: string } = event.request.cf;
+      { city?: string; country?: string; regionCode?: string } = event.request.cf;
       const sp = new URLSearchParams();
 
-      sp.append('c', city);
-      sp.append('s', regionCode);
-      sp.append('i', country);
+      sp.append('c', city || '');
+      sp.append('s', regionCode || '');
+      sp.append('i', country || 'US');
 
       throw redirect(302, `/worldfeed?${sp.toString()}`);
     }
