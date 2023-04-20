@@ -155,7 +155,9 @@
           bind:value={$form.s}
           placeholder="State"
         />
-        <GetLocation on:location={handleLocationAdded} />
+        {#if $page.data.my_nametag}
+          <GetLocation on:location={handleLocationAdded} />
+        {/if}
         <Button
           type="reset"
           label=""
