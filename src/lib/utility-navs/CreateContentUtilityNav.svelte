@@ -71,13 +71,17 @@
           label="Bottom"
           {controller}
           on:click={() => {
+            const main = document.querySelector('main'),
+              util_nav = document.querySelector('[data-util-nav]');
+
+            if (!main || !util_nav) return;
+
             window.scrollTo({
               top:
-                (document.querySelector('main')?.offsetHeight || Infinity) -
-                window.innerHeight +
-                // @ts-ignore
-                (document.querySelector('[data-util-nav]')?.offsetHeight || 0) -
+                main.offsetTop +
+                main.offsetHeight -
                 16 -
+                window.innerHeight +
                 // @ts-ignore
                 (navigator.standalone ? 32 : 0),
               behavior: 'smooth'

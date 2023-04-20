@@ -184,7 +184,7 @@
   }
 
   [data-nav].huddable {
-    transform: translateY(calc(-110% - 85px));
+    transform: translateY(calc(-110% - 110px));
   }
 
   .huddable.hud {
@@ -192,7 +192,7 @@
   }
 
   .huddable.has_init {
-    transition: transform 0.35s ease-in-out;
+    transition: transform 0.15s ease-in-out;
   }
 
   header:has(~ [data-gallery]:not(:empty)) {

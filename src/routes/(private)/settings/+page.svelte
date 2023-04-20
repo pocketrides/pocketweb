@@ -15,6 +15,8 @@
   import { onMount } from 'svelte';
   import type { PageData } from './$types';
   import { trackGoal } from 'fathom-client';
+  import { IDBFeedCache } from '$lib/util/idb-feed-cache';
+  import { IDBCache } from '$lib/util/idb-cache';
 
   export let data: PageData;
 
@@ -134,7 +136,10 @@
           icon="logout"
           jumbo
           primary
-          on:click={() => {
+          on:click={async () => {
+            await IDBFeedCache.clear();
+            await IDBCache.clear();
+
             location.pathname = '/settings/sign-out';
           }}
         />
