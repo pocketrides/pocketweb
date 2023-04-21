@@ -44,7 +44,7 @@
 
 <svelte:head>
   <title>
-    {name_plaintext}, hosted by {$pocket.nametag.nametag} | on pocketrides!
+    {name_plaintext} hosted by {$pocket.nametag.nametag}
   </title>
   {#if og_image}
     <meta property="og:image" content={og_image} />

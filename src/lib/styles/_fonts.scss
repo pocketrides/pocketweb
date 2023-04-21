@@ -57,8 +57,12 @@ h3,
   font-size: 0.85rem !important;
 }
 
-*:has(> .nowraps) {
-  min-width: 0;
+[data-flex]:has(> .nowraps) {
+  flex-shrink: 1;
+  min-width: 1em;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
   max-width: 100%;
 }
 
@@ -67,7 +71,10 @@ h3,
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  width: 100%;
+  min-width: 1em;
+  flex-wrap: nowrap;
+  flex: 0 1 auto;
+  max-width: 100%;
 }
 
 [data-error] {

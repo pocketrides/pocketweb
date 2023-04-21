@@ -134,7 +134,11 @@
 </div>
 
 <style lang="scss">
-  header:has(~ [data-slot]:empty):has(~ [data-nav]:empty),
+  header
+    :has(~ [data-slot]:empty)
+    :has(~ [data-nav]:empty)
+    :not([data-fill='dark']):has(~ [data-gallery]:empty),
+  header:has(~ [data-gallery]:not(:empty)).safehud,
   [data-nav]:not(:empty),
   [data-gallery]:not(:empty) {
     border-bottom-left-radius: 1rem;
@@ -157,12 +161,12 @@
     border-bottom: 0 none;
     border-radius: 0;
     box-shadow: none;
-    margin-bottom: -1px;
   }
 
   header.utility {
     border-bottom-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
+    border-bottom: 1px solid rgba(var(--dark), 0.5) !important;
   }
 
   header.sticky,
@@ -216,6 +220,6 @@
   }
 
   [data-nav] :global(> .padded) {
-    padding-top: 0;
+    padding-top: 1px;
   }
 </style>
