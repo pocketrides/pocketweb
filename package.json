@@ -44,7 +44,7 @@
   "dependencies": {
     "@fontsource/dm-sans": "^4.5.9",
     "@magicbell/core": "^5.0.3",
-    "@material-symbols/font-400": "^0.5.5",
+    "@material-symbols/font-500": "^0.5.5",
     "@sentry/svelte": "^7.46.0",
     "awesome-phonenumber": "^5.3.0",
     "dompurify": "^3.0.1",
