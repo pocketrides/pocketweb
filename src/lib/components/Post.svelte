@@ -46,7 +46,7 @@
   let summary: HTMLDivElement;
   $: can_read_more =
     summary &&
-    summary.getBoundingClientRect().height > 110 &&
+    summary.getBoundingClientRect().height >= 108 &&
     $post_controller?.contents?.length === 1;
 
   $: should_be_hidden = $post_controller
@@ -386,22 +386,21 @@
 <style lang="scss">
   .summary-wrapper {
     position: relative;
-    overflow: hidden;
 
-    .summary {
-      font-size: 1.125rem;
+    &:not([data-expanded='true']),
+    &:not([data-expanded='true']) .summary {
       display: -webkit-box;
       overflow: hidden;
       -webkit-line-clamp: 4;
       -webkit-box-orient: vertical;
-      max-height: 6.49rem;
+
+      & .summary {
+        max-height: 108px;
+      }
     }
 
-    &[data-expanded='true'] {
-      .summary {
-        max-height: none;
-        -webkit-line-clamp: unset;
-      }
+    .summary {
+      font-size: 1.125rem;
     }
   }
 
