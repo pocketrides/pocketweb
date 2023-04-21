@@ -1,6 +1,6 @@
 <script lang="ts">
   import '$lib/styles/global.scss';
-  import 'material-symbols/rounded.scss';
+  import '@material-symbols/font-400/rounded.scss';
 
   import { browser } from '$app/environment';
   import { afterNavigate, beforeNavigate } from '$app/navigation';
