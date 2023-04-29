@@ -29,8 +29,8 @@
           So we can hang out more, show up for each other when it matters, and share
           our creativity in a whole new way.
         </h2>
-      </h2></Container
-    >
+      </h2>
+    </Container>
     <Container>
       <div data-flex="v" data-gap>
         <p>

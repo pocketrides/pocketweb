@@ -23,6 +23,7 @@
   import PostModResult from './PostModResult.svelte';
   import Row from './Row.svelte';
   import { formatWorldfeedLocation, getWorldfeedLink } from '$lib/util/worldfeed';
+  import { goto } from '$app/navigation';
 
   export let post_id: string | undefined = undefined;
   export let post: ServerPost | undefined = undefined;
@@ -189,6 +190,12 @@
       $replies_loading = false;
     }
   };
+
+  const summaryClick = (e: MouseEvent) => {
+    if (e.target && (e.target as HTMLElement).nodeName !== 'A') {
+      goto(`/post/${$post_controller.id}`);
+    }
+  };
 </script>
 
 {#if wrapper_mode}
@@ -266,7 +273,13 @@
       >
         <div data-flex="v">
           <div class="summary-wrapper" data-expanded={$is_expanded} data-padded>
-            <div class="summary" data-richtext bind:this={summary}>
+            <!-- svelte-ignore a11y-click-events-have-key-events -->
+            <div
+              class="summary"
+              data-richtext
+              bind:this={summary}
+              on:click={summaryClick}
+            >
               {@html $post_controller.contents[0].content}
             </div>
             {#if can_read_more}

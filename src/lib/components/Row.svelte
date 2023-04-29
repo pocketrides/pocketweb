@@ -23,11 +23,7 @@
   .sticky {
     position: sticky;
     z-index: 15;
-    top: 0;
-  }
-
-  :global([data-standalone='true']) .sticky {
-    position: relative;
+    top: env(safe-area-inset-top);
   }
 
   .padded {

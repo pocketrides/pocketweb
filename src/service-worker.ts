@@ -5,8 +5,6 @@
 
 const sw = self as unknown as ServiceWorkerGlobalScope;
 
-importScripts('https://assets.magicbell.io/web-push-notifications/sw.js');
-
 import { build, files, version } from '$service-worker';
 
 // Create a unique cache name for this deployment

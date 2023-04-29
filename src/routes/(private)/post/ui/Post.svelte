@@ -15,6 +15,7 @@
   import { nanoid } from 'nanoid';
   import { writable } from 'svelte/store';
   import type { PageControllerStore } from './types';
+  import { Photos } from '$lib/stores/gallery';
 
   export let store: PageControllerStore;
   export let post: DraftPostContent;
@@ -97,7 +98,16 @@
   {#if post.photos.length}
     <div class="photos-wrapper" data-flex="scroll-h" data-gap>
       {#each post.photos as photo (photo)}
-        <CloudinaryPreview {photo} on:delete={handleDeletePhoto} />
+        <CloudinaryPreview
+          {photo}
+          on:delete={handleDeletePhoto}
+          on:click={() => {
+            $Photos = {
+              photos: post.photos,
+              selected: photo
+            };
+          }}
+        />
       {/each}
     </div>
   {/if}

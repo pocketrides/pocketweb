@@ -53,6 +53,10 @@ h3,
   font-weight: 300;
 }
 
+.strong {
+  font-weight: bold;
+}
+
 .small:not(button) {
   font-size: 0.85rem !important;
 }
@@ -78,9 +82,12 @@ h3,
 }
 
 [data-error] {
-  margin-top: 1rem;
-  font-weight: bold;
-  background-color: rgba(var(--system-base), 0.25);
   border-radius: 0.25rem;
   padding: 0.5rem;
+
+  &:not([data-fill]) {
+    margin-top: 1rem;
+    font-weight: bold;
+    background-color: rgba(var(--system-base), 0.25);
+  }
 }

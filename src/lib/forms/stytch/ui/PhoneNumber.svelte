@@ -6,6 +6,7 @@
   import Select from '$lib/components/Select.svelte';
   import { type SheetContext, SHEET_CONTEXT_ID } from '$lib/contexts/Sheet';
   import { App } from '$lib/stores/app';
+  import { is_standalone } from '$lib/util/is-standalone';
   import { AVAILABLE_COUNTRIES } from '$lib/zod/Stytch';
   import { parsePhoneNumber } from 'awesome-phonenumber';
   import { afterUpdate, createEventDispatcher, getContext, onMount } from 'svelte';
@@ -22,9 +23,6 @@
 
   let e164: string | undefined;
   let type: 'sms' | 'whatsapp' = 'sms';
-
-  // @ts-ignore
-  let is_standalone = navigator.standalone === true;
 
   onMount(() => {
     $context.icon = 'hail';
@@ -69,6 +67,19 @@
     </Container>
     <div data-flex="v as" data-gap>
       <h2>Sign in</h2>
+      {#if is_standalone === false}
+        <div data-flex="v as" data-error data-fill="base">
+          <p class="small">Get the app:</p>
+          <a
+            href="#app"
+            class="small h3"
+            on:click|preventDefault={() => {
+              $App.sheet_id = 'app_help';
+            }}>Add to Home Screen</a
+          >
+        </div>
+      {/if}
+
       <label class="h3" for="phone">Enter your phone number:</label>
       <ButtonRow>
         <Select bind:value={regionCode} autocomplete="tel-country-code" collapse>
@@ -93,17 +104,6 @@
       {/if}
     </div>
   </div>
-  {#if is_standalone === false}
-    <p>
-      It's faster with the app. <a
-        href="#app"
-        class="h3"
-        on:click|preventDefault={() => {
-          $App.sheet_id = 'app_help';
-        }}>Add to Home Screen.</a
-      >
-    </p>
-  {/if}
   <p class="half" data-ph>
     <small>
       By continuing, you agree to the

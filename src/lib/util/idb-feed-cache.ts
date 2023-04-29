@@ -27,13 +27,7 @@ export class IDBFeedCache {
     });
   }
 
-  static async #close(a: any) {
-    try {
-      if (this.#db) {
-        this.#db.close();
-      }
-    } catch (e) {}
-  }
+  static async #close(a: any) {}
 
   static async save(post_ids: string[]): Promise<undefined> {
     return new Promise(async (resolve) => {

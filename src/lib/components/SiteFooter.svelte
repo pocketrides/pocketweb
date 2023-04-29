@@ -6,7 +6,7 @@
   const year = new Date().getFullYear();
 </script>
 
-<footer>
+<footer data-fill="dark">
   <Container>
     <div data-flex="v" data-gap="1" data-padded="v">
       <div data-flex="v" data-gap>
@@ -27,6 +27,7 @@
         </p>
       </div>
       <div data-flex="v" data-gap>
+        <div class="h3 half"><a href="/unlimited">For Organizations</a></div>
         <div class="h3 half"><a href="/privacy-policy">Privacy Policy</a></div>
         <div class="h3 half"><a href="/terms-of-use">Terms of Use</a></div>
         <div class="h3 half"><a href="/help">Contact us</a></div>

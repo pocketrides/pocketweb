@@ -11,6 +11,7 @@
   import { onMount } from 'svelte';
   import ButtonRow from './ButtonRow.svelte';
   import { afterNavigate, beforeNavigate } from '$app/navigation';
+  import { is_standalone } from '$lib/util/is-standalone';
 
   export let sticky: boolean = false;
   export let utility: boolean = false;
@@ -22,19 +23,25 @@
   let hud = false;
   let safehud = false;
 
+  const SCROLL_MIN = 110;
+
   const checkForScrollingUp = () => {
     if (!huddable) return;
-    if (!has_init) return;
+    if (!has_init) {
+      hud = true;
+      safehud = true;
+      return;
+    }
     const start_y = window.scrollY;
     let header_height = document.querySelector('main')?.offsetTop || 640;
     if (start_y < header_height) hud = true;
     if (interval_id) return;
     clearInterval(interval_id);
     interval_id = setTimeout(() => {
-      if (start_y > window.scrollY || window.scrollY < 100) hud = true;
+      if (start_y > window.scrollY || window.scrollY < SCROLL_MIN) hud = true;
 
       hud = window.scrollY < header_height || window.scrollY < start_y;
-      safehud = window.scrollY > 110;
+      safehud = window.scrollY > SCROLL_MIN;
 
       clearInterval(interval_id);
       interval_id = undefined;
@@ -43,6 +50,7 @@
 
   onMount(() => {
     if (huddable) {
+      hud = true;
       setTimeout(() => {
         has_init = true;
       }, 500);
@@ -72,6 +80,9 @@
 
 <svelte:window on:scroll={checkForScrollingUp} />
 
+{#if is_standalone}
+  <div class="clipper" data-fill={fill} />
+{/if}
 <header
   data-fill={fill}
   class:utility
@@ -144,10 +155,12 @@
     padding-top: env(safe-area-inset-top);
   }
 
-  header
-    :has(~ [data-slot]:empty)
-    :has(~ [data-nav]:empty)
-    :not([data-fill='dark']):has(~ [data-gallery]:empty),
+  header:has(~ [data-slot]:empty):has(~ [data-nav]:empty):has(
+      ~ [data-gallery]:empty
+    ),
+  header:not([data-fill='dark']):has(~ [data-gallery]:empty):has(
+      ~ [data-nav]:empty
+    ):has(~ [data-slot]:empty),
   header:has(~ [data-gallery]:not(:empty)).safehud,
   [data-nav]:not(:empty),
   [data-gallery]:not(:empty) {
@@ -231,5 +244,19 @@
 
   [data-nav] :global(> .padded) {
     padding-top: 1px;
+  }
+
+  .clipper {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: env(safe-area-inset-top);
+    z-index: 35;
+
+    &:has(~ [data-gallery]:not(:empty)) {
+      &:has(~ header:not(.safehud)) {
+        opacity: 0;
+      }
+    }
   }
 </style>

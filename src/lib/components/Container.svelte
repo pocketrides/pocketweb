@@ -35,7 +35,7 @@
     padding: 1rem;
   }
 
-  .padded + :global(.padded) {
+  .padded + :global(.padded[data-fill='none']) {
     padding-top: 0;
   }
 
@@ -61,6 +61,16 @@
   .rounded {
     border-radius: 1rem;
     overflow: hidden;
+
+    &:has(+ .rounded) {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  }
+
+  .rounded :global(+ .rounded) {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
   }
 
   .bordered {

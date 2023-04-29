@@ -27,6 +27,11 @@ dd {
   margin: 0;
 }
 
+hr {
+  border-color: rgba(var(--black), 0.5);
+  border-bottom: 0 none;
+}
+
 ul,
 ol {
   margin: 1rem;

@@ -139,8 +139,10 @@
     <Container>
       <h2>
         Start with a Pocket.
-        <span class="half"> Already have a poster? Attach it! </span>Add everything
-        your group needs to know: time, place, details and links.
+        <span class="half"
+          >Add everything your group needs to know: time, place, details and links.
+          Have your own poster? Yeah we support that.</span
+        >
       </h2>
     </Container>
     <Container padded={false} fill="system-superlight">
@@ -173,8 +175,8 @@
       <h2>
         Share everything that happens in one single place.
         <span class="half"
-          >With a group chat and feed, everyone has a place to share the recap. All
-          your event's pics, in one place!</span
+          >With a group chat and feed, everyone has a place to share the recap.
+          Imagine that, all your event's pics in one place.</span
         >
       </h2>
     </Container>
@@ -185,17 +187,24 @@
       <h2>
         Just like that, your own digital space.
         <span class="half"
-          >Want to keep it going? Whether your plans are weekly or just for one
-          night, it's all in your Pocket, forever.
+          >Want to keep it going? Whether your plans are every week or just for one
+          night, it's there whenever you need it.
         </span>
       </h2>
     </Container>
     <Container>
       <Container rounded fill="base">
         <h2>Unlimited is $5/mo.</h2>
+        <h3>
+          Make one Pocket for free and join up to three, no subscription required.
+        </h3>
+      </Container>
+      <Container rounded fill="superdark">
+        <h2>Using Pocketrides as a business or organization?</h2>
         <h3 class="half">
-          Otherwise, make one Pocket free and join up to three, no subscription
-          required.
+          We think you'll love Nametag Collab. <a href="/unlimited"
+            >See how to get started</a
+          >.
         </h3>
       </Container>
     </Container>

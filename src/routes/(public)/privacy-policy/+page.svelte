@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Icon from '$lib/components/Icon.svelte';
   import Main from '$lib/components/Main.svelte';
   import SiteHeader from '$lib/components/SiteHeader.svelte';
   import { App } from '$lib/stores/app';
@@ -13,9 +14,12 @@
 
 <SiteHeader huddable />
 <Main fullheight>
-  <div data-flex="v" data-gap>
+  <div data-flex="v" data-gap="1">
     <div>
-      <h1 class="h2">Privacy Policy</h1>
+      <h1 data-ph>
+        <Icon icon="privacy_tip" />
+        Privacy Policy
+      </h1>
       <h2 class="h3">Last updated: March 30th, 2023</h2>
     </div>
     <article data-richtext>

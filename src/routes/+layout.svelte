@@ -27,6 +27,7 @@
   import { HomepageHelper } from '$lib/util/homepage';
   import OutOfLikes from '$lib/sheets/OutOfLikes.svelte';
   import * as Fathom from 'fathom-client';
+  import AppHelp from '$lib/sheets/AppHelp.svelte';
 
   let started: boolean = false;
   let client: MagicBellClient;
@@ -157,3 +158,4 @@
 
 <PostReplies />
 <Photos />
+<AppHelp />

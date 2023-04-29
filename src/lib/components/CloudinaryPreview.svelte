@@ -28,7 +28,8 @@
     </div>
     <FloatButton icon="delete" on:click={deleteClick} />
   </FloatButtonContainer>
-  <div data-3d data-flex="cc">
+  <!-- svelte-ignore a11y-click-events-have-key-events -->
+  <div data-3d data-flex="cc" on:click>
     <CloudinaryImg {photo} square />
   </div>
 </div>

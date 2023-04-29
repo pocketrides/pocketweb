@@ -26,11 +26,7 @@ export class IDBCache {
     });
   }
 
-  static async #close(a: any) {
-    try {
-      if (this.#db) this.#db.close();
-    } catch (e) {}
-  }
+  static async #close(a: any) {}
 
   static async get<T>(id: string): Promise<T | undefined> {
     return new Promise(async (resolve) => {
