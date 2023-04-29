@@ -1,12 +1,16 @@
 <script lang="ts">
+  import { page } from '$app/stores';
   import Button from '$lib/components/Button.svelte';
   import Container from '$lib/components/Container.svelte';
   import Gallery from '$lib/components/Gallery.svelte';
+  import Icon from '$lib/components/Icon.svelte';
   import Logo from '$lib/components/Logo.svelte';
   import Main from '$lib/components/Main.svelte';
+  import Sheet from '$lib/components/Sheet.svelte';
   import SiteHeader from '$lib/components/SiteHeader.svelte';
   import UtilityNav from '$lib/components/UtilityNav.svelte';
   import WorldfeedNav from '$lib/components/worldfeed/WorldfeedNav.svelte';
+  import Subscription from '$lib/forms/subscription/Subscription.svelte';
   import { App } from '$lib/stores/app';
   import type { CloudinaryPhoto } from '$lib/zod/CloudinaryPhoto';
   import { onMount } from 'svelte';
@@ -80,27 +84,37 @@
 
 <svelte:head>
   <title>welcome welcome! it's pocketrides!</title>
+  <meta
+    name="description"
+    content="A place for groups of all sizes to plan things together."
+  />
 </svelte:head>
 
 <SiteHeader huddable>
   <WorldfeedNav slot="nav" />
 </SiteHeader>
 <Main fullheight padded={false}>
-  <div data-flex="v" data-gap="1" class="home">
+  <div data-flex="v" data-gap="1">
     <Container>
       <Container rounded fill="system-superlight">
         <div class="card" data-flex="ae">
           <div data-flex="v">
-            <h1 class="jumbo" data-flex="v">
+            <h1 data-flex="v">
               {#if ready}
                 <span in:fly|local={{ y: 50, duration: 550 }}>
                   <Logo />
                 </span>
-                <span in:fly|local={{ y: 50, duration: 550, delay: 75 }}>
-                  The place
+                <span
+                  class="half"
+                  in:fly|local={{ y: 50, duration: 550, delay: 75 }}
+                >
+                  Hello hello! You&rsquo;re on
                 </span>
-                <span in:fly|local={{ y: 50, duration: 550, delay: 150 }}>
-                  to be you again.
+                <span
+                  class="jumbo"
+                  in:fly|local={{ y: 50, duration: 550, delay: 75 }}
+                >
+                  Pocketrides<em>!</em>
                 </span>
               {/if}
             </h1>
@@ -110,23 +124,23 @@
     </Container>
     <Container>
       <h2>
-        A social network for the next generation:
-        <span class="half">
-          plan anything, share everything, get paid along the way.
-        </span>
+        The next generation social platform for planning, sharing, and doing. <span
+          class="half"
+          >Scroll down to see how it works <Icon
+            icon="arrow_downward"
+            inline
+          /></span
+        >
       </h2>
-      <h2>Welcome to Pocketrides<em>!</em></h2>
     </Container>
     <Container padded={false} fill="system-superlight">
       <Gallery contain square={false} photos={pockets} />
     </Container>
     <Container>
       <h2>
-        Plan anything in a Pocket.
-        <span class="half">
-          Way better than DMs or a group chat. It's a central place for planning
-          anything - and sharing the recap.
-        </span>
+        Start with a Pocket.
+        <span class="half"> Already have a poster? Attach it! </span>Add everything
+        your group needs to know: time, place, details and links.
       </h2>
     </Container>
     <Container padded={false} fill="system-superlight">
@@ -134,10 +148,10 @@
     </Container>
     <Container>
       <h2>
-        Share everything in a Post.
+        List it in your town, or search where you're going.
         <span class="half">
-          Stop typing in tiny text boxes. Enjoy a composer that's as flexible as you
-          need: share links, photos, or write something longer.
+          Share great community events on Worldfeed, so everyone searching can find
+          it and join too.
         </span>
       </h2>
     </Container>
@@ -146,61 +160,109 @@
     </Container>
     <Container>
       <h2>
-        Get paid along the way.
+        Invite everyone, it's free to join.
         <span class="half">
-          Look, it's hard to make good content. On Pocketrides, each like you get
-          (and give) is worth a cent. That means 500 likes is $5.00.
+          Now you have one place to manage questions or push out updates.</span
+        > Share the link on other platforms or send it straight to your group DM.
+      </h2>
+    </Container>
+    <Container padded={false} fill="system-superlight">
+      <Gallery contain square={false} photos={get_paid} />
+    </Container>
+    <Container>
+      <h2>
+        Share everything that happens in one single place.
+        <span class="half"
+          >With a group chat and feed, everyone has a place to share the recap. All
+          your event's pics, in one place!</span
+        >
+      </h2>
+    </Container>
+    <Container padded={false} fill="system-superlight">
+      <Gallery contain square={false} photos={get_paid} />
+    </Container>
+    <Container>
+      <h2>
+        Just like that, your own digital space.
+        <span class="half"
+          >Want to keep it going? Whether your plans are weekly or just for one
+          night, it's all in your Pocket, forever.
         </span>
       </h2>
     </Container>
     <Container>
-      <Container padded rounded fill="system-superlight">
-        <div data-flex="v as" data-gap>
-          <div>
-            <h2>Coming soon: Pocketchange</h2>
-            <h2 class="half">Let's raise a billion dollars for climate action.</h2>
-          </div>
-          <Button
-            label="Read the thesis"
-            href="https://pocketrides.com/post/360661931087888461"
-          />
-        </div>
+      <Container rounded fill="base">
+        <h2>Unlimited is $5/mo.</h2>
+        <h3 class="half">
+          Otherwise, make one Pocket free and join up to three, no subscription
+          required.
+        </h3>
       </Container>
+    </Container>
+    <Container>
+      <div data-flex="v as" data-gap="1">
+        <div>
+          <h2 class="half">Oh, and one more thing:</h2>
+          <h2>
+            Take care of your community and help it to thrive. When you give out a
+            like, it&rsquo;s worth cash on Pocketrides.
+          </h2>
+        </div>
+        <Button
+          label="Read more"
+          on:click={() => {
+            $App.sheet_id = 'creator_program';
+          }}
+        />
+      </div>
     </Container>
   </div>
   <UtilityNav slot="utility-nav">
     <div slot="left">
-      <Button
-        label="Get free account"
-        icon="hail"
-        system
-        on:click={() => ($App.sheet_id = 'onboarding')}
-      />
+      {#if !$page.data.my_nametag}
+        <Button
+          label="Get free account"
+          icon="hail"
+          system
+          on:click={() => ($App.sheet_id = 'onboarding')}
+        />
+      {:else}
+        <Button
+          label="Go back"
+          icon="arrow_back_ios"
+          on:click={() => history.go(-1)}
+        />
+      {/if}
     </div>
   </UtilityNav>
 </Main>
 
+<Sheet id="creator_program" header="How Likes work" icon="favorite" icon_filled>
+  <Subscription
+    on:complete={() => {
+      $App.sheet_id = '';
+    }}
+  />
+</Sheet>
+
 <style lang="scss">
-  .home {
-    h1,
-    h2 {
-      color: rgb(var(--dark));
-    }
-
-    .half {
-      color: rgba(var(--dark), 0.75);
-    }
-  }
-
   .card {
-    aspect-ratio: 9/16;
-    max-height: 420px;
+    aspect-ratio: 4/3;
+    max-height: 240px;
     width: 100%;
     position: relative;
+
+    @media (min-width: 640px) {
+      max-height: 400px;
+    }
 
     > *:not(img) {
       position: relative;
       z-index: 1;
+    }
+
+    [data-flex='v'] {
+      width: 100%;
     }
   }
 </style>

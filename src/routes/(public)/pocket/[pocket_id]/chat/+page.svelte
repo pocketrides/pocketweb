@@ -96,18 +96,21 @@
   };
 
   const scrollToBottom = () => {
-    const main = document.querySelector('main');
-    if (!main) return;
+    const scroll_target = document.querySelector(
+      '[data-message-composer]'
+    ) as HTMLElement;
 
-    window.scrollTo({
-      top:
-        (main.offsetTop + main.clientHeight || Infinity) -
-        window.innerHeight -
-        16 -
-        // @ts-ignore
-        (navigator.standalone ? 32 : 0),
-      behavior: 'smooth'
-    });
+    if (scroll_target) {
+      scrollToEnhanced(() => {
+        window.scrollTo(
+          0,
+          scroll_target.offsetTop +
+            scroll_target.offsetHeight +
+            (window.innerWidth >= 640 ? 68 : 0) -
+            (window.visualViewport?.height || window.innerHeight)
+        );
+      });
+    }
   };
 </script>
 

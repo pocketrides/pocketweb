@@ -357,7 +357,7 @@
               {/if}
             {/if}
             <div data-flex data-gap>
-              {#if $page.data.my_nametag?.stripe?.has_sub === true}
+              {#if $post_controller.is_quarantined || $page.data.my_nametag?.stripe?.has_sub === true}
                 <Button label="Tap to show" superdark on:click={showPost} />
                 {#if $post_controller.settings.is_nsfw}
                   <Button

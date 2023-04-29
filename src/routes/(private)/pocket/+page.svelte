@@ -387,7 +387,11 @@
       </p>
     </div>
     {#if $page_controller.settings.visibility === 'listed'}
-      <AddToWorldfeed {page_controller} />
+      {#if $page.data.my_nametag?.stripe?.has_sub === true}
+        <AddToWorldfeed {page_controller} />
+      {:else}
+        <p class="half">Post to Worldfeed with a subscription.</p>
+      {/if}
     {/if}
     {#if typeof data.editing_pocket_id === 'undefined'}
       <Button

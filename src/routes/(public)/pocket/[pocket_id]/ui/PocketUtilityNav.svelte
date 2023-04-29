@@ -100,9 +100,7 @@
               top:
                 (main.offsetTop + main.clientHeight || Infinity) -
                 window.innerHeight -
-                16 -
-                // @ts-ignore
-                (navigator.standalone ? 32 : 0),
+                16,
               behavior: 'smooth'
             });
 
@@ -177,9 +175,7 @@
                 top:
                   (main.offsetTop + main.clientHeight || Infinity) -
                   window.innerHeight -
-                  16 -
-                  // @ts-ignore
-                  (navigator.standalone ? 32 : 0),
+                  16,
                 behavior: 'smooth'
               });
 
@@ -230,9 +226,7 @@
                 top:
                   (main.offsetTop + main.clientHeight || Infinity) -
                   window.innerHeight -
-                  16 -
-                  // @ts-ignore
-                  (navigator.standalone ? 32 : 0),
+                  16,
                 behavior: 'smooth'
               });
 
@@ -248,33 +242,33 @@
     <div slot="left">
       {#if $pocket.settings.joinability === 'anyone'}
         <div data-flex="v as" data-gap>
-          {#if $page.data.my_nametag === undefined}
-            <div>
-              <p class="h3">
-                You're on Pocketrides! <strong class="half">Hello!</strong>
-              </p>
-              <p>
-                This is a self-contained social network for whatever your {plural(
-                  $pocket.hosts.length + 1,
-                  'friend has',
-                  'friends have',
-                  false
-                )}
-                planned. It's free to join with a Pocketrides account.
-              </p>
-            </div>
-          {/if}
-          <Button
-            label={$joining
-              ? 'One sec!'
-              : $page.data.my_nametag
-              ? 'Join'
-              : 'Sign up or Sign in'}
-            disabled={$joining}
-            icon="hail"
-            primary
-            on:click={joinClick}
-          />
+          <div>
+            <p class="h3">
+              You're on Pocketrides! <strong class="half">Hello!</strong>
+            </p>
+          </div>
+          <ButtonRow let:controller initial="join">
+            <Button
+              id="join"
+              label={$joining
+                ? 'One sec!'
+                : $page.data.my_nametag
+                ? 'Join Pocket'
+                : 'Sign up or Sign in'}
+              disabled={$joining}
+              icon="hail"
+              primary
+              {controller}
+              on:click={joinClick}
+            />
+            <Button
+              {controller}
+              label="What is this?"
+              icon="help"
+              href="/?help=1"
+              large
+            />
+          </ButtonRow>
         </div>
       {:else if $pocket.settings.joinability === 'moderated'}
         <Button

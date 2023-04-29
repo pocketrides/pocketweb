@@ -26,6 +26,10 @@
     top: 0;
   }
 
+  :global([data-standalone='true']) .sticky {
+    position: relative;
+  }
+
   .padded {
     padding: 0.5rem 1rem;
   }

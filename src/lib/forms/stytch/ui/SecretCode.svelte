@@ -6,6 +6,7 @@
   import { secret_code_validator } from '$lib/zod/Stytch';
   import { type SheetContext, SHEET_CONTEXT_ID } from '$lib/contexts/Sheet';
   import { STYTCH_CONTEXT_ID, type StytchContext } from '$lib/contexts/Stytch';
+  import Container from '$lib/components/Container.svelte';
 
   const dispatch = createEventDispatcher();
   const submitting = writable(false);
@@ -44,14 +45,17 @@
   };
 </script>
 
-<form data-flex="v" data-gap on:submit|preventDefault={handleSubmit}>
-  <div>
-    <h2>We sent you a secret code.</h2>
-    <p>Enter it now to confirm it's really you.</p>
-  </div>
+<form data-flex="v" data-gap="1" on:submit|preventDefault={handleSubmit}>
+  <Container rounded fill="system-superlight">
+    <div>
+      <h3>We sent you a verification code.</h3>
+      <p>Enter it below to confirm your identity.</p>
+    </div>
+  </Container>
   <div data-flex="v as" data-gap>
+    <h2>Verification code</h2>
     <div data-flex="v as">
-      <label class="h2" for="secret-code">Secret code:</label>
+      <label class="h3" for="secret-code">Enter the six-digit code:</label>
       <input
         id="secret-code"
         class="h3"
@@ -61,13 +65,7 @@
         data-3d
       />
     </div>
-    <p class="half small">
-      Didn't get a code? <a
-        href="#reset"
-        class="h3 small"
-        on:click|preventDefault={startOverClick}>Start over</a
-      >.
-    </p>
+
     {#if valid === false && code !== ''}
       <label for="secret-code" data-error>That doesn't look right.</label>
     {/if}
@@ -78,7 +76,14 @@
       </label>
     {/if}
   </div>
-  <div data-flex data-gap>
+  <div data-flex="v as" data-gap data-ph>
+    <p class="half small">
+      Didn't get a message? <a
+        href="#reset"
+        class="h3 small"
+        on:click|preventDefault={startOverClick}>Start over</a
+      >.
+    </p>
     <Button
       type="submit"
       label={$submitting ? 'One sec!' : 'Continue…'}

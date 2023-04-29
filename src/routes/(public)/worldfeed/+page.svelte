@@ -80,10 +80,7 @@
 <svelte:head>
   <title>Worldfeed | on Pocketrides!</title>
   <meta property="og:title" content="Worldfeed" />
-  <meta
-    property="og:description"
-    content="Explore the best content on Pocketrides."
-  />
+  <meta property="og:description" content="The best content on Pocketrides." />
 </svelte:head>
 
 <SiteHeader huddable>

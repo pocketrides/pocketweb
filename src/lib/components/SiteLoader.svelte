@@ -39,4 +39,8 @@
       animation: 1s loader infinite ease-in-out;
     }
   }
+
+  :global([data-standalone='true']) .loader {
+    top: env(safe-area-inset-top);
+  }
 </style>

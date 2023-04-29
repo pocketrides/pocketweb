@@ -24,6 +24,7 @@
 
   const checkForScrollingUp = () => {
     if (!huddable) return;
+    if (!has_init) return;
     const start_y = window.scrollY;
     let header_height = document.querySelector('main')?.offsetTop || 640;
     if (start_y < header_height) hud = true;
@@ -41,12 +42,10 @@
   };
 
   onMount(() => {
-    checkForScrollingUp();
-
     if (huddable) {
       setTimeout(() => {
         has_init = true;
-      }, 1);
+      }, 500);
     }
   });
 
@@ -56,7 +55,7 @@
       hud = true;
       setTimeout(() => {
         has_init = true;
-      }, 1);
+      }, 500);
     }
   });
 
@@ -66,8 +65,7 @@
       hud = true;
       setTimeout(() => {
         has_init = true;
-      }, 1);
-      checkForScrollingUp();
+      }, 500);
     }
   });
 </script>
@@ -100,19 +98,27 @@
               }}
             />
             {#if $page.url.pathname === `/profile/${$page.data.my_nametag.id}`}
-              <Button href="/settings" label="Settings" icon="settings_suggest" />
+              <Button
+                href="/settings"
+                label="Settings"
+                icon="settings_suggest"
+                primary
+                small
+              />
             {:else}
               <Nametag nametag={$page.data.my_nametag} />
             {/if}
           {:else}
             <ButtonRow>
               <Button
-                label="Sign in"
+                label="Sign up"
+                primary
+                small
+                icon="hail"
                 on:click={() => ($App.sheet_id = 'onboarding')}
               />
               <Button
-                label="Get account"
-                primary
+                label="Sign in"
                 small
                 on:click={() => ($App.sheet_id = 'onboarding')}
               />
@@ -134,6 +140,10 @@
 </div>
 
 <style lang="scss">
+  header {
+    padding-top: env(safe-area-inset-top);
+  }
+
   header
     :has(~ [data-slot]:empty)
     :has(~ [data-nav]:empty)
@@ -179,7 +189,7 @@
   [data-nav].sticky,
   [data-nav].huddable {
     position: sticky;
-    top: 92px;
+    top: calc(92px + env(safe-area-inset-top));
     z-index: 38;
   }
 
@@ -188,7 +198,7 @@
   }
 
   [data-nav].huddable {
-    transform: translateY(calc(-110% - 110px));
+    transform: translateY(calc(-110% - 92px - env(safe-area-inset-top)));
   }
 
   .huddable.hud {

@@ -4,6 +4,7 @@
   import { createEventDispatcher } from 'svelte';
   import { writable } from 'svelte/store';
   import { trackGoal } from 'fathom-client';
+  import { page } from '$app/stores';
 
   const dispatch = createEventDispatcher();
 
@@ -19,42 +20,55 @@
   };
 </script>
 
-<div data-flex="v" data-gap>
-  <Container rounded bordered fill="system-superlight">
-    <div data-flex="v cc" data-gap="1">
-      <div data-flex="v as" data-gap>
-        <h2>How Subscriptions work</h2>
+<div data-flex="v" data-gap="1">
+  <div data-flex="v" data-gap>
+    <Container rounded fill="system-superlight">
+      <h2>
+        We're building a safe place online, for everyone in our communities.
+        <h2 class="half">
+          So we can hang out more, show up for each other when it matters, and share
+          our creativity in a whole new way.
+        </h2>
+      </h2></Container
+    >
+    <Container>
+      <div data-flex="v" data-gap>
         <p>
-          <strong>Subscriptions are $5/month.</strong> Every month, you'll have 250 likes
-          to give out to great content you see on Pocketrides.
+          <strong>Unfortunately, social media is here to stay.</strong> Our contribution
+          to everyone doing the hard work of organizing, creating, and curating? On Pocketrides,
+          the like button earns you a cent.
         </p>
         <p>
-          <strong>Every three months,</strong> we'll ask what to do with your share of
-          Pocketrides' profits: make a donation to fight climate change, or transfer to
-          your bank account. If we've done our math right, it'll be about $3 every quarter.
+          Earning money from what you share online creates a great incentive for
+          everyone on Pocketrides to post thoughtful, quality content. (And having a
+          new way to make money from the time you put into your side project, hobby,
+          or organization sounds awesome.)
         </p>
+        <h2>On Pocketrides, 500 likes is $5.00 in your pocket.</h2>
         <p>
-          <strong>In the meantime,</strong> we won't show you ads or sell your data.
-          <strong>Ever.</strong>
+          Only subscribers can give out likes (a cent at a time, of course), and we'd
+          encourage you to consider subscribing: taking care of each other and where
+          we live, in small ways every day, is how we build a thriving world that
+          works for everyone.
         </p>
       </div>
-      <div class="wrapper" data-flex="v cc" data-gap="1">
-        <Button
-          label={$loading ? 'Sending you to Stripe…' : 'Subscribe for $5/mo'}
-          disabled={$loading}
-          href="/_/stripe/pay"
-          on:click={subscribeClick}
-          primary
-          xlarge
-        />
-        <Button label="No thanks!" on:click={noThanksClick} />
-      </div>
+    </Container>
+  </div>
+  {#if $page.data.my_nametag}
+    <div data-ph data-flex="v cc" data-gap="1">
+      <Button
+        label={$loading ? 'Sending you to Stripe…' : 'Subscribe for $5/mo'}
+        disabled={$loading}
+        href="/_/stripe/pay"
+        on:click={subscribeClick}
+        primary
+        xlarge
+      />
+      <Button label="No thanks!" on:click={noThanksClick} />
     </div>
-  </Container>
+  {:else}
+    <div data-flex="v cc">
+      <Button label="Got it!" on:click={noThanksClick} />
+    </div>
+  {/if}
 </div>
-
-<style lang="scss">
-  .wrapper {
-    margin: 3rem 0;
-  }
-</style>

@@ -166,4 +166,8 @@
   button[data-fill='superdark'] {
     color: rgb(var(--base));
   }
+
+  button.transparent:active {
+    transform: translate(-1px, 1px);
+  }
 </style>

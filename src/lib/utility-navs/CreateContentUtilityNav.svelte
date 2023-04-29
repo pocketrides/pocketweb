@@ -43,8 +43,9 @@
       {:else}
         <Button
           id="sub_now"
-          label="Subscribe"
+          label="Subscribe to post"
           icon="favorite"
+          icon_filled
           primary
           controller={button_row}
           on:click={() => {
@@ -77,13 +78,7 @@
             if (!main || !util_nav) return;
 
             window.scrollTo({
-              top:
-                main.offsetTop +
-                main.offsetHeight -
-                16 -
-                window.innerHeight +
-                // @ts-ignore
-                (navigator.standalone ? 32 : 0),
+              top: main.offsetTop + main.offsetHeight - 16 - window.innerHeight,
               behavior: 'smooth'
             });
 

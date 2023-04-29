@@ -5,6 +5,14 @@ export const formatWorldfeedLocation = (loc: WorldfeedLocation): string => {
     return `${loc.city}, ${loc.state}, ${loc.country}`;
   }
 
+  if (loc.state && loc.country) {
+    return `${loc.state}, ${loc.country}`;
+  }
+
+  if (loc.country) {
+    return loc.country;
+  }
+
   return `Unknown`;
 };
 

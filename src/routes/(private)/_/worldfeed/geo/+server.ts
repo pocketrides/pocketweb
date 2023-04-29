@@ -19,7 +19,7 @@ export const POST = (async (event) => {
     );
 
     res = {
-      success: result.city && result.state && result.country ? true : false,
+      success: result.state && result.country ? true : false,
       location: result
     };
   }

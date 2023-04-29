@@ -74,7 +74,7 @@
   <Row padded bordered fill="system-light">
     <h2 slot="left">
       <Icon icon="campaign" />
-      Cohosted Pockets
+      Cohosted
     </h2>
   </Row>
   <Container>

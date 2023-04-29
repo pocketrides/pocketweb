@@ -30,6 +30,11 @@
       return prev;
     });
   };
+
+  const inert = (e: MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
 </script>
 
 <Sheet
@@ -43,14 +48,7 @@
     <Container padded rounded bordered fill="system-superlight">
       <div data-flex="v" data-gap>
         <h2>Manage your pocket with friends.</h2>
-        <p class="h3">
-          We're on a mission to make managing your group comms easier and less
-          time-consuming than ever.
-        </p>
-        <p>
-          With Cohosts, it's a snap to add your friends to help out with admin duties
-          of your pocket.
-        </p>
+        <p>With Cohosts, it's a snap to add friends to help out in your pocket.</p>
         <p>They'll get a nice call-out on the pocket, for transparency's sake.</p>
       </div>
     </Container>
@@ -65,7 +63,7 @@
           {#if $page.data.my_nametag?.id !== host.id}
             <li>
               <Row fill="system-superlight" padded bordered>
-                <NametagWithPic slot="left" nametag={host} />
+                <NametagWithPic slot="left" nametag={host} on:click={inert} />
                 <Button
                   slot="right"
                   label="Remove"
@@ -95,7 +93,7 @@
       let:nametag
     >
       <Row fill="system-superlight" padded bordered>
-        <NametagWithPic slot="left" {nametag} />
+        <NametagWithPic slot="left" {nametag} on:click={inert} />
         <div slot="right">
           {#if can_add_more}
             <Button
