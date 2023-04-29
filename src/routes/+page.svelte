@@ -25,15 +25,6 @@
     ready = true;
   });
 
-  /**
-1682809556/Homepage/framed/pocket-pics-hero_z5d4wv.png
-1682809556/Homepage/framed/worldfeed-hero_tcweor.png
-1682809556/
-1682809556/
-1682809556/
-1682809556/
-   */
-
   const pocket_hero: CloudinaryPhoto[] = [
     {
       version: 1682809556,
