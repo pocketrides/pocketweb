@@ -25,59 +25,44 @@
     ready = true;
   });
 
-  const pockets: CloudinaryPhoto[] = [
+  /**
+1682809556/Homepage/framed/pocket-pics-hero_z5d4wv.png
+1682809556/Homepage/framed/worldfeed-hero_tcweor.png
+1682809556/
+1682809556/
+1682809556/
+1682809556/
+   */
+
+  const pocket_hero: CloudinaryPhoto[] = [
     {
-      version: 1681421229,
-      public_id: 'Homepage/pockets2_qaxya0.png'
-    },
-    {
-      version: 1681421229,
-      public_id: 'Homepage/pockets3_flv6dd.png'
-    },
-    {
-      version: 1681421229,
-      public_id: 'Homepage/pockets1_bolfuy.png'
-    },
-    {
-      version: 1681421230,
-      public_id:
-        'Homepage/Simulator_Screenshot_-_iPhone_14_Pro_Max_-_2023-04-13_at_16.16.21_w8o9kd.png'
+      version: 1682809556,
+      public_id: 'Homepage/framed/pockets-hero_vfi1qz.png'
     }
   ];
 
-  const posts: CloudinaryPhoto[] = [
+  const worldfeed_hero: CloudinaryPhoto[] = [
     {
-      version: 1681421230,
-      public_id:
-        'Homepage/Simulator_Screenshot_-_iPhone_14_Pro_Max_-_2023-04-13_at_16.19.47_nd0z8w.png'
-    },
-    {
-      version: 1681424398,
-      public_id:
-        'Homepage/Simulator_Screenshot_-_iPhone_14_Pro_Max_-_2023-04-13_at_17.18.20_w6o1qd.png'
-    },
-    {
-      version: 1681421230,
-      public_id:
-        'Homepage/Simulator_Screenshot_-_iPhone_14_Pro_Max_-_2023-04-13_at_16.17.59_ljnn1a.png'
+      version: 1682809556,
+      public_id: 'Homepage/framed/worldfeed-hero_tcweor.png'
     }
   ];
-
-  const get_paid: CloudinaryPhoto[] = [
+  const invite_hero: CloudinaryPhoto[] = [
     {
-      version: 1681421230,
-      public_id:
-        'Homepage/Simulator_Screenshot_-_iPhone_14_Pro_Max_-_2023-04-13_at_16.17.59_ljnn1a.png'
-    },
+      version: 1682809556,
+      public_id: 'Homepage/framed/pocket-features-hero_cfase8.png'
+    }
+  ];
+  const share_hero: CloudinaryPhoto[] = [
     {
-      version: 1681421230,
-      public_id:
-        'Homepage/Simulator_Screenshot_-_iPhone_14_Pro_Max_-_2023-04-13_at_16.21.29_rigqp2.png'
-    },
+      version: 1682809556,
+      public_id: 'Homepage/framed/pocket-pics-hero_z5d4wv.png'
+    }
+  ];
+  const space_hero: CloudinaryPhoto[] = [
     {
-      version: 1681425363,
-      public_id:
-        'Homepage/Simulator_Screenshot_-_iPhone_14_Pro_Max_-_2023-04-13_at_17.35.05_nkzvbw.png'
+      version: 1682809556,
+      public_id: 'Homepage/framed/your-space-hero_xszfvh.png'
     }
   ];
 </script>
@@ -134,7 +119,7 @@
       </h2>
     </Container>
     <Container padded={false} fill="system-superlight">
-      <Gallery contain square={false} photos={pockets} />
+      <Gallery contain square={false} photos={pocket_hero} />
     </Container>
     <Container>
       <h2>
@@ -146,7 +131,7 @@
       </h2>
     </Container>
     <Container padded={false} fill="system-superlight">
-      <Gallery contain square={false} photos={posts} />
+      <Gallery contain square={false} photos={worldfeed_hero} />
     </Container>
     <Container>
       <h2>
@@ -158,18 +143,19 @@
       </h2>
     </Container>
     <Container padded={false} fill="system-superlight">
-      <Gallery contain square={false} photos={get_paid} />
+      <Gallery contain square={false} photos={invite_hero} />
     </Container>
     <Container>
       <h2>
         Invite everyone, it's free to join.
         <span class="half">
-          Now you have one place to manage questions or push out updates.</span
-        > Share the link on other platforms or send it straight to your group DM.
+          Now you have one place to manage questions or push out updates.Share the
+          link on other platforms or send it straight to your group DM.</span
+        >
       </h2>
     </Container>
     <Container padded={false} fill="system-superlight">
-      <Gallery contain square={false} photos={get_paid} />
+      <Gallery contain square={false} photos={share_hero} />
     </Container>
     <Container>
       <h2>
@@ -181,7 +167,7 @@
       </h2>
     </Container>
     <Container padded={false} fill="system-superlight">
-      <Gallery contain square={false} photos={get_paid} />
+      <Gallery contain square={false} photos={space_hero} />
     </Container>
     <Container>
       <h2>
