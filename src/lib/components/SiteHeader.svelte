@@ -25,7 +25,7 @@
 
   const SCROLL_MIN = 110;
 
-  const checkForScrollingUp = () => {
+  const checkForScrollingUp = (delay = 650) => {
     if (!huddable) return;
     if (!has_init) {
       hud = true;
@@ -45,7 +45,7 @@
 
       clearInterval(interval_id);
       interval_id = undefined;
-    }, 650);
+    }, delay);
   };
 
   onMount(() => {
@@ -61,9 +61,6 @@
     if (huddable) {
       has_init = false;
       hud = true;
-      setTimeout(() => {
-        has_init = true;
-      }, 500);
     }
   });
 
@@ -73,12 +70,17 @@
       hud = true;
       setTimeout(() => {
         has_init = true;
-      }, 500);
+        checkForScrollingUp(10);
+      }, 10);
     }
   });
+
+  const handleScroll = () => {
+    checkForScrollingUp();
+  };
 </script>
 
-<svelte:window on:scroll={checkForScrollingUp} />
+<svelte:window on:scroll={handleScroll} />
 
 {#if is_standalone}
   <div class="clipper" data-fill={fill} />
@@ -157,7 +159,7 @@
 
   header:has(~ [data-slot]:empty):has(~ [data-nav]:empty):has(
       ~ [data-gallery]:empty
-    ),
+    ):not([data-fill='dark']),
   header:not([data-fill='dark']):has(~ [data-gallery]:empty):has(
       ~ [data-nav]:empty
     ):has(~ [data-slot]:empty),
@@ -167,8 +169,8 @@
     border-bottom-left-radius: 1rem;
     border-bottom-right-radius: 1rem;
 
-    border-bottom: 1px solid rgba(var(--dark), 0.5);
     box-shadow: 0 16px 16px -24px rgba(var(--dark), 0.75);
+    border-bottom: 1px solid rgba(var(--dark), 0.5);
 
     overflow: hidden;
   }
@@ -179,11 +181,15 @@
     z-index: 1;
   }
 
-  header[data-fill='dark'],
-  header:has(~ [data-slot]:empty)[data-fill='dark'] {
+  [data-gallery]:not(:empty) {
     border-bottom: 0 none;
+  }
+
+  header[data-fill='dark'] {
+    border-bottom: 2px solid rgb(var(--dark));
     border-radius: 0;
-    box-shadow: none;
+    box-shadow: 0;
+    margin-bottom: -1px;
   }
 
   header.utility {
@@ -215,7 +221,7 @@
   }
 
   .huddable.hud {
-    transform: translateY(0);
+    transform: translateY(0px);
   }
 
   .huddable.has_init {

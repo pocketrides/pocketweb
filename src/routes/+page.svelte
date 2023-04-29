@@ -188,7 +188,7 @@
         Just like that, your own digital space.
         <span class="half"
           >Want to keep it going? Whether your plans are every week or just for one
-          night, it's there whenever you need it.
+          night, it's there when you need it.
         </span>
       </h2>
     </Container>

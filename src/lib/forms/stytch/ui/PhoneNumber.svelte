@@ -6,6 +6,7 @@
   import Select from '$lib/components/Select.svelte';
   import { type SheetContext, SHEET_CONTEXT_ID } from '$lib/contexts/Sheet';
   import { App } from '$lib/stores/app';
+  import { HomepageHelper } from '$lib/util/homepage';
   import { is_standalone } from '$lib/util/is-standalone';
   import { AVAILABLE_COUNTRIES } from '$lib/zod/Stytch';
   import { parsePhoneNumber } from 'awesome-phonenumber';
@@ -67,7 +68,7 @@
     </Container>
     <div data-flex="v as" data-gap>
       <h2>Sign in</h2>
-      {#if is_standalone === false}
+      {#if is_standalone === false && HomepageHelper.isHomepagePath()}
         <div data-flex="v as" data-error data-fill="base">
           <p class="small">Get the app:</p>
           <a

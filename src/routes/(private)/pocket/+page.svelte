@@ -154,13 +154,15 @@
       <Button label="Cancel" href={`/pocket/${data.editing_pocket_id}`} />
     {/if}
   </div>
-  <Gallery
-    photos={$page_controller.cover_art}
-    square={false}
-    allow_delete
-    slot="gallery"
-    on:delete={photoDeleted}
-  />
+  {#if $page_controller.cover_art.length}
+    <Gallery
+      photos={$page_controller.cover_art}
+      square={false}
+      allow_delete
+      slot="gallery"
+      on:delete={photoDeleted}
+    />
+  {/if}
 </SiteHeader>
 <Main fullheight fullwidth padded={false}>
   <PocketRenderer details_enabled={$page_controller.details_enabled}>
@@ -168,7 +170,7 @@
       {#if data.free_mode}
         <Container rounded fill="superdark">
           {#if data.can_free_mode_publish}
-            <p class=" half">
+            <p class="half">
               <Icon icon="info" />
               <strong>You're in free mode.</strong>
             </p>
@@ -336,10 +338,9 @@
       />
       <p class="half h3">
         {#if $page_controller.settings.visibility === 'listed'}
-          Your pocket will show up on your profile page{#if $page_controller.settings.worldfeed}
-            &nbsp;or on the Worldfeed, depending on search terms and number of
-            members
-          {/if}.
+          {#if $page_controller.settings.worldfeed}
+            Your pocket will show up on your profile page and the Worldfeed.
+          {/if}
         {:else}
           <Icon icon="visibility_off" multiline />
           Unlisted. Your pocket's only visible to you, or people you send the link to.
@@ -373,16 +374,13 @@
         {#if $page_controller.settings.joinability === 'anyone'}
           {#if $page_controller.settings.visibility === 'unlisted'}
             Anyone with the link can join automatically.
-          {:else}
-            Anyone who can join automatically.
           {/if}
         {:else if $page_controller.settings.joinability === 'moderated'}
           <Icon icon="shield_with_heart" multiline />
           Private Mode. Hosts approve each person requesting to join.
         {:else}
           <Icon icon="edit_off" multiline />
-          Broadcast Mode. Friends will follow your Pocket instead of joining. This means
-          they won't be able to make posts of their own, and Chat is disabled.
+          Broadcast Mode. Only you can post, and chat is disabled.
         {/if}
       </p>
     </div>

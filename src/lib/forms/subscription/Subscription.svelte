@@ -44,7 +44,7 @@
           new way to make money from the time you put into your side project, hobby,
           or organization sounds awesome.)
         </p>
-        <h2>On Pocketrides, 500 likes is $5.00 in your pocket.</h2>
+        <h2>On Pocketrides, 500 likes is $5.00 in your actual pocket.</h2>
         <p>
           Only subscribers can give out likes (a cent at a time, of course), and we'd
           encourage you to consider subscribing: taking care of each other and where

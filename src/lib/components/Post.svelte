@@ -48,7 +48,8 @@
   $: can_read_more =
     summary &&
     summary.getBoundingClientRect().height >= 108 &&
-    $post_controller?.contents?.length === 1;
+    $post_controller?.contents?.length === 1 &&
+    $post_controller?.contents[0].content_raw.length > 165;
 
   $: should_be_hidden = $post_controller
     ? $post_controller.is_quarantined ||

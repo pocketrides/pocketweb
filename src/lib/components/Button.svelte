@@ -124,6 +124,7 @@
     height: 32px;
     white-space: nowrap;
     touch-action: manipulation;
+    flex-shrink: 0;
 
     span:empty {
       display: none;

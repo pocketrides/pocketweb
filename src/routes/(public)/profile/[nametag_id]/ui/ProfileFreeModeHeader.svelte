@@ -27,6 +27,7 @@
           <ul data-unstyle>
             <li>
               <Icon icon="check" /> Add a bio &amp; links
+              <span class="half">(coming soon)</span>
             </li>
             <li>
               <Icon icon="check" /> Create unlimited Pockets

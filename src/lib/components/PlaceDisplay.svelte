@@ -10,7 +10,7 @@
   export let icon: string | undefined = undefined;
 </script>
 
-<div class:h2 class:h3 data-flex="sb ac">
+<div class:h2 class:h3 data-flex="sb ac" data-gap="1">
   {#if place.place_id}
     <a
       href={getPlaceLink(place)}
@@ -20,31 +20,18 @@
       data-unstyle
       on:click
     >
-      <p>
+      <p class="nowraps">
         <Icon {icon} />
         {place.name}
       </p>
       {#if include_address}
-        <div data-flex="sb ab" data-gap>
-          <p class="half">
-            {place.formatted_address}
-          </p>
-          <Icon icon="open_in_new" inline half />
-        </div>
+        <p class="half small">
+          {place.formatted_address}
+        </p>
       {/if}
     </a>
   {:else}
-    <p>{place.name || ''}</p>
+    <p class="nowraps">{place.name || ''}</p>
   {/if}
   <slot />
 </div>
-
-<style lang="scss">
-  p {
-    display: -webkit-box;
-    overflow: hidden;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    word-break: break-all;
-  }
-</style>
