@@ -33,8 +33,7 @@
       href={link.url}
       target="_blank"
       rel="noreferrer"
-      data-flex="v cc"
-      data-gap="0"
+      data-flex="v as"
       class="og-link"
     >
       <h3 class="nowraps">
@@ -79,19 +78,18 @@
 
     &.mini {
       max-width: none;
+      height: 62px;
 
       .og-link {
         max-width: 220px;
-        min-height: 42px;
-        padding: 0 0.5rem;
+        max-height: 62px;
       }
 
       .og-image {
-        max-height: 42px;
+        max-height: 62px;
         aspect-ratio: 1/1;
         border-top-right-radius: 0.25rem;
         border-bottom-right-radius: 0.25rem;
-        border-right: 1px solid rgba(var(--dark), 0.85);
       }
     }
   }
