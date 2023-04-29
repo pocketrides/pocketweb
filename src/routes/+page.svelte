@@ -140,9 +140,9 @@
       <h2>
         Invite everyone, it's free to join.
         <span class="half">
-          Now you have one place to manage questions or push out updates.Share the
-          link on other platforms or send it straight to your group DM.</span
-        >
+          Now you have one place to manage questions or push out updates. Share the
+          link on other platforms or send it straight to your group DM.
+        </span>
       </h2>
     </Container>
     <Container padded={false} fill="system-superlight">
