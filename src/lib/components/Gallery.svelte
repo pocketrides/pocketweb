@@ -144,7 +144,7 @@
       flex-shrink: 0;
       aspect-ratio: 1/1;
       width: 100vw;
-      height: 100vh;
+      height: 100vw;
       min-width: 100%;
       max-width: 640px;
       min-height: 100%;
