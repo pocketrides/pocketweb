@@ -25,9 +25,18 @@ export class Worldfeed {
               q.Lambda(
                 ['ts', 'post_ref', 'stats_ref', 'city', 'state', 'country'],
                 q.And(
-                  q.ContainsStr(q.Var('city'), city || ''),
-                  q.ContainsStr(q.Var('state'), state || ''),
-                  q.ContainsStr(q.Var('country'), country || '')
+                  q.ContainsStr(
+                    q.If(q.IsNull(q.Var('city')), '', q.Var('city')),
+                    city || ''
+                  ),
+                  q.ContainsStr(
+                    q.If(q.IsNull(q.Var('state')), '', q.Var('state')),
+                    state || ''
+                  ),
+                  q.ContainsStr(
+                    q.If(q.IsNull(q.Var('country')), '', q.Var('country')),
+                    country || ''
+                  )
                 )
               )
             ),

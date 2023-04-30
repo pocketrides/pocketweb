@@ -20,6 +20,8 @@
   const current_scroll = writable(1);
 
   const handleScroll = () => {
+    if (!gallery) return;
+
     $current_scroll = Math.max(
       1,
       Math.floor(
@@ -140,11 +142,12 @@
 
     &.square .gallery-item {
       flex-shrink: 0;
+      aspect-ratio: 1/1;
       width: 100vw;
-      height: 100vw;
-      min-width: 100vw;
+      height: 100vh;
+      min-width: 100%;
       max-width: 640px;
-      min-height: 0;
+      min-height: 100%;
       max-height: 640px;
       scroll-snap-align: center;
       overflow: hidden;
