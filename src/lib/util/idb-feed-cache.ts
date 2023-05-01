@@ -2,7 +2,7 @@ import { IDBCache } from './idb-cache';
 import { IDB_VERSION } from './idb-cache-version';
 
 export class IDBFeedCache {
-  static #db: IDBDatabase;
+  static #db: IDBDatabase | undefined;
 
   static async #open(): Promise<undefined> {
     return new Promise((resolve) => {
@@ -27,7 +27,14 @@ export class IDBFeedCache {
     });
   }
 
-  static async #close(a: any) {}
+  static async #close(a: any) {
+    setTimeout(() => {
+      try {
+        if (this.#db) this.#db.close();
+        this.#db = undefined;
+      } catch (e) {}
+    }, 200);
+  }
 
   static async save(post_ids: string[]): Promise<undefined> {
     return new Promise(async (resolve) => {
@@ -35,21 +42,23 @@ export class IDBFeedCache {
 
       await this.#open();
       if (!this.#db) resolve(undefined);
-      const transaction = this.#db.transaction('feed_cache', 'readwrite');
-      const store = transaction.objectStore('feed_cache');
+      if (this.#db) {
+        const transaction = this.#db.transaction('feed_cache', 'readwrite');
+        const store = transaction.objectStore('feed_cache');
 
-      transaction.onerror = () => this.#close(resolve(undefined));
-      transaction.oncomplete = () => this.#close(resolve(undefined));
+        transaction.onerror = () => this.#close(resolve(undefined));
+        transaction.oncomplete = () => this.#close(resolve(undefined));
 
-      post_ids.forEach(async (post_id) => {
-        return new Promise(async (resolve) => {
-          const input = store.put(post_id);
-          input.onsuccess = () => this.#close(resolve(undefined));
-          input.onerror = () => this.#close(resolve(undefined));
+        post_ids.forEach(async (post_id) => {
+          return new Promise(async (resolve) => {
+            const input = store.put(post_id);
+            input.onsuccess = () => this.#close(resolve(undefined));
+            input.onerror = () => this.#close(resolve(undefined));
+          });
         });
-      });
 
-      resolve(undefined);
+        resolve(undefined);
+      }
     });
   }
 
@@ -59,30 +68,32 @@ export class IDBFeedCache {
 
       await this.#open();
       if (!this.#db) resolve([]);
-      const transaction = this.#db.transaction('feed_cache', 'readwrite');
-      const store = transaction.objectStore('feed_cache');
+      if (this.#db) {
+        const transaction = this.#db.transaction('feed_cache', 'readwrite');
+        const store = transaction.objectStore('feed_cache');
 
-      transaction.onerror = () => this.#close(resolve([]));
+        transaction.onerror = () => this.#close(resolve([]));
 
-      const request = store.openCursor(undefined, 'prev');
+        const request = store.openCursor(undefined, 'prev');
 
-      let post_ids: string[] = [];
+        let post_ids: string[] = [];
 
-      request.onsuccess = (e: any) => {
-        const cursor: IDBCursorWithValue | undefined = e.target.result;
+        request.onsuccess = (e: any) => {
+          const cursor: IDBCursorWithValue | undefined = e.target.result;
 
-        if (cursor && post_ids.length >= 80) {
-          store.delete(cursor.key);
-          cursor.continue();
-        } else if (cursor) {
-          post_ids.unshift(cursor.key.toString());
-          cursor.continue();
-        } else {
-          this.#close(resolve(post_ids));
-        }
-      };
+          if (cursor && post_ids.length >= 80) {
+            store.delete(cursor.key);
+            cursor.continue();
+          } else if (cursor) {
+            post_ids.unshift(cursor.key.toString());
+            cursor.continue();
+          } else {
+            this.#close(resolve(post_ids));
+          }
+        };
 
-      request.onerror = () => this.#close(resolve([]));
+        request.onerror = () => this.#close(resolve([]));
+      }
     });
   }
 
@@ -115,15 +126,17 @@ export class IDBFeedCache {
 
       await this.#open();
       if (!this.#db) resolve(undefined);
-      const transaction = this.#db.transaction('feed_cache', 'readwrite');
-      const store = transaction.objectStore('feed_cache');
+      if (this.#db) {
+        const transaction = this.#db.transaction('feed_cache', 'readwrite');
+        const store = transaction.objectStore('feed_cache');
 
-      transaction.oncomplete = () => this.#close(resolve(undefined));
-      transaction.onerror = () => this.#close(resolve(undefined));
+        transaction.oncomplete = () => this.#close(resolve(undefined));
+        transaction.onerror = () => this.#close(resolve(undefined));
 
-      store.clear();
+        store.clear();
 
-      await IDBCache.delete('feed_cache');
+        await IDBCache.delete('feed_cache');
+      }
     });
   }
 }
