@@ -7,7 +7,7 @@
 
 <UtilityNav>
   <div slot="left">
-    <div data-flex="as v" data-gap>
+    <div data-flex="v" data-gap>
       <h2 class="h3">
         You're on Pocketrides! <strong class="half">Hello!</strong>
       </h2>
@@ -35,12 +35,3 @@
     </div>
   </div>
 </UtilityNav>
-
-<style lang="scss">
-  @media (min-width: 640px) {
-    [data-flex] {
-      align-items: center;
-      text-align: center;
-    }
-  }
-</style>

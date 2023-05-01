@@ -131,8 +131,8 @@
                 on:click|preventDefault={() => {
                   $App.sheet_id = 'app_help';
                 }}
-                class="h3">Get the app</a
-              >.{/if}
+                class="h3">Want the app</a
+              >?{/if}
           </p>
         </div>
         <ButtonRow let:controller initial="refresh">
@@ -258,12 +258,14 @@
   <UtilityNav>
     <div slot="left">
       {#if $pocket.settings.joinability === 'anyone'}
-        <div data-flex="v as" data-gap>
-          <div>
-            <p class="h3">
-              You're on Pocketrides! <strong class="half">Hello!</strong>
-            </p>
-          </div>
+        <div data-flex="v" data-gap>
+          {#if !$page.data.my_nametag}
+            <div>
+              <p class="h3">
+                You're on Pocketrides! <strong class="half">Hello!</strong>
+              </p>
+            </div>
+          {/if}
           <ButtonRow
             let:controller
             initial={$page.data.my_nametag ? 'join' : 'what'}
@@ -299,21 +301,45 @@
           </ButtonRow>
         </div>
       {:else if $pocket.settings.joinability === 'moderated'}
-        <Button
-          label={$joining ? 'One sec!' : 'Request to join'}
-          disabled={$joining}
-          icon="hail"
-          primary
-          on:click={joinClick}
-        />
+        <ButtonRow let:controller initial={$page.data.my_nametag ? 'join' : 'what'}>
+          <Button
+            id="join"
+            label={$joining ? 'One sec!' : 'Request to join'}
+            disabled={$joining}
+            icon="hail"
+            primary
+            {controller}
+            on:click={joinClick}
+          />
+          <Button
+            id="what"
+            {controller}
+            label="What is this?"
+            icon="help"
+            href="/?help=1"
+            large
+          />
+        </ButtonRow>
       {:else if $pocket.settings.joinability === 'broadcast'}
-        <Button
-          label={$joining ? 'One sec!' : 'Follow'}
-          disabled={$joining}
-          icon="hail"
-          primary
-          on:click={joinClick}
-        />
+        <ButtonRow let:controller initial={$page.data.my_nametag ? 'join' : 'what'}>
+          <Button
+            id="join"
+            label={$joining ? 'One sec!' : 'Follow'}
+            disabled={$joining}
+            icon="hail"
+            primary
+            {controller}
+            on:click={joinClick}
+          />
+          <Button
+            id="what"
+            {controller}
+            label="What is this?"
+            icon="help"
+            href="/?help=1"
+            large
+          />
+        </ButtonRow>
       {/if}
     </div>
   </UtilityNav>
