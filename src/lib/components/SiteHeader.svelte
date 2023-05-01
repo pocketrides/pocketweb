@@ -133,7 +133,6 @@
             {/if}
           {:else}
             <ButtonRow>
-              <Button label="" icon="search" transparent large />
               <Button
                 label="Sign up"
                 primary

@@ -47,7 +47,7 @@
           data-3d
           name="q"
           class="h3"
-          placeholder="Search for people or pockets…"
+          placeholder="Search Pocketrides…"
           aria-label="Search pocketrides by nametag or pocket name"
           bind:value={q}
           class:filled={valid}
