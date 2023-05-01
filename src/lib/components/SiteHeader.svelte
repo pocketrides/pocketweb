@@ -134,13 +134,6 @@
           {:else}
             <ButtonRow>
               <Button
-                label="Sign up"
-                primary
-                small
-                icon="hail"
-                on:click={() => ($App.sheet_id = 'onboarding')}
-              />
-              <Button
                 label="Sign in"
                 small
                 on:click={() => ($App.sheet_id = 'onboarding')}

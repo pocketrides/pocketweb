@@ -15,7 +15,7 @@
         <Button
           href="/"
           id="learn_more"
-          label="Learn more"
+          label="What is this?"
           icon="touch_app"
           icon_filled
           primary
