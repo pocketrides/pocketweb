@@ -62,7 +62,7 @@
       <h3>No account? No problem!</h3>
       <p>
         Sign in with your phone number and we'll make one for you. <span class="half"
-          >It's totally free, and we don't sell your data.</span
+          >It's free to get started, and we don't sell your data.</span
         >
       </p>
     </Container>
