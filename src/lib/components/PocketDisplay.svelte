@@ -15,6 +15,8 @@
       details_enabled={pocket.details_enabled}
       round_last={false}
       default_fill="superlight"
+      privacy_mode={pocket.settings.joinability === 'moderated' ||
+        pocket.settings.visibility === 'unlisted'}
     >
       <div slot="name" data-padded data-flex="ae">
         <div data-flex="v">
@@ -61,7 +63,11 @@
 
 <style lang="scss">
   a {
-    width: calc(50% - 0.25rem);
+    display: block;
+    flex-shrink: 0;
+    width: calc(50vw - 0.25rem);
+    min-width: 180px;
+    max-width: 220px;
 
     &.mini {
       width: 220px;

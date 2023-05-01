@@ -26,16 +26,20 @@ export class Worldfeed {
                 ['ts', 'post_ref', 'stats_ref', 'city', 'state', 'country'],
                 q.And(
                   q.ContainsStr(
-                    q.If(q.IsNull(q.Var('city')), '', q.Var('city')),
-                    city || ''
+                    q.If(q.IsNull(q.Var('city')), '', q.LowerCase(q.Var('city'))),
+                    city?.toLowerCase() || ''
                   ),
                   q.ContainsStr(
-                    q.If(q.IsNull(q.Var('state')), '', q.Var('state')),
-                    state || ''
+                    q.If(q.IsNull(q.Var('state')), '', q.LowerCase(q.Var('state'))),
+                    state?.toLowerCase() || ''
                   ),
                   q.ContainsStr(
-                    q.If(q.IsNull(q.Var('country')), '', q.Var('country')),
-                    country || ''
+                    q.If(
+                      q.IsNull(q.Var('country')),
+                      '',
+                      q.LowerCase(q.Var('country'))
+                    ),
+                    country?.toLowerCase() || ''
                   )
                 )
               )
@@ -59,9 +63,18 @@ export class Worldfeed {
               q.Lambda(
                 ['ts', 'pocket_ref', 'city', 'state', 'country'],
                 q.Or(
-                  q.ContainsStr(q.Var('city'), city || ''),
-                  q.ContainsStr(q.Var('state'), state || ''),
-                  q.ContainsStr(q.Var('country'), country || '')
+                  q.ContainsStr(
+                    q.LowerCase(q.Var('city')),
+                    city?.toLowerCase() || ''
+                  ),
+                  q.ContainsStr(
+                    q.LowerCase(q.Var('state')),
+                    state?.toLowerCase() || ''
+                  ),
+                  q.ContainsStr(
+                    q.LowerCase(q.Var('country')),
+                    country?.toLowerCase() || ''
+                  )
                 )
               )
             )

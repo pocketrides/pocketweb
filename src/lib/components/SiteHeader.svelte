@@ -96,9 +96,19 @@
 >
   <Container>
     <Row>
-      <slot name="left" slot="left"><Logo /></slot>
+      <slot name="left" slot="left">
+        <Logo />
+      </slot>
       <slot name="right" slot="right">
         <div data-flex data-button-row>
+          <Button
+            label=""
+            icon="search"
+            transparent
+            on:click={() => {
+              $App.sheet_id = 'search';
+            }}
+          />
           {#if $page.data.my_nametag}
             <Button
               icon={$Notifications.unread_count === 0
@@ -123,6 +133,7 @@
             {/if}
           {:else}
             <ButtonRow>
+              <Button label="" icon="search" transparent large />
               <Button
                 label="Sign up"
                 primary

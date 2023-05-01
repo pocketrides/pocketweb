@@ -99,14 +99,6 @@
     <Container>
       <div data-flex="v" data-gap>
         <h2 class="half">Nothing here… <span class="half">yet<em>!</em></span></h2>
-        <p class="half">
-          Planning something? <a
-            href="#list-it-here"
-            on:click|preventDefault={handleNewPocketClick}
-          >
-            List it here</a
-          >{#if !$page.data.my_nametag}&nbsp;with a free Pocketrides account{/if}.
-        </p>
       </div>
     </Container>
   {:else}
@@ -155,15 +147,17 @@
         {#if $page.data.my_nametag}
           <GetLocation on:location={handleLocationAdded} />
         {/if}
-        <Button
-          type="reset"
-          label=""
-          icon="clear"
-          large
-          form="refine"
-          disabled={!valid}
-          on:click={handleResetClick}
-        />
+        {#if $form.c.length > 1 || $form.s.length > 1}
+          <Button
+            type="reset"
+            label=""
+            icon="clear"
+            large
+            form="refine"
+            disabled={!valid}
+            on:click={handleResetClick}
+          />
+        {/if}
         <Button
           type="submit"
           label=""

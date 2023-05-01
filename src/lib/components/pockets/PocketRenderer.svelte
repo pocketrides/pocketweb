@@ -11,6 +11,7 @@
 
   $: has_section2 = details_enabled.length;
   $: has_section3 = details_enabled.length > 2;
+  $: always_show_slot = privacy_mode ? true : always_show_slot;
 
   let section1_fill = 'dark';
   let section2_fill = 'base';

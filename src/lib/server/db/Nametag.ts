@@ -1,5 +1,5 @@
 import { NametagCollab } from '$lib/server/db/NametagCollab';
-import { Fauna, q, type FaunaRef } from './Fauna';
+import { Fauna, q } from './Fauna';
 import { Account } from './Account';
 import type { ClientNametag, DraftNametag, ServerNametag } from '$lib/zod/Nametag';
 import { NametagStats } from './NametagStats';
@@ -16,7 +16,8 @@ export class Nametag {
       return {
         id: q.Select(['ref', 'id'], q.Var(var_name)),
         nametag: q.Select(['data', 'nametag'], q.Var(var_name)),
-        theme: q.Select(['data', 'theme'], q.Var(var_name))
+        theme: q.Select(['data', 'theme'], q.Var(var_name)),
+        profile_pic: q.Select(['data', 'profile_pic'], q.Var(var_name))
       };
     }
   };
