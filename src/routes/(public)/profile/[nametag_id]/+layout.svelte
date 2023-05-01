@@ -14,11 +14,6 @@
   import SiteHeader from '$lib/components/SiteHeader.svelte';
   import ProfileNav from './ui/ProfileNav.svelte';
   import { App } from '$lib/stores/app';
-  import { nav_items } from './ui/nav_items';
-  import { afterNavigate } from '$app/navigation';
-  import { browser } from '$app/environment';
-  import Scrollable from '$lib/components/Scrollable.svelte';
-  import ScrollableItem from '$lib/components/ScrollableItem.svelte';
   import Main from '$lib/components/Main.svelte';
   import Container from '$lib/components/Container.svelte';
 
@@ -34,33 +29,11 @@
   $: has_pic = data.page_nametag.profile_pic;
   $: og_image = has_pic ? getSquare(has_pic.version, has_pic.public_id) : undefined;
 
-  let slot: HTMLDivElement;
-
-  const itemActive = (e: CustomEvent) => {
-    const id = e.detail.id as string;
-    document.getElementById(id)?.click();
-  };
-
-  const sync = () => {
-    if (slot && slot.parentElement) {
-      slot.parentElement.scrollTo(
-        slot.offsetLeft - slot.parentElement!.offsetLeft,
-        0
-      );
-    }
-  };
-
   onMount(() => {
     if (new URLSearchParams(location.search).has('subscribed')) {
       // $App.sheet_id = 'enable-notifications';
       history.replaceState({}, '', location.toString().replace('?subscribed=1', ''));
     }
-
-    if (browser) sync();
-  });
-
-  afterNavigate(() => {
-    sync();
   });
 </script>
 
@@ -82,7 +55,7 @@
   <ProfileNav slot="nav" {page_controller} />
 </SiteHeader>
 
-<Main fullheight padded={false} fill="system-light">
+<Main padded={false} fill="system-light">
   <slot />
 </Main>
 

@@ -43,7 +43,7 @@
       <ul data-unstyle data-flex="v">
         {#if pending.length === 0}
           <li class="h3 half" data-padded>
-            Nothing here… <span class="half">yet!</span>
+            Nothing here… <span class="half">yet<em>!</em></span>
           </li>
         {/if}
         {#each pending as member (member)}
@@ -59,7 +59,7 @@
     <ul data-unstyle data-flex="v">
       {#if joined.length === 0}
         <li class="h3 half" data-padded>
-          Nothing here… <span class="half">yet!</span>
+          Nothing here… <span class="half">yet<em>!</em></span>
         </li>
       {/if}
       {#each joined as member (member)}
@@ -75,7 +75,7 @@
       <ul data-unstyle data-flex="v">
         {#if banned.length === 0}
           <li class="h3 half" data-padded>
-            Nothing here… <span class="half">yet!</span>
+            Nothing here… <span class="half">yet<em>!</em></span>
           </li>
         {/if}
         {#each banned as member (member)}

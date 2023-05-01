@@ -22,6 +22,8 @@
   import PostActionsRight from './PostActionsRight.svelte';
   import PostModResult from './PostModResult.svelte';
   import Row from './Row.svelte';
+  import { formatWorldfeedLocation, getWorldfeedLink } from '$lib/util/worldfeed';
+  import { goto } from '$app/navigation';
 
   export let post_id: string | undefined = undefined;
   export let post: ServerPost | undefined = undefined;
@@ -45,8 +47,9 @@
   let summary: HTMLDivElement;
   $: can_read_more =
     summary &&
-    summary.getBoundingClientRect().height > 110 &&
-    $post_controller?.contents?.length === 1;
+    summary.getBoundingClientRect().height >= 108 &&
+    $post_controller?.contents?.length === 1 &&
+    $post_controller?.contents[0].content_raw.length > 165;
 
   $: should_be_hidden = $post_controller
     ? $post_controller.is_quarantined ||
@@ -188,6 +191,12 @@
       $replies_loading = false;
     }
   };
+
+  const summaryClick = (e: MouseEvent) => {
+    if (e.target && (e.target as HTMLElement).nodeName !== 'A') {
+      goto(`/post/${$post_controller.id}`);
+    }
+  };
 </script>
 
 {#if wrapper_mode}
@@ -265,7 +274,13 @@
       >
         <div data-flex="v">
           <div class="summary-wrapper" data-expanded={$is_expanded} data-padded>
-            <div class="summary" data-richtext bind:this={summary}>
+            <!-- svelte-ignore a11y-click-events-have-key-events -->
+            <div
+              class="summary"
+              data-richtext
+              bind:this={summary}
+              on:click={summaryClick}
+            >
               {@html $post_controller.contents[0].content}
             </div>
             {#if can_read_more}
@@ -297,6 +312,18 @@
                 label={`Read ${$post_controller.contents.length - 1} more…`}
                 href={`/post/${$post_controller.id}`}
               />
+            </div>
+          {/if}
+          {#if $post_controller.settings.worldfeed}
+            <div data-padded data-flex="as">
+              <a
+                href={getWorldfeedLink($post_controller.settings.worldfeed)}
+                data-unstyle
+                class="h3 half small"
+              >
+                <Icon icon="public" />
+                {formatWorldfeedLocation($post_controller.settings.worldfeed)}
+              </a>
             </div>
           {/if}
           {#if $post_controller.stats}
@@ -344,7 +371,7 @@
               {/if}
             {/if}
             <div data-flex data-gap>
-              {#if $page.data.my_nametag?.stripe?.has_sub === true}
+              {#if $post_controller.is_quarantined || $page.data.my_nametag?.stripe?.has_sub === true}
                 <Button label="Tap to show" superdark on:click={showPost} />
                 {#if $post_controller.settings.is_nsfw}
                   <Button
@@ -373,22 +400,21 @@
 <style lang="scss">
   .summary-wrapper {
     position: relative;
-    overflow: hidden;
 
-    .summary {
-      font-size: 1.125rem;
+    &:not([data-expanded='true']),
+    &:not([data-expanded='true']) .summary {
       display: -webkit-box;
       overflow: hidden;
       -webkit-line-clamp: 4;
       -webkit-box-orient: vertical;
-      max-height: 6.49rem;
+
+      & .summary {
+        max-height: 108px;
+      }
     }
 
-    &[data-expanded='true'] {
-      .summary {
-        max-height: none;
-        -webkit-line-clamp: unset;
-      }
+    .summary {
+      font-size: 1.125rem;
     }
   }
 

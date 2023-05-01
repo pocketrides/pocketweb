@@ -7,7 +7,7 @@
   <div class="none" data-flex="v as je" data-nothing-here>
     <h2 class="h1 jumbo half thin" data-flex="v as" data-gap>
       <Icon icon="sentiment_content" inline />
-      <span>Nothing here… <span class="half">yet!</span></span>
+      <span>Nothing here… <span class="half">yet<em>!</em></span></span>
     </h2>
   </div>
 </Container>

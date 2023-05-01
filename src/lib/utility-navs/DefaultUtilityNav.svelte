@@ -10,7 +10,6 @@
     <div data-flex="as v" data-gap>
       <h2 class="h3">
         You're on Pocketrides! <strong class="half">Hello!</strong>
-        <span class="thin"> We're doing social media a little differently. </span>
       </h2>
       <ButtonRow let:controller initial="learn_more">
         <Button
@@ -24,7 +23,7 @@
         />
         <Button
           id="get_account"
-          label="Get free account"
+          label="Sign up or Sign in"
           large
           icon="hail"
           {controller}
@@ -42,14 +41,6 @@
     [data-flex] {
       align-items: center;
       text-align: center;
-    }
-
-    h2 {
-      max-width: 80%;
-
-      span {
-        display: inline-block;
-      }
     }
   }
 </style>

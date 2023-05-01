@@ -7,17 +7,17 @@
   // import Subscription from '$lib/forms/subscription/Subscription.svelte';
   import Terms from '$lib/forms/terms/Terms.svelte';
   import { nametagCreateComplete } from '$lib/util/nametag';
+
+  const nametagComplete = (e: CustomEvent) => {
+    nametagCreateComplete(e);
+  };
 </script>
 
 <Sheet id="onboarding">
   <Workflow initial="stytch">
     <WorkflowItem name="stytch" component={Stytch} next="terms" />
     <WorkflowItem name="terms" component={Terms} next="nametag" />
-    <WorkflowItem
-      name="nametag"
-      component={Nametag}
-      on:complete={nametagCreateComplete}
-    />
+    <WorkflowItem name="nametag" component={Nametag} on:complete={nametagComplete} />
     <!-- <WorkflowItem
       name="subscription"
       component={Subscription}

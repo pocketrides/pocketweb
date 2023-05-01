@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Icon from '$lib/components/Icon.svelte';
   import Main from '$lib/components/Main.svelte';
   import SiteHeader from '$lib/components/SiteHeader.svelte';
   import { App } from '$lib/stores/app';
@@ -13,26 +14,29 @@
 
 <SiteHeader huddable />
 <Main fullheight>
-  <div data-flex="v" data-gap>
+  <div data-flex="v" data-gap="1">
     <div>
-      <h1 class="h2">Terms of Use</h1>
+      <h1 data-ph>
+        <Icon icon="privacy_tip" />
+        Terms of Use
+      </h1>
       <h2 class="h3">Last updated: March 30th, 2023</h2>
     </div>
     <article data-richtext>
       <p>
-        <span class="h3">Welcome to Pocketrides,</span> a social media experiment where
-        users can plan anything, share everything, and earn cash for their content. We
-        want to create a safe and enjoyable experience for everyone, so please follow
+        <span class="strong">Welcome to Pocketrides,</span> a social media experiment
+        where users can plan anything, share everything, and earn cash for their content.
+        We want to create a safe and enjoyable experience for everyone, so please follow
         these guidelines to ensure that your use of the platform is in compliance with
         our rules.
       </p>
       <p>
-        <span class="h3">Agreement to Terms:</span> By using the Pocketrides platform,
+        <span class="strong">Agreement to Terms:</span> By using the Pocketrides platform,
         you agree to be bound by these terms of use. If you do not agree to these terms,
         access to content monetization and the platform is prohibited.
       </p>
       <p>
-        <span class="h3">Use of the Platform:</span> You may use the Pocketrides platform
+        <span class="strong">Use of the Platform:</span> You may use the Pocketrides platform
         only in accordance with these terms, and any applicable laws. You are responsible
         for your own use of the platform and for ensuring that your use complies with
         these terms. Any content that falls into the categories below is not qualified

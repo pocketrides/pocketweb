@@ -11,6 +11,7 @@ import { client_ref_validator, type ClientRef } from './Fauna';
 import type { Expr } from 'faunadb';
 import { openai_mod_result_validator } from './OpenAI';
 import type { ClientReply } from './Reply';
+import { worldfeed_location_validator } from './Worldfeed';
 
 export const MAX_POST_CONTENT_LENGTH = 720;
 
@@ -24,7 +25,8 @@ export const post_settings = z.object({
   is_nsfw: z.boolean(),
   enable_likes: z.boolean(),
   enable_replies: z.boolean(),
-  mod_result: openai_mod_result_validator.optional()
+  mod_result: openai_mod_result_validator.optional(),
+  worldfeed: worldfeed_location_validator.optional().nullable()
 });
 
 export const draft_post_content_validator = z.object({
@@ -102,7 +104,8 @@ export const blankPost = (pocket_id?: string): DraftPost => {
     settings: {
       is_nsfw: false,
       enable_likes: true,
-      enable_replies: true
+      enable_replies: true,
+      worldfeed: null
     },
     contents: [blankPostContent()]
   };

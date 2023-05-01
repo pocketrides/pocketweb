@@ -19,7 +19,7 @@
   class:tiny
 >
   {#if nametag.profile_pic && !tiny}
-    <a href={nametag.id} data-3d="ah">
+    <a href={nametag.id} data-3d="ah" on:click>
       <img
         src={getSquareSmall(
           nametag.profile_pic.version,
@@ -29,7 +29,7 @@
       />
     </a>
   {/if}
-  <Nametag {nametag} {small} {large} {tiny} />
+  <Nametag {nametag} {small} {large} {tiny} on:click />
 </div>
 
 <style lang="scss">

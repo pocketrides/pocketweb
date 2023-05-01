@@ -14,6 +14,7 @@
   import { onMount, tick } from 'svelte';
   import { writable } from 'svelte/store';
   import type { PageData } from './$types';
+  import WorldfeedNav from '$lib/components/worldfeed/WorldfeedNav.svelte';
 
   let scroll_key = $page.data.my_nametag?.id || '';
 
@@ -32,6 +33,8 @@
       const cached_ids = await IDBFeedCache.getFeed();
       $page_controller.post_ids = cached_ids;
 
+      if ($page_controller.post_ids.length === 0) loadMore().then(() => {});
+
       await tick();
 
       scrollToEnhanced(
@@ -47,8 +50,6 @@
           chill = false;
         }
       );
-
-      loadMore(true).then(() => {});
     }
   });
 
@@ -96,14 +97,16 @@
 
 <svelte:window on:scroll={saveScrollY} />
 
-<SiteHeader fill="system-superlight" huddable />
+<SiteHeader fill="system-superlight" huddable>
+  <WorldfeedNav slot="nav" />
+</SiteHeader>
 <div class:chill>
   <Main fill="system-light" padded={false} fullheight>
     <ScrollList
       has_none={$page_controller.post_ids.length === 0}
       load_more_label="Load newest"
       on:loadmore={async () => {
-        await loadMore();
+        await loadMore(true);
       }}
     >
       {#each $page_controller.post_ids as post_id (post_id)}

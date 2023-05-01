@@ -43,8 +43,9 @@
       {:else}
         <Button
           id="sub_now"
-          label="Subscribe"
+          label="Subscribe to post"
           icon="favorite"
+          icon_filled
           primary
           controller={button_row}
           on:click={() => {
@@ -71,15 +72,13 @@
           label="Bottom"
           {controller}
           on:click={() => {
+            const main = document.querySelector('main'),
+              util_nav = document.querySelector('[data-util-nav]');
+
+            if (!main || !util_nav) return;
+
             window.scrollTo({
-              top:
-                (document.querySelector('main')?.offsetHeight || Infinity) -
-                window.innerHeight +
-                // @ts-ignore
-                (document.querySelector('[data-util-nav]')?.offsetHeight || 0) -
-                16 -
-                // @ts-ignore
-                (navigator.standalone ? 32 : 0),
+              top: main.offsetTop + main.offsetHeight - 16 - window.innerHeight,
               behavior: 'smooth'
             });
 

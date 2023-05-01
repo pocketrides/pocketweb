@@ -8,6 +8,15 @@ export const load = (async (event) => {
 
   if (!parent.my_nametag) throw redirect(302, '/');
 
+  let free_mode = false;
+  let can_free_mode_publish = false;
+
+  if (!parent.my_nametag.stripe?.has_sub) {
+    free_mode = true;
+
+    can_free_mode_publish = await Pocket.canFreeModePublish(parent.my_nametag.id);
+  }
+
   let editing_pocket: DraftPocket | undefined = undefined;
   let editing_pocket_id: string | undefined = undefined;
 
@@ -31,6 +40,8 @@ export const load = (async (event) => {
     my_nametag: parent.my_nametag,
     page_theme: parent.my_nametag.theme,
     editing_pocket,
-    editing_pocket_id
+    editing_pocket_id,
+    free_mode,
+    can_free_mode_publish
   };
 }) satisfies PageServerLoad;

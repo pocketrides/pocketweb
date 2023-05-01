@@ -1,6 +1,12 @@
 <script lang="ts">
   import '$lib/styles/global.scss';
-  import 'material-symbols/rounded.scss';
+  import '@material-symbols/font-500/rounded.scss';
+  import '@fontsource/dm-sans/400.css';
+  import '@fontsource/dm-sans/400-italic.css';
+  import '@fontsource/dm-sans/500.css';
+  import '@fontsource/dm-sans/500-italic.css';
+  import '@fontsource/dm-sans/700.css';
+  import '@fontsource/dm-sans/700-italic.css';
 
   import { browser } from '$app/environment';
   import { afterNavigate, beforeNavigate } from '$app/navigation';
@@ -21,6 +27,7 @@
   import { HomepageHelper } from '$lib/util/homepage';
   import OutOfLikes from '$lib/sheets/OutOfLikes.svelte';
   import * as Fathom from 'fathom-client';
+  import AppHelp from '$lib/sheets/AppHelp.svelte';
 
   let started: boolean = false;
   let client: MagicBellClient;
@@ -151,3 +158,4 @@
 
 <PostReplies />
 <Photos />
+<AppHelp />

@@ -9,7 +9,6 @@
   export let label: string = 'Add pics';
 
   let file_input: HTMLInputElement;
-  let files: FileList;
 
   const dispatch = createEventDispatcher();
 
@@ -22,10 +21,13 @@
   const current_status = writable(idle_status);
 
   const handleChange = async () => {
+    if (!file_input) return;
+    if (!file_input.files?.length) return;
+
     $error = false;
     $uploading = true;
 
-    const photos = await upload(files, (current, total) => {
+    const photos = await upload(file_input.files, (current, total) => {
       $current_status = `Uploading ${current} of ${total}…`;
     });
 
@@ -43,7 +45,7 @@
       $uploading = false;
     }
 
-    file_input.value = '';
+    if (file_input) file_input.value = '';
   };
 
   const testValid = () => {
@@ -84,7 +86,6 @@
       data-sham
       disabled={$uploading}
       bind:this={file_input}
-      bind:files
       on:change={handleChange}
     />
   {/if}

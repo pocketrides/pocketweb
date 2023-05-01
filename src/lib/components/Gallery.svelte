@@ -6,6 +6,7 @@
   import FloatButton from './FloatButton.svelte';
   import FloatButtonContainer from './FloatButtonContainer.svelte';
   import { Photos } from '$lib/stores/gallery';
+  import { browser } from '$app/environment';
 
   export let photos: CloudinaryPhoto[];
   export let square: boolean = true;
@@ -13,14 +14,19 @@
   export let allow_delete: boolean = false;
 
   let gallery: HTMLDivElement;
+  let w = (browser && window.innerWidth) || 0;
 
   const dispatch = createEventDispatcher();
   const current_scroll = writable(1);
 
   const handleScroll = () => {
+    if (!gallery) return;
+
     $current_scroll = Math.max(
       1,
-      Math.floor(gallery.scrollLeft / gallery.clientWidth) + 1
+      Math.floor(
+        gallery.scrollLeft / (gallery.offsetWidth + (w < 640 && !square ? 80 : 0))
+      ) + 1
     );
   };
 
@@ -29,6 +35,11 @@
       photos,
       selected: photo
     };
+  };
+
+  const handleResize = () => {
+    w = window.innerWidth;
+    handleScroll();
   };
 
   // test mode
@@ -47,6 +58,8 @@
   //   }
   // ];
 </script>
+
+<svelte:window on:resize={handleResize} />
 
 {#if photos.length}
   <div class="gallery-outer" class:square class:contain>
@@ -106,14 +119,14 @@
     }
 
     &:not(.contain) .gallery-item {
-      max-width: 720px;
-      max-height: 840px;
-      // min-width: 50%;
       scroll-snap-align: center !important;
-      min-height: 320px;
+      min-width: 100%;
+      max-width: 720px;
+      min-height: 480px;
+      max-height: 840px;
 
       @media (max-width: 640px) {
-        min-width: 100%;
+        min-width: 120%;
       }
 
       @media (min-width: 640px) {
@@ -121,7 +134,6 @@
       }
 
       :global(img) {
-        // width: 100%;
         min-width: 100%;
         height: 100%;
         object-fit: cover;
@@ -130,9 +142,12 @@
 
     &.square .gallery-item {
       flex-shrink: 0;
+      aspect-ratio: 1/1;
       width: 100vw;
       height: 100vw;
+      min-width: 100%;
       max-width: 640px;
+      min-height: 100%;
       max-height: 640px;
       scroll-snap-align: center;
       overflow: hidden;

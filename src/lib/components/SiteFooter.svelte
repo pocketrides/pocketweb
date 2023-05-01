@@ -6,19 +6,27 @@
   const year = new Date().getFullYear();
 </script>
 
-<footer>
+<footer data-fill="dark">
   <Container>
     <div data-flex="v" data-gap="1" data-padded="v">
-      <div data-flex="v" data-gap>
-        <h2 data-flex="ac" data-gap>
-          <img
-            src={`/pocketrides-${
-              $page.data.page_theme ?? $App.theme ?? 'system'
-            }.png`}
-            alt="pocket logo"
-            aria-hidden="true"
-          />
-          <span class="">Pocketrides!</span>
+      <div data-flex="v as" data-gap>
+        <h2>
+          <a
+            href="/profile/360661340419784777"
+            data-unstyle
+            aria-label="Follow us on Pocketrides"
+            data-flex="ac"
+            data-gap
+          >
+            <img
+              src={`/pocketrides-${
+                $page.data.page_theme ?? $App.theme ?? 'system'
+              }.png`}
+              alt="pocket logo"
+              aria-hidden="true"
+            />
+            <span class="">Pocketrides!</span>
+          </a>
         </h2>
         <p class="h3 half" data-flex="v">
           <span class="thin">Plan anything.</span>
@@ -27,6 +35,7 @@
         </p>
       </div>
       <div data-flex="v" data-gap>
+        <div class="h3 half"><a href="/unlimited">For Organizations</a></div>
         <div class="h3 half"><a href="/privacy-policy">Privacy Policy</a></div>
         <div class="h3 half"><a href="/terms-of-use">Terms of Use</a></div>
         <div class="h3 half"><a href="/help">Contact us</a></div>

@@ -296,6 +296,28 @@ export class Pocket {
     }
   }
 
+  // used in concert with free mode to enable having just 1 pocket
+  static async canFreeModePublish(nametag_id: string): Promise<boolean> {
+    try {
+      return await Fauna.client().query<boolean>(
+        q.Let(
+          {
+            nametag_pockets: q.Paginate(
+              q.Match(q.Index('pockets_by_nametag_ref'), [
+                Nametag.toRef(nametag_id)
+              ]),
+              { size: 3 }
+            )
+          },
+          q.If(q.GTE(1, q.Count(q.Var('nametag_pockets'))), false, true)
+        )
+      );
+    } catch (e) {
+      console.error('> db/Pocket.canFreeModePublish()', e);
+      return false;
+    }
+  }
+
   static async delete(
     nametag_id: string,
     pocket_id: string

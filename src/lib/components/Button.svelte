@@ -10,7 +10,7 @@
   export let label: string;
   export let count: string | number | undefined = undefined;
 
-  export let type: 'button' | 'submit' = 'button';
+  export let type: 'button' | 'submit' | 'reset' = 'button';
   export let icon: string | undefined = undefined;
   export let icon_filled: boolean = false;
   export let icon_spins: boolean = false;
@@ -19,6 +19,7 @@
   export let value: string = '';
   export let href: string | undefined = undefined;
   export let target: string | undefined = undefined;
+  export let form: string | undefined = undefined;
 
   export let small: boolean = false;
   export let primary: boolean = false;
@@ -73,6 +74,7 @@
   {disabled}
   {name}
   {value}
+  {form}
   class:primary
   class:system
   class:large
@@ -122,6 +124,7 @@
     height: 32px;
     white-space: nowrap;
     touch-action: manipulation;
+    flex-shrink: 0;
 
     span:empty {
       display: none;
@@ -163,5 +166,9 @@
 
   button[data-fill='superdark'] {
     color: rgb(var(--base));
+  }
+
+  button.transparent:active {
+    transform: translate(-1px, 1px);
   }
 </style>

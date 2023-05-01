@@ -7,7 +7,7 @@
   import ButtonRow from '$lib/components/ButtonRow.svelte';
   import UtilityNav from '$lib/components/UtilityNav.svelte';
   import { App } from '$lib/stores/app';
-  import { plural } from '$lib/util/plural';
+  import { is_standalone } from '$lib/util/is-standalone';
   import type { ServerPocket } from '$lib/zod/Pocket';
   import type { ClientPocketMember } from '$lib/zod/PocketMember';
   import { writable, type Writable } from 'svelte/store';
@@ -36,6 +36,14 @@
       }
       await invalidateAll();
       $joining = false;
+
+      if (!is_standalone) {
+        if ($pocket.settings.joinability === 'moderated') {
+          $App.sheet_id = 'app_help';
+        } else {
+          $App.sheet_id = 'app_help_joined';
+        }
+      }
     } else {
       $App.sheet_id = 'onboarding';
     }
@@ -100,9 +108,7 @@
               top:
                 (main.offsetTop + main.clientHeight || Infinity) -
                 window.innerHeight -
-                16 -
-                // @ts-ignore
-                (navigator.standalone ? 32 : 0),
+                16,
               behavior: 'smooth'
             });
 
@@ -115,15 +121,24 @@
     <UtilityNav>
       <div data-flex="v as" data-gap slot="left">
         <div>
-          <p class="h3 half">Requested</p>
+          <p class="h2 half">Request sent</p>
           <p>
             Waiting for the {$pocket.hosts.length ? `hosts` : 'host'} to approve you.
+          </p>
+          <p>
+            {#if !is_standalone}<a
+                href="#app"
+                on:click|preventDefault={() => {
+                  $App.sheet_id = 'app_help';
+                }}
+                class="h3">Get the app</a
+              >.{/if}
           </p>
         </div>
         <ButtonRow let:controller initial="refresh">
           <Button
             id="refresh"
-            label={$checking ? 'One sec!' : 'Check now'}
+            label={$checking ? 'One sec!' : 'Check status'}
             disabled={$checking}
             icon_spins={$checking}
             icon={$checking ? 'autorenew' : 'refresh'}
@@ -177,9 +192,7 @@
                 top:
                   (main.offsetTop + main.clientHeight || Infinity) -
                   window.innerHeight -
-                  16 -
-                  // @ts-ignore
-                  (navigator.standalone ? 32 : 0),
+                  16,
                 behavior: 'smooth'
               });
 
@@ -230,9 +243,7 @@
                 top:
                   (main.offsetTop + main.clientHeight || Infinity) -
                   window.innerHeight -
-                  16 -
-                  // @ts-ignore
-                  (navigator.standalone ? 32 : 0),
+                  16,
                 behavior: 'smooth'
               });
 
@@ -248,33 +259,44 @@
     <div slot="left">
       {#if $pocket.settings.joinability === 'anyone'}
         <div data-flex="v as" data-gap>
-          {#if $page.data.my_nametag === undefined}
-            <div>
-              <p class="h3">
-                You're on Pocketrides! <strong class="half">Hello!</strong>
-              </p>
-              <p>
-                This is a self-contained social network for whatever your {plural(
-                  $pocket.hosts.length + 1,
-                  'friend has',
-                  'friends have',
-                  false
-                )}
-                planned. It's free to join with a Pocketrides account.
-              </p>
-            </div>
-          {/if}
-          <Button
-            label={$joining
-              ? 'One sec!'
-              : $page.data.my_nametag
-              ? 'Join'
-              : 'Sign up or Sign in'}
-            disabled={$joining}
-            icon="hail"
-            primary
-            on:click={joinClick}
-          />
+          <div>
+            <p class="h3">
+              You're on Pocketrides! <strong class="half">Hello!</strong>
+            </p>
+          </div>
+          <ButtonRow
+            let:controller
+            initial={$page.data.my_nametag ? 'join' : 'what'}
+          >
+            {#if $page.data.my_nametag}
+              <Button
+                id="join"
+                label={$joining ? 'One sec!' : 'Join Pocket'}
+                disabled={$joining}
+                icon="hail"
+                primary
+                {controller}
+                on:click={joinClick}
+              />
+            {:else}
+              <Button
+                id="join"
+                label="Sign up or Sign in"
+                icon="hail"
+                primary
+                {controller}
+                on:click={joinClick}
+              />
+            {/if}
+            <Button
+              id="what"
+              {controller}
+              label="What is this?"
+              icon="help"
+              href="/?help=1"
+              large
+            />
+          </ButtonRow>
         </div>
       {:else if $pocket.settings.joinability === 'moderated'}
         <Button

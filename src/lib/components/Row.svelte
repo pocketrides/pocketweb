@@ -23,7 +23,7 @@
   .sticky {
     position: sticky;
     z-index: 15;
-    top: 0;
+    top: env(safe-area-inset-top);
   }
 
   .padded {
@@ -32,5 +32,10 @@
 
   .bordered {
     border-bottom: 1px solid rgba(var(--dark), 0.25);
+  }
+
+  div > :global([slot='left']:has([data-3d])) {
+    padding-bottom: 1px;
+    padding-left: 1px;
   }
 </style>

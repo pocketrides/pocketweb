@@ -1,5 +1,7 @@
 [data-richtext] {
   word-break: break-word;
+  font-size: 1.125rem;
+  line-height: 1.5;
 
   p,
   blockquote,
@@ -50,9 +52,10 @@
   h5,
   h6 {
     font-size: 1.125rem;
+    line-height: 1.5;
 
     &:not(:first-child) {
-      margin-top: 1rem;
+      margin-top: 1.5rem;
     }
   }
 }

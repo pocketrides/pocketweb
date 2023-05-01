@@ -13,7 +13,7 @@
     </ul>
   {:else}
     <div data-padded>
-      <p class="h3 half">No replies… <span class="half">yet!</span></p>
+      <p class="h3 half">No replies… <span class="half">yet<em>!</em></span></p>
     </div>
   {/if}
 </Container>

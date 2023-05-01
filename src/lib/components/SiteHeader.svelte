@@ -11,6 +11,7 @@
   import { onMount } from 'svelte';
   import ButtonRow from './ButtonRow.svelte';
   import { afterNavigate, beforeNavigate } from '$app/navigation';
+  import { is_standalone } from '$lib/util/is-standalone';
 
   export let sticky: boolean = false;
   export let utility: boolean = false;
@@ -22,31 +23,37 @@
   let hud = false;
   let safehud = false;
 
-  const checkForScrollingUp = () => {
+  const SCROLL_MIN = 110;
+
+  const checkForScrollingUp = (delay = 650) => {
     if (!huddable) return;
+    if (!has_init) {
+      hud = true;
+      safehud = true;
+      return;
+    }
     const start_y = window.scrollY;
     let header_height = document.querySelector('main')?.offsetTop || 640;
     if (start_y < header_height) hud = true;
     if (interval_id) return;
     clearInterval(interval_id);
     interval_id = setTimeout(() => {
-      if (start_y > window.scrollY || window.scrollY < 100) hud = true;
+      if (start_y > window.scrollY || window.scrollY < SCROLL_MIN) hud = true;
 
       hud = window.scrollY < header_height || window.scrollY < start_y;
-      safehud = window.scrollY > 110;
+      safehud = window.scrollY > SCROLL_MIN;
 
       clearInterval(interval_id);
       interval_id = undefined;
-    }, 650);
+    }, delay);
   };
 
   onMount(() => {
-    checkForScrollingUp();
-
     if (huddable) {
+      hud = true;
       setTimeout(() => {
         has_init = true;
-      }, 1);
+      }, 500);
     }
   });
 
@@ -54,9 +61,6 @@
     if (huddable) {
       has_init = false;
       hud = true;
-      setTimeout(() => {
-        has_init = true;
-      }, 1);
     }
   });
 
@@ -66,14 +70,21 @@
       hud = true;
       setTimeout(() => {
         has_init = true;
-      }, 1);
-      checkForScrollingUp();
+        checkForScrollingUp(10);
+      }, 10);
     }
   });
+
+  const handleScroll = () => {
+    checkForScrollingUp();
+  };
 </script>
 
-<svelte:window on:scroll={checkForScrollingUp} />
+<svelte:window on:scroll={handleScroll} />
 
+{#if is_standalone}
+  <div class="clipper" data-fill={fill} />
+{/if}
 <header
   data-fill={fill}
   class:utility
@@ -100,19 +111,27 @@
               }}
             />
             {#if $page.url.pathname === `/profile/${$page.data.my_nametag.id}`}
-              <Button href="/settings" label="Settings" icon="settings_suggest" />
+              <Button
+                href="/settings"
+                label="Settings"
+                icon="settings_suggest"
+                primary
+                small
+              />
             {:else}
               <Nametag nametag={$page.data.my_nametag} />
             {/if}
           {:else}
             <ButtonRow>
               <Button
-                label="Sign in"
+                label="Sign up"
+                primary
+                small
+                icon="hail"
                 on:click={() => ($App.sheet_id = 'onboarding')}
               />
               <Button
-                label="Get account"
-                primary
+                label="Sign in"
                 small
                 on:click={() => ($App.sheet_id = 'onboarding')}
               />
@@ -134,14 +153,24 @@
 </div>
 
 <style lang="scss">
-  header:has(~ [data-slot]:empty),
+  header {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  header:has(~ [data-slot]:empty):has(~ [data-nav]:empty):has(
+      ~ [data-gallery]:empty
+    ):not([data-fill='dark']),
+  header:not([data-fill='dark']):has(~ [data-gallery]:empty):has(
+      ~ [data-nav]:empty
+    ):has(~ [data-slot]:empty),
+  header:has(~ [data-gallery]:not(:empty)).safehud,
   [data-nav]:not(:empty),
   [data-gallery]:not(:empty) {
     border-bottom-left-radius: 1rem;
     border-bottom-right-radius: 1rem;
 
-    border-bottom: 1px solid rgba(var(--dark), 0.5);
     box-shadow: 0 16px 16px -24px rgba(var(--dark), 0.75);
+    border-bottom: 1px solid rgba(var(--dark), 0.5);
 
     overflow: hidden;
   }
@@ -152,17 +181,21 @@
     z-index: 1;
   }
 
-  header[data-fill='dark'],
-  header:has(~ [data-slot]:empty)[data-fill='dark'] {
+  [data-gallery]:not(:empty) {
     border-bottom: 0 none;
+  }
+
+  header[data-fill='dark'] {
+    border-bottom: 2px solid rgb(var(--dark));
     border-radius: 0;
-    box-shadow: none;
+    box-shadow: 0;
     margin-bottom: -1px;
   }
 
   header.utility {
     border-bottom-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
+    border-bottom: 1px solid rgba(var(--dark), 0.5) !important;
   }
 
   header.sticky,
@@ -175,7 +208,7 @@
   [data-nav].sticky,
   [data-nav].huddable {
     position: sticky;
-    top: 92px;
+    top: calc(92px + env(safe-area-inset-top));
     z-index: 38;
   }
 
@@ -184,15 +217,15 @@
   }
 
   [data-nav].huddable {
-    transform: translateY(calc(-110% - 85px));
+    transform: translateY(calc(-110% - 92px - env(safe-area-inset-top)));
   }
 
   .huddable.hud {
-    transform: translateY(0);
+    transform: translateY(0px);
   }
 
   .huddable.has_init {
-    transition: transform 0.35s ease-in-out;
+    transition: transform 0.15s ease-in-out;
   }
 
   header:has(~ [data-gallery]:not(:empty)) {
@@ -213,5 +246,23 @@
   [data-gallery] {
     max-width: 720px;
     margin: auto;
+  }
+
+  [data-nav] :global(> .padded) {
+    padding-top: 1px;
+  }
+
+  .clipper {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: env(safe-area-inset-top);
+    z-index: 35;
+
+    &:has(~ [data-gallery]:not(:empty)) {
+      &:has(~ header:not(.safehud)) {
+        opacity: 0;
+      }
+    }
   }
 </style>

@@ -5,15 +5,13 @@
 <Container padded bordered rounded fill="system-superlight">
   <p class="h2">Pockets are for real life.</p>
   <p>
-    Get out of DMs and group chats and get into a central place for planning anything
-    - and sharing the recap.
-  </p>
-  <p class="h3" data-ph>
-    A pocket is for making a group memory in your own private social network.
+    Doing something big? Going somewhere new? Make a Pocket. Add some friends.
+    Everyone can post, and there's a big group chat too. You can add all kinds of
+    details, like time, place, and links.
   </p>
 </Container>
 <Container padded>
-  <p class="h2">So many other uses, too.</p>
+  <p class="h2">And everything else too.</p>
   <p>
     Have a niche only some of your followers care about? Put your Pocket in broadcast
     mode and share whatever you want - people who care can follow, or not.
@@ -22,8 +20,8 @@
 <Container padded>
   <p class="h2">Pockets are free to join.</p>
   <p>
-    Pockets are your own corner of the internet, for you and your friends. We'd just
-    love it if you never plan something with your friends in three different DMs ever
-    again.
+    Pockets are your own corner of the internet, for you and your friends and
+    whatever you're doing. Without a subscription, anyone can join up to three
+    pockets for free.
   </p>
 </Container>

@@ -5,9 +5,10 @@
   import PocketTimeRenderer from './pockets/PocketTimeRenderer.svelte';
 
   export let pocket: ServerPocket;
+  export let mini: boolean = false;
 </script>
 
-<a href={`/pocket/${pocket.id}`} data-unstyle data-pocket>
+<a href={`/pocket/${pocket.id}`} data-unstyle data-pocket class:mini>
   <div data-3d="ah" data-theme={pocket.theme}>
     <PocketRenderer
       summary
@@ -61,6 +62,11 @@
 <style lang="scss">
   a {
     width: calc(50% - 0.25rem);
+
+    &.mini {
+      width: 220px;
+      flex-shrink: 0;
+    }
   }
 
   [slot='name'] {

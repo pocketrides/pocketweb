@@ -1,4 +1,4 @@
-import { IDB_VERSION } from './idb-cacne-version';
+import { IDB_VERSION } from './idb-cache-version';
 
 export class IDBCache {
   static #db: IDBDatabase;
@@ -26,6 +26,8 @@ export class IDBCache {
     });
   }
 
+  static async #close(a: any) {}
+
   static async get<T>(id: string): Promise<T | undefined> {
     return new Promise(async (resolve) => {
       if (typeof indexedDB === 'undefined') return resolve(undefined);
@@ -36,11 +38,11 @@ export class IDBCache {
       const store = transaction.objectStore('cache');
       const request = store.get(id);
 
-      request.onerror = () => resolve(undefined);
+      request.onerror = () => this.#close(resolve(undefined));
 
       request.onsuccess = (e: any) => {
-        if (e.target.result) resolve(e.target.result as T);
-        else resolve(undefined);
+        if (e.target.result) this.#close(resolve(e.target.result as T));
+        else this.#close(resolve(undefined));
       };
     });
   }
@@ -55,11 +57,11 @@ export class IDBCache {
       const store = transaction.objectStore('cache');
 
       transaction.onerror = () => {
-        resolve(undefined);
+        this.#close(resolve(undefined));
       };
 
       transaction.oncomplete = () => {
-        resolve(undefined);
+        this.#close(resolve(undefined));
       };
 
       store.put(obj);
@@ -77,11 +79,11 @@ export class IDBCache {
       const request = store.delete(id);
 
       request.onerror = () => {
-        resolve(false);
+        this.#close(resolve(false));
       };
 
       request.onsuccess = () => {
-        resolve(true);
+        this.#close(resolve(true));
       };
     });
   }
@@ -95,8 +97,8 @@ export class IDBCache {
       const transaction = this.#db.transaction('cache', 'readwrite');
       const store = transaction.objectStore('cache');
 
-      transaction.oncomplete = () => resolve(undefined);
-      transaction.onerror = () => resolve(undefined);
+      transaction.oncomplete = () => this.#close(resolve(undefined));
+      transaction.onerror = () => this.#close(resolve(undefined));
 
       store.clear();
     });

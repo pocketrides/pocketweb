@@ -17,7 +17,10 @@
         <Icon icon="info" />
         You're out of pockets.
       </h2>
-      <p>You can join up to three pockets without a subscription.</p>
+      <p>
+        You can join up to three pockets without a subscription. Scroll down to
+        subscribe.
+      </p>
     </Container>
     <Subscription on:complete={completed} />
   </div>

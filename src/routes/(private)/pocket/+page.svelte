@@ -36,6 +36,8 @@
   import { goto } from '$app/navigation';
   import { UpdatePocketRequest } from '$lib/api/pocket/update';
   import { DeletePocketRequest } from '$lib/api/pocket/delete';
+  import AddToWorldfeed from './ui/AddToWorldfeed.svelte';
+  import WorldfeedHelp from '$lib/sheets/worldfeed/WorldfeedHelp.svelte';
 
   export let data: PageData;
 
@@ -53,6 +55,8 @@
   $App.fill = 'dark';
 
   $: valid = draft_pocket_validator.safeParse($page_controller).success;
+  $: if ($page_controller.settings.visibility !== 'listed')
+    $page_controller.settings.worldfeed = null;
 
   const handlePicsUploaded = (e: CustomEvent<CloudinaryPhoto[]>) => {
     page_controller.update((prev) => {
@@ -107,7 +111,12 @@
   const handlePocketDeleteClick = async () => {
     if (!data.editing_pocket || !data.editing_pocket_id) return;
 
-    if (!confirm('Are you sure?')) return;
+    if (
+      !confirm(
+        `You better be sure you wanna delete this 'cause it's gone if you click OK.`
+      )
+    )
+      return;
 
     $deleting = true;
 
@@ -145,17 +154,35 @@
       <Button label="Cancel" href={`/pocket/${data.editing_pocket_id}`} />
     {/if}
   </div>
-  <Gallery
-    photos={$page_controller.cover_art}
-    square={false}
-    allow_delete
-    slot="gallery"
-    on:delete={photoDeleted}
-  />
+  {#if $page_controller.cover_art.length}
+    <Gallery
+      photos={$page_controller.cover_art}
+      square={false}
+      allow_delete
+      slot="gallery"
+      on:delete={photoDeleted}
+    />
+  {/if}
 </SiteHeader>
 <Main fullheight fullwidth padded={false}>
   <PocketRenderer details_enabled={$page_controller.details_enabled}>
     <Container slot="name">
+      {#if data.free_mode}
+        <Container rounded fill="superdark">
+          {#if data.can_free_mode_publish}
+            <p class="half">
+              <Icon icon="info" />
+              <strong>You're in free mode.</strong>
+            </p>
+            <p class=" half">Thanks for trying Pocketrides ♥️</p>
+          {:else}
+            <p class="h3 half">
+              <Icon icon="info" />
+              You're out of free pockets.
+            </p>
+          {/if}
+        </Container>
+      {/if}
       <div data-flex="v" data-gap data-ph>
         <Name store={page_controller} />
         {#if $page_controller.hosts.length}
@@ -243,8 +270,10 @@
             icon="delete"
             label="Discard"
             large
-            href="/home"
             controller={page_label}
+            on:click={() => {
+              history.go(-1);
+            }}
           />
         {/if}
       </ButtonRow>
@@ -255,7 +284,8 @@
           id="publish"
           label="Publish…"
           icon="hail"
-          disabled={valid !== true}
+          disabled={valid !== true ||
+            (data.free_mode === true && data.can_free_mode_publish === false)}
           primary
           controller={page_label}
           on:click={() => {
@@ -308,7 +338,9 @@
       />
       <p class="half h3">
         {#if $page_controller.settings.visibility === 'listed'}
-          Your pocket will show up on your profile page.
+          {#if $page_controller.settings.worldfeed}
+            Your pocket will show up on your profile page and the Worldfeed.
+          {/if}
         {:else}
           <Icon icon="visibility_off" multiline />
           Unlisted. Your pocket's only visible to you, or people you send the link to.
@@ -342,19 +374,23 @@
         {#if $page_controller.settings.joinability === 'anyone'}
           {#if $page_controller.settings.visibility === 'unlisted'}
             Anyone with the link can join automatically.
-          {:else}
-            Anyone who can join automatically.
           {/if}
         {:else if $page_controller.settings.joinability === 'moderated'}
           <Icon icon="shield_with_heart" multiline />
           Private Mode. Hosts approve each person requesting to join.
         {:else}
           <Icon icon="edit_off" multiline />
-          Broadcast Mode. Friends will follow your Pocket instead of joining. This means
-          they won't be able to make posts of their own, and Chat is disabled.
+          Broadcast Mode. Only you can post, and chat is disabled.
         {/if}
       </p>
     </div>
+    {#if $page_controller.settings.visibility === 'listed'}
+      {#if $page.data.my_nametag?.stripe?.has_sub === true}
+        <AddToWorldfeed {page_controller} />
+      {:else}
+        <p class="half">Post to Worldfeed with a subscription.</p>
+      {/if}
+    {/if}
     {#if typeof data.editing_pocket_id === 'undefined'}
       <Button
         label={$publishing
@@ -392,3 +428,4 @@
     </div>
   </div>
 </Sheet>
+<WorldfeedHelp />

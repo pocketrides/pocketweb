@@ -1,8 +1,13 @@
 <script lang="ts">
   import { StytchChallenge } from '$lib/api/stytch/challenge';
   import Button from '$lib/components/Button.svelte';
+  import ButtonRow from '$lib/components/ButtonRow.svelte';
+  import Container from '$lib/components/Container.svelte';
   import Select from '$lib/components/Select.svelte';
   import { type SheetContext, SHEET_CONTEXT_ID } from '$lib/contexts/Sheet';
+  import { App } from '$lib/stores/app';
+  import { HomepageHelper } from '$lib/util/homepage';
+  import { is_standalone } from '$lib/util/is-standalone';
   import { AVAILABLE_COUNTRIES } from '$lib/zod/Stytch';
   import { parsePhoneNumber } from 'awesome-phonenumber';
   import { afterUpdate, createEventDispatcher, getContext, onMount } from 'svelte';
@@ -52,46 +57,61 @@
 </script>
 
 <form on:submit|preventDefault={handleSubmit} data-flex="v" data-gap>
-  <div data-flex="v" data-gap>
-    <h2>Welcome to Pocketrides!</h2>
-    <p>
-      <strong>We're doing social media a little differently:</strong> no ads, no algorithms,
-      just you, your friends and a like button that earns you cash.
-    </p>
-    <p>Use your phone number to get a free account.</p>
-  </div>
+  <div data-flex="v as" data-gap="1">
+    <Container rounded fill="system-superlight">
+      <h3>No account? No problem!</h3>
+      <p>
+        Sign in with your phone number and we'll make one for you. <span class="half"
+          >It's totally free, and we don't sell your data.</span
+        >
+      </p>
+    </Container>
+    <div data-flex="v as" data-gap>
+      <h2>Sign in</h2>
+      {#if is_standalone === false && HomepageHelper.isHomepagePath()}
+        <div data-flex="v as" data-error data-fill="base">
+          <p class="small">Get the app:</p>
+          <a
+            href="#app"
+            class="small h3"
+            on:click|preventDefault={() => {
+              $App.sheet_id = 'app_help';
+            }}>Add to Home Screen</a
+          >
+        </div>
+      {/if}
 
-  <div data-flex="v as">
-    <label class="h2" for="phone">Phone number:</label>
-    <div data-button-row>
-      <Select bind:value={regionCode} autocomplete="tel-country-code" collapse>
-        {#each AVAILABLE_COUNTRIES as country}
-          <option value={country.value}>{country.display}</option>
-        {/each}
-      </Select>
-      <input
-        id="phone"
-        autocomplete="tel-national"
-        bind:value={phoneNumber}
-        data-3d
-        class="h3"
-        class:filled={valid}
-      />
+      <label class="h3" for="phone">Enter your phone number:</label>
+      <ButtonRow>
+        <Select bind:value={regionCode} autocomplete="tel-country-code" collapse>
+          {#each AVAILABLE_COUNTRIES as country}
+            <option value={country.value}>{country.display}</option>
+          {/each}
+        </Select>
+        <input
+          id="phone"
+          autocomplete="tel-national"
+          bind:value={phoneNumber}
+          data-3d
+          class="h3"
+          class:filled={valid}
+        />
+      </ButtonRow>
+      {#if valid === false && phoneNumber !== ''}
+        <label for="phone" data-error>That doesn't look like a valid number!</label>
+      {/if}
+      {#if $has_error}
+        <label for="phone" data-error>Something went wrong! Try again.</label>
+      {/if}
     </div>
-    {#if valid === false && phoneNumber !== ''}
-      <label for="phone" data-error>That doesn't look like a valid number!</label>
-    {/if}
-    {#if $has_error}
-      <label for="phone" data-error>Something went wrong! Try again.</label>
-    {/if}
   </div>
-  <p class="half">
+  <p class="half" data-ph>
     <small>
-      By continuing, you agree to the Pocketrides
+      By continuing, you agree to the
       <strong><a href="/privacy-policy" target="_blank">Privacy Policy</a></strong>.
     </small>
   </p>
-  <div data-flex data-gap>
+  <ButtonRow>
     <Button
       type="submit"
       label={$submitting && type === 'sms' ? 'One sec!' : 'Send SMS'}
@@ -108,7 +128,7 @@
         type = 'whatsapp';
       }}
       disabled={$submitting || !valid}
-      system
+      large
     />
-  </div>
+  </ButtonRow>
 </form>

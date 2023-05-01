@@ -17,8 +17,8 @@ return response;
 import type { RequestEvent } from '@sveltejs/kit';
 
 const lengths = {
-  short: 30, // 5 minutes
-  long: 60 * 5 // 1 hour
+  short: 15 * 1, // 15 seconds
+  long: 30 * 1 // 30 seconds
 };
 
 type CacheLength = keyof typeof lengths | number;
@@ -34,7 +34,6 @@ const cacheAndKey = (event: RequestEvent) => {
 export const getCachedResponse = async (
   event: RequestEvent
 ): Promise<Response | undefined> => {
-  return undefined;
   if (typeof caches === 'undefined') return undefined;
 
   const { cache, key } = cacheAndKey(event);
@@ -54,7 +53,6 @@ export const putCachedResponse = (
   response: Response,
   length: CacheLength
 ) => {
-  return;
   if (typeof caches === 'undefined') return;
 
   response = response.clone();
