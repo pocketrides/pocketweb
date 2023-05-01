@@ -19,8 +19,8 @@
       Joined
     </h2>
   </Row>
-  <Container>
-    <div data-flex="w" data-gap>
+  <Container padded={false}>
+    <div data-flex="scroll-h" data-gap data-padded>
       {#each data.joined_pockets as pocket (pocket)}
         <PocketDisplay {pocket} />
       {/each}
@@ -61,8 +61,8 @@
       Pockets
     </h2>
   </Row>
-  <Container>
-    <div data-flex="w" data-gap>
+  <Container padded={false}>
+    <div data-flex="scroll-h" data-gap data-padded>
       {#each data.pockets as pocket (pocket)}
         <PocketDisplay {pocket} />
       {/each}
@@ -77,8 +77,8 @@
       Cohosted
     </h2>
   </Row>
-  <Container>
-    <div data-flex="w" data-gap>
+  <Container padded={false}>
+    <div data-flex="scroll-h" data-gap data-padded>
       {#each data.cohosted_pockets as pocket (pocket)}
         <PocketDisplay {pocket} />
       {/each}
@@ -93,8 +93,8 @@
       Unlisted
     </h2>
   </Row>
-  <Container>
-    <div data-flex="w" data-gap>
+  <Container padded={false}>
+    <div data-flex="scroll-h" data-gap data-padded>
       {#each data.unlisted_pockets as pocket (pocket)}
         <PocketDisplay {pocket} />
       {/each}

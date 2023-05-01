@@ -354,9 +354,11 @@ export class Pocket {
 
   static assemblePocket(fql: GetPocketQueryResponse[]) {
     const only_success: any = fql.filter((p) => p.success === true);
-    return only_success.map((p: any) => {
-      return this.parseFQL(p.pocket, p.nametag, p.hosts, p.members_count[0]);
-    }) as ServerPocket[];
+    return only_success
+      .map((p: any) => {
+        return this.parseFQL(p.pocket, p.nametag, p.hosts, p.members_count[0]);
+      })
+      .reverse() as ServerPocket[];
   }
 
   static isPocketAdmin(nametag_id: string, pocket: ServerPocket) {

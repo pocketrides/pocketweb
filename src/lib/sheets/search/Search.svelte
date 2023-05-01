@@ -17,10 +17,12 @@
   });
 
   let q: string = '';
+  let interval_id: any;
 
   $: valid = z.string().min(1).max(64).safeParse(q).success;
 
   const handleSubmit = async () => {
+    if (q === '') return;
     $searching = true;
     $results = await SearchRequest.search(q);
     $has_searched = true;
@@ -35,6 +37,14 @@
       nametags: [],
       pockets: []
     };
+  };
+
+  const handleKeyup = () => {
+    clearInterval(interval_id);
+    interval_id = setInterval(() => {
+      clearInterval(interval_id);
+      handleSubmit();
+    }, 500);
   };
 </script>
 
@@ -51,6 +61,7 @@
           aria-label="Search pocketrides by nametag or pocket name"
           bind:value={q}
           class:filled={valid}
+          on:keyup={handleKeyup}
         />
         {#if $results.nametags.length || $results.pockets.length}
           <Button icon="clear" label="" large on:click={handleReset} />
