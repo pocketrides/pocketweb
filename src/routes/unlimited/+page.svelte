@@ -3,6 +3,10 @@
   import Icon from '$lib/components/Icon.svelte';
   import Main from '$lib/components/Main.svelte';
   import SiteHeader from '$lib/components/SiteHeader.svelte';
+  import { App } from '$lib/stores/app';
+
+  $App.theme = 'system';
+  $App.fill = 'system-superlight';
 </script>
 
 <svelte:head>
