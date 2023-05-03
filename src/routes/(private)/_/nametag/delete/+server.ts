@@ -4,7 +4,7 @@ import { Nametag } from '$lib/server/db/Nametag';
 import type { ApiGenericResponse } from '$lib/api/api';
 import { NametagStats } from '$lib/server/db/NametagStats';
 import { StripeClient } from '$lib/server/StripeClient';
-import { destroySessionCookie } from '$lib/server/Cookies';
+import { destroySessionCookie } from '$lib/server/cookies';
 import { Post } from '$lib/server/db/Post';
 import { Relationship } from '$lib/server/db/Relationship';
 

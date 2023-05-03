@@ -7,7 +7,7 @@ import {
   createSessionCookie,
   destroySessionCookie,
   getSessionCookie
-} from '$lib/server/Cookies';
+} from '$lib/server/cookies';
 import { OpenAI } from '$lib/server/OpenAI';
 import { MagicbellConfig } from '$lib/server/MagicbellConfig';
 import { Toucan } from 'toucan-js';

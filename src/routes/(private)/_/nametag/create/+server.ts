@@ -2,7 +2,7 @@ import { NametagCreate, type NametagCreateResponse } from '$lib/api/nametag/crea
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { Nametag } from '$lib/server/db/Nametag';
-import { createSessionCookie, getSessionCookie } from '$lib/server/Cookies';
+import { createSessionCookie, getSessionCookie } from '$lib/server/cookies';
 import { Stytch } from '$lib/server/Stytch';
 import { TopicSubscribe } from '$lib/server/Notify';
 import { Relationship } from '$lib/server/db/Relationship';

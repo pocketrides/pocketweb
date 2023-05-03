@@ -3,7 +3,7 @@ import type {
   StytchCustomClaims
 } from '$lib/zod/Stytch';
 import * as stytch from 'stytch';
-import { MAX_AGE_MINUTES } from './Cookies';
+import { MAX_AGE_MINUTES } from './cookies';
 import type { ServerAccount } from '$lib/zod/Account';
 import type { ServerNametag } from '$lib/zod/Nametag';
 

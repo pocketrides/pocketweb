@@ -3,7 +3,7 @@ import { Relationship } from '$lib/server/db/Relationship';
 import { blankNametagStats } from '$lib/zod/NametagStats';
 import { error, redirect } from '@sveltejs/kit';
 import type { LayoutServerLoad } from './$types';
-import { createSessionCookie, getSessionCookie } from '$lib/server/Cookies';
+import { createSessionCookie, getSessionCookie } from '$lib/server/cookies';
 import { Stytch } from '$lib/server/Stytch';
 import { Nametag } from '$lib/server/db/Nametag';
 

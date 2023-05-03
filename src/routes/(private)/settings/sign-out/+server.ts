@@ -1,4 +1,4 @@
-import { destroySessionCookie } from '$lib/server/Cookies';
+import { destroySessionCookie } from '$lib/server/cookies';
 import { redirect } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 

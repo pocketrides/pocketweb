@@ -2,7 +2,7 @@ import { NametagUpdate, type NametagUpdateResponse } from '$lib/api/nametag/upda
 import { Nametag } from '$lib/server/db/Nametag';
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { createSessionCookie, getSessionCookie } from '$lib/server/Cookies';
+import { createSessionCookie, getSessionCookie } from '$lib/server/cookies';
 import { Stytch } from '$lib/server/Stytch';
 
 export const POST = (async (event) => {

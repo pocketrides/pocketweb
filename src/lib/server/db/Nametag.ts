@@ -135,7 +135,9 @@ export class Nametag {
     nametag_id: string
   ): Promise<NametagRelationshipsGetFriendsRequest> {
     try {
-      const query = await Fauna.client().query<{ data: object[] } | undefined>(
+      const query = await Fauna.client().query<
+        { data: (object | null)[] } | undefined
+      >(
         q.Map(
           q.Paginate(
             q.Match(q.Index('friends_by_nametag_ref'), [Nametag.toRef(nametag_id)])
@@ -144,9 +146,21 @@ export class Nametag {
             'rel_ref',
             q.Let(
               {
-                rel: q.Get(q.Var('rel_ref'))
+                rel: q.Get(q.Var('rel_ref')),
+                friend_exists: q.Exists(
+                  q.Select(['data', 'friend_ref'], q.Var('rel'))
+                )
               },
-              q.Get(q.Select(['data', 'friend_ref'], q.Var('rel')))
+              q.If(
+                q.Var('friend_exists'),
+                q.Get(q.Select(['data', 'friend_ref'], q.Var('rel'))),
+                q.Let(
+                  {
+                    deleted: q.Delete(q.Var('rel_ref'))
+                  },
+                  null
+                )
+              )
             )
           )
         )
@@ -155,7 +169,9 @@ export class Nametag {
       if (query) {
         return {
           success: true,
-          nametags: query.data.map((f) => Nametag.parseClientFQL(f))
+          nametags: query.data
+            .filter((f) => f !== null)
+            .map((f) => Nametag.parseClientFQL(f))
         };
       } else throw new Error('query was undefined', { cause: query });
     } catch (e) {
@@ -170,7 +186,9 @@ export class Nametag {
     nametag_id: string
   ): Promise<NametagRelationshipsGetFriendsRequest> {
     try {
-      const query = await Fauna.client().query<{ data: object[] } | undefined>(
+      const query = await Fauna.client().query<
+        { data: (object | null)[] } | undefined
+      >(
         q.Map(
           q.Paginate(
             q.Match(q.Index('followers_by_nametag_ref'), [Nametag.toRef(nametag_id)])
@@ -179,9 +197,21 @@ export class Nametag {
             'rel_ref',
             q.Let(
               {
-                rel: q.Get(q.Var('rel_ref'))
+                rel: q.Get(q.Var('rel_ref')),
+                follower_exists: q.Exists(
+                  q.Select(['data', 'follower_ref'], q.Var('rel'))
+                )
               },
-              q.Get(q.Select(['data', 'follower_ref'], q.Var('rel')))
+              q.If(
+                q.Var('follower_exists'),
+                q.Get(q.Select(['data', 'follower_ref'], q.Var('rel'))),
+                q.Let(
+                  {
+                    deleted: q.Delete(q.Var('rel_ref'))
+                  },
+                  null
+                )
+              )
             )
           )
         )
@@ -190,7 +220,9 @@ export class Nametag {
       if (query) {
         return {
           success: true,
-          nametags: query.data.map((f) => Nametag.parseClientFQL(f))
+          nametags: query.data
+            .filter((f) => f !== null)
+            .map((f) => Nametag.parseClientFQL(f))
         };
       } else throw new Error('query was undefined', { cause: query });
     } catch (e) {

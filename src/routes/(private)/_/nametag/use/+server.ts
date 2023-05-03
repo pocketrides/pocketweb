@@ -1,7 +1,7 @@
 import { NametagUse, type NametagUseResponse } from '$lib/api/nametag/use';
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { createSessionCookie, getSessionCookie } from '$lib/server/Cookies';
+import { createSessionCookie, getSessionCookie } from '$lib/server/cookies';
 import { Nametag } from '$lib/server/db/Nametag';
 import { Stytch } from '$lib/server/Stytch';
 

@@ -2,7 +2,7 @@ import { StytchVerify, type StytchVerifyResponse } from '$lib/api/stytch/verify'
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { Stytch } from '$lib/server/Stytch';
-import { MAX_AGE_MINUTES, createSessionCookie } from '$lib/server/Cookies';
+import { MAX_AGE_MINUTES, createSessionCookie } from '$lib/server/cookies';
 import { Account } from '$lib/server/db/Account';
 
 export const POST = (async (event) => {

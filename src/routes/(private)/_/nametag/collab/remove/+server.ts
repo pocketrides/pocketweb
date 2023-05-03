@@ -5,7 +5,7 @@ import type { ApiGenericResponse } from '$lib/api/api';
 import type { RequestHandler } from './$types';
 import { NametagCollabRemoveRequest } from '$lib/api/nametag/collab/remove';
 import { Notify } from '$lib/server/Notify';
-import { destroySessionCookie } from '$lib/server/Cookies';
+import { destroySessionCookie } from '$lib/server/cookies';
 
 export const POST = (async (event) => {
   let response: {
