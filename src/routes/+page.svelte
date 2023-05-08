@@ -27,33 +27,27 @@
 
   const pocket_hero: CloudinaryPhoto[] = [
     {
-      version: 1682809556,
-      public_id: 'Homepage/framed/pockets-hero_vfi1qz.png'
+      version: 1683510786,
+      public_id: 'Homepage/freshest/pocket-hero_xita0a.png'
     }
   ];
 
   const worldfeed_hero: CloudinaryPhoto[] = [
     {
-      version: 1682809556,
-      public_id: 'Homepage/framed/worldfeed-hero_tcweor.png'
+      version: 1683510786,
+      public_id: 'Homepage/freshest/worldfeed-hero_ey0da8.png'
     }
   ];
   const invite_hero: CloudinaryPhoto[] = [
     {
-      version: 1682809556,
-      public_id: 'Homepage/framed/pocket-features-hero_cfase8.png'
-    }
-  ];
-  const share_hero: CloudinaryPhoto[] = [
-    {
-      version: 1682809556,
-      public_id: 'Homepage/framed/pocket-pics-hero_z5d4wv.png'
+      version: 1683510786,
+      public_id: 'Homepage/freshest/your-space-hero_xxra5z.png'
     }
   ];
   const space_hero: CloudinaryPhoto[] = [
     {
-      version: 1682809556,
-      public_id: 'Homepage/framed/your-space-hero_xszfvh.png'
+      version: 1683510786,
+      public_id: 'Homepage/freshest/pocket-features-hero_xsux9w.png'
     }
   ];
 </script>
@@ -100,13 +94,9 @@
     </Container>
     <Container>
       <h2>
-        The next generation social platform for planning, sharing, and doing. <span
-          class="half"
-          >Scroll down to see how it works <Icon
-            icon="arrow_downward"
-            inline
-          /></span
-        >
+        Your digital town square for planning, sharing, and doing. <span class="half"
+          >See how it works in four steps <Icon icon="arrow_downward" inline />
+        </span>
       </h2>
     </Container>
     <Container padded={false} fill="system-superlight">
@@ -115,10 +105,10 @@
     <Container>
       <h2>
         Start with a Pocket.
-        <span class="half"
-          >Add everything your group needs to know: time, place, details and links.
-          Have your own poster? Yeah we support that.</span
-        >
+        <span class="half">
+          A self-contained social network for your group, they’re great at planning
+          stuff with a time and a place.
+        </span>
       </h2>
     </Container>
     <Container padded={false} fill="system-superlight">
@@ -126,10 +116,21 @@
     </Container>
     <Container>
       <h2>
-        List it in your town, or search where you're going.
+        Add it to the Worldfeed.
         <span class="half">
-          Share great community events on Worldfeed, so everyone searching can find
-          it and join too.
+          It’s a digital town square for finding stuff to do where you live (or wanna
+          travel to).
+        </span>
+      </h2>
+    </Container>
+    <Container padded={false} fill="system-superlight">
+      <Gallery contain square={false} photos={space_hero} />
+    </Container>
+    <Container>
+      <h2>
+        Invite everyone to join.
+        <span class="half">
+          It’s free to join three pockets, then unlimited is $5/mo.
         </span>
       </h2>
     </Container>
@@ -138,34 +139,9 @@
     </Container>
     <Container>
       <h2>
-        Invite everyone, it's free to join.
+        Your group’s new digital space!
         <span class="half">
-          Now you have one place to manage questions or push out updates. Share the
-          link on other platforms or send it straight to your group DM.
-        </span>
-      </h2>
-    </Container>
-    <Container padded={false} fill="system-superlight">
-      <Gallery contain square={false} photos={share_hero} />
-    </Container>
-    <Container>
-      <h2>
-        Share everything that happens in one single place.
-        <span class="half"
-          >With a group chat and feed, everyone has a place to share the recap.
-          Imagine that, all your event's pics in one place.</span
-        >
-      </h2>
-    </Container>
-    <Container padded={false} fill="system-superlight">
-      <Gallery contain square={false} photos={space_hero} />
-    </Container>
-    <Container>
-      <h2>
-        Just like that, your own digital space.
-        <span class="half"
-          >Want to keep it going? Whether your plans are every week or just for one
-          night, it's there when you need it.
+          Pockets are yours forever. No ads and no ongoing subscription required.
         </span>
       </h2>
     </Container>
@@ -179,9 +155,7 @@
       <Container rounded fill="superdark">
         <h2>Using Pocketrides as a business or organization?</h2>
         <h3 class="half">
-          We think you'll love Nametag Collab. <a href="/unlimited"
-            >See how to get started</a
-          >.
+          We think you'll love <a href="/unlimited">Nametag Collab</a>.
         </h3>
       </Container>
     </Container>
@@ -190,8 +164,8 @@
         <div>
           <h2 class="half">Oh, and one more thing:</h2>
           <h2>
-            Take care of your community and help it to thrive. When you give out a
-            like, it&rsquo;s worth cash on Pocketrides.
+            Take care of your community and help it thrive. When you give out a like,
+            it’s worth cash on Pocketrides
           </h2>
         </div>
         <Button

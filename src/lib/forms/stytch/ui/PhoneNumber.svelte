@@ -60,28 +60,13 @@
   <div data-flex="v as" data-gap="1">
     <Container rounded fill="system-superlight">
       <h3>No account? No problem!</h3>
-      <p>
-        Sign in with your phone number and we'll make one for you. <span class="half"
-          >It's free to get started, and we don't sell your data.</span
-        >
+      <p class="small">
+        Your account is your phone number, and we don't use passwords. We'll text you
+        a random secret code every time you sign in, which secures your account.
       </p>
     </Container>
     <div data-flex="v as" data-gap>
-      <h2>Sign in</h2>
-      {#if is_standalone === false && HomepageHelper.isHomepagePath()}
-        <div data-flex="v as" data-error data-fill="base">
-          <p class="small">Get the app:</p>
-          <a
-            href="#app"
-            class="small h3"
-            on:click|preventDefault={() => {
-              $App.sheet_id = 'app_help';
-            }}>Add to Home Screen</a
-          >
-        </div>
-      {/if}
-
-      <label class="h3" for="phone">Enter your phone number:</label>
+      <label class="h2" for="phone">Sign in with your phone number:</label>
       <ButtonRow>
         <Select bind:value={regionCode} autocomplete="tel-country-code" collapse>
           {#each AVAILABLE_COUNTRIES as country}
@@ -131,4 +116,18 @@
       large
     />
   </ButtonRow>
+  <div data-ph data-flex="v as">
+    {#if is_standalone === false && HomepageHelper.isHomepagePath()}
+      <div data-flex="v as" data-error data-fill="base">
+        <p class="small">Get the app:</p>
+        <a
+          href="#app"
+          class="small h3"
+          on:click|preventDefault={() => {
+            $App.sheet_id = 'app_help';
+          }}>Add to Home Screen</a
+        >
+      </div>
+    {/if}
+  </div>
 </form>

@@ -21,35 +21,24 @@
 </script>
 
 <div data-flex="v" data-gap="1">
-  <div data-flex="v" data-gap>
+  <div data-flex="v" data-gap="1">
     <Container rounded fill="system-superlight">
-      <h2>
-        We're building a safe place online, for everyone in our communities.
-        <h2 class="half">
-          So we can hang out more, show up for each other when it matters, and share
-          our creativity in a whole new way.
-        </h2>
-      </h2>
+      <h2>We're building a safe place online, for everyone in our communities.</h2>
+      <h3 class="half">
+        So we can hang out more often, show up for each other when it matters, and
+        share our creativity in a whole new way.
+      </h3>
     </Container>
     <Container>
-      <div data-flex="v" data-gap>
-        <p>
-          <strong>Unfortunately, social media is here to stay.</strong> Our contribution
-          to everyone doing the hard work of organizing, creating, and curating? On Pocketrides,
-          the like button earns you a cent.
-        </p>
-        <p>
-          Earning money from what you share online creates a great incentive for
-          everyone on Pocketrides to post thoughtful, quality content. (And having a
-          new way to make money from the time you put into your side project, hobby,
-          or organization sounds awesome.)
-        </p>
+      <div data-flex="v as" data-gap>
         <h2>On Pocketrides, 500 likes is $5.00 in your actual pocket.</h2>
         <p>
-          Only subscribers can give out likes (a cent at a time, of course), and we'd
-          encourage you to consider subscribing: taking care of each other and where
-          we live, in small ways every day, is how we build a thriving world that
-          works for everyone.
+          Only subscribers can give likes, and we'd encourage you to consider
+          subscribing.
+        </p>
+        <p>
+          Taking care of each other and where we live, in small ways every day, is
+          how we build a thriving world that works for everyone.
         </p>
       </div>
     </Container>
