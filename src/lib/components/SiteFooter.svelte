@@ -2,6 +2,8 @@
   import { page } from '$app/stores';
   import { App } from '$lib/stores/app';
   import Container from './Container.svelte';
+  import Icon from './Icon.svelte';
+  import Logo from './Logo.svelte';
 
   const year = new Date().getFullYear();
 </script>
@@ -10,29 +12,20 @@
   <Container>
     <div data-flex="v" data-gap="1" data-padded="v">
       <div data-flex="v as" data-gap>
-        <h2>
+        <Logo />
+        <h2 data-gap>
           <a
             href="/profile/360661340419784777"
             data-unstyle
             aria-label="Follow us on Pocketrides"
-            data-flex="ac"
-            data-gap
+            data-flex="v ac"
           >
-            <img
-              src={`/pocketrides-${
-                $page.data.page_theme ?? $App.theme ?? 'system'
-              }.png`}
-              alt="pocket logo"
-              aria-hidden="true"
-            />
-            <span class="">Pocketrides!</span>
+            <span>Pocketrides<em>!</em></span>
+            <span class="small half"
+              >View our profile <Icon icon="arrow_right" /></span
+            >
           </a>
         </h2>
-        <p class="h3 half" data-flex="v">
-          <span class="thin">Plan anything.</span>
-          <span class="thin">Share everything.</span>
-          <span>Be safe online.</span>
-        </p>
       </div>
       <div data-flex="v" data-gap>
         <div class="h3 half"><a href="/unlimited">For Organizations</a></div>
@@ -64,13 +57,14 @@
     color: rgba(var(--light), 0.5);
   }
 
-  img {
-    width: 32px;
-    height: 32px;
+  a:hover,
+  a:hover .half,
+  a:active,
+  a:active .half {
+    color: rgb(var(--light));
   }
 
-  a:hover,
-  a:active {
-    color: rgb(var(--light));
+  .half {
+    opacity: 0.85;
   }
 </style>

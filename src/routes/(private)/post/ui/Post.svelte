@@ -22,7 +22,7 @@
   export let index: number;
 
   const label_id = nanoid();
-  const button_row = writable('');
+  const button_row = writable('add_pics');
 
   const addPost = () => {
     store.update((prev) => {

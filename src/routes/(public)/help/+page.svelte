@@ -24,7 +24,13 @@
       <div data-flex="v as" data-gap>
         <h2>Need help? Have a question or feature suggestion?</h2>
         <p>We're all ears. Shoot us an email and we'll get right back to you.</p>
-        <Button label="Email us" href="mailto:hello@pocketrides.cc?subject=Hello!" />
+        <div data-flex data-gap>
+          <Button
+            label="Email us"
+            href="mailto:hello@pocketrides.cc?subject=Hello!"
+          />
+          <Button label="Suggest a feature" href="/pocket/362021519145041997" />
+        </div>
       </div>
     </Container>
   </div>

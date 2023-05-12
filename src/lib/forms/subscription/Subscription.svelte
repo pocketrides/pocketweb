@@ -33,8 +33,8 @@
       <div data-flex="v as" data-gap>
         <h2>On Pocketrides, 500 likes is $5.00 in your actual pocket.</h2>
         <p>
-          Only subscribers can give likes, and we'd encourage you to consider
-          subscribing.
+          Every month, subscribers have 250 likes to give out to great content on
+          Pocketrides, and we'd encourage you to consider subscribing.
         </p>
         <p>
           Taking care of each other and where we live, in small ways every day, is

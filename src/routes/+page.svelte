@@ -27,8 +27,8 @@
 
   const pocket_hero: CloudinaryPhoto[] = [
     {
-      version: 1683510786,
-      public_id: 'Homepage/freshest/pocket-hero_xita0a.png'
+      version: 1683918384,
+      public_id: 'Homepage/freshest/pocket-hero-v2_zx7bpg.png'
     }
   ];
 
@@ -38,16 +38,10 @@
       public_id: 'Homepage/freshest/worldfeed-hero_ey0da8.png'
     }
   ];
-  const invite_hero: CloudinaryPhoto[] = [
+  const payouts_hero: CloudinaryPhoto[] = [
     {
-      version: 1683510786,
-      public_id: 'Homepage/freshest/your-space-hero_xxra5z.png'
-    }
-  ];
-  const space_hero: CloudinaryPhoto[] = [
-    {
-      version: 1683510786,
-      public_id: 'Homepage/freshest/pocket-features-hero_xsux9w.png'
+      version: 1683918384,
+      public_id: 'Homepage/freshest/payouts-hero_kz941y.png'
     }
   ];
 </script>
@@ -56,7 +50,7 @@
   <title>welcome welcome! it's pocketrides!</title>
   <meta
     name="description"
-    content="A place for groups of all sizes to plan things together."
+    content="The all-in-one group messaging platform and digital town square."
   />
 </svelte:head>
 
@@ -78,13 +72,13 @@
                   class="half"
                   in:fly|local={{ y: 50, duration: 550, delay: 75 }}
                 >
-                  Hello hello! You&rsquo;re on
+                  Living life in a group text?
                 </span>
                 <span
                   class="jumbo"
                   in:fly|local={{ y: 50, duration: 550, delay: 75 }}
                 >
-                  Pocketrides<em>!</em>
+                  Meet Pocketrides<em>!</em>
                 </span>
               {/if}
             </h1>
@@ -94,9 +88,10 @@
     </Container>
     <Container>
       <h2>
-        Your digital town square for planning, sharing, and doing. <span class="half"
-          >See how it works in four steps <Icon icon="arrow_downward" inline />
-        </span>
+        The all-in-one group messaging platform and digital town square.
+        <span class="half"
+          >Here’s how it works <Icon icon="arrow_downward" inline /></span
+        >
       </h2>
     </Container>
     <Container padded={false} fill="system-superlight">
@@ -106,8 +101,9 @@
       <h2>
         Start with a Pocket.
         <span class="half">
-          A self-contained social network for your group, they’re great at planning
-          stuff with a time and a place.
+          It has everything your group needs to plan anything: all the details live
+          at the top, there’s a home feed for everyone to post, and a group chat to
+          shoot the breeze.
         </span>
       </h2>
     </Container>
@@ -116,34 +112,33 @@
     </Container>
     <Container>
       <h2>
-        Add it to the Worldfeed.
+        Find stuff to do.
         <span class="half">
-          It’s a digital town square for finding stuff to do where you live (or wanna
-          travel to).
+          <a href="/worldfeed">Worldfeed</a> is your new guide around town: find Pockets
+          to join or browse posts from everyone. (It’s great for finding stuff to do in
+          a new city, too.)
         </span>
       </h2>
     </Container>
     <Container padded={false} fill="system-superlight">
-      <Gallery contain square={false} photos={space_hero} />
+      <Gallery contain square={false} photos={payouts_hero} />
     </Container>
     <Container>
-      <h2>
-        Invite everyone to join.
-        <span class="half">
-          It’s free to join three pockets, then unlimited is $5/mo.
-        </span>
-      </h2>
-    </Container>
-    <Container padded={false} fill="system-superlight">
-      <Gallery contain square={false} photos={invite_hero} />
-    </Container>
-    <Container>
-      <h2>
-        Your group’s new digital space!
-        <span class="half">
-          Pockets are yours forever. No ads and no ongoing subscription required.
-        </span>
-      </h2>
+      <div data-flex="v as" data-gap>
+        <h2>
+          Support your community.
+          <span class="half">
+            Everyone earns a cent per like on Pocketrides: so we can take care of
+            each other and reward our creativity in a whole new way.
+          </span>
+        </h2>
+        <Button
+          label="Read more"
+          on:click={() => {
+            $App.sheet_id = 'creator_program';
+          }}
+        />
+      </div>
     </Container>
     <Container>
       <Container rounded fill="base">
@@ -154,27 +149,10 @@
       </Container>
       <Container rounded fill="superdark">
         <h2>Using Pocketrides as a business or organization?</h2>
-        <h3 class="half">
+        <h3>
           We think you'll love <a href="/unlimited">Nametag Collab</a>.
         </h3>
       </Container>
-    </Container>
-    <Container>
-      <div data-flex="v as" data-gap="1">
-        <div>
-          <h2 class="half">Oh, and one more thing:</h2>
-          <h2>
-            Take care of your community and help it thrive. When you give out a like,
-            it’s worth cash on Pocketrides
-          </h2>
-        </div>
-        <Button
-          label="Read more"
-          on:click={() => {
-            $App.sheet_id = 'creator_program';
-          }}
-        />
-      </div>
     </Container>
   </div>
   <UtilityNav slot="utility-nav">
@@ -213,7 +191,7 @@
     position: relative;
 
     @media (min-width: 640px) {
-      max-height: 400px;
+      max-height: 380px;
     }
 
     > *:not(img) {

@@ -168,6 +168,10 @@
     color: rgb(var(--base));
   }
 
+  button.transparent span:not(.count) {
+    text-decoration: underline;
+  }
+
   button.transparent:active {
     transform: translate(-1px, 1px);
   }
