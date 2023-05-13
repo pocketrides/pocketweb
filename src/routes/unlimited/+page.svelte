@@ -39,34 +39,30 @@
     </div>
     <Container rounded fill="system-superlight">
       <h2>
-        The safe place online for everyone in your community.
-        <h2 class="half">
-          Show off what makes your town, business, or organization unique with a
-          Nametag on Pocketrides.
-        </h2>
+        Show off what makes your town, business, or organization unique with a
+        Nametag on Pocketrides.
       </h2>
+      <p>
+        <strong>Don't miss:</strong> every nametag supports multiple users with
+        <a href="#ntc" class="h3">Nametag Collab</a>.
+      </p>
     </Container>
     <div data-richtext>
       <h2>How to get started</h2>
-      <p>
-        Your Pocketrides account is your phone number. Each phone number can have
-        multiple Nametags, our version of usernames.
-      </p>
-      <p>As an organization, you have two options to get started:</p>
+      <p>Your Pocketrides account is your phone number.</p>
+      <p>Each phone number can have multiple Nametags, our version of usernames.</p>
+      <h3>As an organization, you have two options to get started:</h3>
       <ol>
         <li>
-          Use your <strong>personal</strong> phone number to create your own Nametag,
-          then create a Business Nametag in settings.
-          <strong>This is the suggested method.</strong>
+          <strong>Suggested Method:</strong> Use your personal phone number to create
+          your own Nametag first, then create a Business Nametag in settings.
         </li>
-        <li>
-          Use your <strong>business</strong> phone number, and create a Business Nametag.
-        </li>
+        <li>Use your business phone number, and create a Business Nametag.</li>
       </ol>
       <hr />
     </div>
     <div data-richtext>
-      <h2>Using your personal number</h2>
+      <h2>Use your personal number:</h2>
       <ol>
         <li>
           Sign into Pocketrides with your personal number and complete registration
@@ -102,7 +98,14 @@
       <hr />
     </div>
     <div data-richtext>
-      <h2>Using your business number</h2>
+      <h2>Use your business number:</h2>
+      <p>
+        <em
+          >We only recommend this in certain cases, like if you have a dedicated
+          WhatsApp or Google Voice number. You must be able to receive a SMS or
+          WhatsApp message to use Pocketrides.</em
+        >
+      </p>
       <ol>
         <li>
           Sign into Pocketrides with your business phone number.
@@ -118,7 +121,7 @@
       <hr />
     </div>
     <div data-richtext>
-      <h2>Go further with Nametag Collab</h2>
+      <h2 id="ntc">Go further with Nametag Collab</h2>
       <p>Multiple people can sign into the same Nametag with Nametag Collab.</p>
       <p>To get started:</p>
       <ol>

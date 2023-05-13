@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { page } from '$app/stores';
-  import { App } from '$lib/stores/app';
   import Container from './Container.svelte';
   import Icon from './Icon.svelte';
   import Logo from './Logo.svelte';
@@ -27,11 +25,23 @@
           </a>
         </h2>
       </div>
+
       <div data-flex="v" data-gap>
         <div class="h3 half"><a href="/unlimited">For Organizations</a></div>
-        <div class="h3 half"><a href="/privacy-policy">Privacy Policy</a></div>
-        <div class="h3 half"><a href="/terms-of-use">Terms of Use</a></div>
+        <div class="h3 half"><a href="/help">Get help</a></div>
         <div class="h3 half"><a href="/help">Contact us</a></div>
+        <div class="h3 half small" data-ph>
+          <a href="/help">About Pocketrides</a>
+        </div>
+        <div class="h3 half small">
+          <a href="/pocket/364647123794264137">Transparency Report</a>
+        </div>
+        <div class="h3 half small">
+          <a class="small" href="/privacy-policy">Privacy Policy</a>
+        </div>
+        <div class="h3 half small">
+          <a href="/terms-of-use">Terms of Use</a>
+        </div>
         <p class="half">
           <small>&copy; {year} Pocketrides, Inc.</small>
         </p>
