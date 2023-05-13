@@ -62,7 +62,7 @@ export class Worldfeed {
               q.Var('pockets_set'),
               q.Lambda(
                 ['ts', 'pocket_ref', 'city', 'state', 'country'],
-                q.Or(
+                q.And(
                   q.ContainsStr(
                     q.LowerCase(q.Var('city')),
                     city?.toLowerCase() || ''
