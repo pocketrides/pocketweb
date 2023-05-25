@@ -30,6 +30,7 @@
   export let xlarge: boolean = false;
   export let transparent: boolean = false;
   export let superdark: boolean = false;
+  export let inline: boolean = false;
 
   export let id: string = nanoid();
   export let controller: Writable<string> = writable(id);
@@ -82,6 +83,7 @@
   class:xlarge
   class:small
   class:transparent
+  class:inline
   data-fill={transparent
     ? ''
     : primary
@@ -174,5 +176,9 @@
 
   button.transparent:active {
     transform: translate(-1px, 1px);
+  }
+
+  button.inline {
+    display: inline-flex;
   }
 </style>

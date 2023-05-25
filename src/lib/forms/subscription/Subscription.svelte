@@ -24,7 +24,7 @@
   <div data-flex="v" data-gap="1">
     <Container rounded fill="system-superlight">
       <h2>We're building a safe place online, for everyone in our communities.</h2>
-      <h3 class="half">
+      <h3>
         So we can hang out more often, show up for each other when it matters, and
         share our creativity in a whole new way.
       </h3>
@@ -33,12 +33,10 @@
       <div data-flex="v as" data-gap>
         <h2>On Pocketrides, 500 likes is $5.00 in your actual pocket.</h2>
         <p>
-          Every month, subscribers have 250 likes to give out to great content on
-          Pocketrides, and we'd encourage you to consider subscribing.
-        </p>
-        <p>
-          Taking care of each other and where we live, in small ways every day, is
-          how we build a thriving world that works for everyone.
+          Subscribers get 250 likes each month to give out to great content on
+          Pocketrides, and we'd encourage everyone to subscribe: taking care of each
+          other and where we live, in small ways every day, is how we build a
+          thriving society that works for everyone.
         </p>
       </div>
     </Container>

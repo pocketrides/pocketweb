@@ -4,7 +4,7 @@ import type { CookieSerializeOptions } from 'cookie';
 export const MAX_AGE_MINUTES = 60 * 24 * 1.5;
 const MAX_AGE_SECONDS = 60 * MAX_AGE_MINUTES;
 
-export const COOKIE_NAME_SESSION = 'session0428';
+export const COOKIE_NAME_SESSION = 'session0520';
 export const COOKIE_NAME_ROOM_KEY = 'roomkey';
 export const COOKIE_NAME_NAMETAG = 'nametag';
 

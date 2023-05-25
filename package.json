@@ -10,14 +10,14 @@
     "preview": "vite preview",
     ">>>>>>>>>>>>>>>>>>>>>>>>>>>": "",
     "tail-prod": "npx wrangler@latest tail --env production",
-    "deploy-prod": "vite build && npx wrangler@latest publish --env production",
+    "deploy-prod": "vite build && npx wrangler@latest deploy --env production",
     "<<<<<<<<<<<<<<<<<<<<<<<<<<<": "echo hi",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "lint": "prettier --plugin-search-dir . --check . && eslint .",
     "format": "prettier --plugin-search-dir . --write .",
     "tail": "npx wrangler@latest tail",
-    "deploy": "vite build && npx wrangler@latest publish"
+    "deploy": "vite build && npx wrangler@latest deploy"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230404.0",
