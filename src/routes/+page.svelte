@@ -3,9 +3,7 @@
   import Button from '$lib/components/Button.svelte';
   import CloudinaryImg from '$lib/components/CloudinaryImg.svelte';
   import Container from '$lib/components/Container.svelte';
-  import Gallery from '$lib/components/Gallery.svelte';
   import Icon from '$lib/components/Icon.svelte';
-  import Logo from '$lib/components/Logo.svelte';
   import Main from '$lib/components/Main.svelte';
   import Sheet from '$lib/components/Sheet.svelte';
   import SiteHeader from '$lib/components/SiteHeader.svelte';
@@ -17,7 +15,6 @@
   import type { CloudinaryPhoto } from '$lib/zod/CloudinaryPhoto';
   import { trackGoal } from 'fathom-client';
   import { onMount } from 'svelte';
-  import { fly } from 'svelte/transition';
 
   $: $App.theme = 'system';
   $: $App.fill = 'system-superlight';
@@ -34,8 +31,8 @@
   };
 
   const hero: CloudinaryPhoto = {
-    version: 1685393908,
-    public_id: 'Homepage/v2/v2-hero_x5zhia.png'
+    version: 1685394568,
+    public_id: 'Homepage/v2/v2-hero_emwabh.png'
   };
 
   const step1: CloudinaryPhoto = {
