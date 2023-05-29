@@ -43,7 +43,7 @@
       {:else}
         <Button
           id="sub_now"
-          label="Subscribe to post"
+          label="Get Unlimited"
           icon="favorite"
           icon_filled
           primary
@@ -52,25 +52,33 @@
             $App.sheet_id = 'subscribe';
           }}
         />
+        <Button
+          id="new_pocket"
+          icon="hail"
+          label="New pocket"
+          controller={button_row}
+          large
+          href="/pocket"
+        />
       {/if}
     </ButtonRow>
   </div>
   <div slot="right">
     {#if feed_controls}
-      <ButtonRow let:controller>
+      <ButtonRow>
         <Button
           icon="keyboard_arrow_up"
           label="Top"
-          {controller}
+          controller={button_row}
           on:click={() => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
-            controller.update(() => '');
+            button_row.update(() => '');
           }}
         />
         <Button
           icon="keyboard_arrow_down"
           label="Bottom"
-          {controller}
+          controller={button_row}
           on:click={() => {
             const main = document.querySelector('main'),
               util_nav = document.querySelector('[data-util-nav]');
@@ -82,7 +90,7 @@
               behavior: 'smooth'
             });
 
-            controller.update(() => '');
+            button_row.update(() => '');
           }}
         />
       </ButtonRow>

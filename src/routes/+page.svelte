@@ -1,6 +1,7 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import Button from '$lib/components/Button.svelte';
+  import CloudinaryImg from '$lib/components/CloudinaryImg.svelte';
   import Container from '$lib/components/Container.svelte';
   import Gallery from '$lib/components/Gallery.svelte';
   import Icon from '$lib/components/Icon.svelte';
@@ -53,10 +54,10 @@
 </script>
 
 <svelte:head>
-  <title>welcome welcome! it's pocketrides!</title>
+  <title>life's a ride, keep up on pocketrides!</title>
   <meta
     name="description"
-    content="The all-in-one group messaging platform and digital town square."
+    content="Build community like a local on Pocketrides: the all-in-one platform for groups, and a digital town square to find stuff to do locally."
   />
 </svelte:head>
 
@@ -64,134 +65,120 @@
   <WorldfeedNav slot="nav" />
 </SiteHeader>
 <Main fullheight padded={false}>
-  <div data-flex="v" data-gap="1">
+  <Container padded={false}>
+    <div class="card">
+      <h1 class="jumbo" data-h>
+        Build community like a local <span class="half"
+          >on Pocketrides<em>!</em></span
+        >
+      </h1>
+      <h2 class="h1 thin">
+        The only platform designed to help your community thrive.
+      </h2>
+      <CloudinaryImg photo={pocket_hero[0]} square />
+    </div>
+    <div class="card">
+      <h2 class="h1" data-h>
+        Directly support <span class="half" data-nobreak
+          >the local artists, activists, community champions, small business owners
+          and storytellers
+        </span> making your town a great place to live.
+      </h2>
+      <p class="h2 thin">
+        No matter how you participate in your community, your creativity has a new
+        home on Pocketrides.
+      </p>
+    </div>
+    <div class="how-it-works" data-fill="system-dark">
+      <h2 class="h1">Here's how it works:</h2>
+      <ul data-flex="scroll-h" data-unstyle data-gap>
+        <li data-fill="system-superlight">
+          <p class="h3">Step 1:</p>
+          <h2 class="h1">Start with a pocket.</h2>
+          <h2 class="thin">
+            Pockets are any-purpose group spaces where your imagination is the only
+            limit.
+          </h2>
+          <CloudinaryImg photo={pocket_hero[0]} square />
+        </li>
+        <li data-fill="system-superlight">
+          <p class="h3">Step 2:</p>
+          <h2 class="h1">Post anything.</h2>
+          <h2 class="thin">
+            Supports links, pics, and "add more" for whatever you're sharing.
+          </h2>
+          <CloudinaryImg photo={pocket_hero[0]} square />
+        </li>
+        <li data-fill="system-superlight">
+          <p class="h3">Step 3:</p>
+          <h2 class="h1">Reward good content.</h2>
+          <h2 class="thin">
+            Our like button earns you a cent, as a "thank you" for sharing great
+            content.
+          </h2>
+          <CloudinaryImg photo={pocket_hero[0]} square />
+        </li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2 class="h1">
+        <a href="/worldfeed" data-unstyle
+          ><Icon icon="public" inline /><u>Worldfeed</u></a
+        > is the best of your town.
+      </h2>
+      <p class="h2 thin">
+        Subscribers can add pockets and posts to their city's Worldfeed, so there's
+        one place for everything happening.
+      </p>
+    </div>
     <Container>
-      <Container rounded fill="system-superlight">
-        <div class="card" data-flex="ae">
-          <div data-flex="v">
-            <h1 data-flex="v">
-              {#if ready}
-                <span in:fly|local={{ y: 50, duration: 550 }}>
-                  <Logo />
-                </span>
-                <span
-                  class="half"
-                  in:fly|local={{ y: 50, duration: 550, delay: 75 }}
-                >
-                  Life's a ride, keep up
-                </span>
-                <span
-                  class="jumbo"
-                  in:fly|local={{ y: 50, duration: 550, delay: 75 }}
-                >
-                  on Pocketrides<em>!</em>
-                </span>
-              {/if}
-            </h1>
-          </div>
-        </div>
+      <Container fill="system-superlight" rounded>
+        <h2 class="h1">Your privacy is not for sale on Pocketrides.</h2>
+        <p class="h2 thin">
+          Our mission is to create a non-addictive, safe community space for all ages
+          — with no ads. <a
+            href="#why"
+            class="strong"
+            on:click|preventDefault={whyClick}>Read why this matters.</a
+          >
+        </p>
       </Container>
-    </Container>
-    <Container>
-      <div data-flex="v" data-gap>
-        <h2 class="h1">
-          A social network that protects your mental health, <span class="half"
-            >supports your community, <span class="half"
-              >and funds a green future.</span
-            ></span
-          >
-        </h2>
-        <h2 data-ph>
-          Scroll down to see how it works <Icon icon="arrow_downward" inline /><br />
-          <span class="half"> …or read why</span>
-          <a href="#why" on:click|preventDefault={whyClick}>
-            now is the right time to join a new place online.</a
-          >
-        </h2>
-      </div>
-    </Container>
-    <Container padded={false} fill="system-superlight">
-      <Gallery contain square={false} photos={pocket_hero} />
-    </Container>
-    <Container>
-      <div data-flex="v" data-gap>
-        <h2>
-          Start with a Pocket. <span class="half"
-            >A place for you and your friends to do, plan, and share anything.</span
-          >
-        </h2>
-        <p>
-          Details live at the top, there’s a feed for everyone to share photos and
-          posts, and a group chat to hang out. Great for groups of any size, and free
-          for everyone to join.
-        </p>
-      </div>
-    </Container>
-    <Container padded={false} fill="system-superlight">
-      <Gallery contain square={false} photos={worldfeed_hero} />
-    </Container>
-    <Container>
-      <div data-flex="v" data-gap>
-        <h2>
-          List it on Worldfeed.
-          <span class="half">
-            The <a href="/worldfeed">Worldfeed</a> is your digital town square, inspired
-            by small town vibes.
-          </span>
-        </h2>
-        <p>
-          It helps you find stuff to do, join interesting groups, or just see what’s
-          going on.
-        </p>
-      </div>
-    </Container>
-    <Container padded={false} fill="system-superlight">
-      <Gallery contain square={false} photos={payouts_hero} />
-    </Container>
-    <Container>
-      <div data-flex="v as" data-gap>
-        <h2>
-          Support your community.
-          <span class="half">
-            Creators do all the work on social media, so everyone earns like a
-            creator.
-          </span>
-        </h2>
-        <p>
-          Our transparent creator program earns everyone a cent per like on their
-          posts, and you can start a payout when you have at least 500 likes — that’s
-          $5!
-        </p>
-        <Button
-          label="Read more"
-          on:click={() => {
-            $App.sheet_id = 'creator_program';
-          }}
-        />
-      </div>
-    </Container>
-    <Container>
-      <Container rounded fill="base">
-        <div data-flex="v" data-gap>
-          <h2>A sustainable, ethical business model.</h2>
-          <h3>
-            Make one Pocket for free and join up to three, then Unlimited is $5/mo.
-          </h3>
-          <p>
-            Cancel anytime, you don't need an ongoing subscription to use Pocketrides
-            or get paid for likes on your posts.
-          </p>
-        </div>
-      </Container>
-      <Container rounded fill="superdark">
-        <h2>Profit sharing, coming soon.</h2>
-        <h3>
-          <a href="/pocket/364647123794264137">Stay tuned</a> for our plans to usher in
-          a new generation of business — and help fund a green future.
+      <Container rounded fill="system-dark">
+        <h2 class="h1">Free for everyone. $5/mo for Unlimited.</h2>
+        <h3 class="h2 thin">
+          Useful from day one: make your first pocket for free, invite all your
+          friends for free, and join up to three pockets completely for free. Then
+          Unlimited is just $5/mo.
         </h3>
       </Container>
+      <p>
+        You <strong>do not need</strong> an active subscription to use Pocketrides or
+        get paid for likes on your posts.
+      </p>
     </Container>
-  </div>
+    <div class="card">
+      <h2 class="h1 jumbo" data-h>Planning for the future, together.</h2>
+      <p class="h1 thin">
+        Our profits are yours to keep — but we'd love if you donated your portion to
+        climate action. <a href="/pocket/362022120043053129" class="strong"
+          >Read the plan.</a
+        >
+      </p>
+    </div>
+    <div class="card">
+      <Container rounded fill="system-superlight">
+        <h2 class="h1">We're just getting started.</h2>
+        <p class="h2 thin">
+          Early adopters, we're here to support you: join
+          <a href="/pocket/362021519145041997" class="strong"
+            ><Icon icon="hail" inline />Feature Requests</a
+          >
+          to tell us what sucks or ask questions if you get stuck.
+        </p>
+      </Container>
+    </div>
+  </Container>
+
   <UtilityNav slot="utility-nav">
     <div slot="left">
       {#if !$page.data.my_nametag}
@@ -338,23 +325,69 @@
 </Sheet>
 
 <style lang="scss">
+  [data-h] {
+    padding-top: 3rem;
+    margin-bottom: 1rem;
+  }
+
   .card {
-    aspect-ratio: 4/3;
-    max-height: 240px;
-    width: 100%;
-    position: relative;
+    padding: 1rem;
+
+    .jumbo {
+      font-size: 2.5rem;
+      line-height: 1.25;
+    }
+
+    h1,
+    h2 {
+      span:not([data-nobreak]) {
+        display: block;
+      }
+    }
+
+    :global(img) {
+      max-width: 100%;
+    }
+  }
+
+  .how-it-works {
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+    padding: 3rem 0 1rem;
 
     @media (min-width: 640px) {
-      max-height: 380px;
+      border-radius: 1.5rem;
     }
 
-    > *:not(img) {
-      position: relative;
-      z-index: 1;
+    > h2 {
+      margin: 0 1rem 1rem;
     }
+  }
 
-    [data-flex='v'] {
-      width: 100%;
+  [data-flex='scroll-h'] {
+    gap: 0;
+    padding: 0 1rem;
+
+    li {
+      margin: 0 1rem 0 0;
+      padding: 1rem;
+      display: flex;
+      border-radius: 1rem;
+      width: 75vw;
+      max-width: 540px;
+      flex-shrink: 0;
+      height: 480px;
+
+      flex-direction: column;
+
+      &:last-child {
+        margin-right: 0;
+      }
+
+      :global(img) {
+        margin-top: auto;
+        max-width: 100%;
+      }
     }
   }
 </style>

@@ -92,8 +92,9 @@
   </div>
   <p class="half" data-ph>
     <small>
-      By continuing, you agree to the
-      <strong><a href="/privacy-policy" target="_blank">Privacy Policy</a></strong>.
+      <strong>We will never sell your number or spam you. Ever.</strong> By
+      continuing, you agree to the platform
+      <strong><a href="/privacy-policy" target="_blank"> Privacy Policy</a></strong>.
     </small>
   </p>
   <ButtonRow>

@@ -24,8 +24,12 @@
     </div>
     <article data-richtext>
       <h2>Introduction</h2>
+      <h3>
+        Our business model precludes us from selling your private data for money. We
+        will never text you with spam.
+      </h3>
       <p>
-        Pocketrides, Inc is committed to protecting the privacy of our users and
+        Pocketrides, Inc. is committed to protecting the privacy of our users and
         utilizes the services of various service providers to provide the best
         possible user experience. These service providers include Cloudflare,
         Cloudinary, Fauna, Fathom, Magic Bell, Open AI, Stripe, and Stytch. These

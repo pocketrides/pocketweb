@@ -24,7 +24,7 @@
   <div data-flex="v" data-gap="1">
     <Container rounded fill="system-superlight">
       <h2>We're building a safe place online, for everyone in our communities.</h2>
-      <h3>
+      <h3 class="thin">
         So we can hang out more often, show up for each other when it matters, and
         share our creativity in a whole new way.
       </h3>

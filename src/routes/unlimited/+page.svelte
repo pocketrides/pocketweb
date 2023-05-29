@@ -169,7 +169,10 @@
     <Container fill="system-superlight" rounded>
       <div data-flex="v as" data-gap>
         <h2>Get stuck? Have a feature suggestion?</h2>
-        <p>We'd love to hear from you. <a href="/help" class="h3">Contact Us</a>.</p>
+        <p>
+          We'd love to hear from you. <a href="/help" class="h3">Email Us</a> or
+          <a class="h3" href="/pocket/362021519145041997">request a new feature</a>.
+        </p>
       </div>
     </Container>
   </div>

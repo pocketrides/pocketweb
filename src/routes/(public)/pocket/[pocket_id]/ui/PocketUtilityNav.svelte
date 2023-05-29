@@ -262,14 +262,14 @@
           {#if !$page.data.my_nametag}
             <div>
               <p class="h3">
-                You're on Pocketrides! <strong class="half">Hello!</strong>
+                This is a pocket on Pocketrides! <strong class="half"
+                  >It's a do-anything space for groups.
+                  <a href="/?help=1">Learn more</a> or join after you get a free account.
+                </strong>
               </p>
             </div>
           {/if}
-          <ButtonRow
-            let:controller
-            initial={$page.data.my_nametag ? 'join' : 'what'}
-          >
+          <ButtonRow let:controller initial="join">
             {#if $page.data.my_nametag}
               <Button
                 id="join"
@@ -283,7 +283,7 @@
             {:else}
               <Button
                 id="join"
-                label="Sign up or Sign in"
+                label="Get free account"
                 icon="hail"
                 primary
                 {controller}
@@ -301,7 +301,7 @@
           </ButtonRow>
         </div>
       {:else if $pocket.settings.joinability === 'moderated'}
-        <ButtonRow let:controller initial={$page.data.my_nametag ? 'join' : 'what'}>
+        <ButtonRow let:controller initial="join">
           <Button
             id="join"
             label={$joining ? 'One sec!' : 'Request to join'}
@@ -321,7 +321,7 @@
           />
         </ButtonRow>
       {:else if $pocket.settings.joinability === 'broadcast'}
-        <ButtonRow let:controller initial={$page.data.my_nametag ? 'join' : 'what'}>
+        <ButtonRow let:controller initial="join">
           <Button
             id="join"
             label={$joining ? 'One sec!' : 'Follow'}

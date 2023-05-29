@@ -2,7 +2,7 @@
   import Container from '../Container.svelte';
 </script>
 
-<Container padded bordered rounded fill="system-superlight">
+<Container padded rounded fill="system-superlight">
   <p class="h2">Pockets are for real life.</p>
   <p>
     Doing something big? Going somewhere new? Make a Pocket. Add some friends.

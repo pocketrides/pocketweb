@@ -8,37 +8,45 @@
 
 <Container padded>
   <div data-flex="v" data-gap="1">
-    <Container rounded bordered fill="system-superlight">
-      <div data-flex="v as" data-gap>
-        <h3>You&rsquo;re in free mode:</h3>
-        <ul data-unstyle>
+    <Container rounded fill="system-superlight">
+      <div data-richtext>
+        <h2>
+          Welcome to Pocketrides! <span class="half">Here's how to get started:</span
+          >
+        </h2>
+        <ol>
           <li>
-            <Icon icon="check" /> Follow your friends
+            <Icon icon="check" /><a href="/pocket">Make your first pocket</a>
           </li>
           <li>
-            <Icon icon="check" /> Make one Pocket &amp; join three
+            <Icon icon="check" />Browse
+            <a href="/worldfeed"><Icon icon="public" inline />Worldfeed</a>
           </li>
           <li>
-            <Icon icon="check" /> Get paid for likes you get
+            <Icon icon="check" /><a href="/pocket/362021519145041997">Let us know</a>
+            how to improve
           </li>
-        </ul>
+        </ol>
         {#if showing_more}
-          <h3>Get a subscription to:</h3>
-          <ul data-unstyle>
+          <h3>You need a subscription to:</h3>
+          <ul>
             <li>
-              <Icon icon="check" /> Add a bio &amp; links
-              <span class="half">(coming soon)</span>
+              <Icon icon="lock" /> Add a bio &amp; links
+              <span class="half">(coming soon!)</span>
             </li>
             <li>
-              <Icon icon="check" /> Create unlimited Pockets
+              <Icon icon="lock" /> Create unlimited Pockets
             </li>
             <li>
-              <Icon icon="check" /> Publish to Worldfeed &amp; Close Friends
+              <Icon icon="lock" /> Post to Worldfeed
+            </li>
+            <li>
+              <Icon icon="lock" /> Post to Close Friends
             </li>
           </ul>
         {/if}
         <Button
-          label={showing_more ? 'Show less' : 'Get a subscription to…'}
+          label={showing_more ? 'Show less' : 'You need a subscription to…'}
           icon={showing_more ? 'expand_less' : 'expand_more'}
           on:click={() => {
             showing_more = !showing_more;
@@ -47,11 +55,11 @@
       </div>
     </Container>
     <Container>
-      <div data-flex="v" data-gap>
-        <h3>Enjoying Pocketrides? Unlimited is $5/mo.</h3>
+      <div data-richtext="">
+        <h3>Enjoying Pocketrides? Get Unlimited.</h3>
         <p>
-          We're 100% subscriber-funded. No ads, no private data sales. Subscribe and
-          forget, or cancel it immediately.
+          We're 100% subscriber-funded. Your private data is never for sale, to
+          advertisers or otherwise.
         </p>
       </div>
     </Container>
@@ -61,3 +69,13 @@
     </p>
   </div>
 </Container>
+
+<style lang="scss">
+  [data-richtext] {
+    ol,
+    ul {
+      margin-top: 1rem;
+      margin-left: 0rem;
+    }
+  }
+</style>
