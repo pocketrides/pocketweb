@@ -13,6 +13,7 @@
   import WorldfeedNav from '$lib/components/worldfeed/WorldfeedNav.svelte';
   import Subscription from '$lib/forms/subscription/Subscription.svelte';
   import { App } from '$lib/stores/app';
+  import { Photos } from '$lib/stores/gallery';
   import type { CloudinaryPhoto } from '$lib/zod/CloudinaryPhoto';
   import { trackGoal } from 'fathom-client';
   import { onMount } from 'svelte';
@@ -32,25 +33,24 @@
     trackGoal('JGGYLBWK', 1);
   };
 
-  const pocket_hero: CloudinaryPhoto[] = [
-    {
-      version: 1683918384,
-      public_id: 'Homepage/freshest/pocket-hero-v2_zx7bpg.png'
-    }
-  ];
+  const hero: CloudinaryPhoto = {
+    version: 1685393908,
+    public_id: 'Homepage/v2/v2-hero_x5zhia.png'
+  };
 
-  const worldfeed_hero: CloudinaryPhoto[] = [
-    {
-      version: 1683510786,
-      public_id: 'Homepage/freshest/worldfeed-hero_ey0da8.png'
-    }
-  ];
-  const payouts_hero: CloudinaryPhoto[] = [
-    {
-      version: 1683918384,
-      public_id: 'Homepage/freshest/payouts-hero_kz941y.png'
-    }
-  ];
+  const step1: CloudinaryPhoto = {
+    version: 1685393733,
+    public_id: 'Homepage/v2/v2-step1_ulwbnu.png'
+  };
+
+  const step2: CloudinaryPhoto = {
+    version: 1685393733,
+    public_id: 'Homepage/v2/v2-step2_orimia.png'
+  };
+  const step3: CloudinaryPhoto = {
+    version: 1685393733,
+    public_id: 'Homepage/v2/v2-step3_k7fllz.png'
+  };
 </script>
 
 <svelte:head>
@@ -75,10 +75,19 @@
       <h2 class="h1 thin">
         The only platform designed to help your community thrive.
       </h2>
-      <CloudinaryImg photo={pocket_hero[0]} square />
+      <CloudinaryImg
+        photo={hero}
+        square
+        on:mouseup={() => {
+          $Photos = {
+            photos: [hero],
+            selected: hero
+          };
+        }}
+      />
     </div>
     <div class="card">
-      <h2 class="h1" data-h>
+      <h2 class="h1">
         Directly support <span class="half" data-nobreak
           >the local artists, activists, community champions, small business owners
           and storytellers
@@ -99,7 +108,16 @@
             Pockets are any-purpose group spaces where your imagination is the only
             limit.
           </h2>
-          <CloudinaryImg photo={pocket_hero[0]} square />
+          <CloudinaryImg
+            photo={step1}
+            square
+            on:mouseup={() => {
+              $Photos = {
+                photos: [step1],
+                selected: step1
+              };
+            }}
+          />
         </li>
         <li data-fill="system-superlight">
           <p class="h3">Step 2:</p>
@@ -107,16 +125,34 @@
           <h2 class="thin">
             Supports links, pics, and "add more" for whatever you're sharing.
           </h2>
-          <CloudinaryImg photo={pocket_hero[0]} square />
+          <CloudinaryImg
+            photo={step2}
+            square
+            on:mouseup={() => {
+              $Photos = {
+                photos: [step2],
+                selected: step2
+              };
+            }}
+          />
         </li>
         <li data-fill="system-superlight">
           <p class="h3">Step 3:</p>
           <h2 class="h1">Reward good content.</h2>
           <h2 class="thin">
-            Our like button earns you a cent, as a "thank you" for sharing great
-            content.
+            Our like button earns you a cent per like, to say thank you for sharing
+            great content.
           </h2>
-          <CloudinaryImg photo={pocket_hero[0]} square />
+          <CloudinaryImg
+            photo={step3}
+            square
+            on:mouseup={() => {
+              $Photos = {
+                photos: [step3],
+                selected: step3
+              };
+            }}
+          />
         </li>
       </ul>
     </div>

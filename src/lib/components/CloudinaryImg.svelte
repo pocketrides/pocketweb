@@ -17,6 +17,7 @@
 
 {#if thumbnail === true}
   <img
+    on:mouseup
     data-thumbnail
     src={getThumbnail(photo.version, photo.public_id)}
     alt={photo.alt_text}
@@ -24,6 +25,7 @@
 {/if}
 {#if normal === true}
   <img
+    on:mouseup
     data-normal
     src={getNormal(photo.version, photo.public_id)}
     alt={photo.alt_text}
@@ -31,6 +33,7 @@
 {/if}
 {#if square === true}
   <img
+    on:mouseup
     data-square
     src={getSquare(photo.version, photo.public_id)}
     alt={photo.alt_text}
@@ -38,6 +41,7 @@
 {/if}
 {#if square_small === true}
   <img
+    on:mouseup
     data-square-sm
     src={getSquareSmall(photo.version, photo.public_id)}
     alt={photo.alt_text}
