@@ -25,7 +25,7 @@
 
   const SCROLL_MIN = 110;
 
-  const checkForScrollingUp = (delay = 650) => {
+  const checkForScrollingUp = (delay = 150) => {
     if (!huddable) return;
     if (!has_init) {
       hud = true;
@@ -53,7 +53,7 @@
       hud = true;
       setTimeout(() => {
         has_init = true;
-      }, 500);
+      }, 1500);
     }
   });
 
@@ -104,6 +104,7 @@
           <Button
             label=""
             icon="search"
+            icon_bold
             transparent
             on:click={() => {
               $App.sheet_id = 'search';
@@ -167,15 +168,26 @@
       ~ [data-nav]:empty
     ):has(~ [data-slot]:empty),
   header:has(~ [data-gallery]:not(:empty)).safehud,
-  [data-nav]:not(:empty),
-  [data-gallery]:not(:empty) {
+  [data-nav]:not(:empty) {
     border-bottom-left-radius: 1rem;
     border-bottom-right-radius: 1rem;
 
-    box-shadow: 0 16px 16px -24px rgba(var(--dark), 0.75);
+    box-shadow: 0 16px 16px -22px rgba(var(--dark), 0.75);
     border-bottom: 1px solid rgba(var(--dark), 0.5);
 
     overflow: hidden;
+  }
+
+  @media (min-width: 640px) {
+    [data-gallery]:not(:empty) {
+      border-bottom-left-radius: 1rem;
+      border-bottom-right-radius: 1rem;
+
+      box-shadow: 0 16px 16px -22px rgba(var(--dark), 0.75);
+      border-bottom: 1px solid rgba(var(--dark), 0.5);
+
+      overflow: hidden;
+    }
   }
 
   [data-nav]:not(:empty),
@@ -191,7 +203,7 @@
   header[data-fill='dark'] {
     border-bottom: 2px solid rgb(var(--dark));
     border-radius: 0;
-    box-shadow: 0;
+    box-shadow: none;
     margin-bottom: -1px;
   }
 
@@ -216,14 +228,31 @@
   }
 
   .huddable {
-    transform: translateY(-110%);
+    transform: translateY(calc(-92px + 1rem));
+
+    &[data-fill='dark'] {
+      transform: translateY(calc(-95px));
+    }
+  }
+
+  header.huddable :global(> *) {
+    transition: opacity 0.15s ease-in-out;
+  }
+
+  header.huddable:not(.hud) :global(> *) {
+    opacity: 0;
   }
 
   [data-nav].huddable {
-    transform: translateY(calc(-110% - 92px - env(safe-area-inset-top)));
+    transform: translateY(calc(-92px + 1rem));
+
+    &[data-fill='dark'] {
+      transform: translateY(calc(-95px));
+    }
   }
 
-  .huddable.hud {
+  .huddable.hud,
+  .huddable.hud[data-fill='dark'] {
     transform: translateY(0px);
   }
 

@@ -1,7 +1,6 @@
 <script lang="ts">
   import { NametagCreate } from '$lib/api/nametag/create';
   import Button from '$lib/components/Button.svelte';
-  import Container from '$lib/components/Container.svelte';
   import Nametag from '$lib/components/Nametag.svelte';
   import Select from '$lib/components/Select.svelte';
   import { draft_nametag_validator } from '$lib/zod/Nametag';
@@ -49,7 +48,7 @@
         class="preview"
         data-flex="v cc"
         data-gap
-        data-fill={theme === '' ? 'system-light' : 'superlight'}
+        data-fill={theme === '' ? 'system-light' : 'light'}
         in:slide
         out:slide
       >

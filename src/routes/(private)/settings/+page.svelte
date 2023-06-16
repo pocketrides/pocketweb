@@ -20,7 +20,7 @@
 
   export let data: PageData;
 
-  $App.fill = 'superlight';
+  $App.fill = 'system-light';
 
   onMount(() => {
     const sp = new URLSearchParams(window.location.search);
@@ -139,6 +139,7 @@
           on:click={async () => {
             await IDBFeedCache.clear();
             await IDBCache.clear();
+            sessionStorage?.clear();
 
             location.pathname = '/settings/sign-out';
           }}

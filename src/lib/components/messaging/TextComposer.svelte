@@ -81,6 +81,7 @@
       on:blur
       data-sham
       data-3d
+      data-richtext
       {placeholder}
       {disabled}
       class:filled={valid}

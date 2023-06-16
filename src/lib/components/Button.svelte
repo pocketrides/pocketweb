@@ -14,6 +14,7 @@
   export let icon: string | undefined = undefined;
   export let icon_filled: boolean = false;
   export let icon_spins: boolean = false;
+  export let icon_bold: boolean = false;
   export let disabled: boolean = false;
   export let name: string = '';
   export let value: string = '';
@@ -39,7 +40,8 @@
   const icon_store = writable({
     icon,
     icon_filled,
-    icon_spins
+    icon_spins,
+    icon_bold
   });
 
   $: $icon_store.icon = icon;
@@ -106,6 +108,7 @@
       $icon_store.icon != 'airline_stops' &&
       $icon_store.icon != 'hail'}
     spins={$icon_store.icon_spins}
+    bold={$icon_store.icon_bold}
   />
   {#if count !== undefined && ($controller !== id || $label_store === '')}
     <span>{count}</span>

@@ -10,7 +10,7 @@
   import { browser } from '$app/environment';
 
   $App.theme = 'system';
-  $App.fill = 'superlight';
+  $App.fill = 'light';
   $App.loading = false;
 
   onMount(() => {

@@ -6,6 +6,7 @@
   export let inline: boolean = false;
   export let small: boolean = false;
   export let multiline: boolean = false;
+  export let bold: boolean = false;
 </script>
 
 {#if icon}
@@ -17,6 +18,7 @@
     class:inline
     class:small
     class:multiline
+    class:bold
   >
     {icon}
   </span>
@@ -45,5 +47,9 @@
 
   .filled {
     font-variation-settings: 'FILL' 1;
+  }
+
+  .bold {
+    font-weight: 800;
   }
 </style>

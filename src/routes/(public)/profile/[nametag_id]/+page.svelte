@@ -10,6 +10,7 @@
   import Icon from '$lib/components/Icon.svelte';
   import { LoadNametagFeedRequest } from '$lib/api/feed/nametag';
   import ProfileFreeModeHeader from './ui/ProfileFreeModeHeader.svelte';
+  import WhyPocketrides from '$lib/sheets/WhyPocketrides.svelte';
 
   export let data: PageData;
 
@@ -36,7 +37,7 @@
   };
 </script>
 
-<Row padded bordered fill="system-light">
+<Row padded>
   <h2 slot="left">
     <Icon icon="signpost" />
     Posts
@@ -45,6 +46,7 @@
 
 {#if $page_controller.is_my_profile_page && $page.data.my_nametag?.stripe?.free_mode}
   <ProfileFreeModeHeader />
+  <WhyPocketrides />
 {:else}
   <ScrollList
     has_none={$page_controller.post_ids.length === 0}

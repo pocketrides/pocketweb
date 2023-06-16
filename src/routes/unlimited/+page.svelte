@@ -6,7 +6,7 @@
   import { App } from '$lib/stores/app';
 
   $App.theme = 'system';
-  $App.fill = 'system-superlight';
+  $App.fill = 'system-light';
 </script>
 
 <svelte:head>

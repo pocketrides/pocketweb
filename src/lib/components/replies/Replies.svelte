@@ -4,9 +4,9 @@
   import Reply from './Reply.svelte';
 </script>
 
-<Container fill="system-light" padded={false}>
+<Container padded={false}>
   {#if $RepliesManagerStore.replies?.length}
-    <ul data-flex="v" data-unstyle data-fill="system-light">
+    <ul data-flex="v" data-unstyle>
       {#each $RepliesManagerStore.replies as reply (reply.id)}
         <Reply {reply} />
       {/each}

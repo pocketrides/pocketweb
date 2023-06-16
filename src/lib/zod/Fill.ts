@@ -8,4 +8,6 @@ export type Fill =
   | 'system-light'
   | 'system-dark'
   | 'system-base'
-  | 'system-superdark';
+  | 'system-superdark'
+  | 'allwhite'
+  | 'white';

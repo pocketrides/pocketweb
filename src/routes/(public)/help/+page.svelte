@@ -7,7 +7,7 @@
   import { App } from '$lib/stores/app';
 
   $App.theme = 'system';
-  $App.fill = 'system-superlight';
+  $App.fill = 'system-light';
 </script>
 
 <svelte:head>
@@ -77,15 +77,28 @@
       </ol>
       <p>
         Our vision is to steward a digital community built with the kinds of features
-        that make the small towns where we live shine, while solving pain points like
-        finding online community at a local level.
+        that help the cities where we live thrive, while solving real pain points
+        like finding community at a local level.
       </p>
       <p>
         By starting from an <a href="/pocket/364647123794264137"
           >ethical place as a company,</a
         > we hope to give the next generation of content creators, community activists,
-        artists, musicians and creatives a place to express themselves, while having a
-        transparent and fair way to earn a secondary income.
+        artists, musicians and creatives a healthier place to express themselves, while
+        having a transparent and fair way to earn a secondary income.
+      </p>
+      <p>
+        And by using our <a href="/pocket/362022120043053129"
+          >profits for climate action,</a
+        >
+        we aspire to be a source of hope and forward momentum, doing the hard work to
+        confront an exisential crisis made worse by our global economic model of greed
+        and extraction. A green future driven by
+        <a
+          href="https://en.wikipedia.org/wiki/Circular_economy"
+          target="_blank"
+          rel="noreferrer">a circular economy</a
+        > is possible, and we can build it together on Pocketrides.
       </p>
       <p>— Michael & Caleb<br />May 2023</p>
     </div>

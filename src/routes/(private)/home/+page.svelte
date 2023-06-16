@@ -15,13 +15,15 @@
   import { writable } from 'svelte/store';
   import type { PageData } from './$types';
   import WorldfeedNav from '$lib/components/worldfeed/WorldfeedNav.svelte';
+  import Row from '$lib/components/Row.svelte';
+  import Icon from '$lib/components/Icon.svelte';
 
   let scroll_key = $page.data.my_nametag?.id || '';
 
   export let data: PageData;
 
   $: $App.theme = data.my_nametag.theme;
-  $: $App.fill = 'system-superlight';
+  $: $App.fill = 'white';
 
   let can_save_scroll = false;
   let chill = true;
@@ -39,7 +41,7 @@
 
       scrollToEnhanced(
         () => {
-          const y = localStorage?.getItem(`${scroll_key}-home-y`);
+          const y = sessionStorage?.getItem(`${scroll_key}-home-y`);
 
           if (y) {
             window.scrollTo(0, Number(y));
@@ -84,7 +86,7 @@
 
   const saveScrollY = () => {
     if (can_save_scroll) {
-      localStorage?.setItem(`${scroll_key}-home-y`, window.scrollY.toString());
+      sessionStorage?.setItem(`${scroll_key}-home-y`, window.scrollY.toString());
     }
   };
 </script>
@@ -97,11 +99,17 @@
 
 <svelte:window on:scroll={saveScrollY} />
 
-<SiteHeader fill="system-superlight" huddable>
+<SiteHeader fill="system-light" huddable>
   <WorldfeedNav slot="nav" />
 </SiteHeader>
 <div class:chill>
-  <Main fill="system-light" padded={false} fullheight>
+  <Main fill="white" padded={false} fullheight>
+    <Row padded>
+      <h2 slot="left">
+        <Icon icon="chair" />
+        Home feed
+      </h2>
+    </Row>
     <ScrollList
       has_none={$page_controller.post_ids.length === 0}
       load_more_label="Load newest"

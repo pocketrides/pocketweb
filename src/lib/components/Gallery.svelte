@@ -22,11 +22,9 @@
   const handleScroll = () => {
     if (!gallery) return;
 
-    $current_scroll = Math.max(
-      1,
-      Math.floor(
-        gallery.scrollLeft / (gallery.offsetWidth + (w < 640 && !square ? 80 : 0))
-      ) + 1
+    $current_scroll = Math.min(
+      photos.length,
+      Math.max(1, Math.floor(gallery.scrollLeft / gallery.offsetWidth) + 1)
     );
   };
 
@@ -123,7 +121,7 @@
       min-width: 100%;
       max-width: 720px;
       min-height: 480px;
-      max-height: 840px;
+      max-height: 640px;
 
       @media (max-width: 640px) {
         min-width: 120%;
@@ -134,9 +132,37 @@
       }
 
       :global(img) {
-        min-width: 100%;
+        width: 100%;
         height: 100%;
         object-fit: cover;
+
+        min-width: 100%;
+        max-width: 720px;
+        min-height: 480px;
+        max-height: 640px;
+
+        @media (max-width: 640px) {
+          min-width: 120%;
+        }
+
+        @media (min-width: 640px) {
+          max-height: 100vh;
+        }
+      }
+
+      &:has(img.landscape) {
+        min-width: 145%;
+        max-width: 1400px;
+        overflow: hidden;
+
+        @media (max-width: 640px) {
+          min-width: 854px;
+        }
+
+        :global(img) {
+          // max-width: 850px;
+          min-width: 100%;
+        }
       }
     }
 

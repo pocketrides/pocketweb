@@ -9,7 +9,7 @@
   export let step3_hidden_reason: string = 'Pending Verification';
 </script>
 
-<Container rounded bordered fill="system-light">
+<Container rounded fill="system-light">
   <div data-flex="v" data-gap="1">
     <div data-flex="v" data-gap="1">
       <div>

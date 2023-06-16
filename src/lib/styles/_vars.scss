@@ -4,7 +4,7 @@
   --allwhite: 255, 255, 255;
 
   --black: 16, 14, 14;
-  --white: 255, 253, 240;
+  --white: 255, 251, 245;
 }
 
 $theme-system: (
@@ -142,4 +142,12 @@ $theme-sky: (
 
 [data-color="base"] {
   color: rgb(var(--base));
+}
+
+[data-fill="allwhite"] {
+  background-color: rgb(var(--allwhite));
+}
+
+[data-fill="white"] {
+  background-color: rgb(var(--white));
 }

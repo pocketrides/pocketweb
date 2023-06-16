@@ -24,7 +24,7 @@
   export let data: PageData;
 
   $: $App.theme = data.my_nametag?.theme || 'system';
-  $: $App.fill = 'system-superlight';
+  $: $App.fill = 'system-light';
 
   const form_validator = z.object({
     c: z.string(),
@@ -87,8 +87,8 @@
   <WorldfeedNav slot="nav" />
 </SiteHeader>
 
-<Main padded={false} fill="system-light">
-  <Row padded bordered fill="system-light">
+<Main padded={false} fill="white">
+  <Row padded>
     <h2 slot="left">
       <Icon icon="hail" />
       Pockets
@@ -108,7 +108,7 @@
       {/each}
     </div>
   {/if}
-  <Row padded bordered fill="system-light">
+  <Row padded>
     <h2 slot="left">
       <Icon icon="signpost" />
       Posts
@@ -119,9 +119,11 @@
       <NothingHere />
     </Container>
   {:else}
-    {#each data.worldfeed.post_ids as post_id (post_id)}
-      <Post {post_id} />
-    {/each}
+    <div>
+      {#each data.worldfeed.post_ids as post_id (post_id)}
+        <Post {post_id} />
+      {/each}
+    </div>
   {/if}
   <UtilityNav slot="utility-nav">
     <form id="refine" method="get" action="/worldfeed" bind:this={form_el}>

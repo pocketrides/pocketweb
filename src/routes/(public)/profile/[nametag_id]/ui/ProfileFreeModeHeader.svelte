@@ -2,6 +2,7 @@
   import Button from '$lib/components/Button.svelte';
   import Container from '$lib/components/Container.svelte';
   import Icon from '$lib/components/Icon.svelte';
+  import { App } from '$lib/stores/app';
 
   $: showing_more = false;
 </script>
@@ -56,10 +57,15 @@
     </Container>
     <Container>
       <div data-richtext="">
-        <h3>Enjoying Pocketrides? Get Unlimited.</h3>
+        <h3>Get Unlimited for $5.</h3>
         <p>
-          We're 100% subscriber-funded. Your private data is never for sale, to
-          advertisers or otherwise.
+          Being 100% subscriber-funded means we're incentivized to treat you like a
+          customer, not a user. <br /><a
+            href="#why"
+            on:click|preventDefault={() => {
+              $App.sheet_id = 'why_pocketrides';
+            }}>Read why this matters.</a
+          >
         </p>
       </div>
     </Container>

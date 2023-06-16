@@ -23,20 +23,30 @@
 <div data-flex="v" data-gap="1">
   <div data-flex="v" data-gap="1">
     <Container rounded fill="system-superlight">
-      <h2>We're building a safe place online, for everyone in our communities.</h2>
-      <h3 class="thin">
-        So we can hang out more often, show up for each other when it matters, and
-        share our creativity in a whole new way.
-      </h3>
+      <h2>An ethical social network.</h2>
+      <p>
+        We prioritize your mental health & wellbeing, not how many ads we can show
+        you. <a href="/help" class="h3">Read our approach.</a>
+      </p>
     </Container>
     <Container>
       <div data-flex="v as" data-gap>
-        <h2>On Pocketrides, 500 likes is $5.00 in your actual pocket.</h2>
+        <h2>Likes earn cash.</h2>
         <p>
-          Subscribers get 250 likes each month to give out to great content on
-          Pocketrides, and we'd encourage everyone to subscribe: taking care of each
-          other and where we live, in small ways every day, is how we build a
-          thriving society that works for everyone.
+          Supporting each other in small ways is how we build a society that works
+          for everyone. Subscribers have 250 likes each month to give out to great
+          content on Pocketrides.
+        </p>
+      </div>
+    </Container>
+    <Container>
+      <div data-flex="v as" data-gap>
+        <h2>Profits to climate.</h2>
+        <p>
+          100% of our profits are either returned to you every quarter or invested in
+          a green future. <a class="h3" href="/pocket/362022120043053129"
+            >Read the plan.</a
+          >
         </p>
       </div>
     </Container>

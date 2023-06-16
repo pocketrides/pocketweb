@@ -21,7 +21,7 @@
 
   const page_controller = writable(data);
 
-  $App.fill = 'system-superlight';
+  $App.fill = 'system-light';
 
   $: $page_controller = data;
 
@@ -55,7 +55,7 @@
   <ProfileNav slot="nav" {page_controller} />
 </SiteHeader>
 
-<Main padded={false} fill="system-light">
+<Main padded={false} fill="white">
   <slot />
 </Main>
 

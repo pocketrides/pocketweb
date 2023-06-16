@@ -20,7 +20,7 @@
   export let padded: boolean = true;
   export let nav_height: number = 0;
   export let fill: Fill = 'system-light';
-  export let header_fill: Fill = 'system-superlight';
+  export let header_fill: Fill = 'system-light';
 
   let dialog: HTMLDialogElement;
   let scrolls: HTMLDivElement;

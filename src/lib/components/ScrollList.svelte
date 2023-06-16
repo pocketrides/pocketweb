@@ -35,7 +35,7 @@
     </div>
   {/if}
   {#if has_more && !has_none}
-    <div class="wrap" data-flex="cc" data-fill="system-light">
+    <div class="wrap" data-flex="cc" data-fill="white">
       <Button
         label={$loading_more ? 'One sec!' : load_more_label}
         xlarge
@@ -45,7 +45,7 @@
     </div>
   {/if}
   {#if no_more && !has_none}
-    <div class="wrap" data-flex="cc" data-fill="system-light">
+    <div class="wrap" data-flex="cc" data-fill="white">
       <Button label="All done!" xlarge disabled primary />
     </div>
   {/if}
@@ -62,4 +62,10 @@
   .wrap {
     padding: 1rem;
   }
+
+  // @media (min-width: 640px) {
+  // .list {
+  // padding-top: 1rem;
+  // }
+  // }
 </style>

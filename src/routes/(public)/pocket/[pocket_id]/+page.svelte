@@ -39,7 +39,7 @@
 
       scrollToEnhanced(
         () => {
-          const y = localStorage?.getItem(`${scroll_key}-home-y`);
+          const y = sessionStorage?.getItem(`${scroll_key}-home-y`);
 
           if (y) {
             window.scrollTo(0, Number(y));
@@ -68,7 +68,7 @@
 
   const saveScrollY = () => {
     if (can_save_scroll) {
-      localStorage?.setItem(`${scroll_key}-home-y`, window.scrollY.toString());
+      sessionStorage?.setItem(`${scroll_key}-home-y`, window.scrollY.toString());
     }
   };
 </script>
@@ -76,8 +76,8 @@
 <svelte:window on:scroll={saveScrollY} />
 
 <div class:chill>
-  <Main fill="system-light" padded={false}>
-    <Row padded bordered>
+  <Main fill="white" padded={false}>
+    <Row padded>
       <h2 slot="left">
         <Icon icon="signpost" />
         Posts

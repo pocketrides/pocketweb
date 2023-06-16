@@ -67,7 +67,7 @@
 
 <div data-flex="v">
   <div data-padded>
-    <Container rounded bordered fill="system-superlight">
+    <Container rounded fill="system-superlight">
       <div data-flex="v as">
         <h2>What's Collab?</h2>
         <p>

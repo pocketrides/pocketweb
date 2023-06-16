@@ -73,7 +73,7 @@
   ];
 </script>
 
-<Container fill="system-superlight" padded={false} bordered rounded>
+<Container fill="system-superlight" padded={false} rounded overflowvisible>
   <div data-padded>
     <h2>Nametags are like usernames.</h2>
     <p>Add some emojis & pick your favorite color.</p>
@@ -119,9 +119,12 @@
 
   .anim {
     width: 100%;
-    overflow: hidden;
     padding: 1rem 0 1rem 0;
     position: relative;
+
+    @media (min-width: 640px) {
+      overflow: hidden;
+    }
 
     ul {
       flex-wrap: nowrap;
@@ -142,16 +145,20 @@
       width: 100%;
 
       :global(> [data-fill]) {
-        width: 100%;
         height: 100%;
+
+        @media (max-width: 640px) {
+          margin-left: -1rem;
+          width: calc(100% + 2rem) !important;
+        }
       }
 
-      :global(> [data-fill='superlight']) {
-        background: rgba(var(--superlight), 1);
+      :global(> [data-fill='light']) {
+        background: rgba(var(--light), 0.98);
       }
 
       :global(> [data-fill='system-light']) {
-        background: rgba(var(--system-superlight), 0.9);
+        background: rgba(var(--system-light), 0.9);
       }
     }
   }

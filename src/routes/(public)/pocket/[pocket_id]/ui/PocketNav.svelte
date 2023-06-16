@@ -11,7 +11,7 @@
 </script>
 
 {#if $pocket.settings.joinability !== 'broadcast' && privacy_mode === false}
-  <div data-fill="superlight">
+  <div data-fill="system-light">
     <Container>
       <nav data-flex>
         {#each nav_items as nav_item (nav_item)}

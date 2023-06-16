@@ -33,8 +33,8 @@
   export let data: PageData;
 
   $: $App.theme = data.post.nametag.theme;
-  $: $App.fill =
-    data.post.audience === 'close_friends' ? 'superlight' : 'system-superlight';
+  $: $App.fill = 'white';
+  // data.post.audience === 'close_friends' ? 'superlight' : 'system-superlight';
 
   let current_post_id = data.post.id;
   let room: RoomConnection | undefined;
@@ -181,7 +181,7 @@
 
 <SiteHeader
   huddable
-  fill={data.post.audience === 'close_friends' ? 'superlight' : 'system-superlight'}
+  fill={data.post.audience === 'close_friends' ? 'light' : 'system-light'}
 >
   <Gallery slot="gallery" photos={data.post.contents[0].photos} square={false} />
 </SiteHeader>
@@ -202,93 +202,103 @@
   let:post_hidden
   let:replies_loading
 >
-  <Main fill="system-light" fullheight padded={false}>
-    <Row
-      padded
-      fill={post.audience === 'close_friends' ? 'superlight' : 'system-superlight'}
-      sticky
-      bordered
-    >
-      <div slot="left" data-flex="ac">
-        <Nametag nametag={post.nametag} />
-        <div class="half small">
-          <Icon icon="arrow_right" />
-        </div>
-        {#if post.audience === 'close_friends'}
-          <p class="h3 half small">
-            <Icon icon="favorite" filled />
-            Close Friends
-          </p>
-        {:else if post.audience === 'pocket' && post.pocket_ref}
-          <a
-            href={`/pocket/${post.pocket_ref.id}`}
-            data-unstyle
-            class="h3 half small nowraps"
-          >
-            <Icon icon="hail" />
-            {post.pocket_name || 'Pocket'}
-          </a>
-        {:else}
-          <p class="h3 half small">
-            <Icon icon="signpost" />
-            Posts
-          </p>
-        {/if}
-      </div>
-      <h3 slot="right" class="half small thin">
-        {getTimeAgo(new Date(post.ts / 1000), 'round-minute')}
-      </h3>
-    </Row>
-    <div class="post-wrapper">
-      {#each post.contents as content, index (content)}
-        <div>
-          {#if index > 0}
-            <Gallery photos={content.photos} square={false} />
-          {/if}
-          <div data-richtext data-padded>
-            {@html content.content}
-          </div>
-          {#if content.links.length}
-            <LinkList padded>
-              {#each content.links as link (link)}
-                <LinkDisplay {link} />
-              {/each}
-            </LinkList>
-          {/if}
-        </div>
-        {#if index === 0}
-          <PostModResult {post_controller} {showing_mod_result} {post_hidden} />
-        {/if}
-      {/each}
-    </div>
-    {#if post.settings.worldfeed}
-      <div class="wf-wrapper" data-flex="as">
-        <a
-          href={getWorldfeedLink(post.settings.worldfeed)}
-          data-unstyle
-          class="h3 half small"
-        >
-          <Icon icon="public" />
-          {formatWorldfeedLocation(post.settings.worldfeed)}
-        </a>
-      </div>
-    {/if}
-    {#if data.post.settings.enable_replies}
-      <Row padded fill="system-superlight" bordered>
-        <div slot="left" data-flex="ac">
-          <h3>
-            <Icon icon="reply" />
-            Replies
-          </h3>
-        </div>
-      </Row>
-      <div
-        class="replies-wrapper"
-        data-flex="v"
-        data-gap
-        bind:this={replies_wrapper}
+  <Main fullheight padded={false} fill="white">
+    <div class="post-outer">
+      <Row
+        padded
+        fill={post.audience === 'close_friends' ? 'superlight' : 'system-superlight'}
+        sticky
+        bordered
       >
-        <Replies />
+        <div slot="left" data-flex="ac">
+          <Nametag nametag={post.nametag} />
+          <div class="half small">
+            <Icon icon="arrow_right" />
+          </div>
+          {#if post.audience === 'close_friends'}
+            <p class="h3 half small">
+              <Icon icon="favorite" filled />
+              Close Friends
+            </p>
+          {:else if post.audience === 'pocket' && post.pocket_ref}
+            <a
+              href={`/pocket/${post.pocket_ref.id}`}
+              data-unstyle
+              class="h3 half small nowraps"
+            >
+              <Icon icon="hail" />
+              {post.pocket_name || 'Pocket'}
+            </a>
+          {:else}
+            <a
+              href={`/profile/${post.nametag.id}`}
+              class="h3 half small"
+              data-unstyle
+            >
+              <Icon icon="signpost" />
+              Posts
+            </a>
+          {/if}
+        </div>
+        <h3 slot="right" class="half h3 small">
+          {getTimeAgo(new Date(post.ts / 1000), 'twitter')}
+        </h3>
+      </Row>
+      <div class="post-wrapper" data-fill="system-light">
+        {#each post.contents as content, index (content)}
+          <div>
+            {#if index > 0}
+              <Gallery photos={content.photos} square={false} />
+            {/if}
+            <div data-richtext data-padded>
+              {@html content.content}
+            </div>
+            {#if content.links.length}
+              <LinkList padded>
+                {#each content.links as link (link)}
+                  <LinkDisplay {link} />
+                {/each}
+              </LinkList>
+            {/if}
+          </div>
+          {#if index === 0}
+            <PostModResult {post_controller} {showing_mod_result} {post_hidden} />
+          {/if}
+        {/each}
+      </div>
+      {#if post.settings.worldfeed}
+        <div class="wf-wrapper" data-flex="as">
+          <a
+            href={getWorldfeedLink(post.settings.worldfeed)}
+            data-unstyle
+            class="h3 half small"
+          >
+            <Icon icon="public" />
+            {formatWorldfeedLocation(post.settings.worldfeed)}
+          </a>
+        </div>
+      {/if}
+    </div>
+    {#if data.post.settings.enable_replies}
+      <div class="replies-outer">
+        <Row padded fill="system-superlight" bordered>
+          <div slot="left" data-flex="ac">
+            <h3>
+              <Icon icon="reply" />
+              Replies
+            </h3>
+          </div>
+        </Row>
+        <div
+          class="replies-wrapper"
+          data-flex="v"
+          data-gap
+          bind:this={replies_wrapper}
+        >
+          <Replies />
+        </div>
+      </div>
+      <div class="mc-outer">
         <MessageComposer
           placeholder="Write a reply…"
           on:message={handleReply}
@@ -323,10 +333,27 @@
   [data-richtext] {
     font-size: 1.125rem;
   }
-  .post-wrapper,
+
+  @media (min-width: 640px) {
+    .post-outer,
+    .replies-outer {
+      margin: 1rem 0;
+      overflow: hidden;
+      border-radius: 0.5rem;
+      border: 1px solid rgba(var(--dark), 0.25);
+    }
+  }
+
   .replies-wrapper {
     padding-bottom: 1rem;
+
+    padding-top: 0.5rem;
   }
+
+  .mc-outer {
+    padding-bottom: 1rem;
+  }
+
   .wf-wrapper {
     padding: 0 1rem 0.5rem;
   }

@@ -66,7 +66,7 @@
   <Gallery slot="gallery" photos={$pocket.cover_art} square={false} />
   <PocketRenderer
     details_enabled={$pocket.details_enabled}
-    default_fill={privacy_mode ? 'light' : 'superlight'}
+    default_fill={privacy_mode ? 'system-light' : 'system-light'}
     round_last={false}
     bind:privacy_mode
   >

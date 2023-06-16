@@ -15,7 +15,7 @@
 
   let section1_fill = 'dark';
   let section2_fill = 'base';
-  let section3_fill = 'superlight';
+  let section3_fill = 'system-light';
 </script>
 
 <div

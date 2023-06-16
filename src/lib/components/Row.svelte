@@ -23,7 +23,7 @@
   .sticky {
     position: sticky;
     z-index: 15;
-    top: env(safe-area-inset-top);
+    top: 0;
   }
 
   .padded {

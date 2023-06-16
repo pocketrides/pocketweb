@@ -216,12 +216,16 @@
     {quarantineClick}
   />
 {:else if $post_controller !== undefined}
-  <div bind:this={wrapper} data-theme={$post_controller.nametag.theme}>
+  <div
+    bind:this={wrapper}
+    data-theme={$post_controller.nametag.theme}
+    data-fill="allwhite"
+    class="post-outer"
+  >
     {#if post_hidden === false}
       <Row
         sticky
         padded
-        bordered
         fill={$post_controller.audience === 'close_friends'
           ? 'superlight'
           : 'system-superlight'}
@@ -247,19 +251,21 @@
             </a>
           {:else}
             <p class="h3 half small">
-              <Icon icon="signpost" />
-              Posts
+              <a href={`/profile/${$post_controller.nametag.id}`} data-unstyle>
+                <Icon icon="signpost" />
+                Posts
+              </a>
             </p>
           {/if}
         </div>
         <div slot="right">
           <a
             href={`/post/${$post_controller.id}`}
-            class="half"
+            class="half small h3"
             data-unstyle
             title={`posted at ${new Date($post_controller.ts / 1000).toString()}`}
           >
-            {getTimeAgo(new Date($post_controller.ts / 1000), 'twitter-now')}
+            {getTimeAgo(new Date($post_controller.ts / 1000), 'mini-now')}
           </a>
         </div>
       </Row>
@@ -420,5 +426,25 @@
 
   .quarantined {
     min-height: 220px;
+  }
+
+  .post-outer {
+    &:first-child {
+      border-top: 1px solid rgba(var(--dark), 0.25);
+    }
+
+    border-bottom: 1px solid rgba(var(--dark), 0.25);
+  }
+
+  @media (min-width: 640px) {
+    .post-outer {
+      margin-bottom: 1rem;
+    }
+
+    .post-outer {
+      border-radius: 0.5rem;
+      border: 1px solid rgba(var(--dark), 0.25);
+      overflow: hidden;
+    }
   }
 </style>

@@ -6,7 +6,7 @@
 
 <Sheet id="worldfeed_help" header="About Worldfeed" icon="info" close="Done">
   <div data-flex="v" data-gap="1">
-    <Container padded bordered rounded fill="system-superlight">
+    <Container padded rounded fill="system-superlight">
       <div data-flex="v" data-gap>
         <h2>How Worldfeed works</h2>
         <p>

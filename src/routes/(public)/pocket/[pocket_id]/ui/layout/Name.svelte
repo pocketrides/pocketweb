@@ -158,9 +158,9 @@
 
 <style lang="scss">
   [data-name] {
-    &:not(.normal) {
-      min-height: 148px;
-    }
+    // &:not(.normal) {
+    //   min-height: 148px;
+    // }
 
     > div {
       width: 100%;

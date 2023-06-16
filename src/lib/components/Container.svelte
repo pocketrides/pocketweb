@@ -7,6 +7,7 @@
   export let bordered: boolean = false;
   export let bottombordered: boolean = false;
   export let fullwidth: boolean = false;
+  export let overflowvisible: boolean = false;
 </script>
 
 <div
@@ -16,6 +17,7 @@
   class:bordered
   class:bottombordered
   class:fullwidth
+  class:overflowvisible
 >
   <slot />
 </div>
@@ -92,5 +94,9 @@
     &.padded + :global(.bottombordered[data-padded]) {
       padding-top: 1rem;
     }
+  }
+
+  .overflowvisible {
+    overflow: visible;
   }
 </style>

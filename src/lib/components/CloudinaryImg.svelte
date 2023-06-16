@@ -6,6 +6,7 @@
     getThumbnail
   } from '$lib/util/cloudinary';
   import type { CloudinaryPhoto } from '$lib/zod/CloudinaryPhoto';
+  import { onMount } from 'svelte';
 
   export let photo: CloudinaryPhoto;
 
@@ -13,6 +14,23 @@
   export let normal: boolean = false;
   export let square: boolean = false;
   export let square_small: boolean = false;
+
+  let landscape: boolean = false;
+
+  let imgEl: HTMLImageElement;
+
+  onMount(() => {
+    imgLoad(undefined);
+  });
+
+  const imgLoad = (e: Event | undefined) => {
+    if (!imgEl && e) imgEl = e.target as HTMLImageElement;
+    if (!imgEl && !e) return;
+
+    const aspect = imgEl.naturalWidth / imgEl.naturalHeight;
+
+    landscape = aspect.toFixed(3) === `1.333`;
+  };
 </script>
 
 {#if thumbnail === true}
@@ -25,6 +43,9 @@
 {/if}
 {#if normal === true}
   <img
+    on:load={imgLoad}
+    bind:this={imgEl}
+    class:landscape
     on:mouseup
     data-normal
     src={getNormal(photo.version, photo.public_id)}

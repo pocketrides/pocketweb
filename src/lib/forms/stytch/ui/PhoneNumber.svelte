@@ -76,10 +76,13 @@
         <input
           id="phone"
           autocomplete="tel-national"
+          type="tel"
+          inputmode="tel"
           bind:value={phoneNumber}
           data-3d
           class="h3"
           class:filled={valid}
+          name="phone"
         />
       </ButtonRow>
       {#if valid === false && phoneNumber !== ''}

@@ -13,7 +13,7 @@
 </script>
 
 {#if data.is_my_profile_page && data.joined_pockets.length}
-  <Row padded bordered fill="system-light">
+  <Row padded>
     <h2 slot="left">
       <Icon icon="hail" />
       Joined
@@ -29,7 +29,7 @@
 {/if}
 
 {#if !data.pockets.length && !data.cohosted_pockets.length && !data.unlisted_pockets.length}
-  <Row padded bordered fill="system-light">
+  <Row padded>
     <h2 slot="left">
       <Icon icon="hail" />
       Pockets
@@ -55,7 +55,7 @@
 {/if}
 
 {#if data.pockets.length}
-  <Row padded bordered fill="system-light">
+  <Row padded>
     <h2 slot="left">
       <Icon icon="hail" />
       Pockets
@@ -71,7 +71,7 @@
 {/if}
 
 {#if data.cohosted_pockets.length}
-  <Row padded bordered fill="system-light">
+  <Row padded>
     <h2 slot="left">
       <Icon icon="campaign" />
       Cohosted
@@ -87,7 +87,7 @@
 {/if}
 
 {#if data.is_my_profile_page && data.unlisted_pockets.length}
-  <Row padded bordered fill="system-light">
+  <Row padded>
     <h2 slot="left">
       <Icon icon="visibility_off" />
       Unlisted
