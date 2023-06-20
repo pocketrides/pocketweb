@@ -6,9 +6,24 @@
 
   export let pocket: ServerPocket;
   export let mini: boolean = false;
+  export let inert: boolean = false;
+
+  const click = (e: MouseEvent) => {
+    if (inert) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  };
 </script>
 
-<a href={`/pocket/${pocket.id}`} data-unstyle data-pocket class:mini>
+<a
+  href={`/pocket/${pocket.id}`}
+  data-unstyle
+  data-pocket
+  class:mini
+  on:click={click}
+  data-sveltekit-preload-data={inert ? 'off' : ''}
+>
   <div data-3d="ah" data-theme={pocket.theme}>
     <PocketRenderer
       summary

@@ -20,6 +20,11 @@ export const POST = (async (event) => {
 
       if (mod_result && mod_result.allow_likes === false) {
         payload.data.post.settings.enable_likes = false;
+        payload.data.post.settings.is_nsfw = true;
+
+        if (payload.data.post.settings.worldfeed) {
+          payload.data.post.settings.worldfeed.enabled = false;
+        }
       }
     }
 

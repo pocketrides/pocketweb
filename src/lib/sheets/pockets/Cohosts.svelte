@@ -45,9 +45,9 @@
   close="Done"
 >
   <div data-flex="v" data-gap data-padded>
-    <Container padded rounded bordered fill="system-superlight">
+    <Container padded rounded fill="system-superlight">
       <div data-flex="v" data-gap>
-        <h2>Manage your pocket with friends.</h2>
+        <h2>Manage your Pocket with friends.</h2>
         <p>With Cohosts, it's a snap to add friends to help out in your pocket.</p>
         <p>They'll get a nice call-out on the pocket, for transparency's sake.</p>
       </div>
@@ -81,7 +81,7 @@
       {/if}
     {/if}
     <div data-padded>
-      <h2>Add friends</h2>
+      <h2>Add cohosts</h2>
       <p>You can only add friends as cohosts.</p>
     </div>
     <FriendsList

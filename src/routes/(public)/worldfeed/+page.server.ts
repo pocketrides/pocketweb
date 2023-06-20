@@ -2,6 +2,7 @@ import { WorldfeedLoadRequest } from '$lib/api/worldfeed/load.js';
 import { redirect } from '@sveltejs/kit';
 
 export const load = async (event) => {
+  /*
   if (event.url.searchParams.has('i') === false) {
     // @ts-ignore
     if (typeof event.request.cf !== 'undefined') {
@@ -20,6 +21,7 @@ export const load = async (event) => {
       throw redirect(302, `/worldfeed?${sp.toString()}`);
     }
   }
+  */
 
   const worldfeed = await WorldfeedLoadRequest.get(
     event.url.searchParams,

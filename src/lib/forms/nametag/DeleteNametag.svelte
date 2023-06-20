@@ -10,7 +10,9 @@
   const deleting = writable(false);
 
   const deleteClick = async () => {
-    if (confirm(`Last chance to bail out! Continue?`)) {
+    if (
+      confirm(`Last chance to bail out! Tap OK to permanently delete your Nametag.`)
+    ) {
       $deleting = true;
       const res = await NametagDeleteRequest.post();
       if (res.success) location.href = '/';
@@ -20,11 +22,11 @@
 </script>
 
 <div data-flex="v" data-gap="1">
-  <Container rounded padded bordered fill="system-superlight">
+  <Container rounded padded fill="system-superlight">
     <div data-flex="v" data-gap>
       <h2>Are you sure?</h2>
       <p class="h3">
-        You don't need an active subscription to keep your profile on pocketrides.
+        You don't need an active subscription to keep your profile on Pocketrides.
       </p>
       <p>
         This is permanent and takes effect immediately. Any in-progress Payouts will

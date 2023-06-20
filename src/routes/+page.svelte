@@ -55,7 +55,7 @@
   <title>life's a ride, keep up on pocketrides!</title>
   <meta
     name="description"
-    content="Build community like a local on Pocketrides: the all-in-one platform for groups, and a digital town square to find stuff to do locally."
+    content="A non-addictive social network for authentic communities: No ads, no data sales, and no greedy profit motive."
   />
 </svelte:head>
 
@@ -64,18 +64,51 @@
 </SiteHeader>
 <Main fullheight padded={false} fill="system-light">
   <Container padded={false}>
-    <div class="card">
-      <h1 class="jumbo" data-h>
-        Build community like a local <span class="half"
-          >on Pocketrides<em>!</em></span
-        >
+    <!-- <div class="card hero">
+      <Container rounded fill="superlight">
+        <div class="hero-inner">
+          <Logo />
+          <h1 data-fill="superlight">
+            <span class=" half">Life's a ride, keep up on</span>
+            <span class="jumbo">Pocketrides<em>!</em></span>
+             <span class="jumbo">Shape the future.</span>
+            <span class="">Empower creativity.</span>
+            <span class="">Share local magic.</span>
+            <h2 class="h2">It's all on Pocketrides<em>!</em></h2>
+          </h1>
+        </div>
+      </Container>
+    </div> -->
+    <div class="card hero">
+      <h1 class="jumbo">
+        <span>Life's a ride, keep up</span>
+        <span class="half">on Pocketrides<em>!</em></span>
       </h1>
-      <h2 class="h1 thin">
-        The only platform designed with supporting your community in mind. <span
-          class="half"
-          data-nobreak>Life's a ride, keep up!</span
-        >
+    </div>
+    <div class="card">
+      <!-- <h2 class="h1">Anti Big Tech.</h2> -->
+      <h2>
+        <span>A non-addictive social network for authentic communities.</span>
+        <span data-nobreak="" class="half">
+          No ads, no data sales, and no greedy profit motive.
+        </span>
       </h2>
+
+      <!-- <h2 class="h1">It's all on Pocketrides<em>!</em></h2> -->
+      <!-- <h2>
+        <span data-nobreak="">A new kind of social network:</span>
+        <span data-nobreak="" data-fill="superlight">
+          support creativity with every like, build your own space online,
+        </span>
+        <span data-nobreak>and fund climate action.</span>
+      </h2> -->
+      <!-- <h2 class="h2">
+        A home for everything: <span class="" data-nobreak data-fill="superlight">
+          showcase your world while supporting your community.
+        </span>
+        <span class="" data-nobreak>Life's a ride, keep up</span>
+        <span data-nobreak>on Pocketrides<em>!</em></span>
+      </h2> -->
       <CloudinaryImg
         photo={hero}
         square
@@ -88,9 +121,13 @@
       />
     </div>
     <div class="card">
-      <h2 class="h1">A home for everything.</h2>
+      <h2 class="h1">Ad-free, like it should be.</h2>
       <p class="h2 thin">
-        Keep your friends, groups, events and hobbies in one place, on Pocketrides.
+        We’re building a non-addictive space for our communities. <a
+          href="#why"
+          class="strong"
+          on:click|preventDefault={whyClick}>Why?</a
+        >
       </p>
       <!-- <p>
         Host a group ride every week? Planning a regional craft fair? Or do you just
@@ -99,10 +136,10 @@
       </p> -->
     </div>
     <div class="card">
-      <p class="h1">Let your creativity thrive.</p>
+      <p class="h1">Likes earn you a cent.</p>
       <p class="h2 thin">
         Your great photos, compelling stories, or local knowledge has a new way to
-        support you, on Pocketrides.
+        support you: 500 likes is $5.
       </p>
       <!-- <p>
         Everyone has the same incentive on Pocketrides: to post great content and
@@ -111,16 +148,28 @@
         in the process.
       </p> -->
     </div>
+    <div class="card">
+      <p class="h1">Profits for purpose.</p>
+      <p class="h2 thin">
+        100% of our profits are for climate action. We can all have meaningful impact
+        with
+        <a href="/pocket/362022120043053129" class="strong"
+          ><Icon icon="hail" inline />Pocketchange</a
+        >.
+      </p>
+      <p class="h2 half" data-ph>Read more:</p>
+      <p class="h2">
+        <a href="#why" on:click|preventDefault={whyClick}>Why Pocketrides?</a>
+      </p>
+    </div>
 
     <div class="how-it-works" data-fill="dark" data-theme="lilac">
-      <h2 class="h1 jumbo">Here's how:</h2>
+      <h2 class="h1 jumbo">Here's how it works:</h2>
       <ul data-flex="scroll-h" data-unstyle data-gap>
         <li data-fill="system-superlight">
-          <p class="h3 half">Step 1:</p>
-          <h2 class="h1">Start with a pocket.</h2>
-          <h2 class="thin">
-            Pockets are any-purpose group spaces where your imagination is the only
-            limit.
+          <h2 class="h1">Do anything together, in a Pocket.</h2>
+          <h2 class="h2 thin">
+            A group space for events, hobbies, or anything else you can dream up.
           </h2>
           <CloudinaryImg
             photo={step1}
@@ -134,10 +183,9 @@
           />
         </li>
         <li data-fill="system-superlight">
-          <p class="h3 half">Step 2:</p>
-          <h2 class="h1">Post anything.</h2>
-          <h2 class="thin">
-            Supports links, pics, and "adding more" — for whatever you're sharing.
+          <h2 class="h1">Share everything in a Post.</h2>
+          <h2 class="h2 thin">
+            Write as much as you want. Add pics and links. Choose who sees it.
           </h2>
           <CloudinaryImg
             photo={step2}
@@ -151,11 +199,9 @@
           />
         </li>
         <li data-fill="system-superlight">
-          <p class="h3 half">Step 3:</p>
-          <h2 class="h1">Like great content.</h2>
-          <h2 class="thin">
-            Our like button pays a cent per like, to support each other in a whole
-            new way.
+          <h2 class="h1">Likes earn everyone a cent each.</h2>
+          <h2 class="h2 thin">
+            It's a new way to support yourself and your community.
           </h2>
           <CloudinaryImg
             photo={step3}
@@ -172,14 +218,13 @@
     </div>
     <div class="card">
       <h2 class="h1" data-h>
-        The <a href="/worldfeed" data-unstyle
+        <a href="/worldfeed" data-unstyle
           ><Icon icon="public" inline /><u>Worldfeed</u></a
-        > is your city's home feed.
+        > is your city's new home feed.
       </h2>
       <p class="h2 thin">
-        Subscribers can add pockets and posts to their city's Worldfeed. Now there's
-        one place to check out everything happening where you live or where you're
-        visiting. <span class="half">Eureka!</span>
+        Now there's one place to check for everything happening where you live or
+        where you're visiting. <span class="half">Eureka!</span>
       </p>
       <!-- <p>
         Easily browse by city and state. Everything's ordered by likes, no algorithms
@@ -187,81 +232,94 @@
       </p> -->
     </div>
     <div data-theme="sky" class="card">
-      <Container fill="superlight" rounded>
+      <Container fill="base" rounded>
         <p class="h2 half">Coming Soon:</p>
         <p class="h1">Explore by asking.</p>
       </Container>
       <Container fill="dark" rounded>
         <p class="h2 thin">
           We're bringing an AI search companion to Worldfeed, to help you explore the
-          world — or just your back yard.
+          world like a local.
         </p>
       </Container>
     </div>
-    <div class="card">
-      <p class="h1 half" data-h>Our Mission:</p>
-      <p class="h1 jumbo">Build an ethical social network.</p>
-      <p class="h2 thin">
-        Being 100% subscriber-funded means we're incentivized to treat you like a
-        customer — not a user.
-      </p>
-      <p>
-        <a href="#why" class="h2 strong" on:click|preventDefault={whyClick}
-          >Read why this matters.</a
-        >
-      </p>
-    </div>
-    <div data-theme="teal">
-      <Container fill="superlight">
-        <p class="h2 half" data-ph>Our Objective:</p>
+    <div data-theme="teal" class="about">
+      <div class="card" data-fill="dark">
+        <p class="h2 half" data-ph>Our mission:</p>
+        <p class="h1">
+          Operate a transparent, ethical, and empathetic tech company.
+        </p>
+        <p class="h2 half">While creating equitable economic prosperity for all.</p>
+        <p class="h2 half" data-ph>
+          <a href="/pocket/364647123794264137"
+            ><Icon icon="hail" inline />Transparency on Pocketrides</a
+          >
+        </p>
+
+        <!-- <p class="h2 half" data-ph> -->
+        <!-- Our mission is to build a non-addictive platform where everyone has a
+          community to support them. -->
+        <!-- <a href="#why" on:click|preventDefault={whyClick}>Read why.</a> -->
+        <!-- </p> -->
+      </div>
+      <div class="card" data-fill="base">
+        <p class="h2 half" data-ph>Our objective:</p>
         <p class="h1 jumbo">Fund climate action.</p>
-      </Container>
-      <Container fill="dark">
-        <p class="h2 thin">
-          We've come up with a clever way to raise a billion dollars a year for
-          climate action: use 100% of our profits.
-        </p>
-        <p class="h2 strong">
+        <p class="h2 half" data-ph>
           Follow <a href="/pocket/362022120043053129"
             ><Icon icon="hail" inline />Pocketchange</a
           >
         </p>
-      </Container>
-    </div>
-    <div class="card">
-      <h2 class="h1" data-h>Get started for free.</h2>
-      <p class="h2 thin">
-        Our business model is sustainable and ethical: we're funded entirely by
-        subscribers. Free Mode is fair, and Unlimited is $5/mo. Cancel anytime,
-        you'll never lose access.
-      </p>
-      <!-- <p>
+      </div>
+
+      <div class="card" data-fill="system-light">
+        <h2 class="h1">
+          <span class="half">Free to try.</span>
+          <span>Unlimited is $5/mo.</span>
+        </h2>
+        <p class="h2 thin">
+          Sustainable pricing, split with creators. Your privacy is never for sale.
+          Pause anytime, you'll never lose access.
+        </p>
+        <p class="h2 half" data-ph>
+          <a href="/pocket/364647123794264137"
+            ><Icon icon="hail" inline />Transparency on Pocketrides</a
+          >
+        </p>
+        <!-- <p>
         Get Unlimited just when you need it, or take the plunge and make Pocketrides
         your new place online period. Whatever you choose, now you have an
         alternative to other social networks that are designed for addiction.
       </p> -->
+      </div>
     </div>
-    <div class="card">
-      <Container rounded fill="system-superlight">
-        <h2 class="h1">Help us, help you.</h2>
-        <p class="h2 thin">
-          Early adopters, we're here to support you. Join
+    <Container fill="system-superlight">
+      <div class="card" data-specialpad>
+        <h2 class="h1">Calling all early adopters.</h2>
+        <p class="h3 thin">
+          We're here to support you! Tell us what sucks, ask questions if you get
+          stuck, and help us build something amazing, together.
+        </p>
+        <p class="h2 half" data-ph>
+          Join
           <a href="/pocket/362021519145041997" class="strong"
             ><Icon icon="hail" inline />Feature Requests</a
           >
-          to tell us what sucks, ask questions if you get stuck, or watch us build in
-          the open.
         </p>
-      </Container>
-    </div>
-    <div class="card">
-      <p class="h1">A lot more, coming soon.</p>
-      <p class="h2 thin">
-        We have a great set of features planned for the next year, like a fresh take
-        on stories and a native mobile app to take photos <em>and</em> videos.
-      </p>
-      <a href="/help" class="h2">Read about Pocketrides.</a>
-    </div>
+      </div>
+    </Container>
+    <Container>
+      <div class="card" data-specialpad>
+        <p class="h1">It'll be a busy first year.</p>
+        <p class="h3 thin">
+          We have a great set of features planned for our first year, like a fresh
+          take on stories and native apps to share pics <em>and</em> vids.
+        </p>
+        <p class="h2 half" data-ph>
+          <a href="/help">About Pocketrides</a>
+        </p>
+      </div>
+    </Container>
   </Container>
 
   <UtilityNav slot="utility-nav">
@@ -303,9 +361,9 @@
   .card {
     padding: 1rem;
 
-    .jumbo {
-      font-size: 2.5rem;
-      line-height: 1.25;
+    &[data-specialpad] {
+      padding-top: 3rem;
+      padding-bottom: 3rem;
     }
 
     h1,
@@ -320,10 +378,14 @@
     }
   }
 
+  .hero {
+    margin-top: 2rem;
+  }
+
   .how-it-works {
     margin-top: 3rem;
     margin-bottom: 1rem;
-    padding: 3rem 0 4rem;
+    padding: 5rem 0 6rem;
 
     @media (min-width: 640px) {
       border-radius: 1.5rem;
@@ -332,6 +394,26 @@
 
     > h2 {
       margin: 0 1rem 1rem;
+    }
+  }
+
+  .about {
+    margin: 4rem auto 0;
+    // border-bottom: 1px solid rgba(var(--superdark), 0.25);
+
+    @media (min-width: 640px) {
+      margin-bottom: 4rem;
+      overflow: hidden;
+      border: 1px solid rgba(var(--superdark), 0.25);
+      border-radius: 1rem;
+    }
+
+    .card {
+      padding: 0 2rem;
+      aspect-ratio: 1/1;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
     }
   }
 

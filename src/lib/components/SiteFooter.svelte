@@ -30,13 +30,25 @@
         <div class="h3 half"><a href="/unlimited">For Organizations</a></div>
         <div class="h3 half"><a href="/help">Get help</a></div>
         <div class="h3 half"><a href="/help">Contact us</a></div>
-        <div class="h3 half small" data-ph>
+        <div class="h3 half" data-ph>
           <a href="/help">About Pocketrides</a>
         </div>
-        <div class="h3 half small">
-          <a href="/pocket/364647123794264137">Transparency Report</a>
+        <div class="h2 half small">
+          <a href="/pocket/362021519145041997"
+            ><Icon icon="hail" inline />Feature Requests</a
+          >
         </div>
         <div class="h3 half small">
+          <a href="/pocket/364647123794264137">
+            <Icon icon="hail" inline />Transparency</a
+          >
+        </div>
+        <div class="h3 half small">
+          <a href="/pocket/362022120043053129">
+            <Icon icon="hail" inline />Pocketchange</a
+          >
+        </div>
+        <div class="h3 half small" data-ph>
           <a class="small" href="/privacy-policy">Privacy Policy</a>
         </div>
         <div class="h3 half small">

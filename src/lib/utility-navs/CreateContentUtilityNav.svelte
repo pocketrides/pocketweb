@@ -43,7 +43,7 @@
       {:else}
         <Button
           id="sub_now"
-          label="Get Unlimited"
+          label="Try Unlimited"
           icon="favorite"
           icon_filled
           primary

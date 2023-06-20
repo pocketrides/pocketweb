@@ -5,6 +5,10 @@
   import { App } from '$lib/stores/app';
 
   $: showing_more = false;
+
+  const getInspiredClick = () => {
+    $App.sheet_id = 'pocket_inspiration';
+  };
 </script>
 
 <Container padded>
@@ -12,24 +16,27 @@
     <Container rounded fill="system-superlight">
       <div data-richtext>
         <h2>
-          Welcome to Pocketrides! <span class="half">Here's how to get started:</span
-          >
+          Welcome to Pocketrides<em>!</em>
+          <span class="half">Here's how to get started:</span>
         </h2>
         <ol>
           <li>
-            <Icon icon="check" /><a href="/pocket">Make your first pocket</a>
+            <Icon icon="face_retouching_natural" /><a
+              href="#inspiration"
+              on:click|preventDefault={getInspiredClick}>Get inspired</a
+            >
           </li>
           <li>
-            <Icon icon="check" />Browse
-            <a href="/worldfeed"><Icon icon="public" inline />Worldfeed</a>
+            <Icon icon="hail" /><a href="/pocket">Make a Pocket</a>
           </li>
           <li>
-            <Icon icon="check" /><a href="/pocket/362021519145041997">Let us know</a>
-            how to improve
+            <Icon icon="build" /><a href="/pocket/362021519145041997"
+              >Help us improve</a
+            >
           </li>
         </ol>
         {#if showing_more}
-          <h3>You need a subscription to:</h3>
+          <h3>Get Unlimited to:</h3>
           <ul>
             <li>
               <Icon icon="lock" /> Add a bio &amp; links
@@ -47,7 +54,7 @@
           </ul>
         {/if}
         <Button
-          label={showing_more ? 'Show less' : 'You need a subscription to…'}
+          label={showing_more ? 'Show less' : 'Get Unlimited to…'}
           icon={showing_more ? 'expand_less' : 'expand_more'}
           on:click={() => {
             showing_more = !showing_more;
@@ -57,15 +64,18 @@
     </Container>
     <Container>
       <div data-richtext="">
-        <h3>Get Unlimited for $5.</h3>
+        <h3>
+          <Icon icon="favorite" />
+          Try Unlimited for 30 days.
+        </h3>
         <p>
-          Being 100% subscriber-funded means we're incentivized to treat you like a
-          customer, not a user. <br /><a
+          Sustainable pricing, split with creators. Your privacy is never for sale.
+          Pause anytime, you'll never lose access.<br /><a
             href="#why"
             on:click|preventDefault={() => {
               $App.sheet_id = 'why_pocketrides';
-            }}>Read why this matters.</a
-          >
+            }}>Read more</a
+          >.
         </p>
       </div>
     </Container>

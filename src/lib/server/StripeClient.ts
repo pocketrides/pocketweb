@@ -118,7 +118,8 @@ export class StripeClient {
         line_items: [{ price: this.STRIPE_PRICE_ID, quantity: 1 }],
         client_reference_id: metadata.nametag_id,
         subscription_data: {
-          metadata
+          metadata,
+          trial_period_days: 30
         },
         allow_promotion_codes: true,
         metadata,
@@ -221,7 +222,7 @@ export class StripeClient {
       metadata
     });
 
-    if (subscription.status === 'active') {
+    if (subscription.status === 'active' || subscription.status === 'trialing') {
       await Nametag.update(metadata.nametag_id, {
         stripe: {
           has_sub: true,
@@ -238,8 +239,11 @@ export class StripeClient {
   static async handleCustomerSubscriptionEvent(event: Stripe.Event) {
     const event_type = event.type;
     const subscription = event.data.object as Stripe.Subscription;
-    const metadata = subscription.metadata as StripeClientCustomMetadata;
-    const is_active = subscription.status === 'active';
+
+    let metadata = subscription.metadata as StripeClientCustomMetadata;
+
+    const is_active =
+      subscription.status === 'active' || subscription.status === 'trialing';
 
     if (metadata.nametag_id) {
       let update_data: Partial<DraftNametag> = {
@@ -267,9 +271,11 @@ export class StripeClient {
   static async handleInvoicePaidEvent(event: Stripe.Event) {
     const invoice = event.data.object as Stripe.Invoice;
     const stripe_invoice_id = invoice.id;
+    const stripe_invoice_is_paid =
+      invoice.status === 'paid' && invoice.amount_paid !== 0;
     const metadata = invoice.lines.data[0].metadata as StripeClientCustomMetadata;
 
-    if (metadata && metadata.nametag_id) {
+    if (metadata && metadata.nametag_id && stripe_invoice_is_paid) {
       const exists = await Invoice.getByStripeInvoiceId(stripe_invoice_id);
 
       if (exists === undefined) {

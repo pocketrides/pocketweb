@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "vite dev --host --port 5174",
     "wrangler-dev": "npx wrangler@latest dev cloudflare/worker.js --port 3000 --local --local-protocol=https",
-    "stripe-listen": "stripe listen --forward-to https://localhost:5174/_/stripe/webhook --skip-verify",
+    "stripe-listen": "stripe listen --forward-to http://10.0.0.16:5174/_/stripe/webhook --skip-verify",
     "build": "vite build",
     "preview": "vite preview",
     ">>>>>>>>>>>>>>>>>>>>>>>>>>>": "",

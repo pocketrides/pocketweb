@@ -34,8 +34,9 @@ export class PocketMember {
     joined_pockets: (nametag_id: string) => {
       return q.Map(
         q.Paginate(
-          q.Match(q.Index('pocket_members_by_nametag_ref'), [
-            Nametag.toRef(nametag_id)
+          q.Match(q.Index('pocket_members_by_nametag_ref_and_status'), [
+            Nametag.toRef(nametag_id),
+            'joined'
           ])
         ),
         q.Lambda(

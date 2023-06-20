@@ -3,6 +3,7 @@
 
   export let fill: Fill | 'none' = 'none';
   export let rounded: boolean = false;
+  export let rounded_lg: boolean = false;
   export let padded: boolean = true;
   export let bordered: boolean = false;
   export let bottombordered: boolean = false;
@@ -13,6 +14,7 @@
 <div
   data-fill={fill}
   class:rounded
+  class:rounded_lg
   class:padded
   class:bordered
   class:bottombordered
@@ -67,6 +69,13 @@
     &:has(+ .rounded) {
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
+    }
+  }
+
+  .rounded_lg {
+    @media (min-width: 640px) {
+      border-radius: 1rem;
+      overflow: hidden;
     }
   }
 

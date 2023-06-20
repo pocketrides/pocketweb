@@ -17,6 +17,7 @@
   import WorldfeedNav from '$lib/components/worldfeed/WorldfeedNav.svelte';
   import Row from '$lib/components/Row.svelte';
   import Icon from '$lib/components/Icon.svelte';
+  import WhyPocketrides from '$lib/sheets/WhyPocketrides.svelte';
 
   let scroll_key = $page.data.my_nametag?.id || '';
 
@@ -124,6 +125,10 @@
     <CreateContentUtilityNav slot="utility-nav" feed_controls />
   </Main>
 </div>
+
+{#if !$page.data.my_nametag?.stripe?.has_sub}
+  <WhyPocketrides />
+{/if}
 
 <style lang="scss">
   .chill {

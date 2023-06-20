@@ -8,6 +8,6 @@
   };
 </script>
 
-<Sheet id="subscribe" icon="favorite" icon_filled header="How Subscriptions work">
+<Sheet id="subscribe" icon="favorite" header="Try Unlimited">
   <Subscription on:complete={completed} />
 </Sheet>

@@ -98,7 +98,10 @@ export const load = (async (event) => {
   if (post.settings.is_nsfw) {
     const warning_url = `/post/${post.id}/nsfw-warning`;
 
-    if (parent.my_nametag?.stripe?.has_sub !== true)
+    if (
+      parent.my_nametag?.stripe?.has_sub !== true &&
+      parent.my_nametag?.id !== post.nametag.id
+    )
       throw redirect(302, warning_url);
 
     if (

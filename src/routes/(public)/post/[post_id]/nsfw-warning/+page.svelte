@@ -38,7 +38,7 @@
           {controller}
           href="/"
         />
-        {#if $page.data.my_nametag?.stripe?.has_sub === true}
+        {#if $page.data.my_nametag?.stripe?.has_sub === true || $page.data.my_nametag?.id === data.post?.nametag?.id}
           <Button
             id="continue"
             icon="visibility"

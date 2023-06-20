@@ -267,7 +267,7 @@
         {/each}
       </div>
       {#if post.settings.worldfeed}
-        <div class="wf-wrapper" data-flex="as">
+        <div class="wf-wrapper" data-flex="as" data-fill="system-light">
           <a
             href={getWorldfeedLink(post.settings.worldfeed)}
             data-unstyle

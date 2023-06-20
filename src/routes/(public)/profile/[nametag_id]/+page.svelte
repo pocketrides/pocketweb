@@ -1,6 +1,5 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import Main from '$lib/components/Main.svelte';
   import { App } from '$lib/stores/app';
   import { writable } from 'svelte/store';
   import type { PageData } from './$types';
@@ -11,6 +10,7 @@
   import { LoadNametagFeedRequest } from '$lib/api/feed/nametag';
   import ProfileFreeModeHeader from './ui/ProfileFreeModeHeader.svelte';
   import WhyPocketrides from '$lib/sheets/WhyPocketrides.svelte';
+  import PocketInspiration from '$lib/sheets/PocketInspiration.svelte';
 
   export let data: PageData;
 
@@ -47,6 +47,7 @@
 {#if $page_controller.is_my_profile_page && $page.data.my_nametag?.stripe?.free_mode}
   <ProfileFreeModeHeader />
   <WhyPocketrides />
+  <PocketInspiration />
 {:else}
   <ScrollList
     has_none={$page_controller.post_ids.length === 0}

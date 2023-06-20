@@ -5,6 +5,8 @@
   import { writable } from 'svelte/store';
   import { trackGoal } from 'fathom-client';
   import { page } from '$app/stores';
+  import { App } from '$lib/stores/app';
+  import Icon from '$lib/components/Icon.svelte';
 
   const dispatch = createEventDispatcher();
 
@@ -23,30 +25,31 @@
 <div data-flex="v" data-gap="1">
   <div data-flex="v" data-gap="1">
     <Container rounded fill="system-superlight">
-      <h2>An ethical social network.</h2>
-      <p>
-        We prioritize your mental health & wellbeing, not how many ads we can show
-        you. <a href="/help" class="h3">Read our approach.</a>
-      </p>
-    </Container>
-    <Container>
       <div data-flex="v as" data-gap>
-        <h2>Likes earn cash.</h2>
+        <h2>Try it free all month.</h2>
         <p>
-          Supporting each other in small ways is how we build a society that works
-          for everyone. Subscribers have 250 likes each month to give out to great
-          content on Pocketrides.
+          Use a social network built for authentic community: no ads, no data sales,
+          and no greedy profit motive.
         </p>
       </div>
     </Container>
     <Container>
       <div data-flex="v as" data-gap>
-        <h2>Profits to climate.</h2>
+        <h2>Profits for purpose.</h2>
         <p>
-          100% of our profits are either returned to you every quarter or invested in
-          a green future. <a class="h3" href="/pocket/362022120043053129"
-            >Read the plan.</a
-          >
+          100% of our profits are for climate action. We can all have meaningful
+          impact with a little <a class="h3" href="/pocket/362022120043053129">
+            <Icon icon="hail" inline />Pocketchange</a
+          >.
+        </p>
+      </div>
+    </Container>
+    <Container>
+      <div data-flex="v as" data-gap>
+        <h2>Build community.</h2>
+        <p>
+          Invite your friends to try it with you, or build a new community on the
+          Worldfeed.
         </p>
       </div>
     </Container>
@@ -54,7 +57,7 @@
   {#if $page.data.my_nametag}
     <div data-ph data-flex="v cc" data-gap="1">
       <Button
-        label={$loading ? 'Sending you to Stripe…' : 'Subscribe for $5/mo'}
+        label={$loading ? 'One sec…' : 'Start 30-day trial'}
         disabled={$loading}
         href="/_/stripe/pay"
         on:click={subscribeClick}

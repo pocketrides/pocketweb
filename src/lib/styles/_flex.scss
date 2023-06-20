@@ -67,6 +67,7 @@
   overflow-x: auto;
   overflow-y: hidden;
   scroll-snap-type: x mandatory;
+  align-items: flex-start;
 
   > * {
     scroll-snap-align: center;

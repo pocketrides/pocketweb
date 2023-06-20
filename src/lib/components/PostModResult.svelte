@@ -21,8 +21,8 @@
             Heads up!
           </h3>
           <p>
-            Your post failed our automatic checks, so likes have been turned off.
-            Think we got it wrong? Tap Dispute and we'll review it.
+            Your post failed the platform's automatic checks, so likes have been
+            turned off. Think we got it wrong? Tap Dispute and we'll review it.
           </p>
           <Button
             small

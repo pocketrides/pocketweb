@@ -24,7 +24,6 @@
   import { THEME_NAMES, THEME_VALUES } from '$lib/zod/Theme';
   import { writable } from 'svelte/store';
   import type { PageData } from './$types';
-  import Guide from './ui/Guide.svelte';
   import DetailsNav from './ui/DetailsNav.svelte';
   import Description from './ui/form/Description.svelte';
   import Links from './ui/form/Links.svelte';
@@ -38,6 +37,7 @@
   import { DeletePocketRequest } from '$lib/api/pocket/delete';
   import AddToWorldfeed from './ui/AddToWorldfeed.svelte';
   import WorldfeedHelp from '$lib/sheets/worldfeed/WorldfeedHelp.svelte';
+  import PocketInspiration from '$lib/sheets/PocketInspiration.svelte';
 
   export let data: PageData;
 
@@ -201,12 +201,12 @@
         <ButtonRow>
           <Button
             id="directions"
-            label="Want a hint?"
-            icon="directions_run"
+            label="Get inspired"
+            icon="face_retouching_natural"
             superdark
             controller={page_label}
             on:click={() => {
-              $App.sheet_id = 'pocket_guide';
+              $App.sheet_id = 'pocket_inspiration';
             }}
           />
           <AddPics
@@ -309,7 +309,7 @@
   </UtilityNav>
 </Main>
 
-<Guide />
+<PocketInspiration />
 <Cohosts {page_controller} />
 <Sheet
   id="pocket_publish"

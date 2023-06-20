@@ -33,7 +33,7 @@
   );
   const is_publishing = writable(false);
   const publish_error = writable(false);
-  const nav_controller = writable('publish');
+  const nav_controller = writable(data.post ? 'save' : 'publish');
   const almost_done = writable(false);
 
   let publish_target = data.pocket ? `pocket:${data.pocket.id}` : 'friends'; // pocket:123…
@@ -122,14 +122,28 @@
     </h1>
   </div>
   <div slot="right">
-    {#if data.post}
+    <ButtonRow let:controller initial="cancel">
       <Button
-        label="Cancel"
+        {controller}
+        id="content"
+        icon="help"
+        label="Content guide"
         on:click={() => {
-          history.go(-1);
+          $App.sheet_id = 'content_guide';
         }}
       />
-    {/if}
+      {#if data.post}
+        <Button
+          {controller}
+          id="cancel"
+          icon="cancel"
+          label="Cancel"
+          on:click={() => {
+            history.go(-1);
+          }}
+        />
+      {/if}
+    </ButtonRow>
   </div>
 </SiteHeader>
 <Main padded={false} fullheight>
@@ -150,8 +164,8 @@
             id="discard"
             icon="delete"
             label="Discard"
-            large
             controller={nav_controller}
+            large
             on:click={() => {
               history.go(-1);
             }}
@@ -335,7 +349,7 @@
   <Container padded fill="system-superlight">
     <div data-flex="v" data-gap="1">
       <div data-flex="v" data-gap>
-        <h2>This pic failed our automatic content checks.</h2>
+        <h2>This pic failed the platform's automatic content checks.</h2>
         <p>
           <strong>Not to worry!</strong> We've turned on NSFW and disabled likes. Thanks
           for making Pocketrides a safe place online!
@@ -351,5 +365,43 @@
       </div>
     </div>
   </Container>
+</Sheet>
+<Sheet id="content_guide" header="Content Guide" icon="help">
+  <div data-flex="v" data-richtext>
+    <h2>How to create a great post.</h2>
+    <p>
+      Post what you want: links and pics, add as much text as you want, and edit your
+      post whenever you want.
+    </p>
+    <h2>Support your community.</h2>
+    <p>
+      Telling a great story or sharing a useful tip is a great way to support your
+      community.
+    </p>
+    <h2>Create original content, without spamming.</h2>
+    <p>
+      Don't post copyrighted work or other people's content. What you can add to the
+      conversation is inherently valuable, and we encourage you to add unique value
+      every time you post. The platform doesn't support posting the same content to
+      multiple places at once. Instead, create a new post every time, tailored to
+      your audience.
+    </p>
+    <h2>Monetization and moderation.</h2>
+    <p>
+      We moderate content for monetization. That means if your content can't be
+      monetized (per Stripe's <a
+        href="https://stripe.com/legal/restricted-businesses"
+        target="_blank"
+        rel="noreferrer">Prohibited and Restricted Businesses</a
+      >), we disable monetization, prevent it from appearing on the Worldfeed, and
+      mark it as NSFW.
+    </p>
+    <p>
+      We take a very opinionated stance on NSFW ("Not Safe For Work") content. If
+      your content doesn't pass the platform's monetization checks, we will
+      automatically enable NSFW mode. Only subscribers can see NSFW content. You can
+      always dispute content that fails the automated checks.
+    </p>
+  </div>
 </Sheet>
 <WorldfeedHelp />
