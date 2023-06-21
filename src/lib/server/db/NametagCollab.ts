@@ -101,6 +101,26 @@ export class NametagCollab {
     return response;
   }
 
+  static async removeAllCollabs(nametag_id: string): Promise<{ success: boolean }> {
+    let response = { success: false };
+    try {
+      await Fauna.client().query(
+        q.Map(
+          q.Paginate(
+            q.Match(q.Index('collabs_by_nametag_ref'), [Nametag.toRef(nametag_id)])
+          ),
+          q.Lambda('ref', q.Delete(q.Var('ref')))
+        )
+      );
+
+      response = { success: true };
+    } catch (e) {
+      console.error('db/NametagCollab.removeAllCollabs', e);
+    }
+
+    return response;
+  }
+
   static async add(nametag_id: string, authorized_nametag_id: string) {
     let response: ApiGenericResponse = { success: false };
 

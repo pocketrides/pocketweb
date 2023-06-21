@@ -306,8 +306,12 @@
     div {
       display: -webkit-box;
       overflow: hidden;
-      -webkit-line-clamp: 3;
+      -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
+
+      > *:not(h2) {
+        display: inline;
+      }
 
       :global(button) {
         margin-left: 1px;
@@ -316,6 +320,10 @@
 
     &:has(input:checked) div {
       display: block;
+
+      > *:not(h2) {
+        display: block;
+      }
     }
 
     &:has(input:checked) label {

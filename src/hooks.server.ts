@@ -10,17 +10,21 @@ import {
 } from '$lib/server/cookies';
 import { OpenAI } from '$lib/server/OpenAI';
 import { MagicbellConfig } from '$lib/server/MagicbellConfig';
-import { Toucan } from 'toucan-js';
 import { GooglePlaceClient } from '$lib/server/db/GooglePlaceClient';
+import * as Sentry from '@sentry/svelte';
 
 export const handle = (async ({ event, resolve }) => {
-  new Toucan({
+  Sentry.init({
     dsn: 'https://e3db4eb46baa4f43a32d1b98567638e4@o4504929428766720.ingest.sentry.io/4504929430274048',
-    context: event.platform?.context,
-    request: event.request,
+
+    // Set tracesSampleRate to 1.0 to capture 100%
+    // of transactions for performance monitoring.
+    // We recommend adjusting this value in production
     tracesSampleRate: 0.5,
-    denyUrls: ['10.0.0.16:5147']
+    denyUrls: ['10.0.0.16:5174']
   });
+
+  Sentry.setTag('sveltekit', 'server');
 
   loadSecrets(
     event,
