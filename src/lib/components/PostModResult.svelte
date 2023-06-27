@@ -12,7 +12,7 @@
 </script>
 
 {#if $post_controller && $showing_mod_result && !post_hidden}
-  <div in:slide|local out:slide|local>
+  <div in:slide out:slide>
     <Container fill="superlight">
       <div data-flex="v as" data-gap="1">
         <div data-flex="v as" data-gap>

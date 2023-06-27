@@ -34,7 +34,7 @@
 >
   <Icon {icon} />
   {#if $expanded}
-    <span in:typewriter|local={{ duration: 50 }}>Delete</span>
+    <span in:typewriter={{ duration: 50 }}>Delete</span>
   {/if}
 </button>
 

@@ -115,8 +115,8 @@
   {/if}
   {#if $controller === id}
     <span
-      in:typewriter|local={{ duration: 50 }}
-      out:typewriter|local={{ duration: 50 }}
+      in:typewriter={{ duration: 50 }}
+      out:typewriter={{ duration: 50 }}
     >
       {$label_store}
     </span>

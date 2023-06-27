@@ -57,8 +57,8 @@
 {#if $is_deleting === false}
   <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
   <li
-    in:slide|local
-    out:slide|local
+    in:slide
+    out:slide
     data-fill={$notif_store.isRead
       ? undefined
       : $notif_store.actionUrl

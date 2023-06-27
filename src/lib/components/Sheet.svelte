@@ -102,8 +102,8 @@
       bind:this={scrolls}
       on:scroll
       on:focus|capture={focus}
-      in:fly|local={{ y: '100vh', opacity: 1, duration: 300 }}
-      out:fly|local={{ y: '100vh', opacity: 1, duration: 300 }}
+      in:fly={{ y: '100vh', opacity: 1, duration: 300 }}
+      out:fly={{ y: '100vh', opacity: 1, duration: 300 }}
       style={`--nav-height: ${nav_height}px`}
     >
       <header class="header" data-fill={header_fill}>
