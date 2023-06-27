@@ -13,7 +13,7 @@
   {#each chat.messages as message, index (message)}
     {#if message.type === 'text'}
       {#if chat.pending}
-        <div in:fly={{ y: 100, delay: index * 50, duration: 150 }}>
+        <div in:fly|global={{ y: 100, delay: index * 50, duration: 150 }}>
           <ChatText {message} />
         </div>
       {:else}
@@ -22,7 +22,7 @@
     {/if}
     {#if message.type === 'photos' && message.photos.length}
       {#if chat.pending}
-        <div in:fly={{ y: 100, delay: index * 50, duration: 150 }}>
+        <div in:fly|global={{ y: 100, delay: index * 50, duration: 150 }}>
           <ChatPhotos {message} />
         </div>
       {:else}
@@ -31,7 +31,7 @@
     {/if}
     {#if message.type === 'link'}
       {#if chat.pending}
-        <div in:fly={{ y: 100, delay: index * 50, duration: 150 }}>
+        <div in:fly|global={{ y: 100, delay: index * 50, duration: 150 }}>
           <ChatLink {message} />
         </div>
       {:else}
@@ -42,7 +42,7 @@
   {#if chat.pending}
     <div
       data-padded
-      in:fly={{ y: 100, delay: chat.messages.length * 50, duration: 150 }}
+      in:fly|global={{ y: 100, delay: chat.messages.length * 50, duration: 150 }}
     >
       <ChatActions {chat} />
     </div>

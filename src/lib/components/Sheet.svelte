@@ -228,9 +228,9 @@
     padding-bottom: env(safe-area-inset-bottom);
   }
 
-  .content:has(~ .nav:not(:empty)) {
-    padding-bottom: 120px;
-  }
+  // .content:has(~ .nav:not(:empty)) {
+  //   padding-bottom: 120px;
+  // }
 
   .content {
     padding-bottom: env(safe-area-inset-bottom);

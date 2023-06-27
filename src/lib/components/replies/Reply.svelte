@@ -13,7 +13,7 @@
   {#each reply.messages as message, index (message)}
     {#if message.type === 'text'}
       {#if reply.pending}
-        <div in:fly={{ y: 100, delay: index * 50, duration: 150 }}>
+        <div in:fly|global={{ y: 100, delay: index * 50, duration: 150 }}>
           <ReplyText {message} />
         </div>
       {:else}
@@ -22,7 +22,7 @@
     {/if}
     {#if message.type === 'photos' && message.photos.length}
       {#if reply.pending}
-        <div in:fly={{ y: 100, delay: index * 50, duration: 150 }}>
+        <div in:fly|global={{ y: 100, delay: index * 50, duration: 150 }}>
           <ReplyPhotos {message} />
         </div>
       {:else}
@@ -31,7 +31,7 @@
     {/if}
     {#if message.type === 'link'}
       {#if reply.pending}
-        <div in:fly={{ y: 100, delay: index * 50, duration: 150 }}>
+        <div in:fly|global={{ y: 100, delay: index * 50, duration: 150 }}>
           <ReplyLink {message} />
         </div>
       {:else}
@@ -42,7 +42,7 @@
   {#if reply.pending}
     <div
       data-padded
-      in:fly={{ y: 100, delay: reply.messages.length * 50, duration: 150 }}
+      in:fly|global={{ y: 100, delay: reply.messages.length * 50, duration: 150 }}
     >
       <ReplyActions {reply} />
     </div>
