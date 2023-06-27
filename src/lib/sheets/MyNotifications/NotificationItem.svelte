@@ -55,6 +55,7 @@
 </script>
 
 {#if $is_deleting === false}
+  <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
   <li
     in:slide|local
     out:slide|local

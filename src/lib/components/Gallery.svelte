@@ -68,6 +68,7 @@
       on:scroll={handleScroll}
     >
       {#each photos as photo (photo)}
+        <!-- svelte-ignore a11y-no-static-element-interactions -->
         <div
           class="gallery-item"
           data-flex="ac jc"

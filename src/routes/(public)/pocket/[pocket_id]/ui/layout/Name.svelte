@@ -72,6 +72,7 @@
             </a>
           {/if}
         </div>
+        <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
         <h1
           class="jumbo"
           on:mouseup={() => {

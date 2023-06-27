@@ -11,20 +11,20 @@ import {
 import { OpenAI } from '$lib/server/OpenAI';
 import { MagicbellConfig } from '$lib/server/MagicbellConfig';
 import { GooglePlaceClient } from '$lib/server/db/GooglePlaceClient';
-import * as Sentry from '@sentry/svelte';
+// import * as Sentry from '@sentry/svelte';
 
 export const handle = (async ({ event, resolve }) => {
-  Sentry.init({
-    dsn: 'https://e3db4eb46baa4f43a32d1b98567638e4@o4504929428766720.ingest.sentry.io/4504929430274048',
+  // Sentry.init({
+  //   dsn: 'https://e3db4eb46baa4f43a32d1b98567638e4@o4504929428766720.ingest.sentry.io/4504929430274048',
 
-    // Set tracesSampleRate to 1.0 to capture 100%
-    // of transactions for performance monitoring.
-    // We recommend adjusting this value in production
-    tracesSampleRate: 0.5,
-    denyUrls: ['10.0.0.16:5174']
-  });
+  //   // Set tracesSampleRate to 1.0 to capture 100%
+  //   // of transactions for performance monitoring.
+  //   // We recommend adjusting this value in production
+  //   tracesSampleRate: 0.5,
+  //   denyUrls: ['10.0.0.16:5174']
+  // });
 
-  Sentry.setTag('sveltekit', 'server');
+  // Sentry.setTag('sveltekit', 'server');
 
   loadSecrets(
     event,
@@ -54,7 +54,7 @@ export const handle = (async ({ event, resolve }) => {
     event.locals.fauna_account_id === undefined
   ) {
     if (event.route.id?.startsWith('/(private)/_')) return json({ success: false });
-    else throw redirect(302, '/');
+    else throw redirect(302, `/error?back=`);
   }
 
   return await resolve(event);

@@ -1,4 +1,4 @@
-import * as Sentry from '@sentry/svelte';
+// import * as Sentry from '@sentry/svelte';
 import { NametagCollab } from '$lib/server/db/NametagCollab';
 import { Fauna, q } from './Fauna';
 import { Account } from './Account';
@@ -112,7 +112,7 @@ export class Nametag {
         collabs: query.collabs.map((c) => NametagCollab.parseFQL(c))
       };
     } catch (e) {
-      Sentry.captureException(e);
+      // Sentry.captureException(e);
       console.error('db/Nametag.getByAccountId:', e);
     }
 

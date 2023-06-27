@@ -281,6 +281,7 @@
         <div data-flex="v">
           <div class="summary-wrapper" data-expanded={$is_expanded} data-padded>
             <!-- svelte-ignore a11y-click-events-have-key-events -->
+            <!-- svelte-ignore a11y-no-static-element-interactions -->
             <div
               class="summary"
               data-richtext

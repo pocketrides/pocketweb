@@ -6,9 +6,9 @@ import {
 } from '$lib/api/stytch/challenge';
 import { Stytch } from '$lib/server/Stytch';
 import type {
-  LoginOrCreateUserBySMSResponse,
-  OTPWhatsAppLoginOrCreateResponse
-} from 'stytch/types/lib/b2c/otps';
+  B2COTPsSMSLoginOrCreateResponse,
+  B2COTPsWhatsAppLoginOrCreateResponse
+} from 'stytch';
 
 export const POST = (async (event) => {
   const payload = StytchChallenge.payload.safeParse(await event.request.json());
@@ -17,8 +17,8 @@ export const POST = (async (event) => {
   if (payload.success) {
     try {
       const stytch_response:
-        | LoginOrCreateUserBySMSResponse
-        | OTPWhatsAppLoginOrCreateResponse =
+        | B2COTPsSMSLoginOrCreateResponse
+        | B2COTPsWhatsAppLoginOrCreateResponse =
         payload.data.challenge_type === 'sms'
           ? await Stytch.client().otps.sms.loginOrCreate({
               phone_number: payload.data.phone_number

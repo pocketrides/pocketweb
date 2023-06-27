@@ -131,6 +131,7 @@
   <nav
     slot="nav"
     class="shadow"
+    let:scrollContentToBottom
     bind:this={shadow}
     class:active={replies_are_scrolled_up}
     data-fill="system-light"

@@ -34,6 +34,7 @@
 </script>
 
 {#if thumbnail === true}
+  <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
   <img
     on:mouseup
     data-thumbnail
@@ -42,6 +43,7 @@
   />
 {/if}
 {#if normal === true}
+  <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
   <img
     on:load={imgLoad}
     bind:this={imgEl}
@@ -53,6 +55,7 @@
   />
 {/if}
 {#if square === true}
+  <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
   <img
     on:mouseup
     data-square
@@ -61,6 +64,7 @@
   />
 {/if}
 {#if square_small === true}
+  <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
   <img
     on:mouseup
     data-square-sm
