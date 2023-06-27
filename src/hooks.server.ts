@@ -54,7 +54,7 @@ export const handle = (async ({ event, resolve }) => {
     event.locals.fauna_account_id === undefined
   ) {
     if (event.route.id?.startsWith('/(private)/_')) return json({ success: false });
-    else throw redirect(302, `/error?back=`);
+    else throw redirect(302, `/401?p=${encodeURIComponent(event.url.pathname)}`);
   }
 
   return await resolve(event);

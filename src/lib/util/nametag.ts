@@ -13,8 +13,10 @@ export const nametagCreateComplete = async (
   if (e.detail.first_time === true && /\/pocket/.test(location.pathname) === false) {
     location.href = `/profile/${e.detail.nametag_id}`;
   } else {
-    if (HomepageHelper.isHomepagePath()) location.href = `/home`;
-    else await invalidateAll();
+    if (HomepageHelper.isHomepagePath()) {
+      location.href = `/home`;
+    } else await invalidateAll();
+
     App.update((prev) => {
       prev.sheet_id = '';
       return prev;

@@ -64,7 +64,7 @@
 
   onMount(() => {
     Fathom.load('ZAOKOHGG', {
-      includedDomains: ['pocketrides.com', 'pocketweb.pocketrides.workers.dev']
+      includedDomains: ['pocketrides.com']
     });
   });
 

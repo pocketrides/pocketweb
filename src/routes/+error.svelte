@@ -15,8 +15,7 @@
 
   onMount(() => {
     Fathom.load('ZAOKOHGG', {
-      url: 'https://teacher-paul.pocketrides.com/script.js',
-      includedDomains: ['pocketrides.com', 'pocketweb.pocketrides.workers.dev']
+      includedDomains: ['pocketrides.com']
     });
   });
 

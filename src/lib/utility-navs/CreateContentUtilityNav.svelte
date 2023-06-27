@@ -4,6 +4,7 @@
   import ButtonRow from '$lib/components/ButtonRow.svelte';
   import UtilityNav from '$lib/components/UtilityNav.svelte';
   import { App } from '$lib/stores/app';
+  import { trackGoal } from 'fathom-client';
   import { writable } from 'svelte/store';
 
   export let feed_controls = false;
@@ -39,6 +40,9 @@
           controller={button_row}
           large
           href="/pocket"
+          on:click={() => {
+            trackGoal('RHDXGRUR', 1);
+          }}
         />
       {:else}
         <Button
@@ -50,6 +54,7 @@
           controller={button_row}
           on:click={() => {
             $App.sheet_id = 'subscribe';
+            trackGoal('BOMDZPEE', 1);
           }}
         />
         <Button
@@ -59,6 +64,9 @@
           controller={button_row}
           large
           href="/pocket"
+          on:click={() => {
+            trackGoal('RHDXGRUR', 1);
+          }}
         />
       {/if}
     </ButtonRow>

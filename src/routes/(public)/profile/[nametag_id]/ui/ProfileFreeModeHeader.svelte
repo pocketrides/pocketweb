@@ -3,6 +3,7 @@
   import Container from '$lib/components/Container.svelte';
   import Icon from '$lib/components/Icon.svelte';
   import { App } from '$lib/stores/app';
+  import { trackGoal } from 'fathom-client';
 
   $: showing_more = false;
 
@@ -23,11 +24,19 @@
           <li>
             <Icon icon="face_retouching_natural" /><a
               href="#inspiration"
-              on:click|preventDefault={getInspiredClick}>Get inspired</a
+              on:click|preventDefault={getInspiredClick}
+              on:click={() => {
+                trackGoal('QZRBSJMD', 1);
+              }}>Get inspired</a
             >
           </li>
           <li>
-            <Icon icon="hail" /><a href="/pocket">Make a Pocket</a>
+            <Icon icon="hail" /><a
+              href="/pocket"
+              on:click={() => {
+                trackGoal('RHDXGRUR', 1);
+              }}>Make a Pocket</a
+            >
           </li>
           <li>
             <Icon icon="build" /><a href="/pocket/362021519145041997"
