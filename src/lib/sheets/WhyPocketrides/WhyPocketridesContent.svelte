@@ -302,13 +302,14 @@
           in communities impacted by climate change.
         </p>
         <p>
-          As we get bigger, we'll announce additional goals like how we plan to fund
-          climate justice lawsuits and invest in the next generation of green energy
+          As we get bigger, we'll announce additional goals like funding climate
+          justice lawsuits and investing in the next generation of green energy
           companies.
         </p>
         <p>
           Funding an ethical, equitable, green future is a noble goal as long as
-          everyone benefits. Doing the most good will always be our North Star.
+          everyone benefits. Doing the most good will always be our North Star, which
+          is why we're so focused on being so transparent from the beginning.
         </p>
       </div>
       <label
