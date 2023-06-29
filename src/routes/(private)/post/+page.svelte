@@ -13,7 +13,7 @@
   import Radio from '$lib/components/Radio.svelte';
   import Checkbox from '$lib/components/Checkbox.svelte';
   import { NewPostRequest } from '$lib/api/post/new';
-  import { goto } from '$app/navigation';
+  import { disableScrollHandling, goto } from '$app/navigation';
   import Container from '$lib/components/Container.svelte';
   import { afterUpdate } from 'svelte';
   import ButtonRow from '$lib/components/ButtonRow.svelte';
@@ -148,6 +148,30 @@
 </SiteHeader>
 <Main padded={false} fullheight>
   <Posts store={page_controller} />
+  {#if $page_controller.settings.is_nsfw || $page_controller.settings.enable_likes === false}
+    <Container>
+      <div data-flex="v" class="half">
+        <h3>
+          {#if $page_controller.settings.is_nsfw && $page_controller.settings.enable_likes === false}
+            This post is marked NSFW and likes are disabled.
+          {:else if $page_controller.settings.enable_likes === false}
+            Likes are not enabled.
+          {/if}
+        </h3>
+        <p>
+          Disable NSFW and enable likes to re-scan your content. Tap
+          <strong><Icon icon="settings" inline /> Settings</strong> at the bottom to make
+          changes.
+        </p>
+        {#if $page_controller.settings.mod_result?.response_text}
+          <h3 data-ph>Here's what the AI said:</h3>
+          <p>
+            {$page_controller.settings.mod_result?.response_text}
+          </p>
+        {/if}
+      </div>
+    </Container>
+  {/if}
   <UtilityNav slot="utility-nav">
     <div slot="left">
       <ButtonRow>

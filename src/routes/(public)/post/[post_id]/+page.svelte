@@ -33,8 +33,7 @@
   export let data: PageData;
 
   $: $App.theme = data.post.nametag.theme;
-  $: $App.fill = 'white';
-  // data.post.audience === 'close_friends' ? 'superlight' : 'system-superlight';
+  $: $App.fill = data.post.audience === 'close_friends' ? 'light' : 'system-light';
 
   let current_post_id = data.post.id;
   let room: RoomConnection | undefined;

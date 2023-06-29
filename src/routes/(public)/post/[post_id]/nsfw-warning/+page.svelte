@@ -26,7 +26,7 @@
           Heads up! <span class="half">This post is NSFW.</span>
         </h2>
         {#if $page.data.my_nametag?.stripe?.has_sub !== true}
-          <p>You need a subscription to see NSFW content.</p>
+          <p>You need a subscription to see content marked Not Safe For Work.</p>
         {/if}
       </div>
       <ButtonRow let:controller initial="safety">
@@ -45,6 +45,16 @@
             label="Continue"
             large
             href={`/post/${data.post_id}?ok=1`}
+            {controller}
+          />
+        {/if}
+        {#if $page.data.my_nametag?.id === data.post?.nametag?.id}
+          <Button
+            id="edit"
+            icon="edit"
+            label="Edit post"
+            large
+            href={`/post?edit=${data.post_id}`}
             {controller}
           />
         {/if}

@@ -24,7 +24,7 @@
   export let data: PageData;
 
   $: $App.theme = data.my_nametag.theme;
-  $: $App.fill = 'white';
+  $: $App.fill = 'system-light';
 
   let can_save_scroll = false;
   let chill = true;

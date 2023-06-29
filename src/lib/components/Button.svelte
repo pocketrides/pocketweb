@@ -30,6 +30,7 @@
   export let jumbo: boolean = false;
   export let xlarge: boolean = false;
   export let transparent: boolean = false;
+  export let no_underline: boolean = false;
   export let superdark: boolean = false;
   export let inline: boolean = false;
 
@@ -85,6 +86,7 @@
   class:xlarge
   class:small
   class:transparent
+  class:no_underline
   class:inline
   data-fill={transparent
     ? ''
@@ -114,10 +116,7 @@
     <span>{count}</span>
   {/if}
   {#if $controller === id}
-    <span
-      in:typewriter={{ duration: 50 }}
-      out:typewriter={{ duration: 50 }}
-    >
+    <span in:typewriter={{ duration: 50 }} out:typewriter={{ duration: 50 }}>
       {$label_store}
     </span>
   {/if}
@@ -183,5 +182,9 @@
 
   button.inline {
     display: inline-flex;
+  }
+
+  button.no_underline {
+    text-decoration: none;
   }
 </style>

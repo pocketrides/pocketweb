@@ -38,9 +38,15 @@
     if (interval_id) return;
     clearInterval(interval_id);
     interval_id = setTimeout(() => {
-      if (start_y > window.scrollY || window.scrollY < SCROLL_MIN) hud = true;
+      let diff = window.scrollY - start_y;
+      // if (start_y > window.scrollY || window.scrollY < SCROLL_MIN) hud = true;
 
-      hud = window.scrollY < header_height || window.scrollY < start_y;
+      hud =
+        (window.scrollY < header_height ||
+          window.scrollY < start_y ||
+          window.scrollY < SCROLL_MIN) &&
+        diff < 60;
+
       safehud = window.scrollY > SCROLL_MIN;
 
       clearInterval(interval_id);
@@ -105,6 +111,7 @@
             label=""
             icon="search"
             icon_bold
+            no_underline
             transparent
             on:click={() => {
               $App.sheet_id = 'search';

@@ -30,6 +30,7 @@
 
   [data-3d] {
     max-width: 128px;
+    max-height: 128px;
     flex-shrink: 0;
     scroll-snap-align: start;
 
