@@ -14,7 +14,7 @@
 
 <Container padded>
   <div data-flex="v" data-gap="1">
-    <Container rounded fill="light" bordered>
+    <Container rounded fill="system-light" bordered>
       <div data-richtext>
         <h2>
           <span class="h3 half">Welcome to Pocketrides<em>!</em></span><br />

@@ -51,9 +51,9 @@
       <Icon icon="auto_stories" />
       Content settings
     </h1>
-    <Container rounded padded fill="system-superlight">
+    <Container rounded padded bordered fill="system-light">
       <div data-flex="v as" data-gap>
-        <h2>NSFW posts</h2>
+        <h2>Not Safe For Work (NSFW) content</h2>
         <p>
           Pocketrides is a place for everyone, and sometimes it gets a little spicy.
         </p>

@@ -37,7 +37,7 @@
         <h2>Here's how it works:</h2>
         <ol data-flex="v as" data-gap>
           <li>Our partners at Stripe collect your banking & tax details</li>
-          <li>You're approved to start earning</li>
+          <li>You're approved for bank transfers</li>
           <li>
             Once approved, come back to settings and tap <strong>Get paid</strong>
           </li>

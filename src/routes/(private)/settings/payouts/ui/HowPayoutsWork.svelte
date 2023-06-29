@@ -9,37 +9,37 @@
   export let step3_hidden_reason: string = 'Pending Verification';
 </script>
 
-<Container rounded fill="system-light">
+<Container rounded bordered fill="system-light">
   <div data-flex="v" data-gap="1">
     <div data-flex="v" data-gap="1">
       <div>
         <h2>How Payouts work</h2>
         {#if !step3_hidden}
-          <p>It's a three-step process to get paid on Pocketrides:</p>
+          <p>It's a three-step process to get paid on Pocketrides.</p>
         {/if}
       </div>
       {#if step1_done}
         <h3 class="h2 thin half" data-gap="0">
           <Icon icon="done" />
-          Step 1: Get 500 likes.
+          Get 500 likes.
         </h3>
       {:else}
         <div>
-          <h3 class="h2">Step 1: Get 500 likes.</h3>
+          <h3 class="h2">Get 500 likes.</h3>
           <p>
             Our bank transfer minimum is $5, and it looks like you don't have enough
-            likes yet. Don't worry! The likes you earn will never expire.
+            likes yet. Don't worry! The likes you receive will never expire.
           </p>
         </div>
       {/if}
       {#if step2_done}
         <h3 class="h2 thin half" data-gap="0">
           <Icon icon="done" />
-          Step 2: Get a Stripe account
+          Get a Stripe account
         </h3>
       {:else}
         <div>
-          <h3 class="h2">Step 2: Get a Stripe account</h3>
+          <h3 class="h2">Get a Stripe account</h3>
           <p>
             We partner with <a
               href="https://stripe.com"
@@ -59,7 +59,7 @@
         </h3>
       {:else}
         <div>
-          <h3 class="h2">Step 3: Start a Payout</h3>
+          <h3 class="h2">Start a Payout</h3>
           <p>
             We'll start a payout for all the likes you've received so far, add them
             up, and transfer them to your Stripe account.

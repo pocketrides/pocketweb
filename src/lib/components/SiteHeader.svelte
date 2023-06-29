@@ -121,7 +121,7 @@
                 $App.sheet_id = 'notifications';
               }}
             />
-            {#if $page.url.pathname === `/profile/${$page.data.my_nametag.id}`}
+            {#if $page.url.pathname === `/profile/${$page.data.my_nametag.id}` || $page.url.pathname === `/profile/${$page.data.my_nametag.id}/pockets`}
               <Button
                 href="/settings"
                 label="Settings"

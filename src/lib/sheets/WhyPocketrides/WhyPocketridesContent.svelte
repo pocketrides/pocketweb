@@ -31,7 +31,7 @@
     {#if include_header}
       <section>
         <div>
-          <h2 id="bias">How do you keep me safe?</h2>
+          <h2 id="safety">How do you keep me safe?</h2>
           <p>
             As part of the platform's incentive structure to reward good content, we
             take a very opinionated stance on NSFW ("Not Safe For Work") content. If
@@ -57,7 +57,7 @@
           class="small strong"
           data-fill="system-superlight"
           data-gap="0"
-          aria-labelledby="bias"
+          aria-labelledby="safety"
         >
           <Icon icon="unfold_more" />
           <input type="checkbox" />
@@ -66,7 +66,7 @@
       </section>
       <section>
         <div>
-          <h2 id="bias">How does moderation work?</h2>
+          <h2 id="moderation">How does moderation work?</h2>
           <p>
             Content moderation (sometimes referred to as censorship) works
             differently on Pocketrides. The platform is designed with a powerful
@@ -80,8 +80,8 @@
               target="_blank"
               rel="noreferrer">Prohibited and Restricted Businesses</a
             >), we disable monetization, prevent it from appearing on the Worldfeed,
-            and mark it as NSFW ("Not Safe For Work"). (Only subscribers can see NSFW
-            content.)
+            and mark it as NSFW ("Not Safe For Work"). Only subscribers can see NSFW
+            content.
           </p>
           <p>
             This goes wrong sometimes! If your content fails moderation, you'll see a <strong
@@ -96,7 +96,7 @@
           class="small strong"
           data-fill="system-superlight"
           data-gap="0"
-          aria-labelledby="bias"
+          aria-labelledby="moderation"
         >
           <Icon icon="unfold_more" />
           <input type="checkbox" />
@@ -105,7 +105,7 @@
       </section>
       <section>
         <div>
-          <h2 id="tbl">How can I trust Pocketrides?</h2>
+          <h2 id="trust">How can I trust Pocketrides?</h2>
           <p>
             Surveillance capitalism has no place on Pocketrides, period, ever. We
             make a product that has a host of great features with more on the way,
@@ -144,7 +144,7 @@
           class="small strong"
           data-fill="system-superlight"
           data-gap="0"
-          aria-labelledby="tbl"
+          aria-labelledby="trust"
         >
           <Icon icon="unfold_more" />
           <input type="checkbox" />
@@ -154,7 +154,7 @@
     {/if}
     <section>
       <div>
-        <h2>Why does it cost money?</h2>
+        <h2 id="money">Why does it cost money?</h2>
         <p>
           We don't sell your data to advertisers, which is how most free tech
           companies operate. You can get a lot out of Pocketrides without spending
@@ -172,7 +172,13 @@
           totally stop paying. We're billionaire-proof!)
         </p>
       </div>
-      <label data-3d class="small strong" data-fill="system-superlight" data-gap="0">
+      <label
+        data-3d
+        class="small strong"
+        data-fill="system-superlight"
+        data-gap="0"
+        aria-labelledby="money"
+      >
         <Icon icon="unfold_more" />
         <input type="checkbox" />
         Expand

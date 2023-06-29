@@ -85,7 +85,7 @@
           >ethical place as a company,</a
         > we hope to give the next generation of content creators, community activists,
         artists, musicians and creatives a healthier place to express themselves, while
-        having a transparent and fair way to earn a secondary income.
+        having a transparent and fair way to earn from their creativity.
       </p>
       <p>
         And by committing our <a href="/pocket/362022120043053129"

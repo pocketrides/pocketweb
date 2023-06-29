@@ -3,7 +3,7 @@
   import Icon from './Icon.svelte';
 </script>
 
-<Container padded rounded bordered fill="superlight">
+<Container padded rounded bordered fill="light">
   <div class="none" data-flex="v as je" data-nothing-here>
     <h2 class="h1 jumbo half thin" data-flex="v as" data-gap>
       <Icon icon="sentiment_content" inline />

@@ -214,6 +214,13 @@ export class Feed {
           return Payout.parseFQL(p);
         });
 
+        if (!payouts.length) {
+          return {
+            post_ids: [],
+            has_more: false
+          };
+        }
+
         if (payouts[0].id === after_id) payouts.shift();
         if (payouts[payouts.length - 1].id === after_id) payouts.pop();
 
