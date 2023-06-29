@@ -14,6 +14,18 @@ import { PostStats } from './PostStats';
 export class Post {
   static collection = 'posts';
 
+  static fql_for = {
+    delete_pocket_posts: (pocket_id: string) => {
+      return q.Map(
+        q.Paginate(
+          q.Match(q.Index('posts_by_pocket_ref'), [Pocket.toRef(pocket_id)]),
+          { size: 2500 }
+        ),
+        q.Lambda('post_ref', q.Delete(q.Var('post_ref')))
+      );
+    }
+  };
+
   static async retrieve(
     post_id: string,
     nametag_id: string | null

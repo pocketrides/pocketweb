@@ -2,7 +2,7 @@
   import CloudinaryImg from '$lib/components/CloudinaryImg.svelte';
   import type { CloudinaryPhoto } from '$lib/zod/CloudinaryPhoto';
 
-  export let profile_pic: CloudinaryPhoto | undefined;
+  export let profile_pic: CloudinaryPhoto | undefined | null;
 </script>
 
 {#if profile_pic}

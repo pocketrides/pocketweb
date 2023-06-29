@@ -28,8 +28,7 @@
       <div data-flex="v as" data-gap>
         <h2>Try it free all month.</h2>
         <p>
-          Use a social network built for authentic community: no ads, no data sales,
-          and no greedy profit motive.
+          We prioritize you: your mental health, your community, and your planet.
         </p>
       </div>
     </Container>
@@ -49,7 +48,7 @@
     </Container>
     <Container>
       <div data-flex="v as" data-gap>
-        <h2>Build community.</h2>
+        <h2>Invite your community.</h2>
         <p>
           Invite your friends to try it with you, or build a new community on the
           Worldfeed.

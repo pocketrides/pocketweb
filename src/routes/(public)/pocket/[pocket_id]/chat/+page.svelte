@@ -96,18 +96,16 @@
   };
 
   const scrollToBottom = () => {
-    const scroll_target = document.querySelector(
-      '[data-message-composer]'
-    ) as HTMLElement;
+    const main = document.querySelector('main') as HTMLElement;
 
-    if (scroll_target) {
+    if (main) {
       scrollToEnhanced(() => {
         window.scrollTo(
           0,
-          scroll_target.offsetTop +
-            scroll_target.offsetHeight +
-            (window.innerWidth >= 640 ? 68 : 0) -
-            (window.visualViewport?.height || window.innerHeight)
+          main.offsetTop +
+            main.offsetHeight -
+            (window.visualViewport?.height || window.innerHeight) -
+            (window.innerWidth < 640 ? 48 : 0)
         );
       });
     }

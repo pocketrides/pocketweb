@@ -7,7 +7,7 @@
   import { writable } from 'svelte/store';
   import ProfilePic from './ProfilePic.svelte';
 
-  export let profile_pic: CloudinaryPhoto | undefined;
+  export let profile_pic: CloudinaryPhoto | undefined | null;
 
   const uploading = writable(false);
   const error = writable(false);

@@ -4,6 +4,7 @@
   export let fill: Fill | 'none' = 'none';
   export let rounded: boolean = false;
   export let rounded_lg: boolean = false;
+  export let rounded_group: boolean = false;
   export let padded: boolean = true;
   export let bordered: boolean = false;
   export let bottombordered: boolean = false;
@@ -15,6 +16,7 @@
   data-fill={fill}
   class:rounded
   class:rounded_lg
+  class:rounded_group
   class:padded
   class:bordered
   class:bottombordered
@@ -65,11 +67,6 @@
   .rounded {
     border-radius: 1rem;
     overflow: hidden;
-
-    &:has(+ .rounded) {
-      border-bottom-left-radius: 0;
-      border-bottom-right-radius: 0;
-    }
   }
 
   .rounded_lg {
@@ -79,9 +76,14 @@
     }
   }
 
-  .rounded :global(+ .rounded) {
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
+  :global(.rounded_group:has(+ .rounded_group)) {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+
+    & + .rounded_group {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
   }
 
   .bordered {

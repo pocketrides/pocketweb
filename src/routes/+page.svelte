@@ -260,11 +260,11 @@
       </p> -->
     </div>
     <div data-theme="sky" class="card">
-      <Container fill="superlight" rounded>
+      <Container fill="superlight" rounded_group rounded>
         <p class="h2 half">Coming Soon:</p>
         <p class="h1">Explore by asking.</p>
       </Container>
-      <Container fill="dark" rounded>
+      <Container fill="dark" rounded_group rounded>
         <p class="h3 thin">
           Explore the world like a local just by asking, "what's going on this
           weekend?"

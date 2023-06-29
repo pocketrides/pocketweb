@@ -17,6 +17,8 @@ export const POST = (async (event) => {
       await event.request.json()
     );
 
+    console.log(event.locals.nametag_id, payload.success);
+
     if (event.locals.nametag_id && payload.success) {
       res = await Reply.replyToPost(event.locals.nametag_id, payload.data);
 

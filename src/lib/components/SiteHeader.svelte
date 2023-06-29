@@ -280,6 +280,10 @@
     margin: auto;
   }
 
+  [data-gallery]:empty {
+    display: none;
+  }
+
   [data-nav] :global(> .padded) {
     padding-top: 1px;
   }

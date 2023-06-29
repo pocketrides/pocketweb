@@ -104,10 +104,13 @@
 {/if}
 
 <style lang="scss">
-  .gallery-outer {
-    overflow: hidden;
+  :global(header) + .gallery-outer {
     border-bottom-right-radius: 1rem;
     border-bottom-left-radius: 1rem;
+  }
+
+  .gallery-outer {
+    overflow: hidden;
 
     &.square {
       border-bottom-left-radius: 0;

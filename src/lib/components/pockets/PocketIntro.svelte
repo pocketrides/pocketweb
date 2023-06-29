@@ -2,21 +2,21 @@
   import Container from '../Container.svelte';
 </script>
 
-<Container padded rounded_lg fill="light" bordered>
+<Container padded rounded fill="light" bordered>
   <p class="h2">Pockets are for anything.</p>
   <p>
     From fandoms to road trips to farmers markets. A Pocket is a do-anything space
     for your community: your own corner of the internet, for whatever it is you do.
   </p>
 </Container>
-<Container padded rounded_lg fill="light" bordered>
+<Container padded rounded fill="light" bordered>
   <p class="h2">Pockets are free to join.</p>
   <p>
     Everyone can join up to three Pockets for free, make as many posts as they want,
     and hang out in the group chat.
   </p>
 </Container>
-<Container rounded_lg fill="light" bordered>
+<Container rounded fill="light" bordered>
   <div data-flex="v" data-gap>
     <p class="h2">How does privacy work?</p>
     <p>
@@ -32,7 +32,7 @@
     </p>
   </div>
 </Container>
-<Container rounded_lg fill="light" bordered>
+<Container rounded fill="light" bordered>
   <div data-flex="v" data-gap>
     <p class="h2">Who can join it?</p>
     <p>Choose the way people join, every time you publish your Pocket:</p>

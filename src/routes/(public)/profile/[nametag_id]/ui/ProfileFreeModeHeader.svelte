@@ -14,13 +14,13 @@
 
 <Container padded>
   <div data-flex="v" data-gap="1">
-    <Container rounded fill="system-superlight">
+    <Container rounded fill="light" bordered>
       <div data-richtext>
         <h2>
           <span class="h3 half">Welcome to Pocketrides<em>!</em></span><br />
           Here's how to get started:
         </h2>
-        <ol>
+        <ol data-flex="v" data-gap="sm">
           <li>
             <Icon icon="face_retouching_natural" /><a
               href="#inspiration"
@@ -46,7 +46,7 @@
         </ol>
         {#if showing_more}
           <h3>Get Unlimited to:</h3>
-          <ul>
+          <ul data-flex="v" data-gap="sm">
             <li>
               <Icon icon="lock" /> Add a bio &amp; links
               <span class="half">(coming soon!)</span>
@@ -72,10 +72,10 @@
       </div>
     </Container>
     <Container>
-      <div data-richtext="">
-        <h3>
+      <div data-flex="v" data-gap>
+        <h3 class="h2">
           <Icon icon="favorite" />
-          Try Unlimited for 30 days.
+          Free 30-day trial
         </h3>
         <p>
           <strong>Your privacy is never for sale.</strong> Pocketrides is 100% subscriber-funded,
@@ -85,6 +85,7 @@
         <p>
           Read more:<br /><a
             href="#why"
+            class="h3"
             on:click|preventDefault={() => {
               $App.sheet_id = 'why_pocketrides';
             }}>Why Pocketrides?</a

@@ -9,6 +9,7 @@ import { Nametag } from './Nametag';
 import { PocketCohost } from './PocketCohost';
 import { PocketMember } from './PocketMember';
 import * as Sentry from '@sentry/svelte';
+import { Post } from './Post';
 
 export type GetPocketQueryResponse =
   | {
@@ -340,6 +341,7 @@ export class Pocket {
         q.Do(
           PocketCohost.fql_for.delete_all(pocket_id),
           PocketMember.fql_for.delete_all(pocket_id),
+          Post.fql_for.delete_pocket_posts(pocket_id),
           Chat.fql_for.delete_all(pocket_id),
           q.Delete(this.toRef(pocket_id)),
           {
