@@ -26,6 +26,7 @@
   const SCROLL_MIN = 110;
 
   const checkForScrollingUp = (delay = 150) => {
+    if (interval_id) return;
     if (!huddable) return;
     if (!has_init) {
       hud = true;
@@ -33,19 +34,16 @@
       return;
     }
     const start_y = window.scrollY;
-    let header_height = document.querySelector('main')?.offsetTop || 640;
+    let header_height = 640;
     if (start_y < header_height) hud = true;
-    if (interval_id) return;
     clearInterval(interval_id);
     interval_id = setTimeout(() => {
-      let diff = window.scrollY - start_y;
-      // if (start_y > window.scrollY || window.scrollY < SCROLL_MIN) hud = true;
+      if (start_y > window.scrollY || window.scrollY < SCROLL_MIN) hud = true;
 
       hud =
-        (window.scrollY < header_height ||
-          window.scrollY < start_y ||
-          window.scrollY < SCROLL_MIN) &&
-        diff < 60;
+        window.scrollY < header_height ||
+        window.scrollY < start_y ||
+        window.scrollY < SCROLL_MIN;
 
       safehud = window.scrollY > SCROLL_MIN;
 
@@ -159,7 +157,17 @@
 <div data-slot data-fill={fill}>
   <slot />
 </div>
-<div data-nav data-fill={fill} class:sticky class:huddable class:hud class:has_init>
+<div
+  data-nav
+  data-fill={fill}
+  class:sticky
+  class:huddable
+  class:hud
+  class:has_init
+  on:touchend={() => {
+    hud = true;
+  }}
+>
   <slot name="nav" />
 </div>
 
