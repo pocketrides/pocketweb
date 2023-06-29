@@ -6,6 +6,7 @@ import * as stytch from 'stytch';
 import { MAX_AGE_MINUTES } from './cookies';
 import type { ServerAccount } from '$lib/zod/Account';
 import type { ServerNametag } from '$lib/zod/Nametag';
+import * as Sentry from '@sentry/svelte';
 
 export class Stytch {
   static PROJECT_ID: string;
@@ -52,7 +53,9 @@ export class Stytch {
           try {
             fauna_account = claims?.fa ? JSON.parse(claims.fa) : undefined;
             nametag = claims?.n ? JSON.parse(claims.n) : undefined;
-          } catch (e) {}
+          } catch (e) {
+            Sentry.captureException(e);
+          }
 
           resolve({
             stytch_user_id: res.user.user_id,
@@ -71,6 +74,8 @@ export class Stytch {
         }
       } catch (e) {
         console.error(`stytch/doAuthSession [source: ${source_id}]`, e);
+        Sentry.captureException(e);
+
         resolve(undefined);
       }
     });

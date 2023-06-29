@@ -1,5 +1,4 @@
 import type { ServerInvoice, DraftInvoice } from '$lib/zod/Invoice';
-import { Account } from './Account';
 import { Fauna } from './Fauna';
 import { Nametag } from './Nametag';
 

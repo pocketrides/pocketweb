@@ -120,10 +120,13 @@
                 data-unstyle
                 class="h3"
                 on:click|preventDefault={() => {
-                  // @ts-ignore
-                  navigator.share({
-                    url: `https://${window.location.host}/pocket/${$pocket.id}`
-                  });
+                  try {
+                    navigator.share({
+                      url: `https://${window.location.host}/pocket/${$pocket.id}`
+                    });
+                  } catch (e) {
+                    return;
+                  }
                 }}
               >
                 <Icon icon="ios_share" />

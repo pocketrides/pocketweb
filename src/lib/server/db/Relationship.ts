@@ -7,6 +7,7 @@ import type {
 import { Fauna } from './Fauna';
 import { Nametag } from './Nametag';
 import { NametagStats } from './NametagStats';
+import * as Sentry from '@sentry/svelte';
 
 export class Relationship {
   static collection_friends = 'friends';
@@ -81,7 +82,7 @@ export class Relationship {
         Fauna.toRef(Relationship.collection_followers, follower.id)
       );
 
-      await NametagStats.substractFollower(target_nametag_id);
+      await NametagStats.subtractFollower(target_nametag_id);
     }
 
     await Relationship.removeFromCloseFriends(my_nametag_id, target_nametag_id);
@@ -195,6 +196,7 @@ export class Relationship {
 
       return true;
     } catch (e) {
+      Sentry.captureException(e);
       console.error('db/Relationship.removeAll', e);
 
       return false;

@@ -6,6 +6,7 @@ import type {
 import { Fauna, q } from './Fauna';
 import { Nametag } from './Nametag';
 import { blankReplyStats, type ClientReply } from '$lib/zod/Reply';
+import * as Sentry from '@sentry/svelte';
 
 export class Reply {
   static collection = 'replies';
@@ -26,61 +27,66 @@ export class Reply {
     nametag_id: string,
     payload: ReplyToPostPayload
   ): Promise<ReplyToPostResponse> {
-    return await Fauna.client().query<ReplyToPostResponse>(
-      q.Let(
-        {
-          post_ref: Post.toRef(payload.post_id),
-          post_exists: q.Exists(q.Var('post_ref')),
-          post: q.If(q.Var('post_exists'), q.Get(q.Var('post_ref')), null),
-          has_post: q.If(q.IsNull(q.Var('post')), false, true),
-          post_stats: q.If(
-            q.Var('has_post'),
-            q.Get(q.Select(['data', 'stats_ref'], q.Var('post'))),
-            null
-          ),
-          enable_replies: q.If(
-            q.Var('has_post'),
-            q.Select(['data', 'settings', 'enable_replies'], q.Var('post')),
-            false
-          ),
-          can_reply: q.Var('enable_replies')
-        },
-        q.If(
-          q.Var('can_reply'),
-          q.Let(
-            {
-              nametag_ref: Nametag.toRef(nametag_id),
-              nametag: q.Get(q.Var('nametag_ref')),
-              reply: q.Create(q.Collection(this.collection), {
-                data: {
-                  nametag_ref: q.Var('nametag_ref'),
-                  post_ref: q.Var('post_ref'),
-                  messages: payload.messages,
-                  stats: blankReplyStats()
-                }
-              }),
-              stats_updated: q.Update(
-                q.Select(['data', 'stats_ref'], q.Var('post')),
-                {
+    try {
+      return await Fauna.client().query<ReplyToPostResponse>(
+        q.Let(
+          {
+            post_ref: Post.toRef(payload.post_id),
+            post_exists: q.Exists(q.Var('post_ref')),
+            post: q.If(q.Var('post_exists'), q.Get(q.Var('post_ref')), null),
+            has_post: q.If(q.IsNull(q.Var('post')), false, true),
+            post_stats: q.If(
+              q.Var('has_post'),
+              q.Get(q.Select(['data', 'stats_ref'], q.Var('post'))),
+              null
+            ),
+            enable_replies: q.If(
+              q.Var('has_post'),
+              q.Select(['data', 'settings', 'enable_replies'], q.Var('post')),
+              false
+            ),
+            can_reply: q.Var('enable_replies')
+          },
+          q.If(
+            q.Var('can_reply'),
+            q.Let(
+              {
+                nametag_ref: Nametag.toRef(nametag_id),
+                nametag: q.Get(q.Var('nametag_ref')),
+                reply: q.Create(q.Collection(this.collection), {
                   data: {
-                    replies: q.Add(
-                      q.Select(['data', 'replies'], q.Var('post_stats')),
-                      1
-                    )
+                    nametag_ref: q.Var('nametag_ref'),
+                    post_ref: q.Var('post_ref'),
+                    messages: payload.messages,
+                    stats: blankReplyStats()
                   }
-                }
-              )
-            },
-            {
-              success: true,
-              reply: this.fql_for.client_reply(),
-              new_count: q.Select(['data', 'replies'], q.Var('stats_updated'))
-            }
-          ),
-          { success: false }
+                }),
+                stats_updated: q.Update(
+                  q.Select(['data', 'stats_ref'], q.Var('post')),
+                  {
+                    data: {
+                      replies: q.Add(
+                        q.Select(['data', 'replies'], q.Var('post_stats')),
+                        1
+                      )
+                    }
+                  }
+                )
+              },
+              {
+                success: true,
+                reply: this.fql_for.client_reply(),
+                new_count: q.Select(['data', 'replies'], q.Var('stats_updated'))
+              }
+            ),
+            { success: false }
+          )
         )
-      )
-    );
+      );
+    } catch (e) {
+      Sentry.captureException(e);
+      return { success: false };
+    }
   }
 
   static async retrieve(
@@ -156,6 +162,7 @@ export class Reply {
 
       return query.data;
     } catch (e) {
+      Sentry.captureException(e);
       console.error(`db/Reply.retrieve`, e);
       return [];
     }

@@ -69,7 +69,7 @@ export class PostStats {
     if (stats) {
       await Fauna.update<ServerPostStats>(
         this.toRef(stats.id),
-        { quarantines: stats.quarantines - 1 },
+        { quarantines: Math.max(0, stats.quarantines - 1) },
         this.parseFQL
       );
     }

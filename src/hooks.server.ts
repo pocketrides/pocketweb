@@ -1,4 +1,10 @@
-import { json, type Handle, redirect, type RequestEvent } from '@sveltejs/kit';
+import {
+  json,
+  type Handle,
+  redirect,
+  type RequestEvent,
+  type HandleServerError
+} from '@sveltejs/kit';
 import { env } from '$env/dynamic/private';
 import { Fauna } from '$lib/server/db/Fauna';
 import { Stytch } from '$lib/server/Stytch';
@@ -11,20 +17,33 @@ import {
 import { OpenAI } from '$lib/server/OpenAI';
 import { MagicbellConfig } from '$lib/server/MagicbellConfig';
 import { GooglePlaceClient } from '$lib/server/db/GooglePlaceClient';
-// import * as Sentry from '@sentry/svelte';
+import * as Sentry from '@sentry/svelte';
+
+export const handleError = (({ error, event }) => {
+  Sentry.captureException(error, {
+    extra: { event },
+    contexts: { sveltekit: { event } }
+  });
+
+  return {
+    message: 'Whoops!',
+    // @ts-ignore
+    code: error?.code ?? 'UNKNOWN'
+  };
+}) satisfies HandleServerError;
 
 export const handle = (async ({ event, resolve }) => {
-  // Sentry.init({
-  //   dsn: 'https://e3db4eb46baa4f43a32d1b98567638e4@o4504929428766720.ingest.sentry.io/4504929430274048',
+  Sentry.init({
+    dsn: 'https://e3db4eb46baa4f43a32d1b98567638e4@o4504929428766720.ingest.sentry.io/4504929430274048',
 
-  //   // Set tracesSampleRate to 1.0 to capture 100%
-  //   // of transactions for performance monitoring.
-  //   // We recommend adjusting this value in production
-  //   tracesSampleRate: 0.5,
-  //   denyUrls: ['10.0.0.16:5174']
-  // });
+    // Set tracesSampleRate to 1.0 to capture 100%
+    // of transactions for performance monitoring.
+    // We recommend adjusting this value in production
+    tracesSampleRate: 0.5,
+    denyUrls: ['10.0.0.16:5174']
+  });
 
-  // Sentry.setTag('sveltekit', 'server');
+  Sentry.setTag('sveltekit', 'server');
 
   loadSecrets(
     event,

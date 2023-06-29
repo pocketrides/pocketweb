@@ -8,6 +8,7 @@ import { Payout } from './Payout';
 import { Pocket } from './Pocket';
 import { Post } from './Post';
 import { Reply } from './Reply';
+import * as Sentry from '@sentry/svelte';
 
 type FaunaQueryResponse<T = string> = {
   data: T[];
@@ -104,6 +105,7 @@ export class Feed {
       } else return { post_ids: [], has_more: false };
     } catch (e) {
       console.error('feed/getHomeFeed', e);
+      Sentry.captureException(e);
       return { post_ids: [], has_more: false };
     }
   }
@@ -140,6 +142,7 @@ export class Feed {
       } else return { post_ids: [], has_more: false };
     } catch (e) {
       console.error('feed/getPocketFeed', e);
+      Sentry.captureException(e);
       return { post_ids: [] };
     }
   }
@@ -222,6 +225,7 @@ export class Feed {
       } else return { post_ids: [], has_more: false };
     } catch (e) {
       console.error('feed/getPayoutFeed', e);
+      Sentry.captureException(e);
       return { post_ids: [] };
     }
   }
@@ -274,6 +278,7 @@ export class Feed {
       }
     } catch (e) {
       console.error('feed/getPostRepliesFeed', e);
+      Sentry.captureException(e);
       return { post_ids: [] };
     }
   }

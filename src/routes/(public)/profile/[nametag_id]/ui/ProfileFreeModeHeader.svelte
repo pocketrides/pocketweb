@@ -17,8 +17,8 @@
     <Container rounded fill="system-superlight">
       <div data-richtext>
         <h2>
-          Welcome to Pocketrides<em>!</em>
-          <span class="half">Here's how to get started:</span>
+          <span class="h3 half">Welcome to Pocketrides<em>!</em></span><br />
+          Here's how to get started:
         </h2>
         <ol>
           <li>
@@ -78,13 +78,17 @@
           Try Unlimited for 30 days.
         </h3>
         <p>
-          Sustainable pricing, split with creators. Your privacy is never for sale.
-          Pause anytime, you'll never lose access.<br /><a
+          <strong>Your privacy is never for sale.</strong> Pocketrides is 100% subscriber-funded,
+          split 50/50 with creators. No subscription required, you'll never lose access
+          to what you create.
+        </p>
+        <p>
+          Read more:<br /><a
             href="#why"
             on:click|preventDefault={() => {
               $App.sheet_id = 'why_pocketrides';
-            }}>Read more</a
-          >.
+            }}>Why Pocketrides?</a
+          >
         </p>
       </div>
     </Container>

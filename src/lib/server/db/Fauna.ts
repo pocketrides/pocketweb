@@ -1,4 +1,5 @@
 import * as faunadb from 'faunadb';
+import * as Sentry from '@sentry/svelte';
 
 export const q = faunadb.query;
 
@@ -33,6 +34,7 @@ export class Fauna {
         await Fauna.client().query(q.Get(q.Match(q.Index(index), param || [])))
       );
     } catch (e) {
+      Sentry.captureException(e);
       return undefined;
     }
   }
@@ -44,6 +46,7 @@ export class Fauna {
     try {
       return parser(await Fauna.client().query(q.Get(ref)));
     } catch (e) {
+      Sentry.captureException(e);
       return undefined;
     }
   }
@@ -63,6 +66,7 @@ export class Fauna {
 
       return result.data.map((r) => parser(r));
     } catch (e) {
+      Sentry.captureException(e);
       return [] as T[];
     }
   }
@@ -77,6 +81,7 @@ export class Fauna {
         await Fauna.client().query(q.Create(q.Collection(collection), { data }))
       );
     } catch (e) {
+      Sentry.captureException(e);
       return undefined;
     }
   }
@@ -89,6 +94,7 @@ export class Fauna {
     try {
       return parser(await Fauna.client().query(q.Update(ref, { data })));
     } catch (e) {
+      Sentry.captureException(e);
       return undefined;
     }
   }
@@ -98,6 +104,7 @@ export class Fauna {
       await Fauna.client().query(q.Delete(ref));
       return true;
     } catch (e) {
+      Sentry.captureException(e);
       return false;
     }
   }

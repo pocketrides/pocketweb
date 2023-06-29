@@ -1,4 +1,3 @@
-// import * as Sentry from '@sentry/svelte';
 import { NametagCollab } from '$lib/server/db/NametagCollab';
 import { Fauna, q } from './Fauna';
 import { Account } from './Account';
@@ -8,6 +7,7 @@ import { blankNametagStats } from '$lib/zod/NametagStats';
 import { blankAccountStatus } from '$lib/zod/Stripe';
 import type { NametagRelationshipsGetFriendsRequest } from '$lib/api/nametag/relationships';
 import type { ClientNametagCollab } from '$lib/zod/NametagCollab';
+import * as Sentry from '@sentry/svelte';
 
 export class Nametag {
   static collection = 'nametags';
@@ -60,6 +60,7 @@ export class Nametag {
 
       if (query !== null) return Nametag.parseFQL(query);
     } catch (e) {
+      Sentry.captureException(e);
       console.error('db/Nametag.verifyOwnership', e);
       return undefined;
     }
@@ -112,7 +113,7 @@ export class Nametag {
         collabs: query.collabs.map((c) => NametagCollab.parseFQL(c))
       };
     } catch (e) {
-      // Sentry.captureException(e);
+      Sentry.captureException(e);
       console.error('db/Nametag.getByAccountId:', e);
     }
 
@@ -177,6 +178,7 @@ export class Nametag {
         };
       } else throw new Error('query was undefined', { cause: query });
     } catch (e) {
+      Sentry.captureException(e);
       console.error('db/nametag.getFriends()', e);
       return {
         success: false
@@ -228,6 +230,7 @@ export class Nametag {
         };
       } else throw new Error('query was undefined', { cause: query });
     } catch (e) {
+      Sentry.captureException(e);
       console.error('db/nametag.getFollowers()', e);
       return {
         success: false

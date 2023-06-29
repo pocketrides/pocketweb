@@ -69,7 +69,7 @@
       </p>
       <ol>
         <li>Instead of endless scrolling, your home feed has an ending.</li>
-        <li>Likes given out by subscribers are worth one cent.</li>
+        <li>Likes given out by subscribers are worth a penny each.</li>
         <li>
           The company's business model precludes us from selling customer data to
           make money.
@@ -88,11 +88,11 @@
         having a transparent and fair way to earn a secondary income.
       </p>
       <p>
-        And by using our <a href="/pocket/362022120043053129"
+        And by committing our <a href="/pocket/362022120043053129"
           >profits for climate action,</a
         >
         we aspire to be a source of hope and forward momentum, doing the hard work to
-        confront an exisential crisis made worse by our global economic model of greed
+        confront an existential crisis made worse by our global economic model of greed
         and extraction. A green future driven by
         <a
           href="https://en.wikipedia.org/wiki/Circular_economy"

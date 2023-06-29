@@ -154,15 +154,13 @@
       <Button label="Cancel" href={`/pocket/${data.editing_pocket_id}`} />
     {/if}
   </div>
-  {#if $page_controller.cover_art.length}
-    <Gallery
-      photos={$page_controller.cover_art}
-      square={false}
-      allow_delete
-      slot="gallery"
-      on:delete={photoDeleted}
-    />
-  {/if}
+  <Gallery
+    photos={$page_controller.cover_art}
+    square={false}
+    allow_delete
+    slot="gallery"
+    on:delete={photoDeleted}
+  />
 </SiteHeader>
 <Main fullheight fullwidth padded={false}>
   <PocketRenderer details_enabled={$page_controller.details_enabled}>

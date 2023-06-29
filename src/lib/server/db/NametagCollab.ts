@@ -3,6 +3,7 @@ import type { NametagCollabListResponse } from '$lib/api/nametag/collab/list';
 import type { ClientNametagCollab } from '$lib/zod/NametagCollab';
 import { Fauna, q } from './Fauna';
 import { Nametag } from './Nametag';
+import * as Sentry from '@sentry/svelte';
 
 export class NametagCollab {
   static collection = 'nametag_collabs';
@@ -51,6 +52,7 @@ export class NametagCollab {
         collabs: query.collabs.map((c) => this.parseFQL(c))
       };
     } catch (e) {
+      Sentry.captureException(e);
       console.error(`db/NametagCollab.list`, e);
     }
 
@@ -95,6 +97,7 @@ export class NametagCollab {
 
       response = query;
     } catch (e) {
+      Sentry.captureException(e);
       console.error('db/NametagCollab.remove', e);
     }
 
@@ -115,6 +118,7 @@ export class NametagCollab {
 
       response = { success: true };
     } catch (e) {
+      Sentry.captureException(e);
       console.error('db/NametagCollab.removeAllCollabs', e);
     }
 
@@ -151,6 +155,7 @@ export class NametagCollab {
 
       response = query;
     } catch (e) {
+      Sentry.captureException(e);
       console.error('db/NametagCollab.add', e);
     }
 

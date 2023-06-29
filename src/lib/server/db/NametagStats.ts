@@ -54,7 +54,7 @@ export class NametagStats {
     }
   }
 
-  static async substractFollower(nametag_id: string) {
+  static async subtractFollower(nametag_id: string) {
     const stats = await NametagStats.getByNametagRef(nametag_id);
 
     if (stats) {

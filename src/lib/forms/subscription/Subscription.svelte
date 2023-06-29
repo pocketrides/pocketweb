@@ -37,8 +37,11 @@
       <div data-flex="v as" data-gap>
         <h2>Profits for purpose.</h2>
         <p>
-          100% of our profits are for climate action. We can all have meaningful
-          impact with a little <a class="h3" href="/pocket/362022120043053129">
+          100% of profits are committed to equitable climate action. We can all have
+          meaningful impact with a little <a
+            class="h3"
+            href="/pocket/362022120043053129"
+          >
             <Icon icon="hail" inline />Pocketchange</a
           >.
         </p>

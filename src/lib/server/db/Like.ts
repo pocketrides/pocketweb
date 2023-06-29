@@ -3,6 +3,7 @@ import { Fauna, q } from './Fauna';
 import { Invoice } from './Invoice';
 import { Nametag } from './Nametag';
 import { Post } from './Post';
+import * as Sentry from '@sentry/svelte';
 
 export class Like {
   static mint_count = 250;
@@ -46,6 +47,7 @@ export class Like {
       return true;
     } catch (e) {
       console.error('>> Like.mint: fauna error', e);
+      Sentry.captureException(e);
       return false;
     }
   }
@@ -195,6 +197,7 @@ export class Like {
       );
     } catch (e) {
       console.error('[> Like.likePost()]', e);
+      Sentry.captureException(e);
       return { success: false, reason: 'idk' };
     }
   }
@@ -309,15 +312,18 @@ export class Like {
               }),
               q.Update(q.Var('post_stats_ref'), {
                 data: {
-                  likes: q.Subtract(
-                    q.Select(['data', 'likes'], q.Var('post_stats')),
-                    1
+                  likes: q.Max(
+                    0,
+                    q.Subtract(q.Select(['data', 'likes'], q.Var('post_stats')), 1)
                   )
                 }
               }),
               q.Update(q.Var('target_nametag_stats_ref'), {
                 data: {
-                  likes_received: q.Subtract(q.Var('target_likes_received'), 1)
+                  likes_received: q.Max(
+                    0,
+                    q.Subtract(q.Var('target_likes_received'), 1)
+                  )
                 }
               }),
               true
@@ -328,6 +334,7 @@ export class Like {
       );
     } catch (e) {
       console.error('[>Like.unlike()]', e);
+      Sentry.captureException(e);
       return false;
     }
   }

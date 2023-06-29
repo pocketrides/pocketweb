@@ -5,6 +5,7 @@ import { Fauna, q } from './Fauna';
 import { Nametag } from './Nametag';
 import type { ClientRef } from '$lib/zod/Fauna';
 import type { Expr } from 'faunadb';
+import * as Sentry from '@sentry/svelte';
 
 type PayoutBoundaryFQL = {
   boundary: Expr;
@@ -102,6 +103,7 @@ export class Payout {
 
       return req;
     } catch (e) {
+      Sentry.captureException(e);
       return { can_create: false, total_likes: 0 };
     }
   }
@@ -220,6 +222,7 @@ export class Payout {
             });
           else throw Error(`couldn't create transfer`, { cause: transfer });
         } catch (e) {
+          Sentry.captureException(e);
           console.error('> transfer error', e);
           if (payout)
             payout = await this.#update(payout.id, {

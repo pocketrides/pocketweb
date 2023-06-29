@@ -194,9 +194,12 @@ export class Post {
                 q.Do(
                   q.Update(q.Select(['ref'], q.Var('nametag_stats')), {
                     data: {
-                      posts: q.Subtract(
-                        q.Select(['data', 'posts'], q.Var('nametag_stats')),
-                        1
+                      posts: q.Max(
+                        0,
+                        q.Subtract(
+                          q.Select(['data', 'posts'], q.Var('nametag_stats')),
+                          1
+                        )
                       )
                     }
                   }),

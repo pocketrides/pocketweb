@@ -1,5 +1,6 @@
 import type { DraftAccount, ServerAccount } from '$lib/zod/Account';
 import { Fauna, q } from './Fauna';
+import * as Sentry from '@sentry/svelte';
 
 export class Account {
   static collection: string = 'accounts';
@@ -28,7 +29,9 @@ export class Account {
 
       return this.parseFQL(res);
     } catch (e) {
+      Sentry.captureException(e);
       console.error('account/createIfNeeded', e);
+
       return undefined;
     }
     // const exists = await Account.getByStytchId(stytch_id);

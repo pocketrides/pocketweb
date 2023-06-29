@@ -2,6 +2,7 @@ import type { ClientChat, DraftChat } from '$lib/zod/Chat';
 import { Fauna, q } from './Fauna';
 import { Nametag } from './Nametag';
 import { Pocket } from './Pocket';
+import * as Sentry from '@sentry/svelte';
 
 export class Chat {
   static collection = 'chats';
@@ -46,6 +47,7 @@ export class Chat {
       return query.data.map((c) => this.parseFQL(c.chat, c.nametag));
     } catch (e) {
       console.error('db/Chat.list()', e);
+      Sentry.captureException(e);
       return [];
     }
   }
@@ -109,6 +111,7 @@ export class Chat {
       }
     } catch (e) {
       console.error('db/Chat.create()', e);
+      Sentry.captureException(e);
       return undefined;
     }
   }

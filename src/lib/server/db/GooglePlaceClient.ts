@@ -5,6 +5,7 @@ import {
 } from '$lib/zod/GooglePlace';
 import type { WorldfeedLocation } from '$lib/zod/Worldfeed';
 import type { RequestEvent } from '@sveltejs/kit';
+import * as Sentry from '@sentry/svelte';
 
 export class GooglePlaceClient {
   static GOOGLE_MAPS_API_KEY: string;
@@ -29,7 +30,9 @@ export class GooglePlaceClient {
           `${event.request.cf.latitude},${event.request.cf.longitude}`
         );
       }
-    } catch (e) {}
+    } catch (e) {
+      Sentry.captureException(e);
+    }
 
     const req = await fetch(`${this.SERVICE_URL}?${qs.toString()}`);
     const data = await req.json();

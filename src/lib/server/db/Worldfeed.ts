@@ -1,4 +1,5 @@
 import { Fauna, q } from './Fauna';
+import * as Sentry from '@sentry/svelte';
 
 export type WorldfeedListResult = {
   post_ids: string[];
@@ -116,6 +117,7 @@ export class Worldfeed {
       return query;
     } catch (e) {
       console.error('db/Worldfeed.list()', e);
+      Sentry.captureException(e);
       return {
         post_ids: [],
         pocket_ids: []

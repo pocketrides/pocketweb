@@ -4,6 +4,7 @@ import { Invoice } from './db/Invoice';
 import { Like } from './db/Like';
 import { Nametag } from './db/Nametag';
 import type { DraftNametag, ServerNametag } from '$lib/zod/Nametag';
+import * as Sentry from '@sentry/svelte';
 
 export type StripeClientCustomMetadata = {
   nametag_id: string;
@@ -67,6 +68,7 @@ export class StripeClient {
 
       return stripe_account.id;
     } catch (e) {
+      Sentry.captureException(e);
       console.error('>> createAccount', e);
       return undefined;
     }
@@ -80,6 +82,7 @@ export class StripeClient {
 
       return undefined;
     } catch (e) {
+      Sentry.captureException(e);
       console.error('>> retrieveAccount', e);
       return undefined;
     }
@@ -100,6 +103,7 @@ export class StripeClient {
 
       return account_link.url;
     } catch (e) {
+      Sentry.captureException(e);
       console.error('>> createAccountOnboardingLink', e);
       return undefined;
     }
@@ -130,6 +134,7 @@ export class StripeClient {
 
       return undefined;
     } catch (e) {
+      Sentry.captureException(e);
       console.error('>> createSubscribeLink', e);
       return undefined;
     }
@@ -144,6 +149,7 @@ export class StripeClient {
 
       return link.url;
     } catch (e) {
+      Sentry.captureException(e);
       console.error('>> createAccountDashboardLink', e);
       return undefined;
     }
@@ -162,6 +168,7 @@ export class StripeClient {
 
       return link.url;
     } catch (e) {
+      Sentry.captureException(e);
       console.error('>> createBillingPortalLink', e);
       return undefined;
     }
@@ -180,6 +187,7 @@ export class StripeClient {
 
       return transfer;
     } catch (e) {
+      Sentry.captureException(e);
       console.error('>> transfer', e);
       return undefined;
     }
@@ -308,6 +316,7 @@ export class StripeClient {
         await this.client().customers.del(customer_id);
         return true;
       } catch (e) {
+        Sentry.captureException(e);
         console.error(`stripeclient.destroy - delete customer error`, e);
         return false;
       }

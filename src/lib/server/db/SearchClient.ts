@@ -2,6 +2,7 @@ import type { SearchResponse } from '$lib/api/search/search';
 import { Fauna, q } from './Fauna';
 import { Nametag } from './Nametag';
 import { Pocket, type GetPocketQueryResponse } from './Pocket';
+import * as Sentry from '@sentry/svelte';
 
 export class SearchClient {
   static async search(_q: string): Promise<SearchResponse> {
@@ -64,6 +65,8 @@ export class SearchClient {
         }
       });
     } catch (e) {
+      Sentry.captureException(e);
+
       console.error('> db/SearchClient.search()', _q, e);
     }
 

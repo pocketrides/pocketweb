@@ -3,6 +3,7 @@ import type { ClientPocketMember, PocketMemberStatus } from '$lib/zod/PocketMemb
 import { Fauna, q } from './Fauna';
 import { Nametag } from './Nametag';
 import { Pocket } from './Pocket';
+import * as Sentry from '@sentry/svelte';
 
 export type QueryClientPocketMemberReturnType = {
   member: any;
@@ -82,6 +83,7 @@ export class PocketMember {
       return true;
     } catch (e) {
       console.error('db/PocketMember.canFreeNametagJoin()', e);
+      Sentry.captureException(e);
       return false;
     }
   }
@@ -113,6 +115,7 @@ export class PocketMember {
       return undefined;
     } catch (e) {
       console.error('db/PocketMember.getMember()', e);
+      Sentry.captureException(e);
       return undefined;
     }
   }
@@ -169,6 +172,7 @@ export class PocketMember {
       );
     } catch (e) {
       console.error('db/PocketMember.createMember()', e);
+      Sentry.captureException(e);
       return false;
     }
   }
@@ -193,6 +197,7 @@ export class PocketMember {
         )
       );
     } catch (e) {
+      Sentry.captureException(e);
       return false;
     }
   }
@@ -226,6 +231,7 @@ export class PocketMember {
       };
     } catch (e) {
       console.error('db/PocketMember.list()', e);
+      Sentry.captureException(e);
       return { success: false, members: [] };
     }
   }
@@ -253,6 +259,7 @@ export class PocketMember {
       }
     } catch (e) {
       console.error('db/PocketMember.updateStatus()', e);
+      Sentry.captureException(e);
       return undefined;
     }
   }

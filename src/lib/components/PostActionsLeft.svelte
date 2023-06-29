@@ -64,10 +64,14 @@
         icon="ios_share"
         small
         on:click={() => {
-          // @ts-ignore
-          navigator.share({
-            url: `https://${window.location.host}/post/${$post_controller?.id}`
-          });
+          try {
+            navigator.share({
+              url: `https://${window.location.host}/post/${$post_controller?.id}`
+            });
+          } catch (e) {
+            // silent
+            return;
+          }
         }}
       />
     {/if}

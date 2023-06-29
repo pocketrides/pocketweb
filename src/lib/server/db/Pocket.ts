@@ -8,6 +8,7 @@ import { Fauna, q } from './Fauna';
 import { Nametag } from './Nametag';
 import { PocketCohost } from './PocketCohost';
 import { PocketMember } from './PocketMember';
+import * as Sentry from '@sentry/svelte';
 
 export type GetPocketQueryResponse =
   | {
@@ -88,6 +89,7 @@ export class Pocket {
       );
     } catch (e) {
       console.error('db/Pocket.create()', e);
+      Sentry.captureException(e);
       return { success: false };
     }
   }
@@ -126,6 +128,7 @@ export class Pocket {
       );
     } catch (e) {
       console.error('db/Pocket.update()', e);
+      Sentry.captureException(e);
       return { success: false };
     }
   }
@@ -159,6 +162,7 @@ export class Pocket {
       return undefined;
     } catch (e) {
       console.error('db/Pocket.retrieve()', e);
+      Sentry.captureException(e);
       return undefined;
     }
   }
@@ -287,6 +291,8 @@ export class Pocket {
       return response;
     } catch (e) {
       console.error('db/Pocket.list()', nametag_id, include_unlisted, e);
+      Sentry.captureException(e);
+
       return {
         pockets: [],
         cohosted_pockets: [],
@@ -314,6 +320,7 @@ export class Pocket {
       );
     } catch (e) {
       console.error('> db/Pocket.canFreeModePublish()', e);
+      Sentry.captureException(e);
       return false;
     }
   }
@@ -342,6 +349,7 @@ export class Pocket {
       );
     } catch (e) {
       console.error('db/Pocket.delete()', e);
+      Sentry.captureException(e);
       return {
         success: false
       };

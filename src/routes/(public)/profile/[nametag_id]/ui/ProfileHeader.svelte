@@ -83,10 +83,14 @@
               small
               controller={share_controller}
               on:click={() => {
-                navigator.share({
-                  url: window.location.toString()
-                });
-                $share_controller = '';
+                try {
+                  navigator.share({
+                    url: window.location.toString()
+                  });
+                  $share_controller = '';
+                } catch (e) {
+                  return;
+                }
               }}
             />
           </div>
