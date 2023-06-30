@@ -119,7 +119,7 @@
       id={label_id}
       bind:value={post.content}
       bind:raw={post.content_raw}
-      too_long="Too long! Say more in another post."
+      too_long={`Too long! Tap "Add More" to keep writing.`}
       placeholder={index === 0 ? 'Tell everyone' : 'Keep writing!'}
     />
   </div>

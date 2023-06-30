@@ -1,7 +1,6 @@
 [data-richtext] {
   word-break: break-word;
-  font-size: 1.125rem;
-  line-height: 1.5;
+  // font-size: 1rem;
 
   p,
   blockquote,
@@ -51,11 +50,46 @@
   h4,
   h5,
   h6 {
-    font-size: 1.125rem;
-    line-height: 1.5;
-
     &:not(:first-child) {
       margin-top: 1.5rem;
     }
+  }
+
+  table {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    border: 1px solid rgba(var(--dark), 0.5);
+    border-spacing: 0;
+    border-radius: 0.5rem;
+    box-shadow: -1px 1px 0px rgba(var(--dark), 0.25);
+
+    td {
+      padding: 0.25rem;
+    }
+
+    thead {
+      background-color: rgb(var(--superlight));
+
+      th,
+      td {
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+
+        border-bottom: 1px solid rgba(var(--dark), 0.25);
+      }
+    }
+
+    tr td {
+      border-bottom: 1px solid rgba(var(--dark), 0.15);
+    }
+
+    tbody tr:nth-child(2n) {
+      background-color: rgb(var(--light));
+    }
+  }
+
+  hr {
+    border-color: rgba(var(--dark), 0.25);
   }
 }

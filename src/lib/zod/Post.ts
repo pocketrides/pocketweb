@@ -13,7 +13,7 @@ import { openai_mod_result_validator } from './OpenAI';
 import type { ClientReply } from './Reply';
 import { worldfeed_location_validator } from './Worldfeed';
 
-export const MAX_POST_CONTENT_LENGTH = 720;
+export const MAX_POST_CONTENT_LENGTH = 1500;
 
 export const post_audience_validator = z.enum([
   'friends',

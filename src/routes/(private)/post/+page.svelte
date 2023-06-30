@@ -13,7 +13,7 @@
   import Radio from '$lib/components/Radio.svelte';
   import Checkbox from '$lib/components/Checkbox.svelte';
   import { NewPostRequest } from '$lib/api/post/new';
-  import { disableScrollHandling, goto } from '$app/navigation';
+  import { goto } from '$app/navigation';
   import Container from '$lib/components/Container.svelte';
   import { afterUpdate } from 'svelte';
   import ButtonRow from '$lib/components/ButtonRow.svelte';
@@ -36,7 +36,9 @@
   const nav_controller = writable(data.post ? 'save' : 'publish');
   const almost_done = writable(false);
 
-  let publish_target = data.pocket ? `pocket:${data.pocket.id}` : 'friends'; // pocket:123…
+  let publish_target = data.pocket
+    ? `pocket:${data.pocket.id}`
+    : data.post?.audience || 'friends'; // pocket:123…
   $: target_and_pocket = publish_target.split(':');
   $: $page_controller.audience = target_and_pocket[0] as
     | 'friends'
@@ -146,7 +148,7 @@
     </ButtonRow>
   </div>
 </SiteHeader>
-<Main padded={false} fullheight>
+<Main padded={false} fullheight fill="white">
   <Posts store={page_controller} />
   {#if $page_controller.settings.is_nsfw || $page_controller.settings.enable_likes === false}
     <Container>

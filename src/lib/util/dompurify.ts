@@ -17,9 +17,16 @@ export const dompurify_config: DOMPurify.Config = {
     'h4',
     'h5',
     'h6',
-    'a'
+    'a',
+    'table',
+    'thead',
+    'tbody',
+    'th',
+    'tr',
+    'td',
+    'hr'
   ],
-  ALLOWED_ATTR: ['href'],
+  ALLOWED_ATTR: ['href', 'colspan', 'rowspan'],
   ALLOW_ARIA_ATTR: false,
   ALLOW_DATA_ATTR: false
 };

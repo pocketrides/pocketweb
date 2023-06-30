@@ -18,13 +18,22 @@
 
   onMount(async () => {
     const lib = await import('dompurify');
+    // @ts-ignore
+    const tables = await import('marked-extended-tables');
 
     sanitize = lib.default.sanitize;
+
+    marked.use(tables.default());
   });
 
   $: if (sanitize) {
     value = sanitize(
-      marked.parse(raw, { breaks: true, silent: true, smartypants: true }),
+      marked.parse(raw, {
+        breaks: true,
+        silent: true,
+        smartypants: true,
+        gfm: true
+      }),
       dompurify_config
     ) as string;
   }
@@ -86,6 +95,7 @@
 
     &[data-error] {
       margin-top: 0;
+      align-self: flex-start;
     }
   }
 
@@ -97,16 +107,16 @@
     width: 100%;
     height: 100%;
     opacity: 0;
-    line-height: 1.5;
+    // line-height: 1.5;
   }
 
-  textarea,
-  [data-richtext] {
-    &:not([class*='h']) {
-      font-size: 1.125rem;
-      line-height: 1.5;
-    }
-  }
+  // textarea,
+  // [data-richtext] {
+  //   &:not([class*='h']) {
+  // font-size: 1.115rem;
+  // line-height: 1.5;
+  //   }
+  // }
 
   // article {
   // padding-bottom: 1.5rem;

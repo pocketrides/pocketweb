@@ -420,9 +420,9 @@
       }
     }
 
-    .summary {
-      font-size: 1.125rem;
-    }
+    // .summary {
+    //   font-size: 1.115rem;
+    // }
   }
 
   .quarantined {

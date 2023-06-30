@@ -329,9 +329,9 @@
 </Post>
 
 <style lang="scss">
-  [data-richtext] {
-    font-size: 1.125rem;
-  }
+  // [data-richtext] {
+  //   font-size: 1.115rem;
+  // }
 
   @media (min-width: 640px) {
     .post-outer,
