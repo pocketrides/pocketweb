@@ -55,6 +55,15 @@
     }
   }
 
+  &:has(table) {
+    overflow-x: scroll;
+
+    :not(table) {
+      position: sticky;
+      left: 0;
+    }
+  }
+
   table {
     width: 100%;
     max-width: 100%;
@@ -62,10 +71,11 @@
     border: 1px solid rgba(var(--dark), 0.5);
     border-spacing: 0;
     border-radius: 0.5rem;
-    box-shadow: -1px 1px 0px rgba(var(--dark), 0.25);
+    box-shadow: -1px 1px 0px rgba(var(--superlight), 0.85);
 
     td {
       padding: 0.25rem;
+      min-width: 120px;
     }
 
     thead {
@@ -82,6 +92,10 @@
 
     tr td {
       border-bottom: 1px solid rgba(var(--dark), 0.15);
+    }
+
+    tbody tr {
+      background-color: rgb(var(--allwhite));
     }
 
     tbody tr:nth-child(2n) {

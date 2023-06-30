@@ -34,7 +34,7 @@
       return;
     }
     const start_y = window.scrollY;
-    let header_height = 640;
+    let header_height = document.querySelector('main')?.offsetTop || 640;
     if (start_y < header_height) hud = true;
     clearInterval(interval_id);
     interval_id = setTimeout(() => {

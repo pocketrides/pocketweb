@@ -11,7 +11,7 @@
   let sanitize: DOMPurify.DOMPurifyI['sanitize'];
 
   let is_pocketrides_link = url.hostname === 'pocketrides.com';
-  let is_pocket_link = url.pathname.startsWith('/pocket');
+  let is_pocket_link = url.pathname.startsWith('/pocket/');
 
   onMount(async () => {
     const lib = await import('dompurify');

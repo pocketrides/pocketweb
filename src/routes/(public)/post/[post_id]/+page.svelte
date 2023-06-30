@@ -1,6 +1,5 @@
 <script lang="ts">
   import { browser } from '$app/environment';
-  import { invalidateAll } from '$app/navigation';
   import { page } from '$app/stores';
   import { ReplyToPostRequest } from '$lib/api/reply/reply_to_post';
   import { Room, type RoomConnection } from '$lib/api/room';
@@ -33,7 +32,7 @@
   export let data: PageData;
 
   $: $App.theme = data.post.nametag.theme;
-  $: $App.fill = data.post.audience === 'close_friends' ? 'light' : 'system-light';
+  $: $App.fill = data.post.audience === 'close_friends' ? 'light' : 'white';
 
   let current_post_id = data.post.id;
   let room: RoomConnection | undefined;
