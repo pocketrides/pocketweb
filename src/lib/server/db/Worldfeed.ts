@@ -65,15 +65,19 @@ export class Worldfeed {
                 ['ts', 'pocket_ref', 'city', 'state', 'country'],
                 q.And(
                   q.ContainsStr(
-                    q.LowerCase(q.Var('city')),
+                    q.If(q.IsNull(q.Var('city')), '', q.LowerCase(q.Var('city'))),
                     city?.toLowerCase() || ''
                   ),
                   q.ContainsStr(
-                    q.LowerCase(q.Var('state')),
+                    q.If(q.IsNull(q.Var('state')), '', q.LowerCase(q.Var('state'))),
                     state?.toLowerCase() || ''
                   ),
                   q.ContainsStr(
-                    q.LowerCase(q.Var('country')),
+                    q.If(
+                      q.IsNull(q.Var('country')),
+                      '',
+                      q.LowerCase(q.Var('country'))
+                    ),
                     country?.toLowerCase() || ''
                   )
                 )
