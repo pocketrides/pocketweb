@@ -3,6 +3,7 @@
   import Button from '$lib/components/Button.svelte';
   import ButtonRow from '$lib/components/ButtonRow.svelte';
   import Container from '$lib/components/Container.svelte';
+  import Icon from '$lib/components/Icon.svelte';
   import Select from '$lib/components/Select.svelte';
   import { type SheetContext, SHEET_CONTEXT_ID } from '$lib/contexts/Sheet';
   import { App } from '$lib/stores/app';
@@ -58,13 +59,20 @@
 
 <form on:submit|preventDefault={handleSubmit} data-flex="v" data-gap>
   <div data-flex="v as" data-gap="1">
-    <Container rounded fill="system-superlight">
-      <h3>No account? No problem!</h3>
-      <p class="small">
-        Your account is your phone number, and we don't use passwords. We'll text you
-        a random secret code every time you sign in, which secures your account.
-      </p>
-    </Container>
+    {#if is_standalone === false && HomepageHelper.isHomepagePath()}
+      <div data-ph data-flex="v as">
+        <div data-flex="v as" data-error data-fill="superdark">
+          <p class="small">Get the app:</p>
+          <a
+            href="#app"
+            class="small h3"
+            on:click|preventDefault={() => {
+              $App.sheet_id = 'app_help';
+            }}>Add to Home Screen</a
+          >
+        </div>
+      </div>
+    {/if}
     <div data-flex="v as" data-gap>
       <label class="h2" for="phone">Sign in with your phone number:</label>
       <ButtonRow>
@@ -120,18 +128,13 @@
       large
     />
   </ButtonRow>
-  <div data-ph data-flex="v as">
-    {#if is_standalone === false && HomepageHelper.isHomepagePath()}
-      <div data-flex="v as" data-error data-fill="base">
-        <p class="small">Get the app:</p>
-        <a
-          href="#app"
-          class="small h3"
-          on:click|preventDefault={() => {
-            $App.sheet_id = 'app_help';
-          }}>Add to Home Screen</a
-        >
-      </div>
-    {/if}
+  <div data-ph>
+    <Container rounded fill="system-superlight">
+      <h3><Icon icon="help" /> No account? No problem!</h3>
+      <p class="small">
+        You'll set one up just by signing in. You don't set a password, we'll text
+        you a new, random code every time you log in.
+      </p>
+    </Container>
   </div>
 </form>

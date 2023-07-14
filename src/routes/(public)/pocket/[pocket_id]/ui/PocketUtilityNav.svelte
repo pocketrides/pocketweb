@@ -263,7 +263,7 @@
             <div>
               <p class="h3">
                 This is a Pocket on Pocketrides! <strong class="half"
-                  >It's a do-anything space for your community.
+                  >It's a do-anything space for whatever.
                   <a href="/?help=1">Learn more</a> or join after you get a free account.
                 </strong>
               </p>

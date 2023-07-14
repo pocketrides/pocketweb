@@ -4,6 +4,7 @@
   import CloudinaryImg from '$lib/components/CloudinaryImg.svelte';
   import Container from '$lib/components/Container.svelte';
   import Icon from '$lib/components/Icon.svelte';
+  import Logo from '$lib/components/Logo.svelte';
   import Main from '$lib/components/Main.svelte';
   import Sheet from '$lib/components/Sheet.svelte';
   import SiteHeader from '$lib/components/SiteHeader.svelte';
@@ -66,69 +67,19 @@
 <SiteHeader huddable>
   <WorldfeedNav slot="nav" />
 </SiteHeader>
-<Main fullheight padded={false} fill="system-light">
+<Main fullheight padded={false}>
   <Container padded={false}>
-    <!-- <div class="card hero">
-      <Container rounded fill="superlight">
-        <div class="hero-inner">
-          <Logo />
-          <h1 data-fill="superlight">
-            <span class=" half">Life's a ride, keep up on</span>
-            <span class="jumbo">Pocketrides<em>!</em></span>
-             <span class="jumbo">Shape the future.</span>
-            <span class="">Empower creativity.</span>
-            <span class="">Share local magic.</span>
-            <h2 class="h2">It's all on Pocketrides<em>!</em></h2>
-          </h1>
-        </div>
-      </Container>
-    </div> -->
-    <div class="card hero">
-      <h1>
-        <span class="h2 half">Life&rsquo;s a ride, keep up<em>!</em></span>
-        <span>A community for everyone</span>
-        <span class="">and hope for a green future.</span>
-        <!-- Life's a ride, keep up
-        <span>
-          on Pocketrides
-        </span> -->
-      </h1>
-      <!-- <h2 class="h1 half">Life's a ride, keep up!</h2> -->
-      <!-- <p>Life's a ride! Keep up with your community on Pocketrides.</p> -->
-      <!-- <h1>Pocketrides<em>!</em></h1>
-      <h2 class="h1 jumbo">a community for everyone.</h2> -->
-      <!-- <h1 class="h1">A community for</h1>
-      <h2 class="h1 jumbo">everyone.</h2>
-      <h2 class="h1 half">
-        Life's a ride, keep up on Pocketrides<em>!</em>
-      </h2> -->
-      <!-- <h1 class="jumbo">A community for everyone.</h1> -->
-    </div>
-    <div class="card">
-      <!-- <h2 class="h1">Anti Big Tech.</h2> -->
-      <!-- <h2> -->
-      <!-- <span data-nobreak="">A community for everyone.</span> -->
-      <!-- <span data-nobreak="" class="half">
-          Here's what $5/mo can do for your mental health, your community, and our
-          planet:
-        </span> -->
-      <!-- </h2> -->
-
-      <!-- <h2 class="h1">It's all on Pocketrides<em>!</em></h2> -->
-      <!-- <h2>
-        <span data-nobreak="">A new kind of social network:</span>
-        <span data-nobreak="" data-fill="superlight">
-          support creativity with every like, build your own space online,
-        </span>
-        <span data-nobreak>and fund climate action.</span>
-      </h2> -->
-      <!-- <h2 class="h2">
-        A home for everything: <span class="" data-nobreak data-fill="superlight">
-          showcase your world while supporting your community.
-        </span>
-        <span class="" data-nobreak>Life's a ride, keep up</span>
-        <span data-nobreak>on Pocketrides<em>!</em></span>
-      </h2> -->
+    <div class="card" data-specialpad="">
+      <div class="hero-inner" data-flex="ac" data-gap>
+        <Logo />
+        <h1 data-fill="">
+          Pocketrides<em>!</em>
+        </h1>
+      </div>
+      <h2 class="h1">
+        An ad-free community space paying you a penny per like.
+        <span class="half" data-nobreak>100% of profits to climate.</span>
+      </h2>
       <CloudinaryImg
         photo={hero}
         square
@@ -139,63 +90,40 @@
           };
         }}
       />
+      <h3 class="h2">
+        Read how it works. <span data-nobreak="" class="half">Scroll down.</span>
+      </h3>
     </div>
-    <div class="card">
-      <p class="h1 jumbo">Our focus is you:</p>
-      <h2 class="h1" data-ph>Your mental health.</h2>
-      <p class="">
-        How you consume content online affects your mood. Here, you're in control of
-        what you see.
-        <!-- <a
-          href="#why"
-          class="strong"
-          on:click|preventDefault={whyClick}>Why?</a
-        > -->
-      </p>
-      <!-- <p>
-        Host a group ride every week? Planning a regional craft fair? Or do you just
-        happen to know everything cool going on? Whatever you do, it all fits on
-        Pocketrides.
-      </p> -->
-    </div>
-    <div class="card">
-      <p class="h1">Your community.</p>
-      <p class="">
-        Every like is worth a penny, to give you a new way to support creativity in
-        your community.
-      </p>
-      <!-- <p>
-        Everyone has the same incentive on Pocketrides: to post great content and
-        earn a cent per like for your contribution. Stories are the underpinnings of
-        a great society, so we made a way to share a better story and make some cash
-        in the process.
-      </p> -->
-    </div>
-    <div class="card">
-      <p class="h1">Your planet.</p>
-      <p class="">
-        100% of profits are committed to equitable climate action. We can all have
-        meaningful impact with a little <a
-          class="h3 half"
-          href="/pocket/362022120043053129"
-        >
-          <Icon icon="hail" inline />Pocketchange</a
-        >.
-      </p>
-      <!-- <p class="h2 half" data-ph>Read more:</p>
-      <p class="h2">
-        <a href="#why" on:click|preventDefault={whyClick}>Why Pocketrides?</a>
-      </p> -->
+    <div class="how-it-works primary" data-fill="superdark">
+      <Container padded>
+        <div data-flex="v" data-gap>
+          <p class="h1 jumbo">Our focus is you:</p>
+          <h2 class="h1" data-ph>Your mental health.</h2>
+          <p class="h3 half">
+            How you consume content online affects your mood. No doomscrolling here!
+          </p>
+          <p class="h1" data-ph>Your community.</p>
+          <p class="h3 half">
+            Every like is worth a penny: it's an easy new way to support the people
+            you love.
+          </p>
+          <p class="h1" data-ph>Your planet.</p>
+          <p class="h3 half">
+            100% of profits are for climate change, to solve the climate crisis
+            together.
+          </p>
+        </div>
+      </Container>
     </div>
 
     <div class="how-it-works" data-fill="dark" data-theme="lilac">
       <h2 class="h1 jumbo">Here's how it works:</h2>
-      <ul data-flex="scroll-h" data-unstyle data-gap>
+      <ul data-flex="v" data-unstyle data-gap data-how>
         <li data-fill="system-superlight">
           <h2 class="h1">Make a Pocket.</h2>
-          <h2 class="h3 thin">
-            From fandoms to road trips to farmers markets. It's a do-anything space
-            for your community that's free to join.
+          <h2 class="h3 half">
+            From fandoms to road trips to farmers markets. Pockets are do-anything
+            spaces for anything, and completely free to join.
           </h2>
           <CloudinaryImg
             photo={step1}
@@ -209,10 +137,10 @@
           />
         </li>
         <li data-fill="system-superlight">
-          <h2 class="h1">Share a Post.</h2>
-          <h2 class="h3 thin">
-            Write as much as you want. Add pics and links. Choose who sees it: just
-            your Close Friends, everyone in a Pocket, or the entire Worldfeed.
+          <h2 class="h1">Invite your friends.</h2>
+          <h2 class="h3 half">
+            Everyone can join your Pocket and talk about whatever. It's your own
+            corner of the Internet!
           </h2>
           <CloudinaryImg
             photo={step2}
@@ -226,10 +154,10 @@
           />
         </li>
         <li data-fill="system-superlight">
-          <h2 class="h1">Make a penny per like.</h2>
-          <h2 class="h3 thin">
-            It's a new way to support yourself and your community. 500 likes on
-            Pocketrides is $5 you can cash out to your bank.
+          <h2 class="h1">Post on the Worldfeed.</h2>
+          <h2 class="h3 half">
+            Now, instead of going viral across the entire Internet, you're just
+            competing in your town — who has the best tips? Who's got the best pics?
           </h2>
           <CloudinaryImg
             photo={step3}
@@ -259,7 +187,7 @@
         or sponsored posts on Pocketrides.
       </p> -->
     </div>
-    <div data-theme="sky" class="card">
+    <div data-theme="sky" class="card coming-soon">
       <Container fill="superlight" rounded_group rounded>
         <p class="h2 half">Coming Soon:</p>
         <p class="h1">Explore by asking.</p>
@@ -274,10 +202,7 @@
     <div data-theme="teal" class="about">
       <div class="card" data-fill="dark">
         <p class="h2 half" data-ph>Our mission:</p>
-        <p class="h1">
-          Operate a transparent, ethical, empathetic tech company to create equitable
-          economic prosperity for all.
-        </p>
+        <p class="h1">Be a better tech company.</p>
         <!-- <p class="h2 half">
           While operating a transparent, ethical, and empathetic tech company.
         </p> -->
@@ -305,7 +230,7 @@
 
       <div class="card" data-fill="system-superlight">
         <h2 class="h1">
-          <span class="half">Free 30-day trial.</span>
+          <span class="half">Sustainably priced:</span>
           <span>Unlimited is $5/mo.</span>
         </h2>
         <p class="h3 thin" data-ph>
@@ -414,23 +339,41 @@
     }
   }
 
-  .hero {
-    margin-top: 2rem;
-  }
-
   .how-it-works {
-    margin-top: 3rem;
-    margin-bottom: 1rem;
-    padding: 5rem 0 6rem;
+    padding: 2rem 0;
+
+    &:has(ul) {
+      padding-bottom: 0;
+    }
+
+    &.primary {
+      max-width: 420px;
+      margin: auto;
+
+      [data-flex] {
+        padding: 0 1rem;
+      }
+    }
 
     @media (min-width: 640px) {
       border-radius: 1.5rem;
-      padding-bottom: 1rem;
+      padding: 1rem 0;
     }
 
     > h2 {
       margin: 0 1rem 1rem;
     }
+
+    @media (min-width: 640px) {
+      & + .how-it-works {
+        margin-top: 2rem;
+      }
+    }
+  }
+
+  .coming-soon {
+    max-width: 420px;
+    margin: auto;
   }
 
   .about {
@@ -453,19 +396,18 @@
     }
   }
 
-  [data-flex='scroll-h'] {
+  .how-it-works [data-how] {
     gap: 0;
     padding: 0 1rem;
 
     li {
-      margin: 0 1rem 0 0;
+      margin: 0 0 1rem 0;
       padding: 1rem;
       display: flex;
       border-radius: 1rem;
-      width: 75vw;
-      max-width: 540px;
+      // max-width: 540px;
       flex-shrink: 0;
-      height: 480px;
+      // height: 480px;
 
       flex-direction: column;
 

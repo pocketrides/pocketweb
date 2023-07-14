@@ -75,7 +75,7 @@
       <div data-flex="v" data-gap>
         <h3 class="h2">
           <Icon icon="favorite" />
-          Free 30-day trial
+          Sustainable pricing, $5/mo.
         </h3>
         <p>
           <strong>Your privacy is never for sale.</strong> Pocketrides is 100% subscriber-funded,

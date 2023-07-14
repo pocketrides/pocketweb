@@ -26,7 +26,7 @@
   <div data-flex="v" data-gap="1">
     <Container rounded fill="system-superlight">
       <div data-flex="v as" data-gap>
-        <h2>Try it free all month.</h2>
+        <h2>Get Unlimited.</h2>
         <p>
           We prioritize you: your mental health, your community, and your planet.
         </p>
@@ -35,20 +35,12 @@
     <Container>
       <div data-flex="v as" data-gap>
         <h2>Profits for purpose.</h2>
-        <p>
-          100% of profits are committed to equitable climate action. We can all have
-          meaningful impact with a little <a
-            class="h3"
-            href="/pocket/362022120043053129"
-          >
-            <Icon icon="hail" inline />Pocketchange</a
-          >.
-        </p>
+        <p>100% of profits are for climate action.</p>
       </div>
     </Container>
     <Container>
       <div data-flex="v as" data-gap>
-        <h2>Invite your community.</h2>
+        <h2>Invite your friends.</h2>
         <p>
           Invite your friends to try it with you, or build a new community on the
           Worldfeed.
@@ -59,7 +51,7 @@
   {#if $page.data.my_nametag}
     <div data-ph data-flex="v cc" data-gap="1">
       <Button
-        label={$loading ? 'One sec…' : 'Start 30-day trial'}
+        label={$loading ? 'One sec…' : 'Get Unlimited'}
         disabled={$loading}
         href="/_/stripe/pay"
         on:click={subscribeClick}

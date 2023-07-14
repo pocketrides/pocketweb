@@ -13,7 +13,7 @@
       <Container rounded fill="system-superlight">
         <div>
           <p class="h2 half">What is this exactly?</p>
-          <h2 class="h2">A digital community space without ads or algorithms.</h2>
+          <h2 class="h2">A digital community space without ads or For You feeds.</h2>
         </div>
       </Container>
       <Container>
@@ -158,18 +158,17 @@
         <p>
           We don't sell your data to advertisers, which is how most free tech
           companies operate. You can get a lot out of Pocketrides without spending
-          any money, and you always get paid for likes on your content regardless if
-          you're subscribed or not.
+          any money, and you always get paid for likes on your content even if you
+          never subscribe.
         </p>
         <p>
-          Because we're subscriber-funded, it puts you, the subscriber, in control of
+          Because we're subscriber-funded, it puts you, our customers, in control of
           our decision making. If we ever screw up, you have a powerful tool to make
-          us fix our mistake: stop paying. We'll figure out <em>real</em> quick that we
-          did something wrong.
+          us fix our mistake: stop paying.
         </p>
         <p>
-          (Also, if we're ever force-acquired by an evil tech company then you should
-          totally stop paying. We're billionaire-proof!)
+          If we're ever force-acquired by an evil tech company then you should
+          totally stop paying. We're billionaire-proof!
         </p>
       </div>
       <label
@@ -188,10 +187,9 @@
       <div>
         <h2>How do I get started?</h2>
         <p>
-          Pocketrides is new. To get the most out of it, we recommend creating a
-          Pocket (it's free) and inviting your friends to join (it's free for them,
-          too). Text them the link, post it on your story, wherever it is you already
-          tell people what you're up to.
+          Create a Pocket (it's free) and invite your friends to join (it's free for
+          them, too). Text them the link, post it on your story, wherever it is you
+          already tell people what you're up to.
         </p>
         <p>
           Your first Pocket can be as simple as "just trying this out" — but use your

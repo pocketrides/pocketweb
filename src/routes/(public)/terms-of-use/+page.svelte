@@ -20,7 +20,7 @@
         <Icon icon="privacy_tip" />
         Terms of Use
       </h1>
-      <h2 class="h3">Last updated: March 30th, 2023</h2>
+      <h2 class="h3">Last updated: July 5th, 2023</h2>
     </div>
     <article data-richtext>
       <p>
@@ -53,10 +53,10 @@
         <li>Telecommunication manipulation equipment</li>
         <li>
           Any content that partakes, encourages, or promotes unlawful violence or
-          physical harm against one's person, property. Or engages in, encourages,
-          promotes, or celebrates, any group based on race, religion, disability,
-          gender identity, gender, sexual orientation, national origin or any other
-          immutable characteristic
+          physical harm against one's person, property or engages in, encourages,
+          promotes, or celebrates harm towards any group based on race, religion,
+          disability, gender identity, gender, sexual orientation, national origin or
+          any other immutable characteristic
         </li>
         <li>
           Any other acts that are unlawful in the jurisdictions where you are located
@@ -213,7 +213,13 @@
         above.
       </p>
       <p>By using Pocketrides, you agree to abide by these terms of use.</p>
-      <p>Last updated: 3/30/23</p>
+      <p>Last updated: 07/05/23</p>
+      <h3>History</h3>
+      <ul>
+        <li>07/05/23: grammar update: Illegal Products and services</li>
+        <li>07/05/23: added History section</li>
+        <li>03/30/23: initial version</li>
+      </ul>
     </article>
   </div>
 </Main>

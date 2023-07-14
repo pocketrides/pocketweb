@@ -60,6 +60,7 @@
         id="secret-code"
         class="h3"
         autocomplete="one-time-code"
+        inputmode="tel"
         bind:value={code}
         class:filled={valid}
         data-3d

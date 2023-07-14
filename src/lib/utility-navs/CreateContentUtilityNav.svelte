@@ -47,14 +47,13 @@
       {:else}
         <Button
           id="sub_now"
-          label="Try Unlimited"
+          label="Get Unlimited"
           icon="favorite"
           icon_filled
           primary
           controller={button_row}
           on:click={() => {
             $App.sheet_id = 'subscribe';
-            trackGoal('BOMDZPEE', 1);
           }}
         />
         <Button

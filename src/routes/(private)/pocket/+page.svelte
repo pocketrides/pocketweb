@@ -135,7 +135,7 @@
 </script>
 
 <svelte:head>
-  <title>new pocket | on pocketrides!</title>
+  <title>{data.editing_pocket ? 'edit' : 'new'} pocket | on pocketrides!</title>
 </svelte:head>
 
 <SiteHeader fill="dark" huddable>

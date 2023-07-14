@@ -132,7 +132,7 @@
     class="shadow"
     bind:this={shadow}
     class:active={replies_are_scrolled_up}
-    data-fill="system-light"
+    data-fill="white"
     let:scrollContentToBottom
   >
     <MessageComposer

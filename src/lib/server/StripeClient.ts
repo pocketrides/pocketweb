@@ -122,8 +122,8 @@ export class StripeClient {
         line_items: [{ price: this.STRIPE_PRICE_ID, quantity: 1 }],
         client_reference_id: metadata.nametag_id,
         subscription_data: {
-          metadata,
-          trial_period_days: 30
+          metadata
+          // trial_period_days: 30
         },
         allow_promotion_codes: true,
         metadata,

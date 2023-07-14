@@ -51,6 +51,10 @@
       'data-fill',
       $App.fill || $page.data.page_fill
     );
+    document.body.setAttribute(
+      'data-fill',
+      $App.fill !== 'dark' ? 'system-light' : 'dark'
+    );
     document.documentElement.setAttribute(
       'data-locked',
       $App.sheet_id === '' ? 'false' : 'true'
