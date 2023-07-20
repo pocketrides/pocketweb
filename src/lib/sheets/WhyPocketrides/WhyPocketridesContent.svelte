@@ -272,9 +272,9 @@
           meaningful revenue sharing program online. Until now.
         </p>
         <p>
-          Pocketrides' revenue split is 50/50: Unlimited costs $5/mo, and you can
-          then give out 250 likes ($2.50) every time it renews. Likes never expire,
-          by the way, and it's easy to pause your subscription in Settings.
+          Unlimited costs $1.99/mo, and you can then give out 50 likes ($0.50) every
+          time it renews. Likes never expire, by the way, and it's easy to pause your
+          subscription in Settings.
         </p>
       </div>
       <label

@@ -11,7 +11,7 @@
 
 <svelte:head>
   <title>
-    Go Unlimited with a $5/mo subscription and plan anything in your city | on
+    Go Unlimited with a $1.99/mo subscription and plan anything in your city | on
     Pocketrides!
   </title>
   <meta

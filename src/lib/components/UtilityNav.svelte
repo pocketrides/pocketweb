@@ -3,7 +3,7 @@
   import Container from './Container.svelte';
   import Row from './Row.svelte';
 
-  export let fill: Fill = 'superdark';
+  export let fill: Fill = 'system-superlight';
   export let outer_fill: Fill = 'dark';
   export let border_bottom: boolean = true;
   export let padded: boolean = true;

@@ -60,7 +60,7 @@
   >
   <meta
     name="description"
-    content="Be amazed by what $5/mo can do for your mental health, your community, and your planet."
+    content="Be amazed by what $1.99/mo can do for your mental health, your community, and your planet."
   />
 </svelte:head>
 
@@ -231,12 +231,11 @@
       <div class="card" data-fill="system-superlight">
         <h2 class="h1">
           <span class="half">Sustainably priced:</span>
-          <span>Unlimited is $5/mo.</span>
+          <span>Unlimited is $1.99/mo.</span>
         </h2>
         <p class="h3 thin" data-ph>
-          <strong>Your privacy is never for sale.</strong> Pocketrides is 100% subscriber-funded,
-          split 50/50 with creators. No subscription required, you'll never lose access
-          to what you create.
+          <strong>Your privacy is never for sale.</strong> Pocketrides is 100% subscriber-funded.
+          No subscription required, you'll never lose access to what you create.
         </p>
         <p class="h2 half" data-ph>
           <a href="/pocket/364647123794264137"

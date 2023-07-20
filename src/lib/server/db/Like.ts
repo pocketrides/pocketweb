@@ -6,7 +6,7 @@ import { Post } from './Post';
 import * as Sentry from '@sentry/svelte';
 
 export class Like {
-  static mint_count = 250;
+  static mint_count = 50;
   static collection = 'likes';
 
   static async doesLikePost(nametag_id: string, post_id: string) {

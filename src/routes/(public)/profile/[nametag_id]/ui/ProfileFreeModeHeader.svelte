@@ -75,12 +75,11 @@
       <div data-flex="v" data-gap>
         <h3 class="h2">
           <Icon icon="favorite" />
-          Sustainable pricing, $5/mo.
+          Sustainable pricing, $1.99/mo.
         </h3>
         <p>
-          <strong>Your privacy is never for sale.</strong> Pocketrides is 100% subscriber-funded,
-          split 50/50 with creators. No subscription required, you'll never lose access
-          to what you create.
+          <strong>Your privacy is never for sale.</strong> Pocketrides is 100% subscriber-funded.
+          No subscription required, you'll never lose access to what you create.
         </p>
         <p>
           Read more:<br /><a
