@@ -1,22 +1,23 @@
 html,
 body {
   font-family: "DM Sans", sans-serif;
+  font-size: 18px;
 }
 
 h1,
 .h1 {
-  font-size: 1.5rem;
+  font-size: 1.333rem;
   font-weight: bold;
 }
 
 .jumbo {
-  font-size: 1.85rem;
+  font-size: 1.444rem;
   font-weight: bold;
 }
 
 h2,
 .h2 {
-  font-size: 1.25rem;
+  font-size: 1.222rem;
   font-weight: bold;
 }
 
@@ -62,7 +63,7 @@ h3,
 }
 
 .small:not(button):not(label) {
-  font-size: 0.85rem !important;
+  font-size: 0.888rem !important;
 }
 
 [data-flex]:has(> .nowraps) {

@@ -33,7 +33,7 @@
     : undefined;
 
   $: $App.theme = $pocket.theme;
-  $: $App.fill = 'dark';
+  // $: $App.fill = 'dark';
   $: privacy_mode =
     $pocket.settings.joinability === 'moderated'
       ? $my_membership?.status === 'joined' || $my_membership?.status === 'admin'

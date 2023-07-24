@@ -8,9 +8,7 @@
   import Row from './Row.svelte';
   import type { Fill } from '$lib/zod/Fill';
   import { Notifications } from '$lib/stores/notifications';
-  import { onMount } from 'svelte';
   import ButtonRow from './ButtonRow.svelte';
-  import { afterNavigate, beforeNavigate } from '$app/navigation';
   import { is_standalone } from '$lib/util/is-standalone';
 
   export let sticky: boolean = false;
@@ -24,7 +22,7 @@
   let safehud = false;
 
   const SCROLL_MIN = 110;
-
+  /*
   const checkForScrollingUp = (delay = 150) => {
     if (interval_id) return;
     if (!huddable) return;
@@ -61,6 +59,7 @@
     }
   });
 
+
   beforeNavigate(() => {
     if (huddable) {
       has_init = false;
@@ -82,9 +81,10 @@
   const handleScroll = () => {
     checkForScrollingUp();
   };
+  */
 </script>
 
-<svelte:window on:scroll={handleScroll} />
+<!-- <svelte:window on:scroll={handleScroll} /> -->
 
 {#if is_standalone}
   <div class="clipper" data-fill={fill} />
@@ -95,7 +95,6 @@
   class:sticky
   class:huddable
   class:hud
-  class:has_init
   class:safehud
 >
   <Container>
@@ -163,7 +162,6 @@
   class:sticky
   class:huddable
   class:hud
-  class:has_init
   on:touchend={() => {
     hud = true;
   }}
@@ -176,22 +174,22 @@
     padding-top: env(safe-area-inset-top);
   }
 
-  header:has(~ [data-slot]:empty):has(~ [data-nav]:empty):has(
-      ~ [data-gallery]:empty
-    ):not([data-fill='dark']),
-  header:not([data-fill='dark']):has(~ [data-gallery]:empty):has(
-      ~ [data-nav]:empty
-    ):has(~ [data-slot]:empty),
-  header:has(~ [data-gallery]:not(:empty)).safehud,
-  [data-nav]:not(:empty) {
-    border-bottom-left-radius: 1rem;
-    border-bottom-right-radius: 1rem;
+  // header:has(~ [data-slot]:empty):has(~ [data-nav]:empty):has(
+  //     ~ [data-gallery]:empty
+  //   ):not([data-fill='dark']),
+  // header:not([data-fill='dark']):has(~ [data-gallery]:empty):has(
+  //     ~ [data-nav]:empty
+  //   ):has(~ [data-slot]:empty),
+  // header:has(~ [data-gallery]:not(:empty)).safehud,
+  // [data-nav]:not(:empty) {
+  //   border-bottom-left-radius: 1rem;
+  //   border-bottom-right-radius: 1rem;
 
-    box-shadow: 0 16px 16px -22px rgba(var(--dark), 0.75);
-    border-bottom: 1px solid rgba(var(--dark), 0.5);
+  //   box-shadow: 0 16px 16px -22px rgba(var(--dark), 0.75);
+  //   border-bottom: 1px solid rgba(var(--dark), 0.5);
 
-    overflow: hidden;
-  }
+  //   overflow: hidden;
+  // }
 
   @media (min-width: 640px) {
     [data-gallery]:not(:empty) {
@@ -211,22 +209,22 @@
     z-index: 1;
   }
 
-  [data-gallery]:not(:empty) {
-    border-bottom: 0 none;
-  }
+  // [data-gallery]:not(:empty) {
+  //   border-bottom: 0 none;
+  // }
 
-  header[data-fill='dark'] {
-    border-bottom: 2px solid rgb(var(--dark));
-    border-radius: 0;
-    box-shadow: none;
-    margin-bottom: -1px;
-  }
+  // header[data-fill='dark'] {
+  //   border-bottom: 2px solid rgb(var(--dark));
+  //   border-radius: 0;
+  //   box-shadow: none;
+  //   margin-bottom: -1px;
+  // }
 
-  header.utility {
-    border-bottom-left-radius: 0 !important;
-    border-bottom-right-radius: 0 !important;
-    border-bottom: 1px solid rgba(var(--dark), 0.5) !important;
-  }
+  // header.utility {
+  //   border-bottom-left-radius: 0 !important;
+  //   border-bottom-right-radius: 0 !important;
+  //   border-bottom: 1px solid rgba(var(--dark), 0.5) !important;
+  // }
 
   header.sticky,
   header.huddable {
@@ -238,42 +236,42 @@
   [data-nav].sticky,
   [data-nav].huddable {
     position: sticky;
-    top: calc(92px + env(safe-area-inset-top));
+    top: calc(0 + env(safe-area-inset-top));
     z-index: 38;
   }
 
-  .huddable {
-    transform: translateY(calc(-92px + 1rem));
+  // .huddable {
+  //   transform: translateY(calc(-92px + 1rem));
 
-    &[data-fill='dark'] {
-      transform: translateY(calc(-95px));
-    }
-  }
+  //   &[data-fill='dark'] {
+  //     transform: translateY(calc(-95px));
+  //   }
+  // }
 
-  header.huddable :global(> *) {
-    transition: opacity 0.15s ease-in-out;
-  }
+  // header.huddable :global(> *) {
+  //   transition: opacity 0.15s ease-in-out;
+  // }
 
-  header.huddable:not(.hud) :global(> *) {
-    opacity: 0;
-  }
+  // header.huddable:not(.hud) :global(> *) {
+  //   opacity: 0;
+  // }
 
-  [data-nav].huddable {
-    transform: translateY(calc(-92px + 1rem));
+  // [data-nav].huddable {
+  //   transform: translateY(calc(-92px + 1rem));
 
-    &[data-fill='dark'] {
-      transform: translateY(calc(-95px));
-    }
-  }
+  //   &[data-fill='dark'] {
+  //     transform: translateY(calc(-95px));
+  //   }
+  // }
 
-  .huddable.hud,
-  .huddable.hud[data-fill='dark'] {
-    transform: translateY(0px);
-  }
+  // .huddable.hud,
+  // .huddable.hud[data-fill='dark'] {
+  //   transform: translateY(0px);
+  // }
 
-  .huddable.has_init {
-    transition: transform 0.15s ease-in-out;
-  }
+  // .huddable.has_init {
+  //   transition: transform 0.15s ease-in-out;
+  // }
 
   header:has(~ [data-gallery]:not(:empty)) {
     position: fixed;

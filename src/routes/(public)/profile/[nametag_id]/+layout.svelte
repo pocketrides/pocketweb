@@ -21,7 +21,7 @@
 
   const page_controller = writable(data);
 
-  $App.fill = 'system-light';
+  // $App.fill = 'system-light';
 
   $: $page_controller = data;
 

@@ -24,7 +24,7 @@
   export let data: PageData;
 
   $: $App.theme = data.my_nametag?.theme || 'system';
-  $: $App.fill = 'system-light';
+  // $: $App.fill = 'system-light';
 
   const form_validator = z.object({
     c: z.string(),
@@ -84,7 +84,7 @@
 </svelte:head>
 
 <SiteHeader huddable>
-  <WorldfeedNav slot="nav" />
+  <!-- <WorldfeedNav slot="nav" /> -->
 </SiteHeader>
 
 <Main padded={false} fill="white">

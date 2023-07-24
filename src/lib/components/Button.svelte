@@ -72,7 +72,6 @@
 
 <button
   class:h2={jumbo || xlarge}
-  class:h3={!jumbo && !xlarge}
   {id}
   {type}
   {disabled}
@@ -129,6 +128,8 @@
     white-space: nowrap;
     touch-action: manipulation;
     flex-shrink: 0;
+    font-weight: bold;
+    font-size: 0.888rem;
 
     span:empty {
       display: none;

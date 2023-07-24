@@ -20,7 +20,7 @@
   import { onMount } from 'svelte';
 
   $: $App.theme = 'system';
-  $: $App.fill = 'system-light';
+  // $: $App.fill = 'system-light';
 
   $: ready = false;
 
@@ -64,9 +64,7 @@
   />
 </svelte:head>
 
-<SiteHeader huddable>
-  <WorldfeedNav slot="nav" />
-</SiteHeader>
+<SiteHeader huddable />
 <Main fullheight padded={false}>
   <Container padded={false}>
     <div class="card" data-specialpad="">
@@ -282,7 +280,7 @@
     </Container>
   </Container>
 
-  <UtilityNav slot="utility-nav">
+  <!-- <UtilityNav slot="utility-nav">
     <div slot="left">
       {#if !$page.data.my_nametag}
         <Button
@@ -299,7 +297,7 @@
         />
       {/if}
     </div>
-  </UtilityNav>
+  </UtilityNav> -->
 </Main>
 
 <Sheet id="creator_program" header="How Likes work" icon="favorite" icon_filled>

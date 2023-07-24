@@ -20,7 +20,7 @@
 
   export let data: PageData;
 
-  $App.fill = 'system-light';
+  // $App.fill = 'system-light';
 
   onMount(() => {
     const sp = new URLSearchParams(window.location.search);

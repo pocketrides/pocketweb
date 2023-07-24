@@ -15,7 +15,7 @@
   $: $my_membership = data.my_membership;
 
   $App.theme = $pocket.theme;
-  $App.fill = 'dark';
+  // $App.fill = 'dark';
 </script>
 
 <Main fill="light" fullheight>

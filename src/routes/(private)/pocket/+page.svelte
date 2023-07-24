@@ -52,7 +52,7 @@
   const deleting = writable(false);
 
   $: $App.theme = $page_controller.theme;
-  $App.fill = 'dark';
+  // $App.fill = 'dark';
 
   $: valid = draft_pocket_validator.safeParse($page_controller).success;
   $: if ($page_controller.settings.visibility !== 'listed')

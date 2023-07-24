@@ -26,7 +26,7 @@
   export let data: PageData;
 
   $: $App.theme = data.my_nametag.theme;
-  $: $App.fill = 'system-light';
+  // $: $App.fill = 'system-light';
 
   const page_controller = writable<PageController>(
     data.post ? data.post : blankPost(data.pocket ? data.pocket.id : undefined)

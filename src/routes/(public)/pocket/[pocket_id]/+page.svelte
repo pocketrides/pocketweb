@@ -26,7 +26,7 @@
   $: scroll_key = $pocket.id;
 
   $App.theme = $pocket.theme;
-  $App.fill = 'dark';
+  // $App.fill = 'dark';
 
   let can_save_scroll = false;
   let chill = true;

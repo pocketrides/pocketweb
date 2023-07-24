@@ -29,6 +29,7 @@
   import * as Fathom from 'fathom-client';
   import AppHelp from '$lib/sheets/AppHelp.svelte';
   import Search from '$lib/sheets/search/Search.svelte';
+  import AppNav from '$lib/components/AppNav.svelte';
 
   let started: boolean = false;
   let client: MagicBellClient;
@@ -147,6 +148,7 @@
   />
 </svelte:head>
 
+<AppNav />
 <slot />
 {#if $page.data.footer_disabled === undefined}
   <SiteFooter />

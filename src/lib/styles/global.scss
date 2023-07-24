@@ -16,13 +16,3 @@
   overflow: hidden;
   height: 100dvh;
 }
-
-@media (min-width: 640px) {
-  html[data-fill]:not([data-fill="dark"]):not([data-fill="white"]) {
-    background-color: rgb(var(--system-light));
-
-    &:has([data-site-header].utility) {
-      background-color: rgb(var(--light));
-    }
-  }
-}

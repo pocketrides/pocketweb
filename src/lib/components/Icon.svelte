@@ -28,7 +28,7 @@
   span {
     max-width: 1em;
     font-weight: 500;
-    font-size: 1.25em;
+    font-size: 1.222em;
   }
 
   @keyframes icon-spins {

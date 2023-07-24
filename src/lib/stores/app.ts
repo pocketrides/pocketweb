@@ -11,7 +11,7 @@ export interface AppStore {
 
 export const App = writable<AppStore>({
   theme: 'system',
-  fill: 'system-light',
+  fill: 'dark',
   sheet_id: '',
   loading: false
 });

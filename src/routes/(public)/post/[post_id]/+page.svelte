@@ -32,7 +32,7 @@
   export let data: PageData;
 
   $: $App.theme = data.post.nametag.theme;
-  $: $App.fill = 'white'; //data.post.audience === 'close_friends' ? 'light' : 'white';
+  // $: $App.fill = 'white'; //data.post.audience === 'close_friends' ? 'light' : 'white';
 
   let current_post_id = data.post.id;
   let room: RoomConnection | undefined;
