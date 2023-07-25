@@ -1,15 +1,22 @@
 *:has(> [data-sham]) {
   position: relative;
+
+  &:is([data-3d]):focus-within {
+    box-shadow: none;
+    transform: translate(-1px, 1px);
+  }
 }
 
 [data-sham] {
   position: absolute;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
+  left: -1px;
+  top: -1px;
+  right: -1px;
+  bottom: -1px;
   opacity: 0;
   z-index: 1;
+  width: calc(100% + 2px);
+  height: calc(100% + 2px);
 
   &:active + [data-3d],
   &:is(select):focus + [data-3d] {

@@ -12,14 +12,15 @@
   <title>Terms of Use | on pocketrides!</title>
 </svelte:head>
 
-<SiteHeader huddable />
+<SiteHeader huddable>
+  <h1 slot="left">
+    <Icon icon="privacy_tip" />
+    Terms of Use
+  </h1>
+</SiteHeader>
 <Main fullheight>
   <div data-flex="v" data-gap="1">
     <div>
-      <h1 data-ph>
-        <Icon icon="privacy_tip" />
-        Terms of Use
-      </h1>
       <h2 class="h3">Last updated: July 5th, 2023</h2>
     </div>
     <article data-richtext>

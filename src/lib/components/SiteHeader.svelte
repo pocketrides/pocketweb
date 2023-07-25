@@ -4,6 +4,7 @@
   import { is_standalone } from '$lib/util/is-standalone';
   import Icon from './Icon.svelte';
   import { onMount } from 'svelte';
+  import Button from './Button.svelte';
 
   export let sticky: boolean = false;
   export let utility: boolean = false;
@@ -127,6 +128,9 @@
       <Row flex={header_flex}>
         <slot name="left" slot="left">&nbsp;</slot>
         <slot name="right" slot="right">
+          {#if is_standalone === false}
+            <Button label="Get the app" />
+          {/if}
           <!--<div data-flex data-button-row>
           <Button
             label=""
@@ -254,7 +258,7 @@
     margin-top: -1rem;
     padding-top: 1rem;
     position: sticky;
-    top: calc(var(--header-height) - 1rem + env(safe-area-inset-top));
+    top: calc(var(--header-height) - 1rem);
     z-index: 38;
   }
 

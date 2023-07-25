@@ -119,6 +119,7 @@
       {$label_store}
     </span>
   {/if}
+  <slot />
 </button>
 
 <style lang="scss">

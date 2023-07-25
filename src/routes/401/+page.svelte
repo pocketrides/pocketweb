@@ -23,30 +23,27 @@
   <title>Try signing in | on pocketrides!</title>
 </svelte:head>
 
-<SiteHeader huddable />
+<SiteHeader huddable>
+  <h1 slot="left">Try signing in.</h1>
+</SiteHeader>
 <Main fullheight>
   <Container rounded bordered>
-    <h1 class="h2">Try signing in.</h1>
-    <p>The page you were trying to access requires you to be signed in.</p>
-    <ButtonRow let:controller initial="try">
-      {#if !$page.data.my_nametag}
-        <Button
-          id="try"
-          {controller}
-          label="Try signing in"
-          icon="hail"
-          on:click={() => {
-            $App.sheet_id = 'onboarding';
-          }}
-        />
-      {/if}
-      <Button {controller} icon="home" icon_filled href="/" label="Go home" />
-    </ButtonRow>
+    <div data-flex="v" data-gap="1">
+      <p>The page you were trying to access requires you to be signed in.</p>
+      <ButtonRow let:controller initial="try">
+        {#if !$page.data.my_nametag}
+          <Button
+            id="try"
+            {controller}
+            label="Try signing in"
+            icon="hail"
+            on:click={() => {
+              $App.sheet_id = 'onboarding';
+            }}
+          />
+        {/if}
+        <Button {controller} icon="home" icon_filled href="/" label="Go home" />
+      </ButtonRow>
+    </div>
   </Container>
 </Main>
-
-<style lang="scss">
-  p {
-    margin-bottom: 3rem;
-  }
-</style>

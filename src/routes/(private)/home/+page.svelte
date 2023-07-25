@@ -105,7 +105,7 @@
 <SiteHeader huddable>
   <h1 slot="left">
     <Icon icon="chair" />
-    Home
+    Home feed
   </h1>
 </SiteHeader>
 <div class:chill>
@@ -166,8 +166,8 @@
   }
 
   .scroll {
-    position: sticky;
+    position: fixed;
     right: 1rem;
-    bottom: 1rem;
+    bottom: calc(78px + 1rem);
   }
 </style>

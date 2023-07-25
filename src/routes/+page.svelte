@@ -11,6 +11,8 @@
   import UtilityNav from '$lib/components/UtilityNav.svelte';
   import WorldfeedNav from '$lib/components/worldfeed/WorldfeedNav.svelte';
   import Subscription from '$lib/forms/subscription/Subscription.svelte';
+  import AppHelp from '$lib/sheets/AppHelp.svelte';
+  import GetTheApp from '$lib/sheets/GetTheApp.svelte';
   import WhyPocketrides from '$lib/sheets/WhyPocketrides.svelte';
   import WhyPocketridesContent from '$lib/sheets/WhyPocketrides/WhyPocketridesContent.svelte';
   import { App } from '$lib/stores/app';
@@ -71,6 +73,13 @@
       Pocketrides<em>!</em>
     </h1>
   </div>
+  <Button
+    slot="right"
+    label="Get the app"
+    on:click={() => {
+      $App.sheet_id = 'get_the_app';
+    }}
+  />
 </SiteHeader>
 <Main fullheight padded={false}>
   <Container padded={false}>
@@ -310,6 +319,8 @@
 </Sheet>
 
 <WhyPocketrides />
+<GetTheApp />
+<AppHelp />
 
 <style lang="scss">
   [data-h] {

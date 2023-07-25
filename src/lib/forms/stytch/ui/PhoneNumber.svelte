@@ -3,6 +3,7 @@
   import Button from '$lib/components/Button.svelte';
   import ButtonRow from '$lib/components/ButtonRow.svelte';
   import Container from '$lib/components/Container.svelte';
+  import Help from '$lib/components/Help.svelte';
   import Icon from '$lib/components/Icon.svelte';
   import Select from '$lib/components/Select.svelte';
   import { type SheetContext, SHEET_CONTEXT_ID } from '$lib/contexts/Sheet';
@@ -59,20 +60,10 @@
 
 <form on:submit|preventDefault={handleSubmit} data-flex="v" data-gap>
   <div data-flex="v as" data-gap="1">
-    {#if is_standalone === false && HomepageHelper.isHomepagePath()}
-      <div data-ph data-flex="v as">
-        <div data-flex="v as" data-error data-fill="superdark">
-          <p class="small">Get the app:</p>
-          <a
-            href="#app"
-            class="small h3"
-            on:click|preventDefault={() => {
-              $App.sheet_id = 'app_help';
-            }}>Add to Home Screen</a
-          >
-        </div>
-      </div>
-    {/if}
+    <Container rounded fill="system-superlight">
+      <p class="strong"><Icon icon="help" /> No account? No problem!</p>
+      <p class="small">You set one up the first time you sign in.</p>
+    </Container>
     <div data-flex="v as" data-gap>
       <label class="h2" for="phone">Sign in with your phone number:</label>
       <ButtonRow>
@@ -103,9 +94,9 @@
   </div>
   <p class="half" data-ph>
     <small>
-      <strong>We will never sell your number or spam you. Ever.</strong> By
-      continuing, you agree to the platform
-      <strong><a href="/privacy-policy" target="_blank"> Privacy Policy</a></strong>.
+      By continuing, you acknowledge the platform
+      <a href="/privacy-policy" target="_blank">Privacy Policy</a>. Short version: we
+      <em>never</em> sell your data.
     </small>
   </p>
   <ButtonRow>
@@ -128,13 +119,33 @@
       large
     />
   </ButtonRow>
-  <div data-ph>
-    <Container rounded fill="system-superlight">
-      <h3><Icon icon="help" /> No account? No problem!</h3>
-      <p class="small">
-        You'll set one up just by signing in. You don't set a password, we'll text
-        you a new, random code every time you log in.
-      </p>
-    </Container>
+  <div data-ph data-flex="v" data-gap>
+    <h3 class="half">Frequently asked questions:</h3>
+    <Help summary="Why do you need my phone number?">
+      We are US-only right now. A US phone number is required to use Pocketrides.
+      Your phone number is <strong>never</strong> for sale. It is stored securely, and
+      is only used to verify your identity.
+    </Help>
+    <Help summary="How can I trust you?">
+      We will never, under any circumstances, use your private data for commercial
+      purposes. That means we don't make money from selling your data to anyone,
+      ever, under any circumstances: the data you give Pocketrides stays on
+      Pocketrides.
+    </Help>
+    <Help summary="How are you different?">
+      Unlimited costs $1.99/mo and pays creators a penny per like. Hate speech is
+      never welcome. 100% of profits go to climate: <a
+        href="/pocket/362022120043053129">it's called Pocketchange</a
+      >.
+    </Help>
+    <Help summary="What if I change my number?">
+      Reach out to us at <a href="mailto:hello@pocketrides.cc"
+        >hello@pocketrides.cc</a
+      > for information about restoring your access if you change your number.
+    </Help>
+    <Help summary="What if I travel internationally?">
+      You'll need a WhatsApp account to access Pocketrides abroad. Enter your US
+      phone number and tap <strong>Send WhatsApp</strong> above.
+    </Help>
   </div>
 </form>
