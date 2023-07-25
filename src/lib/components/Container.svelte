@@ -6,6 +6,7 @@
   export let rounded_lg: boolean = false;
   export let rounded_group: boolean = false;
   export let padded: boolean = true;
+  export let padding_override: string | undefined = undefined;
   export let bordered: boolean = false;
   export let bottombordered: boolean = false;
   export let fullwidth: boolean = false;
@@ -22,6 +23,7 @@
   class:bottombordered
   class:fullwidth
   class:overflowvisible
+  data-padded={padding_override}
 >
   <slot />
 </div>
@@ -50,14 +52,25 @@
   }
 
   :global([data-padded*='h']) {
-    padding: 0 1rem;
+    padding: 0;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
   }
 
   :global([data-padded*='v']) {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    padding-left: 0;
-    padding-right: 0;
+    padding: 0;
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+  }
+
+  :global([data-padded*='b']) {
+    padding: 0;
+    padding-bottom: 1rem !important;
+  }
+
+  :global([data-padded*='t']) {
+    padding: 0;
+    padding-top: 1rem !important;
   }
 
   :global([data-padded] + [data-padded]) {

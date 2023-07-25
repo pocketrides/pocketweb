@@ -12,14 +12,16 @@
     <Container>
       <Container rounded fill="system-superlight">
         <div>
-          <p class="h2 half">What is this exactly?</p>
-          <h2 class="h2">A digital community space without ads or For You feeds.</h2>
+          <p class="h3 half">What is this exactly?</p>
+          <h3 class="h2">
+            A digital community space without ads or recommendation algorithms.
+          </h3>
         </div>
       </Container>
       <Container>
-        <p data-ph class="h2">
+        <!-- <p data-ph class="h2">
           100% of profits are committed to equitable climate action.
-        </p>
+        </p> -->
         <p class="h3 thin" data-ph>
           Use the sections below to learn about Pocketrides. Have questions?
         </p>
@@ -31,7 +33,7 @@
     {#if include_header}
       <section>
         <div>
-          <h2 id="safety">How do you keep me safe?</h2>
+          <h3 id="safety">How do you keep me safe?</h3>
           <p>
             As part of the platform's incentive structure to reward good content, we
             take a very opinionated stance on NSFW ("Not Safe For Work") content. If
@@ -66,7 +68,7 @@
       </section>
       <section>
         <div>
-          <h2 id="moderation">How does moderation work?</h2>
+          <h3 id="moderation">How does moderation work?</h3>
           <p>
             Content moderation (sometimes referred to as censorship) works
             differently on Pocketrides. The platform is designed with a powerful
@@ -105,7 +107,7 @@
       </section>
       <section>
         <div>
-          <h2 id="trust">How can I trust Pocketrides?</h2>
+          <h3 id="trust">How can I trust Pocketrides?</h3>
           <p>
             Surveillance capitalism has no place on Pocketrides, period, ever. We
             make a product that has a host of great features with more on the way,
@@ -154,7 +156,7 @@
     {/if}
     <section>
       <div>
-        <h2 id="money">Why does it cost money?</h2>
+        <h3 id="money">Why does it cost money?</h3>
         <p>
           We don't sell your data to advertisers, which is how most free tech
           companies operate. You can get a lot out of Pocketrides without spending
@@ -185,7 +187,7 @@
     </section>
     <section>
       <div>
-        <h2>How do I get started?</h2>
+        <h3 id="how">How do I get started?</h3>
         <p>
           Create a Pocket (it's free) and invite your friends to join (it's free for
           them, too). Text them the link, post it on your story, wherever it is you
@@ -201,7 +203,13 @@
           inspired" button.
         </p>
       </div>
-      <label data-3d class="small strong" data-fill="system-superlight" data-gap="0">
+      <label
+        data-3d
+        class="small strong"
+        data-fill="system-superlight"
+        data-gap="0"
+        aria-labelledby="how"
+      >
         <Icon icon="unfold_more" />
         <input type="checkbox" />
         Expand
@@ -209,7 +217,7 @@
     </section>
     <section>
       <div>
-        <h2>How do you protect my peace?</h2>
+        <h3 id="pro">How do you protect my peace?</h3>
         <p>
           Free platforms only make money when they show you an ad, which means they
           need you to keep scrolling for hours. <a
@@ -251,7 +259,13 @@
           habits, and purchasing decisions.
         </p> -->
       </div>
-      <label data-3d class="small strong" data-fill="system-superlight" data-gap="0">
+      <label
+        data-3d
+        class="small strong"
+        data-fill="system-superlight"
+        data-gap="0"
+        aria-labelledby="how"
+      >
         <Icon icon="unfold_more" />
         <input type="checkbox" />
         Expand
@@ -259,7 +273,7 @@
     </section>
     <section>
       <div>
-        <h2 id="we-love-creators">How do you support my community?</h2>
+        <h3 id="we-love-creators">How do you support my community?</h3>
         <p>
           Every like on the platform is worth a penny. We believe your creativity and
           your contributions to the conversation are inherently valuable. Start a
@@ -291,7 +305,7 @@
     </section>
     <section>
       <div>
-        <h2 id="ptc">How do you support our planet?</h2>
+        <h3 id="ptc">How do you support our planet?</h3>
         <p>
           By using our <a href="/pocket/362022120043053129"
             >profits for climate action,</a
@@ -371,7 +385,7 @@
       -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
 
-      > *:not(h2) {
+      > *:not(h3) {
         display: inline;
       }
 
@@ -383,7 +397,7 @@
     &:has(input:checked) div {
       display: block;
 
-      > *:not(h2) {
+      > *:not(h3) {
         display: block;
       }
     }
@@ -392,12 +406,7 @@
       display: none;
     }
 
-    h2 {
-      font-size: 1.25rem;
-    }
-
     label {
-      font-size: 1rem;
       margin-top: 0.5rem;
       display: inline-flex;
 
@@ -418,7 +427,7 @@
     }
 
     div {
-      > *:not(h2) {
+      > *:not(h3) {
         display: none;
       }
     }

@@ -8,23 +8,24 @@
 
 <footer data-fill="dark">
   <Container>
-    <div data-flex="v" data-gap="1" data-padded="v">
-      <div data-flex="v as" data-gap>
-        <Logo />
-        <h2 data-gap>
-          <a
-            href="/profile/360661340419784777"
-            data-unstyle
-            aria-label="Follow us on Pocketrides"
-            data-flex="v ac"
-          >
+    <div data-flex="v as" data-gap="1" data-padded="v">
+      <h2>
+        <a
+          href="/profile/360661340419784777"
+          data-unstyle
+          aria-label="Follow us on Pocketrides"
+          data-flex="v as"
+          data-gap
+        >
+          <span data-flex="ac as" data-gap>
+            <Logo />
             <span>Pocketrides<em>!</em></span>
-            <span class="small half"
-              >View our profile <Icon icon="arrow_right" /></span
-            >
-          </a>
-        </h2>
-      </div>
+          </span>
+          <span class="small half"
+            >View our profile <Icon icon="arrow_right" inline /></span
+          >
+        </a>
+      </h2>
 
       <div data-flex="v" data-gap>
         <div class="h3 half"><a href="/unlimited">For Organizations</a></div>
@@ -68,7 +69,7 @@
     background: rgb(var(--dark));
     color: rgb(var(--light));
 
-    padding-bottom: env(safe-area-inset-bottom);
+    padding-bottom: calc(env(safe-area-inset-bottom) + 4rem);
   }
 
   h2 {

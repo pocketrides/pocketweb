@@ -150,6 +150,7 @@
   button.xlarge {
     padding: 0 2rem;
     height: 54px;
+    font-size: 1.111rem;
   }
 
   button.jumbo {
@@ -187,5 +188,15 @@
 
   button.no_underline {
     text-decoration: none;
+  }
+
+  button.transparent.xlarge {
+    padding: 0;
+    font-size: 1.222rem;
+    height: auto;
+
+    span {
+      text-decoration: none;
+    }
   }
 </style>

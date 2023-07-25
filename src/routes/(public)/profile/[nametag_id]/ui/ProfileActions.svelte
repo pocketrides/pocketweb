@@ -7,7 +7,6 @@
   import { UnfollowRequest } from '$lib/api/relationships/unfollow';
   import Button from '$lib/components/Button.svelte';
   import ButtonRow from '$lib/components/ButtonRow.svelte';
-  import UtilityNav from '$lib/components/UtilityNav.svelte';
   import { writable, type Writable } from 'svelte/store';
   import type { LayoutData } from '../$types';
 
@@ -79,70 +78,80 @@
   };
 </script>
 
-<UtilityNav>
-  <div slot="left">
-    <ButtonRow initial={$controller}>
-      {#if $page_controller.relationship.is_blocking}
+<ButtonRow initial={$controller}>
+  {#if !$page_controller.is_my_profile_page}
+    {#if $page_controller.relationship.is_blocking}
+      <Button
+        {controller}
+        id="unblock"
+        label="Unblock"
+        icon="block"
+        on:click={unblockClick}
+      />
+    {:else if $page_controller.relationship.is_following === false}
+      <Button
+        {controller}
+        id="follow"
+        label="Follow"
+        icon="person_add"
+        on:click={followClick}
+      />
+    {:else}
+      {#if $page_controller.relationship.is_close_friend}
         <Button
           {controller}
-          id="unblock"
-          label="Unblock"
-          icon="block"
-          large
-          on:click={unblockClick}
-        />
-      {:else if $page_controller.relationship.is_following === false}
-        <Button
-          {controller}
-          id="follow"
-          label="Follow"
-          icon="person_add"
+          id="remove_close_friend"
+          label="Close friends"
+          icon="heart_broken"
           primary
-          on:click={followClick}
+          on:click={removeFromCloseFriendsClick}
         />
       {:else}
-        {#if $page_controller.relationship.is_close_friend}
-          <Button
-            {controller}
-            id="remove_close_friend"
-            label="Remove close friend"
-            icon="heart_broken"
-            large
-            on:click={removeFromCloseFriendsClick}
-          />
-        {:else}
-          <Button
-            {controller}
-            id="add_close_friend"
-            label="Make close friend"
-            icon="favorite_border"
-            primary
-            on:click={addToCloseFriendsClick}
-          />
-        {/if}
         <Button
           {controller}
-          id="unfollow"
-          label="Unfollow"
-          icon="person_remove"
-          large
-          on:click={unfollowClick}
+          id="add_close_friend"
+          label="Close friends"
+          icon="favorite_border"
+          on:click={addToCloseFriendsClick}
         />
       {/if}
-    </ButtonRow>
-  </div>
-  <svelte:fragment slot="right">
-    {#if !$page_controller.relationship.is_blocking}
-      <ButtonRow>
-        <Button
-          {controller}
-          id="block"
-          label="Block"
-          icon="block"
-          large
-          on:click={blockClick}
-        />
-      </ButtonRow>
+      <Button
+        {controller}
+        id="unfollow"
+        label="Unfollow"
+        icon="person_remove"
+        on:click={unfollowClick}
+      />
     {/if}
-  </svelte:fragment>
-</UtilityNav>
+    {#if !$page_controller.relationship.is_blocking}
+      <Button
+        {controller}
+        id="block"
+        label="Block"
+        icon="block"
+        on:click={blockClick}
+      />
+    {/if}
+  {/if}
+
+  <Button
+    id="share"
+    label="Share"
+    icon="ios_share"
+    {controller}
+    on:click={() => {
+      try {
+        navigator.share({
+          url: window.location.toString()
+        });
+        controller.update(() => '');
+      } catch (e) {
+        return;
+      }
+    }}
+  />
+
+  {#if $page_controller.is_my_profile_page}
+    <Button href="/settings" label="Settings" icon="settings_suggest" {controller} />
+  {/if}
+</ButtonRow>

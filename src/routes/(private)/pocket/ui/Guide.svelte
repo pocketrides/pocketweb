@@ -65,8 +65,6 @@
     id="pocket_guide"
     header="How Pockets work"
     icon="hail"
-    fill="dark"
-    header_fill="dark"
     on:activate={activate}
     on:dismiss={dismiss}
   >

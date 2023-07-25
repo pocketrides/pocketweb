@@ -32,7 +32,7 @@
 <ul data-unstyle data-flex={flex} data-gap={gap || undefined}>
   {#if $friends.length === 0}
     <li data-padded={padded === true || undefined}>
-      <p class="h3 half">Nothing here… <span class="half">yet<em>!</em></span></p>
+      <p class="half">Nothing here… <span class="half">yet<em>!</em></span></p>
     </li>
   {/if}
   {#each $friends as nametag (nametag)}

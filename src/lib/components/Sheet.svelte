@@ -9,7 +9,6 @@
   import Container from './Container.svelte';
   import Icon from './Icon.svelte';
   import Row from './Row.svelte';
-  import type { Fill } from '$lib/zod/Fill';
 
   export let id: string;
   export let icon: string | undefined = undefined;
@@ -19,8 +18,6 @@
   export let dismissable: boolean = true;
   export let padded: boolean = true;
   export let nav_height: number = 0;
-  export let fill: Fill = 'system-light';
-  export let header_fill: Fill = 'system-light';
 
   let dialog: HTMLDialogElement;
   let scrolls: HTMLDivElement;
@@ -98,7 +95,7 @@
   {#if $App.sheet_id === id}
     <div
       class="wrapper"
-      data-fill={fill}
+      data-fill="white"
       bind:this={scrolls}
       on:scroll
       on:focus|capture={focus}
@@ -106,7 +103,7 @@
       out:fly={{ y: '100vh', opacity: 1, duration: 300 }}
       style={`--nav-height: ${nav_height}px`}
     >
-      <header class="header" data-fill={header_fill}>
+      <header class="header" data-fill="system-light">
         <Container>
           <Row>
             <div slot="left">

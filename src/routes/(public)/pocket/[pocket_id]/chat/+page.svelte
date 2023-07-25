@@ -112,19 +112,18 @@
   };
 </script>
 
-<Main fill="system-light" padded={false}>
-  <Row padded bordered>
+<Main padded={false}>
+  <!-- <Row padded bordered>
     <h2 slot="left">
       <Icon icon="chat" />
       Chat
     </h2>
-  </Row>
+  </Row> -->
   <Chats {chats} />
-  <UtilityNav padded={false} slot="utility-nav">
-    <MessageComposer
-      always_active
-      on:message={handleMessage}
-      on:active={scrollToBottom}
-    />
-  </UtilityNav>
+
+  <MessageComposer
+    always_active
+    on:message={handleMessage}
+    on:active={scrollToBottom}
+  />
 </Main>

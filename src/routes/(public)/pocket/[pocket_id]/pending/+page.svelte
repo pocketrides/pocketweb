@@ -1,7 +1,7 @@
 <script lang="ts">
   import Main from '$lib/components/Main.svelte';
   import { writable } from 'svelte/store';
-  import PocketUtilityNav from '../ui/PocketUtilityNav.svelte';
+  import PocketUtilityNav from '../ui/PocketActions.svelte';
   import type { PageData } from './$types';
   import type { ClientPocketMember } from '$lib/zod/PocketMember';
   import { App } from '$lib/stores/app';
@@ -18,6 +18,6 @@
   // $App.fill = 'dark';
 </script>
 
-<Main fill="light" fullheight>
+<Main fullheight>
   <PocketUtilityNav {pocket} {my_membership} slot="utility-nav" />
 </Main>

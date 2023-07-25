@@ -148,7 +148,7 @@
     </ButtonRow>
   </div>
 </SiteHeader>
-<Main padded={false} fullheight fill="white">
+<Main padded={false} fullheight>
   <Posts store={page_controller} />
   {#if $page_controller.settings.is_nsfw || $page_controller.settings.enable_likes === false}
     <Container>

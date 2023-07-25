@@ -5,10 +5,11 @@
   export let fill: Fill | 'none' = 'none';
   export let padded: boolean = false;
   export let bordered: boolean = false;
+  export let flex: string = 'sb ac';
 </script>
 
 <div
-  data-flex="sb ac"
+  data-flex={flex}
   class:sticky
   class:padded
   class:bordered

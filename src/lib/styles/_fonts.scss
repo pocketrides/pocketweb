@@ -31,6 +31,14 @@ h3,
   display: flex;
   align-items: center;
   gap: 0.25rem;
+
+  &.nowraps {
+    display: inline-block;
+
+    > [class*="material"] {
+      transform: translateY(0.15em);
+    }
+  }
 }
 
 [class*="material"].inline {
@@ -40,6 +48,7 @@ h3,
 
 *:has(> [class*="material"].multiline) {
   align-items: baseline;
+  flex-wrap: wrap;
 
   > [class*="material"] {
     transform: translateY(0.25em);
@@ -62,8 +71,16 @@ h3,
   font-weight: bold;
 }
 
-.small:not(button):not(label) {
+.small {
   font-size: 0.888rem !important;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+.uppercase {
+  text-transform: uppercase;
 }
 
 [data-flex]:has(> .nowraps) {

@@ -7,8 +7,6 @@
   import { trackGoal } from 'fathom-client';
   import { writable } from 'svelte/store';
 
-  export let feed_controls = false;
-
   const button_row = writable(
     $page.data.my_nametag?.stripe?.has_sub ? 'new_post' : 'sub_now'
   );
@@ -69,38 +67,5 @@
         />
       {/if}
     </ButtonRow>
-  </div>
-  <div slot="right">
-    {#if feed_controls}
-      <ButtonRow>
-        <Button
-          icon="keyboard_arrow_up"
-          label="Top"
-          controller={button_row}
-          on:click={() => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            button_row.update(() => '');
-          }}
-        />
-        <Button
-          icon="keyboard_arrow_down"
-          label="Bottom"
-          controller={button_row}
-          on:click={() => {
-            const main = document.querySelector('main'),
-              util_nav = document.querySelector('[data-util-nav]');
-
-            if (!main || !util_nav) return;
-
-            window.scrollTo({
-              top: main.offsetTop + main.offsetHeight - 16 - window.innerHeight,
-              behavior: 'smooth'
-            });
-
-            button_row.update(() => '');
-          }}
-        />
-      </ButtonRow>
-    {/if}
   </div>
 </UtilityNav>

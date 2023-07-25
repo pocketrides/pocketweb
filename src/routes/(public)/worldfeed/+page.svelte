@@ -20,6 +20,7 @@
   import GetLocation from './ui/GetLocation.svelte';
   import type { WorldfeedLocation } from '$lib/zod/Worldfeed';
   import { tick } from 'svelte';
+  import Sheet from '$lib/components/Sheet.svelte';
 
   export let data: PageData;
 
@@ -84,10 +85,26 @@
 </svelte:head>
 
 <SiteHeader huddable>
+  <h1 slot="left">
+    <Icon icon="near_me" />
+    {#if $form.c && $form.s}
+      <span class="capitalize"
+        >{$form.c}, <span class="uppercase">{$form.s}</span></span
+      >
+    {:else}
+      Worldwide
+    {/if}
+  </h1>
+  <Button
+    slot="right"
+    label="Change"
+    icon="near_me"
+    on:click={() => ($App.sheet_id = 'wf-filter')}
+  />
   <!-- <WorldfeedNav slot="nav" /> -->
 </SiteHeader>
 
-<Main padded={false} fill="white">
+<Main padded={false}>
   <Row padded>
     <h2 slot="left">
       <Icon icon="hail" />
@@ -98,7 +115,9 @@
   {#if data.worldfeed.pocket_ids.length === 0}
     <Container>
       <div data-flex="v" data-gap>
-        <h2 class="half">Nothing here… <span class="half">yet<em>!</em></span></h2>
+        <h2 class="half thin">
+          Nothing here… <span class="half">yet<em>!</em></span>
+        </h2>
       </div>
     </Container>
   {:else}
@@ -125,54 +144,65 @@
       {/each}
     </div>
   {/if}
-  <UtilityNav slot="utility-nav">
-    <form id="refine" method="get" action="/worldfeed" bind:this={form_el}>
-      <div data-button-row>
-        <input
-          type="search"
-          name="c"
-          data-3d
-          class="h3"
-          class:filled={$form.c.length > 0}
-          bind:value={$form.c}
-          placeholder="City"
-        />
-        <input
-          type="search"
-          name="s"
-          data-3d
-          class="h3"
-          class:filled={$form.s.length > 0}
-          bind:value={$form.s}
-          placeholder="State"
-        />
-        {#if $page.data.my_nametag}
-          <GetLocation on:location={handleLocationAdded} />
-        {/if}
-        {#if $form.c.length > 1 || $form.s.length > 1}
-          <Button
-            type="reset"
-            label=""
-            icon="clear"
-            large
-            form="refine"
-            disabled={!valid}
-            on:click={handleResetClick}
-          />
-        {/if}
+</Main>
+
+<Sheet id="wf-filter" header="Set location" icon="near_me">
+  <form
+    id="refine"
+    method="get"
+    action="/worldfeed"
+    bind:this={form_el}
+    data-flex="v"
+    data-gap="1"
+  >
+    <div data-button-row>
+      <input
+        type="search"
+        name="c"
+        data-3d
+        class="h3"
+        class:filled={$form.c.length > 0}
+        bind:value={$form.c}
+        placeholder="City"
+      />
+      <input
+        type="search"
+        name="s"
+        data-3d
+        class="h3"
+        class:filled={$form.s.length > 0}
+        bind:value={$form.s}
+        placeholder="State"
+      />
+
+      {#if $form.c.length > 1 || $form.s.length > 1}
         <Button
-          type="submit"
+          type="reset"
           label=""
-          icon="keyboard_return"
-          primary
+          icon="clear"
+          large
           form="refine"
           disabled={!valid}
+          on:click={handleResetClick}
         />
-        <input type="hidden" name="i" value="US" />
-      </div>
-    </form>
-  </UtilityNav>
-</Main>
+      {/if}
+      <Button
+        type="submit"
+        label=""
+        icon="keyboard_return"
+        primary
+        form="refine"
+        disabled={!valid}
+      />
+      <input type="hidden" name="i" value="US" />
+    </div>
+    <div>
+      {#if $page.data.my_nametag}
+        <GetLocation on:location={handleLocationAdded} />
+      {/if}
+    </div>
+  </form>
+</Sheet>
 
 <style lang="scss">
   [data-flex='scroll-h'] {

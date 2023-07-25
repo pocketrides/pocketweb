@@ -15,7 +15,7 @@
 <style lang="scss">
   @media (max-width: 640px) {
     .none {
-      aspect-ratio: 12/16;
+      aspect-ratio: 8/16;
     }
   }
 

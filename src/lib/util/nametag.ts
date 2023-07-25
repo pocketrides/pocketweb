@@ -15,7 +15,7 @@ export const nametagCreateComplete = async (
   } else {
     if (HomepageHelper.isHomepagePath()) {
       location.href = `/home`;
-    } else await invalidateAll();
+    } else location.reload();
 
     App.update((prev) => {
       prev.sheet_id = '';

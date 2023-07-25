@@ -25,7 +25,7 @@
 <div data-flex="v" data-gap="1">
   <div data-flex="v" data-gap="1">
     <Container rounded fill="system-superlight">
-      <div data-flex="v as" data-gap>
+      <div data-flex="v as">
         <h2>Get Unlimited.</h2>
         <p>
           We prioritize you: your mental health, your community, and your planet.
@@ -33,13 +33,13 @@
       </div>
     </Container>
     <Container>
-      <div data-flex="v as" data-gap>
+      <div data-flex="v as">
         <h2>Profits for purpose.</h2>
         <p>100% of profits are for climate action.</p>
       </div>
     </Container>
     <Container>
-      <div data-flex="v as" data-gap>
+      <div data-flex="v as">
         <h2>Invite your friends.</h2>
         <p>
           Invite your friends to try it with you, or build a new community on the

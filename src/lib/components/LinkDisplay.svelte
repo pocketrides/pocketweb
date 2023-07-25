@@ -43,10 +43,12 @@
         data-flex="v as"
         class="og-link"
       >
-        <h3 class="nowraps">
+        <p class="nowraps strong">
           {@html sanitize(link.og_title || url.host + url.pathname)}
-        </h3>
-        <p class="small half nowraps">{@html sanitize(link.og_desc || url.host)}</p>
+        </p>
+        <p class="small half nowraps">
+          {@html sanitize(link.og_desc || url.host)}
+        </p>
       </a>
     </div>
   {/if}

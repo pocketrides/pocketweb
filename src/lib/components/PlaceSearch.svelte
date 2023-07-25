@@ -83,8 +83,6 @@
       <li>
         <PlaceDisplay
           place={result}
-          h2={false}
-          h3
           on:click={(e) => {
             e.preventDefault();
             dispatch('selected', result);

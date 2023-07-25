@@ -38,6 +38,7 @@
   import AddToWorldfeed from './ui/AddToWorldfeed.svelte';
   import WorldfeedHelp from '$lib/sheets/worldfeed/WorldfeedHelp.svelte';
   import PocketInspiration from '$lib/sheets/PocketInspiration.svelte';
+  import Row from '$lib/components/Row.svelte';
 
   export let data: PageData;
 
@@ -138,8 +139,8 @@
   <title>{data.editing_pocket ? 'edit' : 'new'} pocket | on pocketrides!</title>
 </svelte:head>
 
-<SiteHeader fill="dark" huddable>
-  <h2 slot="left" class:half={!$page_controller.cover_art.length} class="nowraps">
+<SiteHeader huddable>
+  <h1 slot="left" class:half={!$page_controller.cover_art.length} class="nowraps">
     <Icon icon="hail" />
     {#if data.editing_pocket}
       <span class="nowraps">
@@ -148,7 +149,7 @@
     {:else}
       New Pocket
     {/if}
-  </h2>
+  </h1>
   <div slot="right">
     {#if data.editing_pocket_id}
       <Button label="Cancel" href={`/pocket/${data.editing_pocket_id}`} />
@@ -165,6 +166,7 @@
 <Main fullheight fullwidth padded={false}>
   <PocketRenderer details_enabled={$page_controller.details_enabled}>
     <Container slot="name">
+      <!--
       {#if data.free_mode}
         <Container rounded fill="superdark">
           {#if data.can_free_mode_publish}
@@ -181,6 +183,7 @@
           {/if}
         </Container>
       {/if}
+      -->
       <div data-flex="v" data-gap data-ph>
         <Name store={page_controller} />
         {#if $page_controller.hosts.length}
@@ -228,83 +231,83 @@
     <Links slot="links" {page_controller} />
     <Description slot="desc" {page_controller} />
     <DetailsNav {page_controller} />
-  </PocketRenderer>
-  <UtilityNav slot="utility-nav">
-    <div slot="left">
-      <ButtonRow>
-        <div data-3d-container>
-          {#if $page_label === 'theme'}
-            <select data-sham bind:value={$page_controller.theme}>
-              <optgroup label="Pick!">
-                {#if data.my_nametag.theme === 'system'}
-                  <option value="system">System</option>
-                {/if}
-                {#each THEME_NAMES as name, i}
-                  <option value={THEME_VALUES[i]}>{name}</option>
-                {/each}
-              </optgroup>
-            </select>
-          {/if}
-          <Button
-            id="theme"
-            icon="palette"
-            label="Change color"
-            large
-            controller={page_label}
-          />
+    <Container>
+      <Row>
+        <div slot="left">
+          <ButtonRow>
+            <div data-3d-container>
+              {#if $page_label === 'theme'}
+                <select data-sham bind:value={$page_controller.theme}>
+                  <optgroup label="Pick!">
+                    {#if data.my_nametag.theme === 'system'}
+                      <option value="system">System</option>
+                    {/if}
+                    {#each THEME_NAMES as name, i}
+                      <option value={THEME_VALUES[i]}>{name}</option>
+                    {/each}
+                  </optgroup>
+                </select>
+              {/if}
+              <Button
+                id="theme"
+                icon="palette"
+                label="Change color"
+                large
+                controller={page_label}
+              />
+            </div>
+            {#if data.editing_pocket_id}
+              <Button
+                id="discard"
+                icon="delete"
+                label="Delete"
+                large
+                controller={page_label}
+                on:click={handlePocketDeleteClick}
+              />
+            {:else}
+              <Button
+                id="discard"
+                icon="delete"
+                label="Discard"
+                large
+                controller={page_label}
+                on:click={() => {
+                  history.go(-1);
+                }}
+              />
+            {/if}
+          </ButtonRow>
         </div>
-        {#if data.editing_pocket_id}
-          <Button
-            id="discard"
-            icon="delete"
-            label="Delete"
-            large
-            controller={page_label}
-            on:click={handlePocketDeleteClick}
-          />
-        {:else}
-          <Button
-            id="discard"
-            icon="delete"
-            label="Discard"
-            large
-            controller={page_label}
-            on:click={() => {
-              history.go(-1);
-            }}
-          />
-        {/if}
-      </ButtonRow>
-    </div>
-    <div slot="right">
-      {#if typeof data.editing_pocket === 'undefined'}
-        <Button
-          id="publish"
-          label="Publish…"
-          icon="hail"
-          disabled={valid !== true ||
-            (data.free_mode === true && data.can_free_mode_publish === false)}
-          primary
-          controller={page_label}
-          on:click={() => {
-            $App.sheet_id = 'pocket_publish';
-          }}
-        />
-      {:else}
-        <Button
-          id="save"
-          label="Save…"
-          icon="hail"
-          disabled={valid !== true}
-          primary
-          controller={page_label}
-          on:click={() => {
-            $App.sheet_id = 'pocket_publish';
-          }}
-        />
-      {/if}
-    </div>
-  </UtilityNav>
+        <div slot="right">
+          {#if typeof data.editing_pocket === 'undefined'}
+            <Button
+              id="publish"
+              label="Publish…"
+              icon="hail"
+              disabled={valid !== true ||
+                (data.free_mode === true && data.can_free_mode_publish === false)}
+              primary
+              on:click={() => {
+                $App.sheet_id = 'pocket_publish';
+              }}
+            />
+          {:else}
+            <Button
+              id="save"
+              label="Save…"
+              icon="hail"
+              disabled={valid !== true}
+              primary
+              on:click={() => {
+                $App.sheet_id = 'pocket_publish';
+              }}
+            />
+          {/if}
+        </div>
+      </Row>
+    </Container>
+  </PocketRenderer>
 </Main>
 
 <PocketInspiration />

@@ -64,16 +64,17 @@
   />
 </svelte:head>
 
-<SiteHeader huddable />
+<SiteHeader huddable>
+  <div slot="left" data-flex data-gap>
+    <Logo />
+    <h1 data-fill="">
+      Pocketrides<em>!</em>
+    </h1>
+  </div>
+</SiteHeader>
 <Main fullheight padded={false}>
   <Container padded={false}>
     <div class="card" data-specialpad="">
-      <div class="hero-inner" data-flex="ac" data-gap>
-        <Logo />
-        <h1 data-fill="">
-          Pocketrides<em>!</em>
-        </h1>
-      </div>
       <h2 class="h1">
         An ad-free community space paying you a penny per like.
         <span class="half" data-nobreak>100% of profits to climate.</span>

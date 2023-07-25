@@ -51,7 +51,7 @@
   </div>
   <div slot="right" />
 </SiteHeader>
-<Main fullheight fill="white">
+<Main fullheight>
   <div data-flex="v" data-gap="1">
     <h1 data-ph>
       <Icon icon="settings_suggest" />

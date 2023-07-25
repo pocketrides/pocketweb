@@ -8,8 +8,11 @@
 </script>
 
 <Container>
-  <h2>
-    <Icon icon="description" multiline />
+  <p class="strong half small">
+    <Icon icon="description" />
+    Description
+  </p>
+  <div data-richtext>
     {@html $pocket.details.desc_html}
-  </h2>
+  </div>
 </Container>

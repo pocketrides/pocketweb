@@ -123,7 +123,7 @@
       max-height: 640px;
 
       @media (max-width: 640px) {
-        min-width: 120%;
+        // min-width: 120%;
       }
 
       @media (min-width: 640px) {

@@ -14,8 +14,8 @@
   $: always_show_slot = privacy_mode ? true : always_show_slot;
 
   let section1_fill = 'dark';
-  let section2_fill = 'base';
-  let section3_fill = 'system-light';
+  let section2_fill = 'dark';
+  let section3_fill = 'base';
 </script>
 
 <div

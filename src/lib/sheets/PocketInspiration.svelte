@@ -3,6 +3,7 @@
   import PocketIntro from '$lib/components/pockets/PocketIntro.svelte';
   import type { ServerPocket } from '$lib/zod/Pocket';
   import PocketDisplay from '$lib/components/PocketDisplay.svelte';
+  import Container from '$lib/components/Container.svelte';
 
   const pockets: ServerPocket[] = [
     {
@@ -161,7 +162,9 @@
           <PocketDisplay {pocket} inert />
         {/each}
       </div>
-      <PocketIntro />
+      <Container>
+        <PocketIntro />
+      </Container>
     </div>
   </Sheet>
 </div>

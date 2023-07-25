@@ -42,7 +42,7 @@
       </Row>
       <ul data-unstyle data-flex="v">
         {#if pending.length === 0}
-          <li class="h3 half" data-padded>
+          <li class="half" data-padded>
             Nothing here… <span class="half">yet<em>!</em></span>
           </li>
         {/if}
@@ -58,7 +58,7 @@
     </Row>
     <ul data-unstyle data-flex="v">
       {#if joined.length === 0}
-        <li class="h3 half" data-padded>
+        <li class="half" data-padded>
           Nothing here… <span class="half">yet<em>!</em></span>
         </li>
       {/if}
@@ -74,7 +74,7 @@
       </Row>
       <ul data-unstyle data-flex="v">
         {#if banned.length === 0}
-          <li class="h3 half" data-padded>
+          <li class="half" data-padded>
             Nothing here… <span class="half">yet<em>!</em></span>
           </li>
         {/if}

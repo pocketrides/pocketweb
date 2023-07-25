@@ -4,30 +4,32 @@
   import Icon from './Icon.svelte';
 
   export let place: GooglePlace;
-  export let h2: boolean = true;
-  export let h3: boolean = false;
   export let include_address = true;
   export let icon: string | undefined = undefined;
 </script>
 
-<div class:h2 class:h3 data-flex="sb ac" data-gap="1">
+<div data-flex="v">
+  <p class="small half strong">
+    <Icon {icon} />
+    Location
+  </p>
   {#if place.place_id}
     <a
       href={getPlaceLink(place)}
       target="_blank"
       rel="noreferrer"
-      data-flex="v"
-      data-unstyle
       on:click
+      data-flex="nowraps"
+      data-gap
+      data-unstyle
     >
-      <p class="nowraps">
-        <Icon {icon} />
-        {place.name}
-      </p>
+      <span class="strong">
+        <u>{place.name}</u>
+      </span>
       {#if include_address}
-        <p class="half small">
+        <span class="half nowraps">
           {place.formatted_address}
-        </p>
+        </span>
       {/if}
     </a>
   {:else}

@@ -67,7 +67,7 @@
         </li>
       {/each}
     </ul>
-    <UtilityNav border_bottom={false}>
+    <UtilityNav absolutebottom>
       <div slot="left">
         <Button
           label="Close"

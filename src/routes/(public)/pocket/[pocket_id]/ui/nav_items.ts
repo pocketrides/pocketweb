@@ -12,5 +12,12 @@ export const nav_items = [
     id: 'chat',
     label: 'Chat',
     icon: 'chat'
+  },
+  {
+    routeId: '/(public)/pocket/[pocket_id]/pending',
+    href: '/pocket/[pocket_id]/pending',
+    id: 'pending',
+    label: 'Waiting room',
+    icon: 'scene'
   }
 ];

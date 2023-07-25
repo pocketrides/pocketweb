@@ -9,8 +9,6 @@
   import Icon from '../Icon.svelte';
 
   export let details: DraftPocketDetails;
-  export let h2: boolean = true;
-  export let h3: boolean = false;
   export let summary: boolean = false;
 
   $: multiday = details.start_date !== details.end_date;
@@ -24,7 +22,11 @@
   $: end_date = details.end_date ? dateForDate(details.end_date) : undefined;
 </script>
 
-<div class:h2 class:h3 data-flex="v" data-gap>
+<div data-flex="v" data-gap>
+  <p class="half strong small">
+    <Icon icon="event" />
+    Time
+  </p>
   {#if details.whenever}
     <p class:nowraps={summary}>
       {#if !summary}
@@ -37,13 +39,10 @@
       {#if multiday}
         <div>
           <p class:nowraps={summary}>
-            {#if !summary}
-              <Icon icon="event" />
-            {/if}
             Starts {formatDate(start_date, 'long')}
           </p>
           {#if !summary}
-            <p class="half indent">
+            <p class="half">
               Ends {formatDate(end_date, 'long')}
             </p>
           {/if}
@@ -51,9 +50,6 @@
       {:else}
         <div>
           <p class:nowraps={summary}>
-            {#if !summary}
-              <Icon icon="event" />
-            {/if}
             All day, {formatDate(start_date, 'long')}
           </p>
         </div>
@@ -64,13 +60,10 @@
       {#if multiday}
         <div>
           <p class:nowraps={summary}>
-            {#if !summary}
-              <Icon icon="event" />
-            {/if}
             Starts {formatDate(start_datetime, 'long', 'short')}
           </p>
           {#if !summary}
-            <p class="indent">
+            <p>
               Ends {formatDate(end_datetime, 'long', 'short')}
             </p>
           {/if}
@@ -78,17 +71,14 @@
       {:else}
         <div>
           <p class:nowraps={summary}>
-            {#if !summary}
-              <Icon icon="event" />
-            {/if}
             {formatDate(start_datetime, 'full')}
           </p>
           {#if !summary}
-            <p class="indent">
+            <p>
               {formatDate(start_datetime, undefined, 'short')} to
               {formatDate(end_datetime, undefined, 'short')}
             </p>
-            <p class="half indent">
+            <p class="half">
               {getTimeAgo(start_datetime)}
             </p>
           {/if}
@@ -99,7 +89,4 @@
 </div>
 
 <style lang="scss">
-  .indent {
-    padding-left: 1.5em;
-  }
 </style>

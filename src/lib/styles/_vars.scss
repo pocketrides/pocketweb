@@ -12,7 +12,7 @@ $theme-system: (
   "dark": "82, 24, 0",
   "light": "255, 247, 235",
   "superdark": "41, 12, 0",
-  "superlight": "255, 241, 216",
+  "superlight": "255, 241, 216"
 );
 
 $theme-lilac: (
@@ -20,7 +20,7 @@ $theme-lilac: (
   "dark": "51, 30, 51",
   "light": "253, 246, 253",
   "superdark": "25, 16, 25",
-  "superlight": "247, 212, 247",
+  "superlight": "247, 212, 247"
 );
 
 $theme-gold: (
@@ -28,7 +28,7 @@ $theme-gold: (
   "dark": "66, 46, 9",
   "light": "255, 247, 225",
   "superdark": "36, 25, 5",
-  "superlight": "254, 222, 134",
+  "superlight": "254, 222, 134"
 );
 
 $theme-teal: (
@@ -36,7 +36,7 @@ $theme-teal: (
   "dark": "10, 31, 27",
   "light": "236, 249, 247",
   "superdark": "5, 15, 13",
-  "superlight": "177, 231, 223",
+  "superlight": "177, 231, 223"
 );
 
 $theme-pink: (
@@ -44,7 +44,7 @@ $theme-pink: (
   "dark": "61, 0, 8",
   "light": "255, 240, 242",
   "superdark": "41, 0, 5",
-  "superlight": "255, 184, 192",
+  "superlight": "255, 184, 192"
 );
 
 $theme-sky: (
@@ -52,7 +52,7 @@ $theme-sky: (
   "dark": "1, 36, 55",
   "light": "240, 249, 255",
   "superdark": "1, 23, 35",
-  "superlight": "134, 211, 254",
+  "superlight": "134, 211, 254"
 );
 
 :root {
@@ -146,8 +146,10 @@ $theme-sky: (
 
 [data-fill="allwhite"] {
   background-color: rgb(var(--allwhite));
+  color: rgb(var(--allblack));
 }
 
 [data-fill="white"] {
   background-color: rgb(var(--white));
+  color: rgb(var(--allblack));
 }

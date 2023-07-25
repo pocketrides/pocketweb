@@ -71,16 +71,27 @@
         />
       </div>
     </Container>
-    <Container>
-      <div data-flex="v" data-gap>
+    <Container padded={false}>
+      <div data-flex="v as" data-gap>
         <h3 class="h2">
           <Icon icon="favorite" />
-          Sustainable pricing, $1.99/mo.
+          Unlimited is $1.99/mo.
         </h3>
         <p>
           <strong>Your privacy is never for sale.</strong> Pocketrides is 100% subscriber-funded.
           No subscription required, you'll never lose access to what you create.
         </p>
+        <Button
+          id="sub_now"
+          label="Get Unlimited"
+          icon="favorite"
+          icon_filled
+          primary
+          large
+          on:click={() => {
+            $App.sheet_id = 'subscribe';
+          }}
+        />
         <p>
           Read more:<br /><a
             href="#why"
@@ -93,7 +104,7 @@
       </div>
     </Container>
 
-    <p class="small half" data-padded>
+    <p class="small half">
       <Icon icon="visibility_off" /> Only you can see this.
     </p>
   </div>

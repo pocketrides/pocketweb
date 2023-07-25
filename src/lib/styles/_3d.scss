@@ -5,14 +5,13 @@
 
   height: 42px;
   padding: 0 0.5rem;
+  font-size: 0.888rem;
 
-  &.small {
-    height: 32px;
-  }
+  touch-action: manipulation;
 
-  &.large {
-    padding: 0 0.85rem;
-  }
+  // &.large {
+  //   padding: 0 0.85rem;
+  // }
 
   &:is(textarea):focus {
     box-shadow: none;

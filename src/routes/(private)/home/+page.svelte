@@ -18,6 +18,8 @@
   import Row from '$lib/components/Row.svelte';
   import Icon from '$lib/components/Icon.svelte';
   import WhyPocketrides from '$lib/sheets/WhyPocketrides.svelte';
+  import Button from '$lib/components/Button.svelte';
+  import ButtonRow from '$lib/components/ButtonRow.svelte';
 
   let scroll_key = $page.data.my_nametag?.id || '';
 
@@ -100,17 +102,14 @@
 
 <svelte:window on:scroll={saveScrollY} />
 
-<SiteHeader fill="system-light" huddable>
-  <WorldfeedNav slot="nav" />
+<SiteHeader huddable>
+  <h1 slot="left">
+    <Icon icon="chair" />
+    Home
+  </h1>
 </SiteHeader>
 <div class:chill>
-  <Main fill="white" padded={false} fullheight>
-    <Row padded>
-      <h2 slot="left">
-        <Icon icon="chair" />
-        Home feed
-      </h2>
-    </Row>
+  <Main padded={false} fullheight>
     <ScrollList
       has_none={$page_controller.post_ids.length === 0}
       load_more_label="Load newest"
@@ -122,7 +121,38 @@
         <Post {post_id} />
       {/each}
     </ScrollList>
-    <CreateContentUtilityNav slot="utility-nav" feed_controls />
+    <div class="scroll">
+      <ButtonRow let:controller>
+        <Button
+          icon="keyboard_arrow_up"
+          label="Top"
+          {controller}
+          on:click={() => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            controller.update(() => '');
+          }}
+        />
+        <Button
+          icon="keyboard_arrow_down"
+          label="Bottom"
+          {controller}
+          on:click={() => {
+            const main = document.querySelector('main'),
+              util_nav = document.querySelector('[data-util-nav]');
+
+            if (!main || !util_nav) return;
+
+            window.scrollTo({
+              top: main.offsetTop + main.offsetHeight - 16 - window.innerHeight,
+              behavior: 'smooth'
+            });
+
+            controller.update(() => '');
+          }}
+        />
+      </ButtonRow>
+    </div>
+    <!-- <CreateContentUtilityNav slot="utility-nav" feed_controls /> -->
   </Main>
 </div>
 
@@ -133,5 +163,11 @@
 <style lang="scss">
   .chill {
     opacity: 0;
+  }
+
+  .scroll {
+    position: sticky;
+    right: 1rem;
+    bottom: 1rem;
   }
 </style>

@@ -47,9 +47,9 @@
   let summary: HTMLDivElement;
   $: can_read_more =
     summary &&
-    summary.getBoundingClientRect().height >= (window.innerWidth < 640 ? 96 : 102) &&
+    summary.getBoundingClientRect().height >= 108 &&
     $post_controller?.contents?.length === 1 &&
-    $post_controller?.contents[0].content_raw.length >= 185;
+    $post_controller?.contents[0].content_raw.length >= 150;
 
   $: should_be_hidden = $post_controller
     ? $post_controller.is_quarantined ||
@@ -416,7 +416,7 @@
       -webkit-box-orient: vertical;
 
       & .summary {
-        max-height: 102px;
+        max-height: 108px;
       }
     }
 

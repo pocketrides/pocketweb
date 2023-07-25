@@ -1,27 +1,20 @@
 <script lang="ts">
-  import { App } from '$lib/stores/app';
-  import { page } from '$app/stores';
-  import Button from './Button.svelte';
   import Container from './Container.svelte';
-  import Logo from './Logo.svelte';
-  import Nametag from './Nametag.svelte';
   import Row from './Row.svelte';
-  import type { Fill } from '$lib/zod/Fill';
-  import { Notifications } from '$lib/stores/notifications';
-  import ButtonRow from './ButtonRow.svelte';
   import { is_standalone } from '$lib/util/is-standalone';
+  import Icon from './Icon.svelte';
+  import { onMount } from 'svelte';
 
   export let sticky: boolean = false;
   export let utility: boolean = false;
-  export let fill: Fill | 'none' = $App.fill;
   export let huddable: boolean = false;
+  export let show_back: boolean = false;
+  export let padding_override: string | undefined = undefined;
+  export let header_flex: string = 'sb ac';
 
-  let interval_id: any;
-  let has_init = false;
   let hud = false;
   let safehud = false;
 
-  const SCROLL_MIN = 110;
   /*
   const checkForScrollingUp = (delay = 150) => {
     if (interval_id) return;
@@ -82,28 +75,59 @@
     checkForScrollingUp();
   };
   */
+
+  const handleScroll = () => {
+    // safehud = window.scrollY > 640;
+  };
+
+  let header_outer: HTMLElement;
+  let header_height = 64;
+
+  const handleResize = () => {
+    header_height = header_outer.offsetHeight;
+  };
+
+  onMount(handleResize);
 </script>
 
 <!-- <svelte:window on:scroll={handleScroll} /> -->
+<svelte:window on:resize={handleResize} />
 
 {#if is_standalone}
-  <div class="clipper" data-fill={fill} />
+  <div class="clipper" data-fill="dark" />
 {/if}
+<div data-gallery data-fill="dark">
+  <slot name="gallery" />
+</div>
 <header
-  data-fill={fill}
+  data-fill="dark"
   class:utility
   class:sticky
   class:huddable
   class:hud
   class:safehud
+  bind:this={header_outer}
 >
-  <Container>
-    <Row>
-      <slot name="left" slot="left">
-        <Logo />
-      </slot>
-      <slot name="right" slot="right">
-        <div data-flex data-button-row>
+  <Container {padding_override} padded={padding_override ? false : true}>
+    <div data-flex="v" data-gap>
+      {#if show_back && is_standalone}
+        <Row>
+          <a
+            href="#back"
+            class="small"
+            slot="left"
+            data-unstyle
+            on:click|preventDefault={() => history.go(-1)}
+          >
+            <Icon icon="arrow_back_ios" />
+            Back
+          </a>
+        </Row>
+      {/if}
+      <Row flex={header_flex}>
+        <slot name="left" slot="left">&nbsp;</slot>
+        <slot name="right" slot="right">
+          <!--<div data-flex data-button-row>
           <Button
             label=""
             icon="search"
@@ -146,25 +170,26 @@
             </ButtonRow>
           {/if}
         </div>
-      </slot>
-    </Row>
+      -->
+        </slot>
+      </Row>
+    </div>
   </Container>
 </header>
-<div data-gallery data-fill={fill}>
-  <slot name="gallery" />
-</div>
-<div data-slot data-fill={fill}>
+<div data-slot data-fill="dark">
   <slot />
 </div>
+
 <div
   data-nav
-  data-fill={fill}
+  data-fill="base"
   class:sticky
   class:huddable
   class:hud
   on:touchend={() => {
     hud = true;
   }}
+  style={`--header-height: ${header_height}px`}
 >
   <slot name="nav" />
 </div>
@@ -172,6 +197,17 @@
 <style lang="scss">
   header {
     padding-top: env(safe-area-inset-top);
+
+    &:has(~ [data-nav]:not(:empty)) {
+      border-bottom-left-radius: 1rem;
+      border-bottom-right-radius: 1rem;
+    }
+  }
+
+  [data-gallery]:not(:empty) + header {
+    // padding-top: 0;
+    margin-top: calc(-1 * env(safe-area-inset-top));
+    // transform: translateY(-50px);
   }
 
   // header:has(~ [data-slot]:empty):has(~ [data-nav]:empty):has(
@@ -193,8 +229,8 @@
 
   @media (min-width: 640px) {
     [data-gallery]:not(:empty) {
-      border-bottom-left-radius: 1rem;
-      border-bottom-right-radius: 1rem;
+      // border-bottom-left-radius: 1rem;
+      // border-bottom-right-radius: 1rem;
 
       box-shadow: 0 16px 16px -22px rgba(var(--dark), 0.75);
       border-bottom: 1px solid rgba(var(--dark), 0.5);
@@ -203,10 +239,28 @@
     }
   }
 
-  [data-nav]:not(:empty),
+  [data-slot]:not(:empty) {
+    padding-bottom: 1rem;
+    position: relative;
+    z-index: 39;
+
+    &:has(+ [data-nav]:not(:empty)) {
+      border-bottom-left-radius: 1rem;
+      border-bottom-right-radius: 1rem;
+    }
+  }
+
+  [data-nav]:not(:empty) {
+    margin-top: -1rem;
+    padding-top: 1rem;
+    position: sticky;
+    top: calc(var(--header-height) - 1rem + env(safe-area-inset-top));
+    z-index: 38;
+  }
+
   [data-gallery]:not(:empty) {
     position: relative;
-    z-index: 1;
+    z-index: 41;
   }
 
   // [data-gallery]:not(:empty) {
@@ -233,12 +287,12 @@
     z-index: 40;
   }
 
-  [data-nav].sticky,
-  [data-nav].huddable {
-    position: sticky;
-    top: calc(0 + env(safe-area-inset-top));
-    z-index: 38;
-  }
+  // [data-nav].sticky,
+  // [data-nav].huddable {
+  //   position: sticky;
+  //   top: calc(0 + env(safe-area-inset-top));
+  //   z-index: 38;
+  // }
 
   // .huddable {
   //   transform: translateY(calc(-92px + 1rem));
@@ -273,33 +327,35 @@
   //   transition: transform 0.15s ease-in-out;
   // }
 
-  header:has(~ [data-gallery]:not(:empty)) {
-    position: fixed;
-    width: 100%;
-    z-index: 40;
+  // header:has(~ [data-gallery]:not(:empty)) {
+  //   position: fixed;
+  //   width: 100%;
+  //   z-index: 40;
 
-    transition: all 0.25s ease-in-out;
+  //   transition: all 0.25s ease-in-out;
 
-    &:not(.safehud) {
-      background-color: transparent;
-      box-shadow: none;
-      border: 0 none;
-      z-index: 40;
-    }
-  }
+  //   &:not(.safehud) {
+  //     background-color: transparent;
+  //     box-shadow: none;
+  //     border: 0 none;
+  //     z-index: 40;
+  //   }
+  // }
 
   [data-gallery] {
     max-width: 720px;
     margin: auto;
+    position: relative;
+    z-index: 41;
   }
 
   [data-gallery]:empty {
     display: none;
   }
 
-  [data-nav] :global(> .padded) {
-    padding-top: 1px;
-  }
+  // [data-nav] :global(> .padded) {
+  //   padding-top: 1px;
+  // }
 
   .clipper {
     position: fixed;

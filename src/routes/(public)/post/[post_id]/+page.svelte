@@ -108,6 +108,7 @@
   };
 
   const repliesClick = () => {
+    console.log(replies_wrapper, replies_wrapper.querySelectorAll('textarea'));
     if (replies_wrapper) {
       replies_wrapper.querySelector('textarea')?.focus();
     }
@@ -156,7 +157,7 @@
           0,
           scroll_target.offsetTop +
             scroll_target.offsetHeight +
-            (window.innerWidth >= 640 ? 68 : 0) -
+            (window.innerWidth >= 640 ? 130 : 72) -
             (window.visualViewport?.height || window.innerHeight)
         );
       });
@@ -177,10 +178,40 @@
   <meta name="description" content={page_title} />
 </svelte:head>
 
-<SiteHeader
-  huddable
-  fill={data.post.audience === 'close_friends' ? 'light' : 'system-light'}
->
+<SiteHeader huddable show_back>
+  <div slot="left" data-flex="ac">
+    <Nametag nametag={data.post.nametag} />
+    <div class="half small">
+      <Icon icon="arrow_right" />
+    </div>
+    {#if data.post.audience === 'close_friends'}
+      <p class="h3 half small">
+        <Icon icon="favorite" filled />
+        Close Friends
+      </p>
+    {:else if data.post.audience === 'pocket' && data.post.pocket_ref}
+      <a
+        href={`/pocket/${data.post.pocket_ref.id}`}
+        data-unstyle
+        class="h3 half small nowraps"
+      >
+        <Icon icon="hail" />
+        {data.post.pocket_name || 'Pocket'}
+      </a>
+    {:else}
+      <a
+        href={`/profile/${data.post.nametag.id}`}
+        class="h3 half small"
+        data-unstyle
+      >
+        <Icon icon="signpost" />
+        Posts
+      </a>
+    {/if}
+  </div>
+  <h3 slot="right" class="half h3 small">
+    {getTimeAgo(new Date(data.post.ts / 1000), 'twitter')}
+  </h3>
   <Gallery slot="gallery" photos={data.post.contents[0].photos} square={false} />
 </SiteHeader>
 
@@ -200,48 +231,8 @@
   let:post_hidden
   let:replies_loading
 >
-  <Main fullheight padded={false} fill="white">
+  <Main fullheight padded={false}>
     <div class="post-outer">
-      <Row
-        padded
-        fill={post.audience === 'close_friends' ? 'superlight' : 'system-superlight'}
-        sticky
-        bordered
-      >
-        <div slot="left" data-flex="ac">
-          <Nametag nametag={post.nametag} />
-          <div class="half small">
-            <Icon icon="arrow_right" />
-          </div>
-          {#if post.audience === 'close_friends'}
-            <p class="h3 half small">
-              <Icon icon="favorite" filled />
-              Close Friends
-            </p>
-          {:else if post.audience === 'pocket' && post.pocket_ref}
-            <a
-              href={`/pocket/${post.pocket_ref.id}`}
-              data-unstyle
-              class="h3 half small nowraps"
-            >
-              <Icon icon="hail" />
-              {post.pocket_name || 'Pocket'}
-            </a>
-          {:else}
-            <a
-              href={`/profile/${post.nametag.id}`}
-              class="h3 half small"
-              data-unstyle
-            >
-              <Icon icon="signpost" />
-              Posts
-            </a>
-          {/if}
-        </div>
-        <h3 slot="right" class="half h3 small">
-          {getTimeAgo(new Date(post.ts / 1000), 'twitter')}
-        </h3>
-      </Row>
       <div class="post-wrapper" data-fill="system-light">
         {#each post.contents as content, index (content)}
           <div>
@@ -252,7 +243,7 @@
               {@html content.content}
             </div>
             {#if content.links.length}
-              <LinkList padded>
+              <LinkList padded="h">
                 {#each content.links as link (link)}
                   <LinkDisplay {link} />
                 {/each}
@@ -278,30 +269,27 @@
       {/if}
     </div>
     {#if data.post.settings.enable_replies}
-      <div class="replies-outer">
-        <Row padded fill="system-superlight" bordered>
-          <div slot="left" data-flex="ac">
-            <h3>
-              <Icon icon="reply" />
-              Replies
-            </h3>
+      <div bind:this={replies_wrapper}>
+        <div class="replies-outer">
+          <Row padded fill="system-superlight" bordered>
+            <div slot="left" data-flex="ac">
+              <h3>
+                <Icon icon="reply" />
+                Replies
+              </h3>
+            </div>
+          </Row>
+          <div class="replies-wrapper" data-flex="v" data-gap>
+            <Replies />
           </div>
-        </Row>
-        <div
-          class="replies-wrapper"
-          data-flex="v"
-          data-gap
-          bind:this={replies_wrapper}
-        >
-          <Replies />
         </div>
-      </div>
-      <div class="mc-outer">
-        <MessageComposer
-          placeholder="Write a reply…"
-          on:message={handleReply}
-          on:active={scrollToBottom}
-        />
+        <div class="mc-outer">
+          <MessageComposer
+            placeholder="Write a reply…"
+            on:message={handleReply}
+            on:active={scrollToBottom}
+          />
+        </div>
       </div>
     {/if}
     <UtilityNav slot="utility-nav">
@@ -353,6 +341,6 @@
   }
 
   .wf-wrapper {
-    padding: 0 1rem 0.5rem;
+    padding: 1rem 1rem 0.5rem;
   }
 </style>

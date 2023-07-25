@@ -36,7 +36,7 @@
 </script>
 
 <Button
-  label=""
+  label="Get location"
   icon={$adding ? 'refresh' : 'near_me'}
   disabled={$adding}
   icon_spins={$adding}

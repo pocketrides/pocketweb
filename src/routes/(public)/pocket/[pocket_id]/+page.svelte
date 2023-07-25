@@ -3,7 +3,7 @@
   import { writable } from 'svelte/store';
   import type { PageData } from './$types';
   import Main from '$lib/components/Main.svelte';
-  import PocketUtilityNav from './ui/PocketUtilityNav.svelte';
+  import PocketUtilityNav from './ui/PocketActions.svelte';
   import type { ClientPocketMember } from '$lib/zod/PocketMember';
   import Row from '$lib/components/Row.svelte';
   import Icon from '$lib/components/Icon.svelte';
@@ -76,13 +76,13 @@
 <svelte:window on:scroll={saveScrollY} />
 
 <div class:chill>
-  <Main fill="white" padded={false}>
-    <Row padded>
+  <Main padded={false}>
+    <!-- <Row padded>
       <h2 slot="left">
         <Icon icon="signpost" />
         Posts
       </h2>
-    </Row>
+    </Row> -->
     <ScrollList
       has_none={$page_controller.post_ids.length === 0}
       load_more_label="Load newest"
@@ -94,7 +94,6 @@
         <Post {post_id} />
       {/each}
     </ScrollList>
-    <PocketUtilityNav slot="utility-nav" {pocket} {my_membership} />
   </Main>
 </div>
 

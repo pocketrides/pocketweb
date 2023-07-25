@@ -17,6 +17,9 @@
   import JoinedMaxFree from '$lib/sheets/pockets/JoinedMaxFree.svelte';
   import { page } from '$app/stores';
   import Sheet from '$lib/components/Sheet.svelte';
+  import ButtonRow from '$lib/components/ButtonRow.svelte';
+  import PocketActions from './ui/PocketActions.svelte';
+  import Icon from '$lib/components/Icon.svelte';
 
   export let data: LayoutData;
 
@@ -40,7 +43,15 @@
         ? false
         : true
       : false;
+
+  let is_scrolled = false;
+
+  const handleScroll = () => {
+    is_scrolled = Math.round(window.scrollY) >= 100;
+  };
 </script>
+
+<svelte:window on:scroll={handleScroll} />
 
 <svelte:head>
   <title>
@@ -51,7 +62,7 @@
   {/if}
   <meta
     property="og:title"
-    content={`${name_plaintext}, hosted by ${$pocket.nametag.nametag} on pocketrides!`}
+    content={`${name_plaintext} hosted by ${$pocket.nametag.nametag} on pocketrides!`}
   />
   {#if $pocket.details.desc_raw}
     <meta property="og:description" content={$pocket.details.desc_raw} />
@@ -62,33 +73,75 @@
   {/if}
 </svelte:head>
 
-<SiteHeader fill="dark" huddable>
+<SiteHeader huddable header_flex="sb at">
   <Gallery slot="gallery" photos={$pocket.cover_art} square={false} />
-  <PocketRenderer
-    details_enabled={$pocket.details_enabled}
-    default_fill={privacy_mode ? 'system-light' : 'system-light'}
-    round_last={false}
-    bind:privacy_mode
-  >
-    <Name {pocket} {my_membership} slot="name" bind:privacy_mode />
-    <Time {pocket} slot="time" />
-    <Place {pocket} slot="place" />
-    <Description {pocket} slot="desc" />
-    <Links {pocket} slot="links" />
-  </PocketRenderer>
+  <div slot="left" data-flex="v">
+    <div data-flex data-gap>
+      {#if $pocket.settings.visibility === 'unlisted'}
+        <a
+          href="#unlisted"
+          class="half small"
+          aria-label="Tap to learn about unlisted pockets"
+          data-unstyle
+          on:click|preventDefault={() => {
+            $App.sheet_id = 'unlisted_howto';
+          }}
+        >
+          <Icon icon="visibility_off" inline />
+          Unlisted
+        </a>
+      {/if}
+      {#if $pocket.settings.joinability === 'broadcast'}
+        <a
+          href="#broadcast"
+          class="half small"
+          aria-label="Tap to learn about broadcast mode"
+          data-unstyle
+          on:click|preventDefault={() => {
+            $App.sheet_id = 'broadcast_howto';
+          }}
+        >
+          <Icon icon="edit_off" inline />
+          Broadcast Mode
+        </a>
+      {/if}
+      {#if $pocket.settings.joinability === 'moderated'}
+        <a
+          href="#moderated"
+          class="half small"
+          aria-label="Tap to learn about private mode"
+          data-unstyle
+          on:click|preventDefault={() => {
+            $App.sheet_id = 'moderated_howto';
+          }}
+        >
+          <Icon icon="shield_with_heart" inline />
+          Private Mode
+        </a>
+      {/if}
+    </div>
+    <h1 class:nowraps={is_scrolled}>
+      {@html $pocket.name_raw}
+    </h1>
+  </div>
+  <div data-flex="v" data-gap>
+    <PocketRenderer
+      details_enabled={$pocket.details_enabled}
+      round_last={false}
+      bind:privacy_mode
+    >
+      <Name {pocket} slot="name" bind:privacy_mode />
+      <Time {pocket} slot="time" />
+      <Place {pocket} slot="place" />
+      <Description {pocket} slot="desc" />
+      <Links {pocket} slot="links" />
+    </PocketRenderer>
+    <PocketActions {pocket} {my_membership} />
+  </div>
   <PocketNav slot="nav" {pocket} bind:privacy_mode />
 </SiteHeader>
 
-{#if privacy_mode === false}
-  <div
-    class:hoist={$pocket.settings.joinability !== 'broadcast'}
-    data-fill="system-light"
-  >
-    <slot />
-  </div>
-{:else}
-  <slot />
-{/if}
+<slot />
 
 <PocketMembersSheet {pocket} {my_membership} />
 {#if $page.data.my_nametag?.stripe?.has_sub !== true}
@@ -145,10 +198,3 @@
     </div>
   </Sheet>
 {/if}
-
-<style lang="scss">
-  .hoist {
-    margin-top: -2rem;
-    padding-top: 2rem;
-  }
-</style>
