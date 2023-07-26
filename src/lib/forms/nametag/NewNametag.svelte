@@ -93,6 +93,7 @@
     <Button
       type="submit"
       primary
+      large
       disabled={!valid || $submitting}
       label={$submitting ? 'One sec!' : 'Continue…'}
     />

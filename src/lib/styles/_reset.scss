@@ -84,6 +84,7 @@ a {
 /* Inherit fonts for inputs and buttons */
 input,
 button,
+[role="button"],
 textarea,
 select {
   font: inherit;
@@ -93,6 +94,7 @@ select {
   background: transparent;
   color: currentColor;
   user-select: none;
+  touch-action: manipulation;
 
   &:focus {
     outline: 0 none;

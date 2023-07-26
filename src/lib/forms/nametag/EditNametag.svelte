@@ -71,6 +71,7 @@
       type="submit"
       label={$submitting ? 'One sec!' : 'Save'}
       primary
+      large
       disabled={!valid || $submitting}
     />
   </div>

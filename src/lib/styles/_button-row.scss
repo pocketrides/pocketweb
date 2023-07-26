@@ -3,6 +3,10 @@
 
   gap: 0;
   position: relative;
+  flex-grow: 0;
+  overflow: auto;
+  padding-bottom: 1px;
+  padding-left: 1px;
 
   [data-3d-container] {
     position: relative;

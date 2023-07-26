@@ -20,6 +20,7 @@
   import ProfilePic from './ui/ProfilePic.svelte';
   import ProfileActions from './ui/ProfileActions.svelte';
   import Nametag from '$lib/components/Nametag.svelte';
+  import Icon from '$lib/components/Icon.svelte';
 
   export let data: LayoutData;
 
@@ -52,7 +53,7 @@
   />
 </svelte:head>
 
-<SiteHeader huddable>
+<SiteHeader huddable header_flex="sb as" padding_override="ht">
   <Container slot="gallery" padded={false} padding_override="ht">
     <div class="profile-pic">
       {#if $page_controller.is_my_profile_page}
@@ -62,7 +63,15 @@
       {/if}
     </div>
   </Container>
-  <Nametag nametag={$page_controller.page_nametag} slot="left" />
+  <div slot="left" data-flex="v as" data-gap>
+    <Nametag nametag={$page_controller.page_nametag} />
+    {#if $page_controller.relationship.is_close_friend}
+      <p class="small nowraps" data-color="base">
+        <Icon icon="favorite" filled />
+        Close Friends
+      </p>
+    {/if}
+  </div>
   <ProfileActions {page_controller} slot="right" />
   <ProfileNav slot="nav" {page_controller} />
   <ProfileHeader {page_controller} />

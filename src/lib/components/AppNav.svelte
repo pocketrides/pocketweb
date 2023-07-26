@@ -4,8 +4,7 @@
   import { slide } from 'svelte/transition';
   import Icon from './Icon.svelte';
   import { App } from '$lib/stores/app';
-
-  let last_active = '';
+  import { Notifications } from '$lib/stores/notifications';
 </script>
 
 <div data-fill="dark" in:slide={{ axis: 'y' }}>
@@ -13,14 +12,8 @@
     <button
       name="Home"
       data-flex="v cc"
-      class:active={($page.route.id === '/' ||
-        $page.route.id === '/(private)/home' ||
-        last_active === 'home') &&
-        $page.route.id !== '/(public)/worldfeed'}
-      on:click={() => {
-        goto('/home');
-        last_active = 'home';
-      }}
+      class:active={$page.route.id === '/' || $page.route.id === '/(private)/home'}
+      on:click={() => goto('/home')}
     >
       <Icon icon="chair" />
       <span>Home</span>
@@ -28,12 +21,8 @@
     <button
       name="Worldfeed"
       data-flex="v cc"
-      class:active={$page.route.id === '/(public)/worldfeed' ||
-        last_active === 'worldfeed'}
-      on:click={() => {
-        goto('/worldfeed');
-        last_active = 'worldfeed';
-      }}
+      class:active={$page.route.id === '/(public)/worldfeed'}
+      on:click={() => goto('/worldfeed')}
     >
       <Icon icon="travel_explore" />
       <span>Worldfeed</span>
@@ -72,17 +61,20 @@
       >
         <Icon icon="campaign" />
         <span>Inbox</span>
+        {#if $Notifications.unread_count > 0}
+          <span class="count">
+            {$Notifications.unread_count}
+          </span>
+        {/if}
       </button>
       <button
         name="My profile"
         data-flex="v cc"
         on:click={() => {
           $page.data.my_nametag && goto(`/profile/${$page.data.my_nametag?.id}`);
-          last_active = 'home';
         }}
-        class:active={($page.data.my_nametag &&
-          $page.url.pathname === `/profile/${$page.data.my_nametag.id}`) ||
-          last_active === 'home'}
+        class:active={$page.data.my_nametag &&
+          $page.url.pathname === `/profile/${$page.data.my_nametag.id}`}
       >
         <Icon icon="face" />
         <span>Me</span>
@@ -107,7 +99,7 @@
     position: fixed;
     bottom: 0;
     width: 100vw;
-    z-index: 400;
+    z-index: 4000;
     border-top: 1px solid rgb(var(--superdark));
   }
 
@@ -131,6 +123,7 @@
     opacity: 0.5;
     transition: all 0.1s ease-in-out;
     border: 0 none;
+    position: relative;
 
     &.double {
       flex-grow: 1;
@@ -140,6 +133,22 @@
 
     span {
       font-size: 14px;
+
+      &.count {
+        padding: 0 0.25rem;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        position: absolute;
+        transform: translate(1.111rem, -1.111rem);
+        background-color: rgb(var(--base));
+        border: 1px solid rgb(var(--superdark));
+        min-width: 1rem;
+        max-width: 60px;
+        height: 1rem;
+        line-height: calc(1rem - 4px);
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
     }
 
     &:active {

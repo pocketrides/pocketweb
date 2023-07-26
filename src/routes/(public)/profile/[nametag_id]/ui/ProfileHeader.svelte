@@ -11,11 +11,6 @@
 
 <Container padded={false}>
   <ul data-flex="ab" data-unstyle data-gap class="half" data-padded="h">
-    {#if $page_controller.relationship.is_close_friend}
-      <li class="small" data-color="base">
-        <Icon icon="favorite" filled />Close Friends
-      </li>
-    {/if}
     <li>
       <!-- svelte-ignore a11y-invalid-attribute -->
       <a

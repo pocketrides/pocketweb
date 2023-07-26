@@ -21,7 +21,7 @@
 
 <Container padded={false}>
   <div data-flex="v" data-padded="h" data-gap>
-    <p class="half small thin">
+    <p class="half small">
       <Icon icon="campaign" inline />
       Hosted by:
     </p>

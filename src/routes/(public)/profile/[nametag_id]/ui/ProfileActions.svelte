@@ -101,16 +101,16 @@
         <Button
           {controller}
           id="remove_close_friend"
-          label="Close friends"
+          label="Remove close friend"
           icon="heart_broken"
-          primary
           on:click={removeFromCloseFriendsClick}
+          primary
         />
       {:else}
         <Button
           {controller}
           id="add_close_friend"
-          label="Close friends"
+          label="Add close friend"
           icon="favorite_border"
           on:click={addToCloseFriendsClick}
         />

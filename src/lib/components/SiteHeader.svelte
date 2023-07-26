@@ -5,6 +5,7 @@
   import Icon from './Icon.svelte';
   import { onMount } from 'svelte';
   import Button from './Button.svelte';
+  import { App } from '$lib/stores/app';
 
   export let sticky: boolean = false;
   export let utility: boolean = false;
@@ -129,7 +130,10 @@
         <slot name="left" slot="left">&nbsp;</slot>
         <slot name="right" slot="right">
           {#if is_standalone === false}
-            <Button label="Get the app" />
+            <Button
+              label="Get the app"
+              on:click={() => ($App.sheet_id = 'get_the_app')}
+            />
           {/if}
           <!--<div data-flex data-button-row>
           <Button

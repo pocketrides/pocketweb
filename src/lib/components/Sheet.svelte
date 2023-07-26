@@ -154,8 +154,6 @@
 
     background-color: transparent;
 
-    overscroll-behavior: contain;
-
     &::backdrop {
       background-color: rgba(var(--allblack), 0);
       transition: background-color 0.3s ease-out;
@@ -196,13 +194,13 @@
       padding-top: env(safe-area-inset-top);
     }
 
-    @media (max-width: 640px) {
-      &:has(textarea:focus) {
-        .header {
-          position: static;
-        }
-      }
-    }
+    // @media (max-width: 640px) {
+    //   &:has(textarea:focus) {
+    //     .header {
+    //       // position: static;
+    //     }
+    //   }
+    // }
 
     .nav {
       position: fixed;

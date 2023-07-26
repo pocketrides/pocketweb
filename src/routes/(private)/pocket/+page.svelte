@@ -231,83 +231,84 @@
     <Links slot="links" {page_controller} />
     <Description slot="desc" {page_controller} />
     <DetailsNav {page_controller} />
-    <Container>
-      <Row>
-        <div slot="left">
-          <ButtonRow>
-            <div data-3d-container>
-              {#if $page_label === 'theme'}
-                <select data-sham bind:value={$page_controller.theme}>
-                  <optgroup label="Pick!">
-                    {#if data.my_nametag.theme === 'system'}
-                      <option value="system">System</option>
-                    {/if}
-                    {#each THEME_NAMES as name, i}
-                      <option value={THEME_VALUES[i]}>{name}</option>
-                    {/each}
-                  </optgroup>
-                </select>
-              {/if}
-              <Button
-                id="theme"
-                icon="palette"
-                label="Change color"
-                large
-                controller={page_label}
-              />
-            </div>
-            {#if data.editing_pocket_id}
-              <Button
-                id="discard"
-                icon="delete"
-                label="Delete"
-                large
-                controller={page_label}
-                on:click={handlePocketDeleteClick}
-              />
-            {:else}
-              <Button
-                id="discard"
-                icon="delete"
-                label="Discard"
-                large
-                controller={page_label}
-                on:click={() => {
-                  history.go(-1);
-                }}
-              />
+  </PocketRenderer>
+  <Container>
+    <Row>
+      <div slot="left">
+        <ButtonRow>
+          <div data-3d-container>
+            {#if $page_label === 'theme'}
+              <select data-sham bind:value={$page_controller.theme}>
+                <optgroup label="Pick!">
+                  {#if data.my_nametag.theme === 'system'}
+                    <option value="system">System</option>
+                  {/if}
+                  {#each THEME_NAMES as name, i}
+                    <option value={THEME_VALUES[i]}>{name}</option>
+                  {/each}
+                </optgroup>
+              </select>
             {/if}
-          </ButtonRow>
-        </div>
-        <div slot="right">
-          {#if typeof data.editing_pocket === 'undefined'}
             <Button
-              id="publish"
-              label="Publish…"
-              icon="hail"
-              disabled={valid !== true ||
-                (data.free_mode === true && data.can_free_mode_publish === false)}
-              primary
-              on:click={() => {
-                $App.sheet_id = 'pocket_publish';
-              }}
+              id="theme"
+              icon="palette"
+              label="Change color"
+              large
+              controller={page_label}
+            />
+          </div>
+          {#if data.editing_pocket_id}
+            <Button
+              id="discard"
+              icon="delete"
+              label="Delete"
+              large
+              controller={page_label}
+              on:click={handlePocketDeleteClick}
             />
           {:else}
             <Button
-              id="save"
-              label="Save…"
-              icon="hail"
-              disabled={valid !== true}
-              primary
+              id="discard"
+              icon="delete"
+              label="Discard"
+              large
+              controller={page_label}
               on:click={() => {
-                $App.sheet_id = 'pocket_publish';
+                history.go(-1);
               }}
             />
           {/if}
-        </div>
-      </Row>
-    </Container>
-  </PocketRenderer>
+        </ButtonRow>
+      </div>
+      <div slot="right">
+        {#if typeof data.editing_pocket === 'undefined'}
+          <Button
+            id="publish"
+            label="Publish…"
+            icon="hail"
+            disabled={valid !== true ||
+              (data.free_mode === true && data.can_free_mode_publish === false)}
+            primary
+            large
+            on:click={() => {
+              $App.sheet_id = 'pocket_publish';
+            }}
+          />
+        {:else}
+          <Button
+            id="save"
+            label="Save…"
+            icon="hail"
+            disabled={valid !== true}
+            primary
+            on:click={() => {
+              $App.sheet_id = 'pocket_publish';
+            }}
+          />
+        {/if}
+      </div>
+    </Row>
+  </Container>
 </Main>
 
 <PocketInspiration />

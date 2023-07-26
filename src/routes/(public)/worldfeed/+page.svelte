@@ -191,6 +191,7 @@
         label=""
         icon="keyboard_return"
         primary
+        large
         form="refine"
         disabled={!valid}
       />

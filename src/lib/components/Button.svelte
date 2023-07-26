@@ -127,7 +127,6 @@
     padding: 0 0.5rem;
     height: 32px;
     white-space: nowrap;
-    touch-action: manipulation;
     flex-shrink: 0;
     font-weight: bold;
     font-size: 0.888rem;
@@ -138,7 +137,6 @@
   }
 
   button.large,
-  button.primary,
   button.system,
   button.xlarge {
     padding: 0 0.85rem;

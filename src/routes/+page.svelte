@@ -319,7 +319,6 @@
 </Sheet>
 
 <WhyPocketrides />
-<GetTheApp />
 <AppHelp />
 
 <style lang="scss">

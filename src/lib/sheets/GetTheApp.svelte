@@ -11,8 +11,7 @@
     type ThemeAnyValue
   } from '$lib/zod/Theme';
 
-  let selected_theme: ThemeAnyValue = 'system';
-
+  let selected_theme: ThemeAnyValue = $App.theme;
   $: $App.theme = selected_theme;
 </script>
 

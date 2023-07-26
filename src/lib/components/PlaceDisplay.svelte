@@ -8,7 +8,7 @@
   export let icon: string | undefined = undefined;
 </script>
 
-<div data-flex="v">
+<div data-flex="v as">
   <p class="small half strong">
     <Icon {icon} />
     Location

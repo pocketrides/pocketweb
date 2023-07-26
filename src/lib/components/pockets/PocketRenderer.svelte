@@ -15,7 +15,7 @@
 
   let section1_fill = 'dark';
   let section2_fill = 'dark';
-  let section3_fill = 'base';
+  let section3_fill = 'dark';
 </script>
 
 <div

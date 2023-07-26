@@ -156,7 +156,7 @@
 {/if}
 <SiteLoader />
 {#if $page.data.my_nametag}
-  <MyNotifications />
+  <!-- <MyNotifications /> -->
   <Subscribe />
   <OutOfLikes />
 {:else}
