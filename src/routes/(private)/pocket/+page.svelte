@@ -163,7 +163,7 @@
     on:delete={photoDeleted}
   />
 </SiteHeader>
-<Main fullheight fullwidth padded={false}>
+<Main fullwidth padded={false}>
   <PocketRenderer details_enabled={$page_controller.details_enabled}>
     <Container slot="name">
       <!--

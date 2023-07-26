@@ -16,17 +16,28 @@
   <meta property="og:title" content={`this post may be spicy | on pocketrides!`} />
 </svelte:head>
 
-<SiteHeader huddable />
+<SiteHeader>
+  <h1 slot="left">
+    <Icon icon="no_adult_content" />
+    NSFW Warning
+  </h1>
+</SiteHeader>
 <Main fullheight>
   <Container>
     <div data-flex="v as" data-gap="1">
-      <div>
+      <div data-flex="v" data-gap>
         <h2>
-          <Icon icon="info" />
-          Heads up! <span class="half">This post is NSFW.</span>
+          <Icon icon="info" inline />
+          Heads up! <span class="half">Post is NSFW.</span>
         </h2>
         {#if $page.data.my_nametag?.stripe?.has_sub !== true}
           <p>You need a subscription to see content marked Not Safe For Work.</p>
+        {/if}
+        {#if $page.data.my_nametag?.id === data.post?.nametag.id}
+          <p>
+            Tap <strong><Icon icon="edit" inline /> Edit post</strong> and follow the
+            instructions to scan it again.
+          </p>
         {/if}
       </div>
       <ButtonRow let:controller initial="safety">
@@ -35,6 +46,7 @@
           icon="home"
           label="Go home"
           primary
+          large
           {controller}
           href="/"
         />

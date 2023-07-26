@@ -93,7 +93,7 @@
 </script>
 
 <!-- <svelte:window on:scroll={handleScroll} /> -->
-<svelte:window on:resize={handleResize} />
+<svelte:window on:resize={handleResize} on:scroll={handleResize} />
 
 {#if is_standalone}
   <div class="clipper" data-fill="dark" />

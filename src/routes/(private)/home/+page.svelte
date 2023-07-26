@@ -40,11 +40,11 @@
 
       if ($page_controller.post_ids.length === 0) loadMore().then(() => {});
 
-      await tick();
+      // await tick();
 
       scrollToEnhanced(
         () => {
-          const y = sessionStorage?.getItem(`${scroll_key}-home-y`);
+          const y = localStorage?.getItem(`${scroll_key}-home-y`);
 
           if (y) {
             window.scrollTo(0, Number(y));
@@ -89,7 +89,7 @@
 
   const saveScrollY = () => {
     if (can_save_scroll) {
-      sessionStorage?.setItem(`${scroll_key}-home-y`, window.scrollY.toString());
+      localStorage?.setItem(`${scroll_key}-home-y`, window.scrollY.toString());
     }
   };
 </script>
@@ -122,32 +122,26 @@
       {/each}
     </ScrollList>
     <div class="scroll">
-      <ButtonRow let:controller>
+      <ButtonRow vertical>
         <Button
           icon="keyboard_arrow_up"
-          label="Top"
-          {controller}
+          label=""
           on:click={() => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
-            controller.update(() => '');
           }}
         />
         <Button
           icon="keyboard_arrow_down"
-          label="Bottom"
-          {controller}
+          label=""
           on:click={() => {
-            const main = document.querySelector('main'),
-              util_nav = document.querySelector('[data-util-nav]');
+            const main = document.querySelector('main');
 
-            if (!main || !util_nav) return;
+            if (!main) return;
 
             window.scrollTo({
-              top: main.offsetTop + main.offsetHeight - 16 - window.innerHeight,
+              top: main.offsetTop + main.offsetHeight - window.innerHeight + 80,
               behavior: 'smooth'
             });
-
-            controller.update(() => '');
           }}
         />
       </ButtonRow>
@@ -168,6 +162,7 @@
   .scroll {
     position: fixed;
     right: 1rem;
-    bottom: calc(78px + 1rem);
+    bottom: calc(78px + 1rem + env(safe-area-inset-bottom));
+    z-index: 50;
   }
 </style>

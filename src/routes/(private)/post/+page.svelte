@@ -22,6 +22,7 @@
   import AddToWorldfeed from './ui/AddToWorldfeed.svelte';
   import WorldfeedHelp from '$lib/sheets/worldfeed/WorldfeedHelp.svelte';
   import { EditPostRequest } from '$lib/api/post/edit';
+  import Row from '$lib/components/Row.svelte';
 
   export let data: PageData;
 
@@ -149,117 +150,113 @@
   </div>
 </SiteHeader>
 <Main padded={false} fullheight>
-  <Posts store={page_controller} />
-  {#if $page_controller.settings.is_nsfw || $page_controller.settings.enable_likes === false}
-    <Container>
-      <div data-flex="v" class="half">
-        <h3>
-          {#if $page_controller.settings.is_nsfw && $page_controller.settings.enable_likes === false}
-            This post is marked NSFW and likes are disabled.
-          {:else if $page_controller.settings.enable_likes === false}
-            Likes are not enabled.
-          {/if}
-        </h3>
-        <p>
-          Disable NSFW and enable likes to re-scan your content. Tap
-          <strong><Icon icon="settings" inline /> Settings</strong> at the bottom to make
-          changes.
-        </p>
-        {#if $page_controller.settings.mod_result?.response_text}
-          <h3 data-ph>Here's what the AI said:</h3>
+  <div data-flex="v" data-gap="lg">
+    <Posts store={page_controller} />
+    {#if $page_controller.settings.is_nsfw || $page_controller.settings.enable_likes === false}
+      <Container>
+        <div data-flex="v" data-gap class="half">
+          <h3>
+            {#if $page_controller.settings.is_nsfw && $page_controller.settings.enable_likes === false}
+              This post is marked NSFW and likes are disabled.
+            {:else if $page_controller.settings.enable_likes === false}
+              Likes are not enabled.
+            {/if}
+          </h3>
           <p>
-            {$page_controller.settings.mod_result?.response_text}
+            Tap
+            <strong><Icon icon="settings" inline /> Settings</strong> at the bottom to
+            make changes. Re-scan your content by turning likes back on.
           </p>
-        {/if}
-      </div>
+          {#if $page_controller.settings.mod_result?.response_text}
+            <h3 data-ph>Here's what the AI said:</h3>
+            <p>
+              {$page_controller.settings.mod_result?.response_text}
+            </p>
+          {/if}
+        </div>
+      </Container>
+    {/if}
+    <Container>
+      <Row>
+        <div slot="left">
+          <ButtonRow>
+            <Button
+              id="settings"
+              label="Settings"
+              icon="settings"
+              primary
+              large
+              controller={nav_controller}
+              on:click={settingsSheetClick}
+            />
+            {#if !data.post}
+              <Button
+                id="discard"
+                icon="delete"
+                label="Discard"
+                controller={nav_controller}
+                large
+                on:click={() => {
+                  history.go(-1);
+                }}
+              />
+            {/if}
+          </ButtonRow>
+        </div>
+        <div slot="right">
+          {#if data.post}
+            <Button
+              id="save"
+              label="Save…"
+              icon="signpost"
+              disabled={!valid}
+              primary
+              large
+              controller={nav_controller}
+              on:click={publishSheetClick}
+            />
+          {:else}
+            <Button
+              id="publish"
+              label="Publish to…"
+              icon="signpost"
+              disabled={!valid}
+              primary
+              large
+              controller={nav_controller}
+              on:click={publishSheetClick}
+            />
+          {/if}
+        </div>
+      </Row>
     </Container>
-  {/if}
-  <UtilityNav slot="utility-nav">
-    <div slot="left">
-      <ButtonRow>
-        <Button
-          id="settings"
-          label="Settings"
-          icon="settings"
-          primary
-          controller={nav_controller}
-          on:click={settingsSheetClick}
-        />
-        {#if !data.post}
-          <Button
-            id="discard"
-            icon="delete"
-            label="Discard"
-            controller={nav_controller}
-            large
-            on:click={() => {
-              history.go(-1);
-            }}
-          />
-        {/if}
-      </ButtonRow>
-    </div>
-    <div slot="right">
-      {#if data.post}
-        <Button
-          id="save"
-          label="Save…"
-          icon="signpost"
-          disabled={!valid}
-          primary
-          controller={nav_controller}
-          on:click={publishSheetClick}
-        />
-      {:else}
-        <Button
-          id="publish"
-          label="Publish to…"
-          icon="signpost"
-          disabled={!valid}
-          primary
-          controller={nav_controller}
-          on:click={publishSheetClick}
-        />
-      {/if}
-    </div>
-  </UtilityNav>
+  </div>
 </Main>
 <Sheet id="post_settings" header="Post settings" icon="settings">
   <div data-flex="v" data-gap="1">
     <div data-flex="v as" data-gap>
-      <div>
-        <h2 id="monetize-header">Likes</h2>
-        <p>
-          If you're posting something that shouldn't make money (like other people's
-          content), turn this off.
-        </p>
-      </div>
       <Checkbox
         bind:checked={$page_controller.settings.enable_likes}
         label="Enable likes"
         labelled_by="monetize-header"
         disabled={$page_controller.settings.is_nsfw}
       />
+      <p id="monetize-header">
+        Disables monetization on your post, for when you don't own the copyright.
+      </p>
     </div>
     <div data-flex="v as" data-gap>
-      <div>
-        <h2 id="replies-header">Replies</h2>
-        <p>Anyone can reply unless you turn this off.</p>
-      </div>
       <Checkbox
         bind:checked={$page_controller.settings.enable_replies}
         label="Enable replies"
         labelled_by="replies-header"
       />
+      <p id="replies-header">
+        Replies are a live chat on every post. Turn it off if you'd rather skip the
+        noise.
+      </p>
     </div>
     <div data-flex="v as" data-gap>
-      <div>
-        <h2 id="nsfw-header">Adult content</h2>
-        <p>
-          <strong>Help keep everyone safe.</strong> It's fine to upload adult content,
-          but please tag it.
-        </p>
-      </div>
       <Checkbox
         bind:checked={$page_controller.settings.is_nsfw}
         label="It's NSFW"
@@ -269,6 +266,9 @@
           $page_controller.settings.enable_likes = false;
         }}
       />
+      <p id="nsfw-header">
+        Help keep everyone safe by marking mature content as Not Safe For Work.
+      </p>
     </div>
   </div>
 </Sheet>

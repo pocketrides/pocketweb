@@ -47,7 +47,7 @@
   let is_scrolled = false;
 
   const handleScroll = () => {
-    is_scrolled = Math.round(window.scrollY) >= 100;
+    is_scrolled = window.scrollY >= 100;
   };
 </script>
 

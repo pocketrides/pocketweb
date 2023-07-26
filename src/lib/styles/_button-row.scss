@@ -12,28 +12,55 @@
     position: relative;
   }
 
-  [data-3d]:has(+ [data-3d]),
-  [data-3d-container]:has(+ [data-3d-container]),
-  [data-3d-container]:has(+ [data-3d]),
-  [data-3d]:has(+ [data-3d-container]) {
-    &,
-    [data-3d] {
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
-    }
+  &:not(.vertical) {
+    [data-3d]:has(+ [data-3d]),
+    [data-3d-container]:has(+ [data-3d-container]),
+    [data-3d-container]:has(+ [data-3d]),
+    [data-3d]:has(+ [data-3d-container]) {
+      &,
+      [data-3d] {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
 
-    & + [data-3d],
-    & + [data-3d-container] [data-3d] {
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-      margin-left: -1px;
+      & + [data-3d],
+      & + [data-3d-container] [data-3d] {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        margin-left: -1px;
+      }
     }
   }
 
-  @each $i in 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 {
-    [data-3d-container]:nth-child(#{$i}),
-    [data-3d]:nth-child(#{$i}) {
-      z-index: #{11 - $i};
+  &.vertical {
+    display: flex;
+    flex-direction: column;
+
+    [data-3d]:first-child {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    [data-3d]:not(:first-child):not(:last-child) {
+      border-radius: 0;
+    }
+
+    [data-3d]:last-child {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+
+    [data-3d]:has(+ [data-3d]) {
+      margin-bottom: -1px;
+    }
+  }
+
+  &:not(.vertical) {
+    @each $i in 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 {
+      [data-3d-container]:nth-child(#{$i}),
+      [data-3d]:nth-child(#{$i}) {
+        z-index: #{11 - $i};
+      }
     }
   }
 }

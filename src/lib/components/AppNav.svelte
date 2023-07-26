@@ -47,7 +47,7 @@
         >
           <optgroup label="Create:">
             <option value="/post">New Post</option>
-            <option value="/status">New Status</option>
+            <!-- <option value="/status">New Status</option> -->
             <option value="/pocket">New Pocket</option>
           </optgroup>
         </select>

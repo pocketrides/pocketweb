@@ -53,7 +53,7 @@
   />
 </svelte:head>
 
-<SiteHeader huddable header_flex="sb as" padding_override="ht">
+<SiteHeader huddable header_flex="sb as">
   <Container slot="gallery" padded={false} padding_override="ht">
     <div class="profile-pic">
       {#if $page_controller.is_my_profile_page}

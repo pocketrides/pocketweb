@@ -84,7 +84,7 @@
           } else {
             $loading_post = false;
           }
-        }, 1);
+        }, 0);
       }
 
       // always get the latest from the post detail page
@@ -224,11 +224,10 @@
   >
     {#if post_hidden === false}
       <Row
-        sticky
         padded
         fill={$post_controller.audience === 'close_friends'
-          ? 'superlight'
-          : 'system-superlight'}
+          ? 'light'
+          : 'system-light'}
       >
         <div slot="left" data-flex="ac">
           <Nametag nametag={$post_controller.nametag} />
@@ -272,9 +271,7 @@
       <Gallery photos={$post_controller.contents[0].photos} />
       <!-- The main post area -->
       <Container
-        fill={$post_controller.audience === 'close_friends'
-          ? 'light'
-          : 'system-light'}
+        fill={$post_controller.audience === 'close_friends' ? 'white' : 'white'}
         bottombordered
         padded={false}
       >

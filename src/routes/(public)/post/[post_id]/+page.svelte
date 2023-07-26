@@ -251,7 +251,11 @@
             {/if}
           </div>
           {#if index === 0}
-            <PostModResult {post_controller} {showing_mod_result} {post_hidden} />
+            <PostModResult
+              {post_controller}
+              {showing_mod_result}
+              post_hidden={false}
+            />
           {/if}
         {/each}
       </div>
