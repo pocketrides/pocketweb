@@ -75,16 +75,17 @@
     try {
       if ($post_controller === undefined && post_id !== undefined) {
         $loading_post = true;
-        setTimeout(async () => {
-          if (!post_id) return;
-          const post = await LoadPostRequest.load(post_id);
-          if (post) {
-            $post_controller = post;
-            $loading_post = false;
-          } else {
-            $loading_post = false;
-          }
-        }, 0);
+
+        if (!post_id) return;
+
+        const post = await LoadPostRequest.load(post_id);
+
+        if (post) {
+          $post_controller = post;
+          $loading_post = false;
+        } else {
+          $loading_post = false;
+        }
       }
 
       // always get the latest from the post detail page
@@ -395,6 +396,7 @@
 {:else if $loading_post === true}
   <div data-loading>
     <div data-fill="system-superlight" />
+    <div />
     <p />
     <p />
     <p />
@@ -424,6 +426,16 @@
 
   .quarantined {
     min-height: 220px;
+  }
+
+  [data-loading] {
+    min-height: 280px;
+
+    @media (min-width: 640px) {
+      &:not(:last-child) {
+        margin-bottom: 1rem;
+      }
+    }
   }
 
   .post-outer {

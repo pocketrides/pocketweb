@@ -20,6 +20,7 @@
   import WhyPocketrides from '$lib/sheets/WhyPocketrides.svelte';
   import Button from '$lib/components/Button.svelte';
   import ButtonRow from '$lib/components/ButtonRow.svelte';
+  import { is_standalone } from '$lib/util/is-standalone';
 
   let scroll_key = $page.data.my_nametag?.id || '';
 
@@ -29,7 +30,7 @@
   // $: $App.fill = 'system-light';
 
   let can_save_scroll = false;
-  let chill = true;
+  let chill = false;
 
   const page_controller = writable<FeedResponse>(blankFeedResponse());
 
@@ -52,7 +53,7 @@
         },
         () => {
           can_save_scroll = true;
-          chill = false;
+          chill = true;
         }
       );
     }
@@ -108,7 +109,7 @@
     Home feed
   </h1>
 </SiteHeader>
-<div class:chill>
+<div data-main class:chill>
   <Main padded={false} fullheight>
     <ScrollList
       has_none={$page_controller.post_ids.length === 0}
@@ -139,7 +140,12 @@
             if (!main) return;
 
             window.scrollTo({
-              top: main.offsetTop + main.offsetHeight - window.innerHeight + 80,
+              top:
+                main.offsetTop +
+                main.offsetHeight -
+                window.innerHeight +
+                80 +
+                (is_standalone ? 28 : 0),
               behavior: 'smooth'
             });
           }}
@@ -155,8 +161,13 @@
 {/if}
 
 <style lang="scss">
-  .chill {
+  [data-main] {
     opacity: 0;
+    transition: opacity 0.1s ease-out;
+  }
+
+  .chill {
+    opacity: 1;
   }
 
   .scroll {

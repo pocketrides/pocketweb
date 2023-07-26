@@ -34,9 +34,9 @@
   div:not([data-fill]) {
     background-color: rgba(var(--dark), 0.15);
     height: 220px;
-    border-radius: 5px;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
+    border-radius: 1rem;
+    // border-top-left-radius: 0;
+    // border-top-right-radius: 0;
   }
 
   p {
