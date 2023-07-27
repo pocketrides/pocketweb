@@ -93,7 +93,7 @@
 <Main padded={false}>
   <div class="root" data-flex="v">
     <Container fill="dark" rounded_lg>
-      <div class="card card-half" data-flex="v jc" data-ga>
+      <div class="card" data-flex="v jc" data-ga>
         <h2>
           <span class="half">Life's a <em>wild</em> ride.</span><br />
           <span class="jumbo">Keep up on Pocketrides<em>!</em></span>
@@ -102,7 +102,7 @@
     </Container>
 
     <Container fill="dark" theme="sky" rounded_lg>
-      <div data-flex="v as" data-gap="1" class="card card-half">
+      <div data-flex="v as" data-gap="1">
         <div data-flex="v as" data-gap>
           <h3>
             Let your creativity thrive. <span class="half"
@@ -136,7 +136,7 @@
     </Container>
 
     <Container fill="dark" theme="teal" rounded_lg>
-      <div data-flex="v as" data-gap="1" class="card card-half">
+      <div data-flex="v as" data-gap="1">
         <div data-flex="v as" data-gap>
           <h3>
             Shared experiences have a new home. <span class="half"
@@ -170,7 +170,7 @@
     </Container>
 
     <Container fill="dark" theme="lilac" rounded_lg>
-      <div class="card" data-flex="v cc" data-gap="1">
+      <div data-flex="v cc" data-gap="1">
         <div data-flex="v as" data-gap>
           <h3>
             <span class="half">Share the love:</span><br />
@@ -185,7 +185,7 @@
     </Container>
 
     <Container fill="superlight" rounded_lg>
-      <div data-flex="v jc" data-gap class="card">
+      <div data-flex="v jc" data-gap>
         <h3>
           <span class="half">Sustainable pricing:</span><br />
           <span class="h1">Unlimited is $1.99/mo.</span>
@@ -205,7 +205,7 @@
     </Container>
 
     <Container fill="superlight" theme="teal" rounded_lg>
-      <div data-flex="v jc" data-gap class="card">
+      <div data-flex="v jc" data-gap>
         <h3>
           <span class="half">Our objective:</span><br />
           <span class="h1">Fund climate action.</span>
@@ -224,10 +224,10 @@
     </Container>
 
     <Container fill="superlight" rounded_lg>
-      <div data-flex="v jc" data-gap class="card">
+      <div data-flex="v jc" data-gap>
         <p>
           <strong
-            >Now is the time for a privacy-focused, subscriber-owned social network.</strong
+            >It's time for a privacy-focused, subscriber-owned social network.</strong
           >
           <small class="half"
             >We're building a community of people that care about the future of
@@ -262,10 +262,6 @@
   }
 
   .card {
-    min-height: 420px;
-  }
-
-  .card-half {
     min-height: 210px;
   }
 </style>
