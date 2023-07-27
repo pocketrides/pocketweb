@@ -232,11 +232,11 @@
       >
         <div slot="left" data-flex="ac">
           <Nametag nametag={$post_controller.nametag} />
-          <div class="half small">
+          <div class="half xsmall">
             <Icon icon="arrow_right" />
           </div>
           {#if $post_controller.audience === 'close_friends'}
-            <p class="h3 half small">
+            <p class="half xsmall nowraps strong">
               <Icon icon="favorite" filled />
               Close Friends
             </p>
@@ -244,13 +244,13 @@
             <a
               href={`/pocket/${$post_controller.pocket_ref.id}`}
               data-unstyle
-              class="h3 half small nowraps"
+              class="half xsmall nowraps strong"
             >
               <Icon icon="hail" />
               {$post_controller.pocket_name || 'Pocket'}
             </a>
           {:else}
-            <p class="h3 half small">
+            <p class="half xsmall nowraps strong">
               <a href={`/profile/${$post_controller.nametag.id}`} data-unstyle>
                 <Icon icon="signpost" />
                 Posts
@@ -261,7 +261,7 @@
         <div slot="right">
           <a
             href={`/post/${$post_controller.id}`}
-            class="half small h3"
+            class="half xsmall strong"
             data-unstyle
             title={`posted at ${new Date($post_controller.ts / 1000).toString()}`}
           >

@@ -181,11 +181,11 @@
 <SiteHeader huddable show_back>
   <div slot="left" data-flex="ac">
     <Nametag nametag={data.post.nametag} />
-    <div class="half small">
+    <div class="half xsmall">
       <Icon icon="arrow_right" />
     </div>
     {#if data.post.audience === 'close_friends'}
-      <p class="h3 half small">
+      <p class="half xsmall strong">
         <Icon icon="favorite" filled />
         Close Friends
       </p>
@@ -193,7 +193,7 @@
       <a
         href={`/pocket/${data.post.pocket_ref.id}`}
         data-unstyle
-        class="h3 half small nowraps"
+        class="half xsmall nowraps strong"
       >
         <Icon icon="hail" />
         {data.post.pocket_name || 'Pocket'}
@@ -201,7 +201,7 @@
     {:else}
       <a
         href={`/profile/${data.post.nametag.id}`}
-        class="h3 half small"
+        class="half xsmall strong"
         data-unstyle
       >
         <Icon icon="signpost" />
@@ -209,7 +209,7 @@
       </a>
     {/if}
   </div>
-  <h3 slot="right" class="half h3 small">
+  <h3 slot="right" class="half xsmall strong">
     {getTimeAgo(new Date(data.post.ts / 1000), 'twitter')}
   </h3>
   <Gallery slot="gallery" photos={data.post.contents[0].photos} square={false} />

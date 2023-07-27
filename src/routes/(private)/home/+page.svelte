@@ -9,18 +9,16 @@
   import { App } from '$lib/stores/app';
   import { IDBFeedCache } from '$lib/util/idb-feed-cache';
   import { scrollToEnhanced } from '$lib/util/scroll-to';
-  import CreateContentUtilityNav from '$lib/utility-navs/CreateContentUtilityNav.svelte';
   import { blankFeedResponse, type FeedResponse } from '$lib/zod/Feed';
   import { onMount, tick } from 'svelte';
   import { writable } from 'svelte/store';
   import type { PageData } from './$types';
-  import WorldfeedNav from '$lib/components/worldfeed/WorldfeedNav.svelte';
-  import Row from '$lib/components/Row.svelte';
   import Icon from '$lib/components/Icon.svelte';
   import WhyPocketrides from '$lib/sheets/WhyPocketrides.svelte';
   import Button from '$lib/components/Button.svelte';
   import ButtonRow from '$lib/components/ButtonRow.svelte';
   import { is_standalone } from '$lib/util/is-standalone';
+  import SearchButton from '$lib/components/SearchButton.svelte';
 
   let scroll_key = $page.data.my_nametag?.id || '';
 
@@ -108,6 +106,7 @@
     <Icon icon="chair" />
     Home feed
   </h1>
+  <SearchButton slot="right" />
 </SiteHeader>
 <div data-main class:chill>
   <Main padded={false} fullheight>
