@@ -157,7 +157,7 @@
     padded={false}
   >
     <div data-flex="v" data-gap="1">
-      <div data-flex="scroll-h" data-gap data-padded>
+      <div data-flex="scroll-h" data-gap data-padded="th">
         {#each pockets as pocket}
           <PocketDisplay {pocket} inert />
         {/each}

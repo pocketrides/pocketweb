@@ -117,17 +117,19 @@
 
     &:not(.contain) .gallery-item {
       scroll-snap-align: center !important;
+      flex-shrink: 0;
       min-width: 100%;
       max-width: 720px;
       min-height: 480px;
       max-height: 640px;
+      overflow: hidden;
 
       @media (max-width: 640px) {
-        // min-width: 120%;
+        min-width: 120%;
       }
 
       @media (min-width: 640px) {
-        max-height: 100vh;
+        max-height: 80vh;
       }
 
       :global(img) {

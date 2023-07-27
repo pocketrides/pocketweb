@@ -13,9 +13,7 @@
       <Container rounded fill="system-superlight">
         <div>
           <p class="h3 half">What is this exactly?</p>
-          <h3 class="h2">
-            A digital community space without ads or recommendation algorithms.
-          </h3>
+          <h3 class="h2">A new kind of social network.</h3>
         </div>
       </Container>
       <Container>
@@ -30,130 +28,128 @@
     </Container>
   {/if}
   <div data-richtext>
-    {#if include_header}
-      <section>
-        <div>
-          <h3 id="safety">How do you keep me safe?</h3>
-          <p>
-            As part of the platform's incentive structure to reward good content, we
-            take a very opinionated stance on NSFW ("Not Safe For Work") content. If
-            your content doesn't pass the platform's monetization checks, we will
-            automatically enable NSFW mode.
-          </p>
-          <p>Only subscribers can see NSFW content.</p>
-          <p>
-            We do this to support our most vulnerable customers: young people. If
-            you're able to subscribe (meaning you have a bank account), we believe
-            you are fully entitled to see what you want. Without subscribing, we
-            cannot meaningfully verify you are legally allowed to view NSFW content.
-          </p>
-          <p>
-            We look forward to actively participating in the evolution of free speech
-            on the platform. Pocketrides is firmly anti-censorship, while recognizing
-            this is still the Internet and bad actors are part of the fabric of a
-            digital community space.
-          </p>
-        </div>
-        <label
-          data-3d
-          class="small strong"
-          data-fill="system-superlight"
-          data-gap="0"
-          aria-labelledby="safety"
-        >
-          <Icon icon="unfold_more" />
-          <input type="checkbox" />
-          Expand
-        </label>
-      </section>
-      <section>
-        <div>
-          <h3 id="moderation">How does moderation work?</h3>
-          <p>
-            Content moderation (sometimes referred to as censorship) works
-            differently on Pocketrides. The platform is designed with a powerful
-            incentive structure: rewarding content authors with money. But what
-            happens when it goes wrong?
-          </p>
-          <p>
-            We moderate content for monetization. That means if your content can't be
-            monetized (per Stripe's <a
-              href="https://stripe.com/legal/restricted-businesses"
-              target="_blank"
-              rel="noreferrer">Prohibited and Restricted Businesses</a
-            >), we disable monetization, prevent it from appearing on the Worldfeed,
-            and mark it as NSFW ("Not Safe For Work"). Only subscribers can see NSFW
-            content.
-          </p>
-          <p>
-            This goes wrong sometimes! If your content fails moderation, you'll see a <strong
-              >Dispute</strong
-            > button to send it to a human to review. As part of that process, you will
-            see exactly what the AI moderator said about your content, and why it's been
-            demonetized. You can always edit your content, by the way.
-          </p>
-        </div>
-        <label
-          data-3d
-          class="small strong"
-          data-fill="system-superlight"
-          data-gap="0"
-          aria-labelledby="moderation"
-        >
-          <Icon icon="unfold_more" />
-          <input type="checkbox" />
-          Expand
-        </label>
-      </section>
-      <section>
-        <div>
-          <h3 id="trust">How can I trust Pocketrides?</h3>
-          <p>
-            Surveillance capitalism has no place on Pocketrides, period, ever. We
-            make a product that has a host of great features with more on the way,
-            and will always be 100% subscriber-funded. We're 100% employee-owned and
-            not funded by Big Tech venture capital. That means we only answer to you:
-            our customers.
-          </p>
-          <p>
-            We take our responsibility as owner/operators of an online platform
-            incredibly seriously. We issue quarterly transparency reports for both
-            the Platform side of the business, as well as the Climate Action side of
-            the business. The links for both are at the bottom of every page on
-            Pocketrides: look for "Transparency" and "Pocketchange."
-          </p>
-          <p>
-            Trust has to be earned, and you're in control at all times by continuing
-            to subscribe. Should our mission ever deviate, stop paying us. Organize a
-            mass cancellation. We will make it right.
-          </p>
-          <p>
-            Our plans for the future do not include 3rd-party external ownership. A
-            payday, believe it or not, is <strong>not</strong> why Pocketrides was created.
-            Instead, we have implemented a lifetime performance-based earnings cap for
-            all employees. Employee and founder performance is based on how much money
-            is successfully deployed for climate action, not how many features we ship
-            or how many subscribers we retain QoQ.
-          </p>
-          <p>
-            A new generation of ethical businesses, treating customers like humans,
-            using profits to enrich all of society.
-          </p>
-          <p>That's the Pocketrides promise.</p>
-        </div>
-        <label
-          data-3d
-          class="small strong"
-          data-fill="system-superlight"
-          data-gap="0"
-          aria-labelledby="trust"
-        >
-          <Icon icon="unfold_more" />
-          <input type="checkbox" />
-          Expand
-        </label>
-      </section>
-    {/if}
+    <section>
+      <div>
+        <h3 id="moderation">How does moderation work?</h3>
+        <p>
+          Content moderation (sometimes referred to as censorship) works differently
+          on Pocketrides. The platform is designed with a powerful incentive
+          structure: rewarding content authors with money. But what happens when it
+          goes wrong?
+        </p>
+        <p>
+          We moderate content for monetization. That means if your content can't be
+          monetized (per Stripe's <a
+            href="https://stripe.com/legal/restricted-businesses"
+            target="_blank"
+            rel="noreferrer">Prohibited and Restricted Businesses</a
+          >), we disable monetization, prevent it from appearing on the Worldfeed,
+          and mark it as NSFW ("Not Safe For Work"). Only subscribers can see NSFW
+          content.
+        </p>
+        <p>
+          This goes wrong sometimes! If your content fails moderation, you'll see a <strong
+            >Dispute</strong
+          > button to send it to a human to review. As part of that process, you will
+          see exactly what the AI moderator said about your content, and why it's been
+          demonetized. You can always edit your content, by the way.
+        </p>
+      </div>
+      <label
+        data-3d
+        class="small strong"
+        data-fill="system-superlight"
+        data-gap="0"
+        aria-labelledby="moderation"
+      >
+        <Icon icon="unfold_more" />
+        <input type="checkbox" />
+        Expand
+      </label>
+    </section>
+    <section>
+      <div>
+        <h3 id="safety">How do you keep me safe?</h3>
+        <p>
+          As part of the platform's incentive structure (paying you a penny per
+          like), we take a very opinionated stance on NSFW ("Not Safe For Work")
+          content. If your content doesn't pass the platform's monetization checks,
+          we will automatically enable NSFW mode.
+        </p>
+        <p>Only subscribers can see NSFW content.</p>
+        <p>
+          We do this to support our most vulnerable customers: young people. If
+          you're able to subscribe (meaning you have a bank account), we believe you
+          are fully entitled to see what you want. Without subscribing, we cannot
+          meaningfully verify you are legally allowed to view NSFW content.
+        </p>
+        <p>
+          We look forward to actively participating in the evolution of free speech
+          on the platform. Pocketrides is firmly anti-censorship, while recognizing
+          this is still the Internet and bad actors are part of the fabric of a
+          digital community space.
+        </p>
+      </div>
+      <label
+        data-3d
+        class="small strong"
+        data-fill="system-superlight"
+        data-gap="0"
+        aria-labelledby="safety"
+      >
+        <Icon icon="unfold_more" />
+        <input type="checkbox" />
+        Expand
+      </label>
+    </section>
+    <section>
+      <div>
+        <h3 id="trust">How can I trust Pocketrides?</h3>
+        <p>
+          Surveillance capitalism has no place on Pocketrides, period, ever. We make
+          a product that has a host of great features with more on the way, and will
+          always be 100% subscriber-funded. We're 100% employee-owned and not funded
+          by Big Tech venture capital. That means we only answer to you: our
+          customers.
+        </p>
+        <p>
+          We take our responsibility as owner/operators of an online platform
+          incredibly seriously. We issue quarterly transparency reports for both the
+          Platform side of the business, as well as the Climate Action side of the
+          business. The links for both are at the bottom of every page on
+          Pocketrides: look for "Transparency" and "Pocketchange."
+        </p>
+        <p>
+          Trust has to be earned, and you're in control at all times by continuing to
+          subscribe. Should our mission ever deviate, stop paying us. Organize a mass
+          cancellation. We will make it right.
+        </p>
+        <p>
+          Our plans for the future do not include 3rd-party external ownership. A
+          payday, believe it or not, is <strong>not</strong> why Pocketrides was created.
+          Instead, we have implemented a lifetime performance-based earnings cap for all
+          employees. Employee and founder performance is based on how much money is successfully
+          deployed for climate action, not how many features we ship or how many subscribers
+          we retain QoQ.
+        </p>
+        <p>
+          A new generation of ethical businesses, treating customers like humans,
+          using profits to enrich all of society.
+        </p>
+        <p>That's the Pocketrides promise.</p>
+      </div>
+      <label
+        data-3d
+        class="small strong"
+        data-fill="system-superlight"
+        data-gap="0"
+        aria-labelledby="trust"
+      >
+        <Icon icon="unfold_more" />
+        <input type="checkbox" />
+        Expand
+      </label>
+    </section>
     <section>
       <div>
         <h3 id="money">Why does it cost money?</h3>
@@ -342,7 +338,7 @@
         Expand
       </label>
     </section>
-    {#if !include_header}
+    <!-- {#if !include_header}
       <div data-padded>
         Read more:<br /><a
           href="#why"
@@ -351,7 +347,7 @@
           }}>Why Pocketrides?</a
         >
       </div>
-    {/if}
+    {/if} -->
   </div>
   <!-- <div>
       <Button

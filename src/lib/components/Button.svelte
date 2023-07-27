@@ -15,6 +15,7 @@
   export let icon_filled: boolean = false;
   export let icon_spins: boolean = false;
   export let icon_bold: boolean = false;
+  export let icon_inline: boolean = false;
   export let disabled: boolean = false;
   export let name: string = '';
   export let value: string = '';
@@ -110,6 +111,7 @@
       $icon_store.icon != 'hail'}
     spins={$icon_store.icon_spins}
     bold={$icon_store.icon_bold}
+    inline={icon_inline}
   />
   {#if count !== undefined && ($controller !== id || $label_store === '')}
     <span>{count}</span>

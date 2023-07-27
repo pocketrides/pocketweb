@@ -184,9 +184,7 @@
     </div>
   </Container>
 </header>
-<div data-slot data-fill="dark">
-  <slot />
-</div>
+<div data-slot data-fill="dark"><slot /></div>
 
 <div
   data-nav

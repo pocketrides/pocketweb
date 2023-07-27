@@ -34,13 +34,18 @@
 <style lang="scss">
   div {
     flex-shrink: 0;
-    width: calc(50vw - 0.25rem);
-    min-width: 180px;
+    width: calc(50vw - 1.25rem);
+    min-width: 172px;
     max-width: 220px;
     aspect-ratio: 1/1;
     border-color: rgba(var(--base), 0.2);
     border-radius: 1rem;
     overflow: hidden;
+
+    @media (min-width: 640px) {
+      max-width: 296px;
+      min-width: 296px;
+    }
 
     p {
       width: calc(100% - 2rem);

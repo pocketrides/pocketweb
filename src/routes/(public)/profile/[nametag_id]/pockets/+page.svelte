@@ -20,7 +20,7 @@
     </h2>
   </Row>
   <Container padded={false}>
-    <div data-flex="scroll-h" data-gap data-padded>
+    <div data-flex="scroll-h" data-gap data-padded="hb">
       {#each data.joined_pockets as pocket (pocket)}
         <PocketDisplay {pocket} />
       {/each}
@@ -35,7 +35,7 @@
       Pockets
     </h2>
   </Row>
-  <Container>
+  <Container padded={false}>
     {#if data.is_my_profile_page}
       <div data-flex="v" data-gap="1">
         {#if $page.data.my_nametag && !$page.data.my_nametag.stripe?.has_sub}
@@ -62,7 +62,7 @@
     </h2>
   </Row>
   <Container padded={false}>
-    <div data-flex="scroll-h" data-gap data-padded>
+    <div data-flex="scroll-h" data-gap data-padded="hb">
       {#each data.pockets as pocket (pocket)}
         <PocketDisplay {pocket} />
       {/each}
@@ -78,7 +78,7 @@
     </h2>
   </Row>
   <Container padded={false}>
-    <div data-flex="scroll-h" data-gap data-padded>
+    <div data-flex="scroll-h" data-gap data-padded="hb">
       {#each data.cohosted_pockets as pocket (pocket)}
         <PocketDisplay {pocket} />
       {/each}
@@ -94,7 +94,7 @@
     </h2>
   </Row>
   <Container padded={false}>
-    <div data-flex="scroll-h" data-gap data-padded>
+    <div data-flex="scroll-h" data-gap data-padded="hb">
       {#each data.unlisted_pockets as pocket (pocket)}
         <PocketDisplay {pocket} />
       {/each}

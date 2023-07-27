@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { Fill } from '$lib/zod/Fill';
+  import type { ThemeAnyValue } from '$lib/zod/Theme';
 
   export let fill: Fill | 'none' = 'none';
   export let rounded: boolean = false;
@@ -11,6 +12,7 @@
   export let bottombordered: boolean = false;
   export let fullwidth: boolean = false;
   export let overflowvisible: boolean = false;
+  export let theme: ThemeAnyValue | undefined = undefined;
 </script>
 
 <div
@@ -24,6 +26,7 @@
   class:fullwidth
   class:overflowvisible
   data-padded={padding_override}
+  data-theme={theme}
 >
   <slot />
 </div>

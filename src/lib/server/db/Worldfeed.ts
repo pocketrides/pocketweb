@@ -18,7 +18,7 @@ export class Worldfeed {
           {
             posts_set: q.Range(
               q.Match(q.Index('worldfeed_posts'), ['friends', true, true]),
-              q.ToMicros(q.TimeSubtract(q.Now(), 30, 'days')),
+              q.ToMicros(q.TimeSubtract(q.Now(), 90, 'days')),
               []
             ),
             filtered_set: q.Filter(
@@ -56,7 +56,7 @@ export class Worldfeed {
             ),
             pockets_set: q.Range(
               q.Match(q.Index('worldfeed_pockets'), [true]),
-              q.ToMicros(q.TimeSubtract(q.Now(), 30, 'days')),
+              q.ToMicros(q.TimeSubtract(q.Now(), 90, 'days')),
               []
             ),
             filtered_pockets_set: q.Filter(
@@ -104,7 +104,7 @@ export class Worldfeed {
                 ['data'],
                 q.Map(
                   q.Paginate(q.Var('filtered_pockets_set'), {
-                    size: 50
+                    size: 100
                   }),
                   q.Lambda(
                     ['ts', 'pocket_ref', '_', '_', '_'],
