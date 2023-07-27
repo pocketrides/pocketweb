@@ -13,6 +13,8 @@ declare global {
       session_expires?: import('$lib/zod/Stytch').DateString;
       magic_nametag_id: string;
       magic_post_id: string;
+      algolia_app_id: string;
+      algolia_frontend_key: string;
     }
     interface PageData {
       page_theme?: import('$lib/zod/Theme').ThemeAnyValue;
@@ -23,6 +25,8 @@ declare global {
       room_key?: string;
       session_expires?: string;
       magic_post_id: string;
+      algolia_app_id: string;
+      algolia_frontend_key: string;
     }
     interface Platform {
       context?: ExecutionContext;
@@ -50,6 +54,10 @@ declare global {
         MAGIC_POST_ID: string;
 
         GOOGLE_MAPS_API_KEY: string;
+
+        ALGOLIA_BACKEND_KEY: string;
+        ALGOLIA_FRONTEND_KEY: string;
+        ALGOLIA_APP_ID: string;
       };
     }
   }

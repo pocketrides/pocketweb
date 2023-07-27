@@ -1,4 +1,7 @@
-[data-3d] {
+[data-3d],
+.ais-SearchBox-input,
+.ais-SearchBox-submit,
+.ais-SearchBox-reset {
   border-radius: 0.25rem;
   border: 1px solid rgb(var(--dark));
   box-shadow: -1px 1px rgb(var(--dark));
@@ -6,6 +9,10 @@
   height: 42px;
   padding: 0 0.5rem;
   font-size: 0.888rem;
+
+  &[data-3d*="small"] {
+    height: 32px;
+  }
 
   // &.large {
   //   padding: 0 0.85rem;

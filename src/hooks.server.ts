@@ -18,12 +18,15 @@ import { OpenAI } from '$lib/server/OpenAI';
 import { MagicbellConfig } from '$lib/server/MagicbellConfig';
 import { GooglePlaceClient } from '$lib/server/db/GooglePlaceClient';
 import * as Sentry from '@sentry/svelte';
+import { AlgoliaClient } from '$lib/server/AlgoliaClient';
 
 export const handleError = (({ error, event }) => {
   Sentry.captureException(error, {
     extra: { event },
     contexts: { sveltekit: { event } }
   });
+
+  console.log(error);
 
   return {
     message: 'Whoops!',
@@ -94,6 +97,9 @@ type AppSecrets = {
   MAGIC_NAMETAG_ID: string;
   MAGIC_POST_ID: string;
   GOOGLE_MAPS_API_KEY: string;
+  ALGOLIA_BACKEND_KEY: string;
+  ALGOLIA_FRONTEND_KEY: string;
+  ALGOLIA_APP_ID: string;
 };
 
 const loadSecrets = (event: RequestEvent, env: AppSecrets) => {
@@ -127,4 +133,9 @@ const loadSecrets = (event: RequestEvent, env: AppSecrets) => {
   event.locals.magic_post_id = env.MAGIC_POST_ID;
 
   GooglePlaceClient.GOOGLE_MAPS_API_KEY = env.GOOGLE_MAPS_API_KEY;
+
+  AlgoliaClient.ALGOLIA_APP_ID = env.ALGOLIA_APP_ID;
+  AlgoliaClient.ALGOLIA_BACKEND_KEY = env.ALGOLIA_BACKEND_KEY;
+  event.locals.algolia_app_id = env.ALGOLIA_APP_ID;
+  event.locals.algolia_frontend_key = env.ALGOLIA_FRONTEND_KEY;
 };

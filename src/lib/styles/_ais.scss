@@ -1,0 +1,34 @@
+.ais-SearchBox-form {
+  .ais-SearchBox-input {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    font-weight: bold;
+
+    &:not(:placeholder-shown) {
+      background-color: rgb(var(--system-superlight));
+      color: rgb(var(--dark));
+    }
+  }
+
+  button {
+    width: 42px;
+    border-radius: 0;
+  }
+
+  button:has(+ button),
+  button:last-of-type {
+    margin-left: -1px;
+  }
+
+  button:has(+ button[hidden]),
+  button:last-of-type {
+    border-top-right-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+  }
+}
+
+.ais-Hits-item {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+}

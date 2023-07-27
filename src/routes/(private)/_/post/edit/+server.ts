@@ -3,6 +3,7 @@ import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { Post } from '$lib/server/db/Post';
 import { OpenAI } from '$lib/server/OpenAI';
+import { AlgoliaClient } from '$lib/server/AlgoliaClient';
 
 export const POST = (async (event) => {
   let res: EditPostResponse = { success: false };
@@ -39,6 +40,8 @@ export const POST = (async (event) => {
         success: true,
         post_id: payload.data.edit_id
       };
+
+      // event.platform?.context?.waitUntil(AlgoliaClient.savePost());
     }
   }
 

@@ -41,6 +41,7 @@ ol {
 /* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
 ul[data-unstyle],
 ol[data-unstyle],
+ol[class*="ais"],
 menu {
   margin: 0;
   padding: 0;

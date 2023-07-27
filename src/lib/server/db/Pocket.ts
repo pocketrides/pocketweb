@@ -30,8 +30,13 @@ export class Pocket {
         {
           exists: q.Exists(q.Var(ref_var)),
           pocket: q.If(q.Var('exists'), q.Get(q.Var(ref_var)), null),
-          nametag: q.If(
+          nametag_exists: q.If(
             q.Var('exists'),
+            q.Exists(q.Select(['data', 'nametag_ref'], q.Var('pocket'))),
+            false
+          ),
+          nametag: q.If(
+            q.Var('nametag_exists'),
             q.Get(q.Select(['data', 'nametag_ref'], q.Var('pocket'))),
             null
           ),
@@ -43,7 +48,7 @@ export class Pocket {
           )
         },
         q.If(
-          q.Var('exists'),
+          q.And(q.Var('exists'), q.Var('nametag_exists')),
           {
             success: true,
             pocket: q.Var('pocket'),
