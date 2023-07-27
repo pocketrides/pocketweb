@@ -124,6 +124,7 @@
       {@html $pocket.name_raw}
     </h1>
   </div>
+  <span slot="right" />
   <div data-flex="v" data-gap>
     <PocketRenderer
       details_enabled={$pocket.details_enabled}
