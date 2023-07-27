@@ -14,6 +14,9 @@
   import { type FeedResponse, blankFeedResponse } from '$lib/zod/Feed';
   import { browser } from '$app/environment';
   import { scrollToEnhanced } from '$lib/util/scroll-to';
+  import Button from '$lib/components/Button.svelte';
+  import ButtonRow from '$lib/components/ButtonRow.svelte';
+  import { is_standalone } from '$lib/util/is-standalone';
 
   export let data: PageData;
 
@@ -94,11 +97,48 @@
         <Post {post_id} />
       {/each}
     </ScrollList>
+    <div class="scroll">
+      <ButtonRow vertical>
+        <Button
+          icon="keyboard_arrow_up"
+          label=""
+          on:click={() => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+        />
+        <Button
+          icon="keyboard_arrow_down"
+          label=""
+          on:click={() => {
+            const main = document.querySelector('main');
+
+            if (!main) return;
+
+            window.scrollTo({
+              top:
+                main.offsetTop +
+                main.offsetHeight -
+                window.innerHeight +
+                80 +
+                (is_standalone ? 28 : 0),
+              behavior: 'smooth'
+            });
+          }}
+        />
+      </ButtonRow>
+    </div>
   </Main>
 </div>
 
 <style lang="scss">
   .chill {
     opacity: 0;
+  }
+
+  .scroll {
+    position: fixed;
+    right: 1rem;
+    bottom: calc(78px + 1rem + env(safe-area-inset-bottom));
+    z-index: 50;
   }
 </style>

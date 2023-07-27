@@ -21,6 +21,8 @@
   import type { WorldfeedLocation } from '$lib/zod/Worldfeed';
   import { tick } from 'svelte';
   import Sheet from '$lib/components/Sheet.svelte';
+  import { is_standalone } from '$lib/util/is-standalone';
+  import SearchButton from '$lib/components/SearchButton.svelte';
 
   export let data: PageData;
 
@@ -85,22 +87,27 @@
 </svelte:head>
 
 <SiteHeader huddable>
-  <h1 slot="left">
+  <h1 slot="left" class="capitalize">
     <Icon icon="near_me" />
-    {#if $form.c && $form.s}
-      <span class="capitalize"
-        >{$form.c}, <span class="uppercase">{$form.s}</span></span
-      >
+    {#if $form.c !== '' || $form.s !== ''}
+      {@html [
+        $form.c ? `${$form.c.trim()}` : '',
+        $form.s ? `<span class="uppercase">${$form.s}</span>` : ''
+      ]
+        .filter((s) => s !== '')
+        .join(', ')}
     {:else}
       Worldwide
     {/if}
   </h1>
-  <Button
-    slot="right"
-    label="Change"
-    icon="near_me"
-    on:click={() => ($App.sheet_id = 'wf-filter')}
-  />
+  <ButtonRow slot="right">
+    <SearchButton />
+    <Button
+      label="Change"
+      icon="near_me"
+      on:click={() => ($App.sheet_id = 'wf-filter')}
+    />
+  </ButtonRow>
   <!-- <WorldfeedNav slot="nav" /> -->
 </SiteHeader>
 
@@ -121,7 +128,7 @@
       </div>
     </Container>
   {:else}
-    <div data-flex="scroll-h" data-gap>
+    <div data-grid data-gap>
       {#each data.worldfeed.pocket_ids as pocket_id (pocket_id)}
         <PocketLoader {pocket_id} />
       {/each}
@@ -144,6 +151,36 @@
       {/each}
     </div>
   {/if}
+  <div class="scroll">
+    <ButtonRow vertical>
+      <Button
+        icon="keyboard_arrow_up"
+        label=""
+        on:click={() => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
+      />
+      <Button
+        icon="keyboard_arrow_down"
+        label=""
+        on:click={() => {
+          const main = document.querySelector('main');
+
+          if (!main) return;
+
+          window.scrollTo({
+            top:
+              main.offsetTop +
+              main.offsetHeight -
+              window.innerHeight +
+              80 +
+              (is_standalone ? 28 : 0),
+            behavior: 'smooth'
+          });
+        }}
+      />
+    </ButtonRow>
+  </div>
 </Main>
 
 <Sheet id="wf-filter" header="Set location" icon="near_me">
@@ -174,48 +211,39 @@
         bind:value={$form.s}
         placeholder="State"
       />
-
-      {#if $form.c.length > 1 || $form.s.length > 1}
-        <Button
-          type="reset"
-          label=""
-          icon="clear"
-          large
-          form="refine"
-          disabled={!valid}
-          on:click={handleResetClick}
-        />
-      {/if}
-      <Button
-        type="submit"
-        label=""
-        icon="keyboard_return"
-        primary
-        large
-        form="refine"
-        disabled={!valid}
-      />
       <input type="hidden" name="i" value="US" />
     </div>
     <div>
-      {#if $page.data.my_nametag}
-        <GetLocation on:location={handleLocationAdded} />
-      {/if}
+      <ButtonRow let:controller>
+        {#if $form.c.length > 1 || $form.s.length > 1}
+          <Button
+            type="reset"
+            label="Clear"
+            icon="clear"
+            large
+            form="refine"
+            disabled={!valid}
+            on:click={handleResetClick}
+          />
+        {/if}
+        <Button
+          type="submit"
+          label="Search"
+          icon="keyboard_return"
+          primary
+          large
+          form="refine"
+          disabled={!valid}
+        />
+        {#if $page.data.my_nametag}
+          <GetLocation on:location={handleLocationAdded} />
+        {/if}
+      </ButtonRow>
     </div>
   </form>
 </Sheet>
 
 <style lang="scss">
-  [data-flex='scroll-h'] {
-    padding: 1rem;
-    scroll-padding: 1rem;
-    align-items: flex-end;
-
-    :global(> *) {
-      scroll-snap-align: start;
-    }
-  }
-
   [data-button-row] {
     input {
       display: inline-flex;
@@ -231,5 +259,12 @@
         max-width: 5rem;
       }
     }
+  }
+
+  .scroll {
+    position: fixed;
+    right: 1rem;
+    bottom: calc(78px + 1rem + env(safe-area-inset-bottom));
+    z-index: 50;
   }
 </style>

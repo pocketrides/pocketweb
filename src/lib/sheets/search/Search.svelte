@@ -50,19 +50,19 @@
 
 <Sheet id="search" icon="search" header="Search" close="Done" padded={false}>
   <div data-flex="v" data-gap="1">
-    <form on:submit|preventDefault={handleSubmit} data-padded>
-      <ButtonRow let:controller initial="search">
-        <input
-          type="search"
-          data-3d
-          name="q"
-          class="h3"
-          placeholder="Search Pocketrides…"
-          aria-label="Search pocketrides by nametag or pocket name"
-          bind:value={q}
-          class:filled={valid}
-          on:keyup={handleKeyup}
-        />
+    <form on:submit|preventDefault={handleSubmit} data-padded data-flex="v" data-gap>
+      <input
+        type="search"
+        data-3d
+        name="q"
+        class="h3"
+        placeholder="Search Pocketrides…"
+        aria-label="Search pocketrides by nametag or pocket name"
+        bind:value={q}
+        class:filled={valid}
+        on:keyup={handleKeyup}
+      />
+      <ButtonRow>
         {#if $results.nametags.length || $results.pockets.length}
           <Button icon="clear" label="" large on:click={handleReset} />
         {/if}
@@ -73,7 +73,7 @@
           label={$searching ? 'One sec!' : 'Search'}
           icon_spins={$searching}
           primary
-          {controller}
+          large
           disabled={!valid || $searching}
         />
       </ButtonRow>
@@ -119,9 +119,9 @@
 </Sheet>
 
 <style lang="scss">
-  input[type='search'] {
-    flex-grow: 1;
-  }
+  // input[type='search'] {
+  //   flex-grow: 1;
+  // }
 
   ul {
     padding-left: 1rem;

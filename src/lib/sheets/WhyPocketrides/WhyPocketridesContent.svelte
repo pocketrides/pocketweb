@@ -429,7 +429,7 @@
     }
   }
 
-  .mini [data-padded] {
-    margin-bottom: 1rem;
-  }
+  // .mini [data-padded] {
+  //   margin-bottom: 1rem;
+  // }
 </style>

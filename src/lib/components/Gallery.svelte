@@ -63,7 +63,7 @@
   <div class="gallery-outer" class:square class:contain>
     <div
       class="gallery"
-      data-flex={photos.length === 1 ? 'cc' : 'scroll-h'}
+      data-flex="scroll-h"
       bind:this={gallery}
       on:scroll={handleScroll}
     >

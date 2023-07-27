@@ -11,6 +11,9 @@
   import ProfileFreeModeHeader from './ui/ProfileFreeModeHeader.svelte';
   import WhyPocketrides from '$lib/sheets/WhyPocketrides.svelte';
   import PocketInspiration from '$lib/sheets/PocketInspiration.svelte';
+  import { is_standalone } from '$lib/util/is-standalone';
+  import Button from '$lib/components/Button.svelte';
+  import ButtonRow from '$lib/components/ButtonRow.svelte';
 
   export let data: PageData;
 
@@ -60,3 +63,43 @@
     {/each}
   </ScrollList>
 {/if}
+
+<div class="scroll">
+  <ButtonRow vertical>
+    <Button
+      icon="keyboard_arrow_up"
+      label=""
+      on:click={() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }}
+    />
+    <Button
+      icon="keyboard_arrow_down"
+      label=""
+      on:click={() => {
+        const main = document.querySelector('main');
+
+        if (!main) return;
+
+        window.scrollTo({
+          top:
+            main.offsetTop +
+            main.offsetHeight -
+            window.innerHeight +
+            80 +
+            (is_standalone ? 28 : 0),
+          behavior: 'smooth'
+        });
+      }}
+    />
+  </ButtonRow>
+</div>
+
+<style lang="scss">
+  .scroll {
+    position: fixed;
+    right: 1rem;
+    bottom: calc(78px + 1rem + env(safe-area-inset-bottom));
+    z-index: 50;
+  }
+</style>

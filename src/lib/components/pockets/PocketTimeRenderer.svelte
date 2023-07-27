@@ -29,9 +29,9 @@
   </p>
   {#if details.whenever}
     <p class:nowraps={summary}>
-      {#if !summary}
+      <!-- {#if !summary}
         <Icon icon="event" multiline />
-      {/if}
+      {/if} -->
       {details.whenever_reason || 'Whenever'}
     </p>
   {:else if details.all_day}

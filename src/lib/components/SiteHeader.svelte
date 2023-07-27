@@ -6,6 +6,8 @@
   import { onMount } from 'svelte';
   import Button from './Button.svelte';
   import { App } from '$lib/stores/app';
+  import ButtonRow from './ButtonRow.svelte';
+  import SearchButton from './SearchButton.svelte';
 
   export let sticky: boolean = false;
   export let utility: boolean = false;
@@ -129,12 +131,15 @@
       <Row flex={header_flex}>
         <slot name="left" slot="left">&nbsp;</slot>
         <slot name="right" slot="right">
-          {#if is_standalone === false}
-            <Button
-              label="Get the app"
-              on:click={() => ($App.sheet_id = 'get_the_app')}
-            />
-          {/if}
+          <ButtonRow>
+            <SearchButton />
+            {#if is_standalone === false}
+              <Button
+                label="Get the app"
+                on:click={() => ($App.sheet_id = 'get_the_app')}
+              />
+            {/if}
+          </ButtonRow>
           <!--<div data-flex data-button-row>
           <Button
             label=""
