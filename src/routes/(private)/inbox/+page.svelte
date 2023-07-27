@@ -27,7 +27,7 @@
   };
 </script>
 
-<SiteHeader>
+<SiteHeader huddable>
   <h1 slot="left">
     <Icon icon="campaign" />
     Inbox

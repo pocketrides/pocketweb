@@ -87,7 +87,7 @@
 
   .rounded_lg {
     @media (min-width: 640px) {
-      border-radius: 1rem;
+      border-radius: 1.5rem;
       overflow: hidden;
     }
   }

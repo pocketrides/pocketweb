@@ -17,6 +17,7 @@
     <Icon icon="privacy_tip" />
     Privacy Policy
   </h1>
+  <span slot="right" />
 </SiteHeader>
 <Main fullheight>
   <div data-flex="v" data-gap="1">

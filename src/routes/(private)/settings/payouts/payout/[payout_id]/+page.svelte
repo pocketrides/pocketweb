@@ -17,7 +17,7 @@
   <title>payout for {data.my_nametag?.nametag} | on pocketrides!</title>
 </svelte:head>
 
-<SiteHeader utility sticky>
+<SiteHeader utility huddable>
   <div slot="left">
     <Button icon="arrow_back_ios" label="Payouts" href="/settings/payouts" />
   </div>

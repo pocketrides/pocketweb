@@ -28,21 +28,21 @@
   />
 </svelte:head>
 
-<SiteHeader huddable />
+<SiteHeader huddable>
+  <h1 slot="left">
+    <Icon icon="groups" />
+    For Organizations
+  </h1>
+  <span slot="right" />
+</SiteHeader>
 <Main fullheight>
   <div data-flex="v" data-gap="1">
-    <div data-flex="v" data-gap>
-      <h1 data-ph>
-        <Icon icon="groups" />
-        For Organizations
-      </h1>
-    </div>
     <Container rounded fill="system-superlight">
       <h2>
         Show off what makes your town, business, or organization unique with a
         Nametag on Pocketrides.
       </h2>
-      <p>
+      <p class="small">
         <strong>Don't miss:</strong> every nametag supports multiple users with
         <a href="#ntc" class="h3">Nametag Collab</a>.
       </p>
@@ -168,10 +168,12 @@
     </div>
     <Container fill="system-superlight" rounded>
       <div data-flex="v as" data-gap>
-        <h2>Get stuck? Have a feature suggestion?</h2>
-        <p>
-          We'd love to hear from you. <a href="/help" class="h3">Email Us</a> or
-          <a class="h3" href="/pocket/362021519145041997">request a new feature</a>.
+        <h3>Get stuck? Have a feature suggestion?</h3>
+        <p class="small">
+          We'd love to hear from you. <a href="/help" class="strong">Email Us</a> or
+          <a href="/pocket/362021519145041997" class="strong"
+            >request a new feature</a
+          >.
         </p>
       </div>
     </Container>

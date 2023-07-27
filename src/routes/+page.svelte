@@ -102,7 +102,7 @@
     </Container>
 
     <Container fill="dark" theme="sky" rounded_lg>
-      <div data-flex="v as" data-gap="1" class="card">
+      <div data-flex="v as" data-gap="1" class="card card-half">
         <div data-flex="v as" data-gap>
           <h3>
             Let your creativity thrive. <span class="half"
@@ -136,7 +136,7 @@
     </Container>
 
     <Container fill="dark" theme="teal" rounded_lg>
-      <div data-flex="v as" data-gap="1" class="card">
+      <div data-flex="v as" data-gap="1" class="card card-half">
         <div data-flex="v as" data-gap>
           <h3>
             Shared experiences have a new home. <span class="half"

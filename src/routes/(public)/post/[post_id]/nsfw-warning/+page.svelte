@@ -16,11 +16,12 @@
   <meta property="og:title" content={`this post may be spicy | on pocketrides!`} />
 </svelte:head>
 
-<SiteHeader>
+<SiteHeader huddable>
   <h1 slot="left">
     <Icon icon="no_adult_content" />
     NSFW Warning
   </h1>
+  <span slot="right" />
 </SiteHeader>
 <Main fullheight>
   <Container>

@@ -25,6 +25,7 @@
 
 <SiteHeader huddable>
   <h1 slot="left">Try signing in.</h1>
+  <span slot="right" />
 </SiteHeader>
 <Main fullheight>
   <Container rounded bordered>

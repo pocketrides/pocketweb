@@ -2,6 +2,7 @@
   import Button from '$lib/components/Button.svelte';
   import Container from '$lib/components/Container.svelte';
   import Icon from '$lib/components/Icon.svelte';
+  import Logo from '$lib/components/Logo.svelte';
   import Main from '$lib/components/Main.svelte';
   import SiteHeader from '$lib/components/SiteHeader.svelte';
   import { App } from '$lib/stores/app';
@@ -17,7 +18,13 @@
   <meta name="description" content="We're all ears!" />
 </svelte:head>
 
-<SiteHeader huddable />
+<SiteHeader huddable>
+  <h1 slot="left" data-flex="ac" data-gap>
+    <Logo />
+    <span>Pocketrides<em>!</em></span>
+  </h1>
+  <span slot="right" />
+</SiteHeader>
 <Main fullheight>
   <div data-flex="v" data-gap="1">
     <h1 data-ph>

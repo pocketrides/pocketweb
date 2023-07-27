@@ -32,7 +32,7 @@
   <title>content settings | on pocketrides!</title>
 </svelte:head>
 
-<SiteHeader utility sticky>
+<SiteHeader utility huddable>
   <div slot="left">
     <Button
       label="Back"
