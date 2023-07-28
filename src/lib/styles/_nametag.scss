@@ -31,4 +31,26 @@
   &.large {
     height: 42px;
   }
+
+  &:has(> .seedling) {
+    overflow: visible;
+    position: relative;
+    padding-right: 1rem;
+  }
+
+  .seedling {
+    position: absolute;
+    top: calc(50% - 0.75rem);
+    right: -0.75rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    background: rgb(var(--allwhite));
+    border-radius: 50%;
+    border: 1px solid rgb(var(--dark));
+    box-shadow: -1px 1px rgb(var(--dark));
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
 }

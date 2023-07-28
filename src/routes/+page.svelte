@@ -6,6 +6,7 @@
   import SiteHeader from '$lib/components/SiteHeader.svelte';
   import PocketLoader from '$lib/components/pockets/PocketLoader.svelte';
   import AppHelp from '$lib/sheets/AppHelp.svelte';
+  import HowPricingWorks from '$lib/sheets/HowPricingWorks.svelte';
   import WhyPocketrides from '$lib/sheets/WhyPocketrides.svelte';
   import WhyPocketridesContent from '$lib/sheets/WhyPocketrides/WhyPocketridesContent.svelte';
   import { App } from '$lib/stores/app';
@@ -184,19 +185,20 @@
       </div>
     </Container>
 
-    <Container fill="superlight" rounded_lg>
+    <Container fill="light" rounded_lg>
       <div data-flex="v jc" data-gap>
         <h3>
-          <span class="half">Sustainable pricing:</span><br />
-          <span class="h1">Unlimited is $1.99/mo.</span>
+          <span class="half">Start with Free Mode.</span><br />
+          <span class="h1">Upgrade to Unlimited.</span>
         </h3>
-        <p>
-          <strong>Your privacy is never for sale.</strong>
-          <small class="half"
-            >Pocketrides is 100% subscriber-funded. No subscription required, you'll
-            never lose access to what you create.</small
-          >
-        </p>
+        <div>
+          <Button
+            label="How pricing works"
+            on:click={() => {
+              $App.sheet_id = 'how_pricing_works';
+            }}
+          />
+        </div>
 
         <div data-ph>
           <PocketLoader pocket_id="364647123794264137" />
@@ -253,6 +255,7 @@
 
 <AppHelp />
 <WhyPocketrides />
+<HowPricingWorks />
 
 <style lang="scss">
   @media (min-width: 640px) {

@@ -2,13 +2,14 @@
   import Container from './Container.svelte';
 
   export let padded: boolean = true;
+  export let top_padded_lg: boolean = true;
   export let padding_override: string | undefined = undefined;
   export let fullheight: boolean = false;
   export let fullwidth: boolean = false;
 </script>
 
 <main data-fill="white">
-  <div class:fullheight>
+  <div class:fullheight class:top_padded_lg>
     <Container rounded={false} {padded} {padding_override} {fullwidth}>
       <slot />
     </Container>
@@ -25,7 +26,9 @@
     overflow: hidden;
 
     @media (min-width: 640px) {
-      padding-top: 1rem;
+      &.top_padded_lg {
+        padding-top: 1rem;
+      }
     }
   }
 </style>

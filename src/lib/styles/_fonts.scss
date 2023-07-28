@@ -57,8 +57,7 @@ h3,
 }
 
 *:has(> [class*="material"].multiline) {
-  align-items: baseline;
-  flex-wrap: wrap;
+  display: block;
 
   > [class*="material"] {
     transform: translateY(0.25em);

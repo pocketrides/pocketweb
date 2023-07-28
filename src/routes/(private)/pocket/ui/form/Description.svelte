@@ -42,12 +42,6 @@
         controller={page_label}
       />
     </Row>
-    <MarkdownEditor
-      id="desc"
-      bind:raw
-      bind:value
-      placeholder="Start typing…"
-      class_override="h2"
-    />
+    <MarkdownEditor id="desc" bind:raw bind:value placeholder="Start typing…" />
   </div>
 </Container>

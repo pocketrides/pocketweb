@@ -208,6 +208,10 @@
       width: 100%;
     }
 
+    .nav:not(:empty) {
+      border-top: 1px solid rgba(var(--superdark), 0.25);
+    }
+
     &:has(.nav:not(:empty)) .wrapper {
       padding-bottom: var(--nav-height);
     }

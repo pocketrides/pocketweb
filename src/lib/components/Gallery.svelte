@@ -83,7 +83,7 @@
             normal={square === false}
           />
           {#if allow_delete}
-            <FloatButtonContainer position="inner_right">
+            <FloatButtonContainer position="inner_center_bottom">
               <FloatButton
                 icon="delete"
                 on:click={() => {
@@ -118,18 +118,22 @@
     &:not(.contain) .gallery-item {
       scroll-snap-align: center !important;
       flex-shrink: 0;
-      min-width: 100%;
+      flex-grow: 0;
       max-width: 720px;
-      min-height: 480px;
-      max-height: 640px;
+      max-height: 645px;
+      // min-width: 100vw;
+      // max-width: 720px;
+      // min-height: 480px;
+      // max-height: 640px;
       overflow: hidden;
 
       @media (max-width: 640px) {
-        min-width: 120%;
+        // min-width: 100%;
       }
 
       @media (min-width: 640px) {
-        max-height: 80vh;
+        // max-height: 80vh;
+        // min-width: 50vw;
       }
 
       :global(img) {
@@ -137,32 +141,35 @@
         height: 100%;
         object-fit: cover;
 
-        min-width: 100%;
-        max-width: 720px;
-        min-height: 480px;
-        max-height: 640px;
+        aspect-ratio: 3/4;
 
-        @media (max-width: 640px) {
-          min-width: 120%;
-        }
+        // min-width: 100%;
+        // max-width: 720px;
+        // min-height: 480px;
+        // max-height: 640px;
 
-        @media (min-width: 640px) {
-          max-height: 100vh;
-        }
+        // @media (max-width: 640px) {
+        //   min-width: 100%;
+        // }
+
+        // @media (min-width: 640px) {
+        //   max-height: 80vh;
+        // }
       }
 
       &:has(img.landscape) {
-        min-width: 145%;
-        max-width: 1400px;
-        overflow: hidden;
+        // min-width: 145%;
+        // max-width: 1400px;
+        // overflow: hidden;
 
-        @media (max-width: 640px) {
-          min-width: 854px;
-        }
+        // @media (max-width: 640px) {
+        //   min-width: 854px;
+        // }
 
         :global(img) {
+          aspect-ratio: 4/3;
           // max-width: 850px;
-          min-width: 100%;
+          // min-width: 100%;
         }
       }
     }

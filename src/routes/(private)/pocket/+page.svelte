@@ -163,7 +163,7 @@
     on:delete={photoDeleted}
   />
 </SiteHeader>
-<Main fullwidth fullheight padded={false}>
+<Main fullwidth fullheight padded={false} top_padded_lg={false}>
   <PocketRenderer details_enabled={$page_controller.details_enabled}>
     <Container slot="name">
       <!--
@@ -301,6 +301,7 @@
             icon="hail"
             disabled={valid !== true}
             primary
+            large
             on:click={() => {
               $App.sheet_id = 'pocket_publish';
             }}

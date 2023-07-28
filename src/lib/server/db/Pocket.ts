@@ -193,7 +193,9 @@ export class Pocket {
 
   static async list(
     nametag_id: string,
-    include_unlisted: boolean = false
+    include_unlisted: boolean = false,
+    // used by Publish
+    exclude_broadcast_only: boolean = false
   ): Promise<{
     pockets: ServerPocket[];
     cohosted_pockets: ServerPocket[];
@@ -291,6 +293,13 @@ export class Pocket {
 
         response.pockets = response.pockets.filter(
           (p) => p.settings.visibility === 'listed'
+        );
+      }
+
+      // only return a list that nametag_id can publish to
+      if (exclude_broadcast_only) {
+        response.joined_pockets = response.joined_pockets.filter(
+          (p) => p.settings.joinability !== 'broadcast'
         );
       }
 

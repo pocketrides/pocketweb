@@ -1,10 +1,9 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
   import Icon from './Icon.svelte';
-  import type { ThemeAnyValue } from '$lib/zod/Theme';
 
-  export let group: string;
-  export let value: string;
+  export let group: string | number;
+  export let value: string | number;
   export let label: string;
   export let labelled_by: string | undefined = undefined;
   export let icon: string | undefined = undefined;

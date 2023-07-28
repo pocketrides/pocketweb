@@ -55,7 +55,7 @@ export const load = (async (event) => {
     }
   }
 
-  let all_pockets = await Pocket.list(parent.my_nametag.id, true);
+  let all_pockets = await Pocket.list(parent.my_nametag.id, true, true);
 
   return {
     my_nametag: parent.my_nametag,

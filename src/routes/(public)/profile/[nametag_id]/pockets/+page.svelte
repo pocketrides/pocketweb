@@ -49,7 +49,9 @@
         </p>
       </div>
     {:else}
-      <NothingHere />
+      <Container>
+        <NothingHere />
+      </Container>
     {/if}
   </Container>
 {/if}
