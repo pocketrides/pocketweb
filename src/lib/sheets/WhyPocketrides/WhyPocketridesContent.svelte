@@ -5,10 +5,11 @@
   import { App } from '$lib/stores/app';
 
   export let include_header: boolean = true;
+  export let only_get_started: boolean = false;
 </script>
 
 <div data-flex="v" data-gap="1" class:mini={!include_header}>
-  {#if include_header}
+  {#if include_header && !only_get_started}
     <Container>
       <Container rounded fill="system-superlight">
         <div>
@@ -28,175 +29,179 @@
     </Container>
   {/if}
   <div data-richtext>
-    <section>
-      <div>
-        <h3 id="moderation">How does moderation work?</h3>
-        <p>
-          Content moderation (sometimes referred to as censorship) works differently
-          on Pocketrides. The platform is designed with a powerful incentive
-          structure: rewarding content authors with money. But what happens when it
-          goes wrong?
-        </p>
-        <p>
-          We moderate content for monetization. That means if your content can't be
-          monetized (per Stripe's <a
-            href="https://stripe.com/legal/restricted-businesses"
-            target="_blank"
-            rel="noreferrer">Prohibited and Restricted Businesses</a
-          >), we disable monetization, prevent it from appearing on the Worldfeed,
-          and mark it as NSFW ("Not Safe For Work"). Only subscribers can see NSFW
-          content.
-        </p>
-        <p>
-          This goes wrong sometimes! If your content fails moderation, you'll see a <strong
-            >Dispute</strong
-          > button to send it to a human to review. As part of that process, you will
-          see exactly what the AI moderator said about your content, and why it's been
-          demonetized. You can always edit your content, by the way.
-        </p>
-      </div>
-      <label
-        data-3d
-        class="small strong"
-        data-fill="system-superlight"
-        data-gap="0"
-        aria-labelledby="moderation"
-      >
-        <Icon icon="unfold_more" />
-        <input type="checkbox" />
-        Expand
-      </label>
-    </section>
-    <section>
-      <div>
-        <h3 id="safety">How do you keep me safe?</h3>
-        <p>
-          As part of the platform's incentive structure (paying you a penny per
-          like), we take a very opinionated stance on NSFW ("Not Safe For Work")
-          content. If your content doesn't pass the platform's monetization checks,
-          we will automatically enable NSFW mode.
-        </p>
-        <p>Only subscribers can see NSFW content.</p>
-        <p>
-          We do this to support our most vulnerable customers: young people. If
-          you're able to subscribe (meaning you have a bank account), we believe you
-          are fully entitled to see what you want. Without subscribing, we cannot
-          meaningfully verify you are legally allowed to view NSFW content.
-        </p>
-        <p>
-          We look forward to actively participating in the evolution of free speech
-          on the platform. Pocketrides is firmly anti-censorship, while recognizing
-          this is still the Internet and bad actors are part of the fabric of a
-          digital community space.
-        </p>
-      </div>
-      <label
-        data-3d
-        class="small strong"
-        data-fill="system-superlight"
-        data-gap="0"
-        aria-labelledby="safety"
-      >
-        <Icon icon="unfold_more" />
-        <input type="checkbox" />
-        Expand
-      </label>
-    </section>
-    <section>
-      <div>
-        <h3 id="trust">How can I trust Pocketrides?</h3>
-        <p>
-          Surveillance capitalism has no place on Pocketrides, period, ever. We make
-          a product that has a host of great features with more on the way, and will
-          always be 100% subscriber-funded. We're 100% employee-owned and not funded
-          by Big Tech venture capital. That means we only answer to you: our
-          customers.
-        </p>
-        <p>
-          We take our responsibility as owner/operators of an online platform
-          incredibly seriously. We issue quarterly transparency reports for both the
-          Platform side of the business, as well as the Climate Action side of the
-          business. The links for both are at the bottom of every page on
-          Pocketrides: look for "Transparency" and "Pocketchange."
-        </p>
-        <p>
-          Trust has to be earned, and you're in control at all times by continuing to
-          subscribe. Should our mission ever deviate, stop paying us. Organize a mass
-          cancellation. We will make it right.
-        </p>
-        <p>
-          Our plans for the future do not include 3rd-party external ownership. A
-          payday, believe it or not, is <strong>not</strong> why Pocketrides was created.
-          Instead, we have implemented a lifetime performance-based earnings cap for all
-          employees. Employee and founder performance is based on how much money is successfully
-          deployed for climate action, not how many features we ship or how many subscribers
-          we retain QoQ.
-        </p>
-        <p>
-          A new generation of ethical businesses, treating customers like humans,
-          using profits to enrich all of society.
-        </p>
-        <p>That's the Pocketrides promise.</p>
-      </div>
-      <label
-        data-3d
-        class="small strong"
-        data-fill="system-superlight"
-        data-gap="0"
-        aria-labelledby="trust"
-      >
-        <Icon icon="unfold_more" />
-        <input type="checkbox" />
-        Expand
-      </label>
-    </section>
-    <section>
-      <div>
-        <h3 id="money">Why does it cost money?</h3>
-        <p>
-          We don't sell your data to advertisers, which is how most free tech
-          companies operate. You can get a lot out of Pocketrides without spending
-          any money, and you always get paid for likes on your content even if you
-          never subscribe.
-        </p>
-        <p>
-          Because we're subscriber-funded, it puts you, our customers, in control of
-          our decision making. If we ever screw up, you have a powerful tool to make
-          us fix our mistake: stop paying.
-        </p>
-        <p>
-          If we're ever force-acquired by an evil tech company then you should
-          totally stop paying. We're billionaire-proof!
-        </p>
-      </div>
-      <label
-        data-3d
-        class="small strong"
-        data-fill="system-superlight"
-        data-gap="0"
-        aria-labelledby="money"
-      >
-        <Icon icon="unfold_more" />
-        <input type="checkbox" />
-        Expand
-      </label>
-    </section>
-    <section>
+    {#if !only_get_started}
+      <section>
+        <div>
+          <h3 id="moderation">How does moderation work?</h3>
+          <p>
+            Content moderation (sometimes referred to as censorship) works
+            differently on Pocketrides. The platform is designed with a powerful
+            incentive structure: rewarding content authors with money. But what
+            happens when it goes wrong?
+          </p>
+          <p>
+            We moderate content for monetization. That means if your content can't be
+            monetized (per Stripe's <a
+              href="https://stripe.com/legal/restricted-businesses"
+              target="_blank"
+              rel="noreferrer">Prohibited and Restricted Businesses</a
+            >), we disable monetization, prevent it from appearing on the Worldfeed,
+            and mark it as NSFW ("Not Safe For Work"). Only subscribers can see NSFW
+            content.
+          </p>
+          <p>
+            This goes wrong sometimes! If your content fails moderation, you'll see a <strong
+              >Dispute</strong
+            > button to send it to a human to review. As part of that process, you will
+            see exactly what the AI moderator said about your content, and why it's been
+            demonetized. You can always edit your content, by the way.
+          </p>
+        </div>
+        <label
+          data-3d
+          class="small strong"
+          data-fill="system-superlight"
+          data-gap="0"
+          aria-labelledby="moderation"
+        >
+          <Icon icon="unfold_more" />
+          <input type="checkbox" />
+          Expand
+        </label>
+      </section>
+      <section>
+        <div>
+          <h3 id="safety">How do you keep me safe?</h3>
+          <p>
+            As part of the platform's incentive structure (paying you a penny per
+            like), we take a very opinionated stance on NSFW ("Not Safe For Work")
+            content. If your content doesn't pass the platform's monetization checks,
+            we will automatically enable NSFW mode.
+          </p>
+          <p>Only subscribers can see NSFW content.</p>
+          <p>
+            We do this to support our most vulnerable customers: young people. If
+            you're able to subscribe (meaning you have a bank account), we believe
+            you are fully entitled to see what you want. Without subscribing, we
+            cannot meaningfully verify you are legally allowed to view NSFW content.
+          </p>
+          <p>
+            We look forward to actively participating in the evolution of free speech
+            on the platform. Pocketrides is firmly anti-censorship, while recognizing
+            this is still the Internet and bad actors are part of the fabric of a
+            digital community space.
+          </p>
+        </div>
+        <label
+          data-3d
+          class="small strong"
+          data-fill="system-superlight"
+          data-gap="0"
+          aria-labelledby="safety"
+        >
+          <Icon icon="unfold_more" />
+          <input type="checkbox" />
+          Expand
+        </label>
+      </section>
+      <section>
+        <div>
+          <h3 id="trust">How can I trust Pocketrides?</h3>
+          <p>
+            Surveillance capitalism has no place on Pocketrides, period, ever. We
+            make a product that has a host of great features with more on the way,
+            and will always be 100% subscriber-funded. We're 100% employee-owned and
+            not funded by Big Tech venture capital. That means we only answer to you:
+            our customers.
+          </p>
+          <p>
+            We take our responsibility as owner/operators of an online platform
+            incredibly seriously. We issue quarterly transparency reports for both
+            the Platform side of the business, as well as the Climate Action side of
+            the business. The links for both are at the bottom of every page on
+            Pocketrides: look for "Transparency" and "Pocketchange."
+          </p>
+          <p>
+            Trust has to be earned, and you're in control at all times by continuing
+            to subscribe. Should our mission ever deviate, stop paying us. Organize a
+            mass cancellation. We will make it right.
+          </p>
+          <p>
+            Our plans for the future do not include 3rd-party external ownership. A
+            payday, believe it or not, is <strong>not</strong> why Pocketrides was created.
+            Instead, we have implemented a lifetime performance-based earnings cap for
+            all employees. Employee and founder performance is based on how much money
+            is successfully deployed for climate action, not how many features we ship
+            or how many subscribers we retain QoQ.
+          </p>
+          <p>
+            A new generation of ethical businesses, treating customers like humans,
+            using profits to enrich all of society.
+          </p>
+          <p>That's the Pocketrides promise.</p>
+        </div>
+        <label
+          data-3d
+          class="small strong"
+          data-fill="system-superlight"
+          data-gap="0"
+          aria-labelledby="trust"
+        >
+          <Icon icon="unfold_more" />
+          <input type="checkbox" />
+          Expand
+        </label>
+      </section>
+      <section>
+        <div>
+          <h3 id="money">Why does it cost money?</h3>
+          <p>
+            We don't sell your data to advertisers, which is how most free tech
+            companies operate. You can get a lot out of Pocketrides without spending
+            any money, and you always get paid for likes on your content even if you
+            never subscribe.
+          </p>
+          <p>
+            Because we're subscriber-funded, it puts you, our customers, in control
+            of our decision making. If we ever screw up, you have a powerful tool to
+            make us fix our mistake: stop paying.
+          </p>
+          <p>
+            If we're ever force-acquired by an evil tech company then you should
+            totally stop paying. We're billionaire-proof!
+          </p>
+        </div>
+        <label
+          data-3d
+          class="small strong"
+          data-fill="system-superlight"
+          data-gap="0"
+          aria-labelledby="money"
+        >
+          <Icon icon="unfold_more" />
+          <input type="checkbox" />
+          Expand
+        </label>
+      </section>
+    {/if}
+    <section class:only_get_started>
       <div>
         <h3 id="how">How do I get started?</h3>
         <p>
-          Create a Pocket (it's free) and invite your friends to join (it's free for
-          them, too). Text them the link, post it on your story, wherever it is you
-          already tell people what you're up to.
-        </p>
-        <p>
           Your first Pocket can be as simple as "just trying this out" — but use your
-          creativity. What do you like to do, how do you spend your time? Chances are
-          high that it'll make a great Pocket.
+          creativity. What do you like to do, how do you spend your time? Chances
+          are, it'll make a great Pocket.
         </p>
         <p>
-          There are great examples available when making a Pocket, look for the "Get
-          inspired" button.
+          Figure out who might be interested in joining your new corner of the
+          internet. Text it to 'em, post it on Twitter, or share it in your bio on
+          Insta. It's for you and who knows about it to have a better conversation.
+          Or plan an event. Or build a community. Together.
+        </p>
+        <p>
+          Start with Free Mode and upgrade to Unlimited for $1.99/mo if you love it.
+          We're building a sustainable platform for a better conversation, and that
+          doesn't happen if we sell your corner of the internet to advertisers.
         </p>
       </div>
       <label
@@ -211,35 +216,36 @@
         Expand
       </label>
     </section>
-    <section>
-      <div>
-        <h3 id="pro">How do you protect my peace?</h3>
-        <p>
-          Free platforms only make money when they show you an ad, which means they
-          need you to keep scrolling for hours. <a
-            href="https://www.teenvogue.com/story/the-science-behind-social-medias-hold-on-our-mental-health"
-            target="_blank"
-            rel="noreferrer">Here's Teen Vogue</a
-          > on why that can lead to poor mental health (and other not-great outcomes).
-        </p>
-        <p>We don't do that.</p>
-        <p>
-          On Pocketrides, your home feed has an ending and always stays in
-          chronological order. It doesn't move around when you open the app, and the
-          newest content is always at the bottom. Once you do read everything,
-          tapping "Load More" loads the newest posts.
-        </p>
-        <p>
-          We also built the <Button inline icon="support" label="Quarantine" /> button
-          so that when you see something that's not for you, it's easy to hide. Think
-          of it as feedback for the author, so they know their audience didn't like what
-          they posted.
-        </p>
-        <p>
-          It's purposeful and intentional. It's the conversation - in the order it
-          happened, with a way of hiding content you don't like.
-        </p>
-        <!-- <p>
+    {#if !only_get_started}
+      <section>
+        <div>
+          <h3 id="pro">How do you protect my peace?</h3>
+          <p>
+            Free platforms only make money when they show you an ad, which means they
+            need you to keep scrolling for hours. <a
+              href="https://www.teenvogue.com/story/the-science-behind-social-medias-hold-on-our-mental-health"
+              target="_blank"
+              rel="noreferrer">Here's Teen Vogue</a
+            > on why that can lead to poor mental health (and other not-great outcomes).
+          </p>
+          <p>We don't do that.</p>
+          <p>
+            On Pocketrides, your home feed has an ending and always stays in
+            chronological order. It doesn't move around when you open the app, and
+            the newest content is always at the bottom. Once you do read everything,
+            tapping "Load More" loads the newest posts.
+          </p>
+          <p>
+            We also built the <Button inline icon="support" label="Quarantine" /> button
+            so that when you see something that's not for you, it's easy to hide. Think
+            of it as feedback for the author, so they know their audience didn't like
+            what they posted.
+          </p>
+          <p>
+            It's purposeful and intentional. It's the conversation - in the order it
+            happened, with a way of hiding content you don't like.
+          </p>
+          <!-- <p>
           What you see online, and how you consume content, massively affects your
           mood. Pocketrides does not have algorithmic content like "suggested posts,"
           which means it's harder to doom scroll on Pocketrides.
@@ -254,90 +260,91 @@
           through ad sales, and the more data they collect about your preferences,
           habits, and purchasing decisions.
         </p> -->
-      </div>
-      <label
-        data-3d
-        class="small strong"
-        data-fill="system-superlight"
-        data-gap="0"
-        aria-labelledby="how"
-      >
-        <Icon icon="unfold_more" />
-        <input type="checkbox" />
-        Expand
-      </label>
-    </section>
-    <section>
-      <div>
-        <h3 id="we-love-creators">How do you support my community?</h3>
-        <p>
-          Every like on the platform is worth a penny. We believe your creativity and
-          your contributions to the conversation are inherently valuable. Start a
-          Payout in Settings when you have 500 likes — that's $5! No subscription is
-          required to get paid.
-        </p>
-        <p>
-          We do this because your creativity adds all the value to a social network.
-          Creators love YouTube's revenue sharing program, but it's still the only
-          meaningful revenue sharing program online. Until now.
-        </p>
-        <p>
-          Unlimited costs $1.99/mo, and you can then give out 50 likes ($0.50) every
-          time it renews. Likes never expire, by the way, and it's easy to pause your
-          subscription in Settings.
-        </p>
-      </div>
-      <label
-        data-3d
-        class="small strong"
-        data-fill="system-superlight"
-        data-gap="0"
-        id="we-love-creators"
-      >
-        <Icon icon="unfold_more" />
-        <input type="checkbox" />
-        Expand
-      </label>
-    </section>
-    <section>
-      <div>
-        <h3 id="ptc">How do you support our planet?</h3>
-        <p>
-          By using our <a href="/pocket/362022120043053129"
-            >profits for climate action,</a
-          >
-          we aspire to be a source of hope and forward momentum: doing the hard work needed
-          to confront an existential crisis.
-        </p>
-        <p>
-          We'll announce plenty of details and ask you for feedback as we get up to
-          speed (and begin to have profits, starting when we have 50,001
-          subscribers). The plan is this easy to understand: fund nonprofits working
-          in communities impacted by climate change.
-        </p>
-        <p>
-          As we get bigger, we'll announce additional goals like funding climate
-          justice lawsuits and investing in the next generation of green energy
-          companies.
-        </p>
-        <p>
-          Funding an ethical, equitable, green future is a noble goal as long as
-          everyone benefits. Doing the most good will always be our North Star, which
-          is why we're so focused on being so transparent from the beginning.
-        </p>
-      </div>
-      <label
-        data-3d
-        class="small strong"
-        data-fill="system-superlight"
-        data-gap="0"
-        aria-labelledby="ptc"
-      >
-        <Icon icon="unfold_more" />
-        <input type="checkbox" />
-        Expand
-      </label>
-    </section>
+        </div>
+        <label
+          data-3d
+          class="small strong"
+          data-fill="system-superlight"
+          data-gap="0"
+          aria-labelledby="how"
+        >
+          <Icon icon="unfold_more" />
+          <input type="checkbox" />
+          Expand
+        </label>
+      </section>
+      <section>
+        <div>
+          <h3 id="we-love-creators">How do you support my community?</h3>
+          <p>
+            Every like on the platform is worth a penny. We believe your creativity
+            and your contributions to the conversation are inherently valuable. Start
+            a Payout in Settings when you have 500 likes — that's $5! No subscription
+            is required to get paid.
+          </p>
+          <p>
+            We do this because your creativity adds all the value to a social
+            network. Creators love YouTube's revenue sharing program, but it's still
+            the only meaningful revenue sharing program online. Until now.
+          </p>
+          <p>
+            Unlimited costs $1.99/mo, and you can then give out 50 likes ($0.50)
+            every time it renews. Likes never expire, by the way, and it's easy to
+            pause your subscription in Settings.
+          </p>
+        </div>
+        <label
+          data-3d
+          class="small strong"
+          data-fill="system-superlight"
+          data-gap="0"
+          id="we-love-creators"
+        >
+          <Icon icon="unfold_more" />
+          <input type="checkbox" />
+          Expand
+        </label>
+      </section>
+      <section>
+        <div>
+          <h3 id="ptc">How do you support our planet?</h3>
+          <p>
+            By using our <a href="/pocket/362022120043053129"
+              >profits for climate action,</a
+            >
+            we aspire to be a source of hope and forward momentum: doing the hard work
+            needed to confront an existential crisis.
+          </p>
+          <p>
+            We'll announce plenty of details and ask you for feedback as we get up to
+            speed (and begin to have profits, starting when we have 50,001
+            subscribers). The plan is this easy to understand: fund nonprofits
+            working in communities impacted by climate change.
+          </p>
+          <p>
+            As we get bigger, we'll announce additional goals like funding climate
+            justice lawsuits and investing in the next generation of green energy
+            companies.
+          </p>
+          <p>
+            Funding an ethical, equitable, green future is a noble goal as long as
+            everyone benefits. Doing the most good will always be our North Star,
+            which is why we're so focused on being so transparent from the beginning.
+          </p>
+        </div>
+        <label
+          data-3d
+          class="small strong"
+          data-fill="system-superlight"
+          data-gap="0"
+          aria-labelledby="ptc"
+        >
+          <Icon icon="unfold_more" />
+          <input type="checkbox" />
+          Expand
+        </label>
+      </section>
+    {/if}
     <!-- {#if !include_header}
       <div data-padded>
         Read more:<br /><a
@@ -373,6 +380,10 @@
       border: 1px solid rgba(var(--dark), 0.25);
       border-radius: 1rem;
       margin-bottom: 3rem;
+
+      &.only_get_started {
+        margin-bottom: 0;
+      }
     }
 
     div {

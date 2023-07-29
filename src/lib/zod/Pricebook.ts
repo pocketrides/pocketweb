@@ -30,14 +30,18 @@ export const pb_sync = (pb: Pricebook): Pricebook => {
     pb.turbo = 0;
   }
 
-  if (pb.like_pack) {
-    pb.transaction_fee = 30 + pb.like_pack * 0.029;
+  if (pb.like_pack || pb.turbo) {
+    pb.transaction_fee = 30;
   } else {
     pb.transaction_fee = 0;
   }
 
+  if (pb.like_pack) {
+    pb.transaction_fee += pb.like_pack * 0.029;
+  }
+
   if (pb.turbo) {
-    pb.transaction_fee += 30 + PB_TURBO * 0.029;
+    pb.transaction_fee += PB_TURBO * 0.029;
   }
 
   return pb;

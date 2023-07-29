@@ -19,7 +19,7 @@
         >
           <span data-flex="ac as" data-gap>
             <Logo />
-            <span>Pocketrides<em>!</em></span>
+            <span>Pocketrides!</span>
           </span>
           <span class="small half"
             >View our profile <Icon icon="arrow_right" inline /></span

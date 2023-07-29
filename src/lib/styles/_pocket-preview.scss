@@ -35,7 +35,7 @@
   }
 }
 
-*:has(> [data-pocket-preview]) {
+*:not([data-grid]):not([data-flex*="w"]):has(> [data-pocket-preview]) {
   padding-left: 2px;
   padding-bottom: 2px;
 }

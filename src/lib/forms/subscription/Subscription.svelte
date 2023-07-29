@@ -5,8 +5,6 @@
   import { writable } from 'svelte/store';
   import { trackGoal } from 'fathom-client';
   import { page } from '$app/stores';
-  import { App } from '$lib/stores/app';
-  import Icon from '$lib/components/Icon.svelte';
 
   const dispatch = createEventDispatcher();
 

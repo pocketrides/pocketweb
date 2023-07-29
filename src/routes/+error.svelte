@@ -4,22 +4,11 @@
   import Main from '$lib/components/Main.svelte';
   import SiteHeader from '$lib/components/SiteHeader.svelte';
   import { App } from '$lib/stores/app';
-  import { onMount } from 'svelte';
-  import * as Fathom from 'fathom-client';
   import { page } from '$app/stores';
-  import { browser } from '$app/environment';
 
   $App.theme = 'system';
   // $App.fill = 'light';
   $App.loading = false;
-
-  onMount(() => {
-    Fathom.load('ZAOKOHGG', {
-      includedDomains: ['pocketrides.com']
-    });
-  });
-
-  $: $page.url.pathname, browser && Fathom.trackPageview();
 </script>
 
 <svelte:head>

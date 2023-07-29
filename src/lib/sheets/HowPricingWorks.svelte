@@ -2,11 +2,9 @@
   import Container from '$lib/components/Container.svelte';
   import Help from '$lib/components/Help.svelte';
   import Icon from '$lib/components/Icon.svelte';
-  import Nametag from '$lib/components/Nametag.svelte';
   import Radio from '$lib/components/Radio.svelte';
-  import Row from '$lib/components/Row.svelte';
   import Sheet from '$lib/components/Sheet.svelte';
-  import NametagAnim from '$lib/forms/nametag/NametagAnim.svelte';
+  import { App } from '$lib/stores/app';
   import { formatCents } from '$lib/util/currency';
   import type { ClientNametag } from '$lib/zod/Nametag';
   import {
@@ -42,28 +40,13 @@
     },
     {
       id: '',
-      nametag: '🙂 michelle',
-      theme: 'teal'
-    },
-    {
-      id: '',
       nametag: 'Holger 🌲',
       theme: 'sky'
     },
     {
       id: '',
-      nametag: '🤠 MG',
-      theme: 'teal'
-    },
-    {
-      id: '',
-      nametag: 'Caleb 👑',
+      nametag: 'Cass 👑',
       theme: 'lilac'
-    },
-    {
-      id: '',
-      nametag: 'Drew 🍭',
-      theme: 'gold'
     }
   ];
 
@@ -101,6 +84,14 @@
               own your content: you are the only one to make money from what you post
               on Pocketrides. Yes, we're doing things very differently here.
             </p>
+          </Help>
+          <Help summary="This is not meant to make as much money as possible.">
+            <p>
+              We're here to be a platform to have a great conversation, keep up with
+              your friends and where you live. None of the employees or founders get
+              personally rich from this.
+            </p>
+            <p>Sustainability is the future.</p>
           </Help>
         </Container>
       </div>
@@ -159,10 +150,6 @@
               <span class="h3 half">Coming Soon:</span><br />
               Turbocharge Pocketchange 🌱
             </h2>
-            <p id="turbo">
-              Help us reach our goal of raising a billion dollars for climate action
-              even faster, and get a shoutout on your Nametag.
-            </p>
             <div data-flex="w as" data-gap="1">
               {#each nametags as nt, index}
                 <a
@@ -179,6 +166,10 @@
                 </a>
               {/each}
             </div>
+            <p id="turbo">
+              Help us reach our goal of raising a billion dollars for climate action
+              even faster, and get a shoutout on your Nametag.
+            </p>
             <div data-flex="w" data-gap>
               <Radio
                 bind:group={pricebook.turbo}
@@ -193,7 +184,7 @@
                 labelled_by="turbo"
               />
             </div>
-            <small data-minheight
+            <small
               >This is a $1/mo direct donation to <a
                 href="/pocket/362022120043053129"
                 class="strong">Pocketchange</a
@@ -230,31 +221,52 @@
   </div>
   <div slot="nav" data-fill="system-superlight">
     <Container>
-      <Row flex="ab sb">
-        <h2 slot="left" class="half">
-          Grand total:
-          {#if pricebook.transaction_fee}
-            <p class="h3 half">Subtotal:</p>
-            <p class="h3 half">Transaction fee:</p>
-          {/if}
-        </h2>
-        <p slot="right" class="h1 jumbo">
-          {formatCents(price)}/mo
-          {#if pricebook.transaction_fee}
-            <div class="half">
-              <p class="h3 half">
-                {formatCents(price - pricebook.transaction_fee)}/mo
-              </p>
-              <p class="h3 half">
-                {formatCents(pricebook.transaction_fee)}/mo
-                {#if Math.round(pricebook.transaction_fee) === 69}
-                  <small>😎 nice</small>
-                {/if}
-              </p>
-            </div>
-          {/if}
+      <div data-flex="v">
+        <p data-flex="ab sb">
+          <span class="h2 half">Subtotal:</span>
+          <span class="h1 jumbo">
+            {formatCents(price - pricebook.transaction_fee)}/mo
+          </span>
         </p>
-      </Row>
+        <p data-flex="ab sb">
+          <span class="h3 half">Likes:</span>
+          <span class="h3 half">
+            {(
+              (pricebook.current_mode === 'free_mode' ? 0 : 50) + pricebook.like_pack
+            ).toString()}/mo
+          </span>
+        </p>
+        {#if pricebook.current_mode !== 'free_mode'}
+          <Help summary="Details" small half>
+            {#if pricebook.transaction_fee}
+              <p data-flex="ab sb">
+                <span class="h3 half">Transaction fee:</span>
+                <span class="h3 half">
+                  {formatCents(pricebook.transaction_fee)}/mo
+                </span>
+              </p>
+            {/if}
+            <p data-flex="ab sb">
+              <span class="h3 half">Grand total:</span>
+              <span class="h3 half">{formatCents(price)}/mo</span>
+            </p>
+
+            <p class="half xsmall">
+              Subscribe after you <a
+                href="#onboarding"
+                class="strong"
+                on:click|preventDefault={() => {
+                  $App.sheet_id = 'onboarding';
+                }}>get a free account</a
+              >. {#if pricebook.turbo}Turbo is coming soon.{/if}
+              {#if pricebook.like_pack}Like packs are coming soon.{/if} Final price subject
+              to change. Estimated grand total: {formatCents(price)}/mo. Includes
+              transaction fees of {formatCents(pricebook.transaction_fee)}/mo.
+              Pocketrides' operating income: $1.49/mo.
+            </p>
+          </Help>
+        {/if}
+      </div>
     </Container>
   </div>
 </Sheet>

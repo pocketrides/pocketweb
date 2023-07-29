@@ -21,7 +21,7 @@
 <SiteHeader huddable>
   <h1 slot="left" data-flex="ac" data-gap>
     <Logo />
-    <span>Pocketrides<em>!</em></span>
+    <span>Pocketrides!</span>
   </h1>
   <span slot="right" />
 </SiteHeader>

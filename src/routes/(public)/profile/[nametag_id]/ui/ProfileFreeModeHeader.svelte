@@ -17,7 +17,7 @@
     <Container rounded fill="system-light" bordered>
       <div data-richtext>
         <h2>
-          <span class="h3 half">Welcome to Pocketrides<em>!</em></span><br />
+          <span class="h3 half">Welcome to Pocketrides!</span><br />
           Here's how to get started:
         </h2>
         <ol data-flex="v" data-gap="sm">
