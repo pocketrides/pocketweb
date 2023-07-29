@@ -4,13 +4,16 @@
   import type { Writable } from 'svelte/store';
   import Button from './Button.svelte';
   import ButtonRow from './ButtonRow.svelte';
+  import { page } from '$app/stores';
 
   export let is_my_post: boolean;
   export let post_controller: Writable<ServerPost | undefined>;
+  export let button_controller: Writable<string>;
   export let is_liking: Writable<boolean>;
   export let replies_loading: Writable<boolean>;
   export let likeClick: () => void;
   export let repliesClick: () => void;
+  export let addToPocketClick: () => void;
   export let showing_mod_result: Writable<boolean>;
 
   // @ts-ignore
@@ -56,7 +59,16 @@
         on:click={repliesClick}
       />
     {/if}
-
+    {#if $post_controller.nametag.id === $page.data.my_nametag?.id}
+      <Button
+        id="add_to_pocket"
+        icon="add_circle"
+        small
+        label="Add to…"
+        controller={button_controller}
+        on:click={addToPocketClick}
+      />
+    {/if}
     {#if has_browser_share}
       <Button
         id="share"

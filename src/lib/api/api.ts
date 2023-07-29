@@ -14,6 +14,17 @@ export class Api {
     Api.generic_failure_validator
   ]);
 
+  static easyget = async <T>(
+    endpoint: string,
+    validator: z.ZodTypeAny
+  ): Promise<T | false> => {
+    const req = await fetch(endpoint);
+    const res = validator.safeParse(await req.json());
+
+    if (res.success) return res.data as T;
+    return false;
+  };
+
   static get = async <T>(
     endpoint: string,
     validator: z.ZodTypeAny

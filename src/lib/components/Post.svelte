@@ -24,6 +24,7 @@
   import Row from './Row.svelte';
   import { formatWorldfeedLocation, getWorldfeedLink } from '$lib/util/worldfeed';
   import { goto } from '$app/navigation';
+  import { AddPostTo } from '$lib/stores/post';
 
   export let post_id: string | undefined = undefined;
   export let post: ServerPost | undefined = undefined;
@@ -193,6 +194,11 @@
     }
   };
 
+  const addToPocketClick = () => {
+    $button_controller = '';
+    $AddPostTo.post_id = $post_controller.id;
+  };
+
   const summaryClick = (e: MouseEvent) => {
     if (e.target && (e.target as HTMLElement).nodeName !== 'A') {
       goto(`/post/${$post_controller.id}`);
@@ -341,8 +347,10 @@
                   {is_liking}
                   {showing_mod_result}
                   {replies_loading}
+                  {button_controller}
                   {likeClick}
                   {repliesClick}
+                  {addToPocketClick}
                 />
                 <PostActionsRight
                   slot="right"

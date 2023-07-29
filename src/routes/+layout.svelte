@@ -31,6 +31,7 @@
   import Search from '$lib/sheets/search/Search.svelte';
   import AppNav from '$lib/components/AppNav.svelte';
   import GetTheApp from '$lib/sheets/GetTheApp.svelte';
+  import AddPostTo from '$lib/sheets/AddPostTo.svelte';
 
   let started: boolean = false;
   let client: MagicBellClient;
@@ -159,6 +160,7 @@
   <!-- <MyNotifications /> -->
   <Subscribe />
   <OutOfLikes />
+  <AddPostTo />
 {:else}
   <Onboarding />
 {/if}

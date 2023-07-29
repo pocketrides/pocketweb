@@ -105,7 +105,7 @@
 >
   <Icon
     icon={$icon_store.icon}
-    filled={($icon_store.icon_filled || primary) &&
+    filled={$icon_store.icon_filled &&
       $icon_store.icon !== 'signpost' &&
       $icon_store.icon != 'airline_stops' &&
       $icon_store.icon != 'hail'}
