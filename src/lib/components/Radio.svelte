@@ -9,6 +9,7 @@
   export let icon: string | undefined = undefined;
   export let icon_filled: boolean = false;
   export let xlarge: boolean = false;
+  export let disabled: boolean = false;
 
   const dispatch = createEventDispatcher();
 
@@ -22,8 +23,9 @@
   class:filled={checked}
   class:xlarge
   aria-labelledby={labelled_by}
+  aria-disabled={disabled}
 >
-  <input type="radio" bind:group {value} />
+  <input type="radio" bind:group {value} {disabled} />
   <Icon
     filled={checked}
     icon={checked ? 'radio_button_checked' : 'radio_button_unchecked'}

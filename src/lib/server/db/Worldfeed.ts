@@ -56,7 +56,7 @@ export class Worldfeed {
             ),
             pockets_set: q.Range(
               q.Match(q.Index('worldfeed_pockets'), [true]),
-              q.ToMicros(q.TimeSubtract(q.Now(), 90, 'days')),
+              q.ToMicros(q.TimeSubtract(q.Now(), 180, 'days')),
               []
             ),
             filtered_pockets_set: q.Filter(

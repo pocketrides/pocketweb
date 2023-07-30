@@ -29,6 +29,44 @@
     </Container>
   {/if}
   <div data-richtext>
+    <section class:only_get_started>
+      <div>
+        <h3 id="how">How do I get started?</h3>
+        <p>
+          After you sign up (it's free), tap <strong>
+            <Icon icon="draw" inline /> Create
+          </strong>
+          and choose <strong>New Pocket</strong>.
+        </p>
+        <p>
+          Your first Pocket can be as simple as "just trying this out" — but use your
+          creativity. What do you like to do, how do you spend your time? Chances
+          are, it'll make a great Pocket.
+        </p>
+        <p>
+          Figure out who might be interested in joining your new corner of the
+          internet. Text it to 'em, post it on Twitter, or share it in your bio on
+          Insta. It's for you and who knows about it to have a better conversation.
+          Or plan an event. Or build a community. Together.
+        </p>
+        <p>
+          Start with Free Mode and upgrade to Unlimited for $1.99/mo if you love it.
+          We're building a sustainable platform for a better conversation, and that
+          doesn't happen if we sell your corner of the internet to advertisers.
+        </p>
+      </div>
+      <label
+        data-3d
+        class="small strong"
+        data-fill="system-superlight"
+        data-gap="0"
+        aria-labelledby="how"
+      >
+        <Icon icon="unfold_more" />
+        <input type="checkbox" />
+        Expand
+      </label>
+    </section>
     {#if !only_get_started}
       <section>
         <div>
@@ -184,38 +222,6 @@
         </label>
       </section>
     {/if}
-    <section class:only_get_started>
-      <div>
-        <h3 id="how">How do I get started?</h3>
-        <p>
-          Your first Pocket can be as simple as "just trying this out" — but use your
-          creativity. What do you like to do, how do you spend your time? Chances
-          are, it'll make a great Pocket.
-        </p>
-        <p>
-          Figure out who might be interested in joining your new corner of the
-          internet. Text it to 'em, post it on Twitter, or share it in your bio on
-          Insta. It's for you and who knows about it to have a better conversation.
-          Or plan an event. Or build a community. Together.
-        </p>
-        <p>
-          Start with Free Mode and upgrade to Unlimited for $1.99/mo if you love it.
-          We're building a sustainable platform for a better conversation, and that
-          doesn't happen if we sell your corner of the internet to advertisers.
-        </p>
-      </div>
-      <label
-        data-3d
-        class="small strong"
-        data-fill="system-superlight"
-        data-gap="0"
-        aria-labelledby="how"
-      >
-        <Icon icon="unfold_more" />
-        <input type="checkbox" />
-        Expand
-      </label>
-    </section>
     {#if !only_get_started}
       <section>
         <div>

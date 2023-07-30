@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Button from '$lib/components/Button.svelte';
   import Container from '$lib/components/Container.svelte';
   import Help from '$lib/components/Help.svelte';
   import Icon from '$lib/components/Icon.svelte';
@@ -6,6 +7,7 @@
   import Sheet from '$lib/components/Sheet.svelte';
   import { App } from '$lib/stores/app';
   import { formatCents } from '$lib/util/currency';
+  import { plural } from '$lib/util/plural';
   import type { ClientNametag } from '$lib/zod/Nametag';
   import {
     PB_FREE_MODE,
@@ -14,7 +16,8 @@
     pb_sum,
     type Pricebook,
     pb_sync,
-    PB_TURBO
+    PB_TURBO,
+    PB_SUGGESTED_MODE
   } from '$lib/zod/Pricebook';
 
   let nametags: ClientNametag[] = [
@@ -85,13 +88,13 @@
               on Pocketrides. Yes, we're doing things very differently here.
             </p>
           </Help>
-          <Help summary="This is not meant to make as much money as possible.">
+          <Help summary="We operate like a nonprofit.">
             <p>
-              We're here to be a platform to have a great conversation, keep up with
-              your friends and where you live. None of the employees or founders get
-              personally rich from this.
+              We're here to be a platform to have a great conversation, help you keep
+              up with your friends, and connect to where you live. We're a different
+              kind of tech company: none of the employees or founders get personally
+              rich from this. The future of ethical tech companies starts now.
             </p>
-            <p>Sustainability is the future.</p>
           </Help>
         </Container>
       </div>
@@ -100,7 +103,7 @@
       <div data-flex="v" data-gap>
         <h2>Flexible, transparent pricing.</h2>
         <p id="pricing-explained">Choose between Free Mode and Unlimited:</p>
-        <div data-flex data-gap>
+        <div data-flex="w" data-gap>
           <Radio
             bind:group={pricebook.current_mode}
             value={PB_FREE_MODE}
@@ -115,13 +118,68 @@
             icon="favorite"
             icon_filled={pricebook.current_mode === PB_UNLIMITED_MODE}
           />
+          <Button
+            label="Suggested"
+            icon="auto_fix_high"
+            on:click={() => {
+              pricebook = {
+                current_mode: 'unlimited_mode',
+                like_pack: 200,
+                turbo: PB_TURBO,
+                transaction_fee: 0
+              };
+            }}
+          />
+          <Button
+            label="Start over"
+            transparent
+            on:click={() => {
+              pricebook = {
+                current_mode: 'free_mode',
+                like_pack: 0,
+                turbo: 0,
+                transaction_fee: 0
+              };
+            }}
+          />
         </div>
-        {#if pricebook.current_mode === PB_FREE_MODE}
-          <p class="small" aria-live="assertive" data-minheight>
-            Create one Pocket and join up to three.
-          </p>
-        {:else if pricebook.current_mode === PB_UNLIMITED_MODE}
-          <ol data-unstyle class="small" aria-live="assertive" data-minheight>
+        <ol data-unstyle class="small" aria-live="assertive" data-minheight>
+          <li>
+            <Icon icon="favorite" />
+            {(
+              (pricebook.current_mode === 'free_mode' ? 0 : 50) + pricebook.like_pack
+            ).toString()} likes/mo
+          </li>
+          {#if pricebook.current_mode !== 'free_mode'}
+            <li>
+              <Icon icon="travel_explore" />
+              Post to Worldfeed
+            </li>
+          {/if}
+          <li>
+            <Icon icon="hail" />
+            Create {plural(
+              pricebook.current_mode === 'free_mode' ? 1 : 0,
+              'one Pocket',
+              'unlimited Pockets',
+              false
+            )}
+          </li>
+          <li>
+            <Icon icon="chair" />
+            Keep up with friends on your home feed
+          </li>
+          <li>
+            <Icon icon="draw" />
+            {#if pricebook.current_mode === 'free_mode'}
+              Only post in Pockets (join up to 3 for free)
+            {:else}
+              Post to your home feed & close friends
+            {/if}
+          </li>
+        </ol>
+
+        <!-- <ol data-unstyle class="small" aria-live="assertive" data-minheight>
             <li>
               <Icon icon="favorite" filled />
               Share the love with 50 likes/mo
@@ -135,11 +193,10 @@
               Post to Worldfeed
             </li>
             <li>
-              <Icon icon="chair" />
+              <Icon icon="draw" />
               Post to your home feed & close friends
             </li>
-          </ol>
-        {/if}
+          </ol> -->
       </div>
     </Container>
     <div class:half={pricebook.current_mode === PB_FREE_MODE}>
@@ -147,7 +204,7 @@
         <Container>
           <div data-flex="v" data-gap>
             <h2>
-              <span class="h3 half">Coming Soon:</span><br />
+              <span class="h3 cs" data-fill="base">Coming Soon</span><br />
               Turbocharge Pocketchange 🌱
             </h2>
             <div data-flex="w as" data-gap="1">
@@ -176,6 +233,7 @@
                 value={0}
                 label="Nah"
                 labelled_by="turbo"
+                disabled={pricebook.current_mode === 'suggested_mode'}
               />
               <Radio
                 bind:group={pricebook.turbo}
@@ -199,7 +257,7 @@
         <Container>
           <div data-flex="v" data-gap>
             <h2>
-              <span class="h3 half">Coming Soon:</span><br />
+              <span class="h3 cs" data-fill="base">Coming Soon</span><br />
               Share even more of the love.
             </h2>
             <p id="likepacks">Buy more likes each month:</p>
@@ -207,6 +265,8 @@
               {#each PB_LIKE_PACKS as like_pack}
                 <Radio
                   bind:group={pricebook.like_pack}
+                  disabled={pricebook.current_mode === 'suggested_mode' &&
+                    like_pack !== 200}
                   value={like_pack}
                   label={like_pack === 0 ? 'Nah' : like_pack.toString()}
                   labelled_by="likepacks"
@@ -238,6 +298,16 @@
         </p>
         {#if pricebook.current_mode !== 'free_mode'}
           <Help summary="Details" small half>
+            <p data-flex="ab sb">
+              <span class="h3 half">Base price:</span>
+              <span class="h3 half">{formatCents(199)}/mo</span>
+            </p>
+            <p data-flex="ab sb">
+              <span class="h3 half">Add-ons:*</span>
+              <span class="h3 half">
+                {formatCents(pricebook.like_pack + pricebook.turbo)}/mo
+              </span>
+            </p>
             {#if pricebook.transaction_fee}
               <p data-flex="ab sb">
                 <span class="h3 half">Transaction fee:</span>
@@ -252,7 +322,7 @@
             </p>
 
             <p class="half xsmall">
-              Subscribe after you <a
+              * Add-ons are coming soon. Subscribe to Unlimited after you <a
                 href="#onboarding"
                 class="strong"
                 on:click|preventDefault={() => {
@@ -280,5 +350,12 @@
     [data-minheight] {
       min-height: 0;
     }
+  }
+
+  // coming soon
+  .cs {
+    padding: 4px;
+    border-radius: 0.25rem;
+    font-size: 0.777rem;
   }
 </style>

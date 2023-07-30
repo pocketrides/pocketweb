@@ -31,7 +31,7 @@
       name: 'Communities',
       pocket_ids: [
         '369378891297456201',
-        '368104234375184461',
+        '367889934459076681',
         '369558784210632781',
         '369377356035391568'
       ]
@@ -53,21 +53,26 @@
 
   let worldfeed_sections = [
     {
-      name: 'Local interests',
+      name: `Your city's best`,
       pocket_ids: [
-        '367889934459076681',
+        '368104234375184461',
         '366216518357221449',
         '367896365238321225',
         '365101532914384969'
       ]
     },
     {
-      name: 'Events',
+      name: 'Community events',
       pocket_ids: ['368450406291865673', '366283412006240329']
     },
     {
-      name: 'Places',
-      pocket_ids: ['369175255525097545', '367977248179880004', '369525939762102345']
+      name: 'Places you love',
+      pocket_ids: [
+        '369175255525097545',
+        '367977248179880004',
+        '369525939762102345',
+        '371616288904052813'
+      ]
     }
   ];
 
@@ -97,13 +102,12 @@
     <Container fill="dark" rounded_lg>
       <div class="card hero" data-flex="v jc" data-gap="1">
         <p class="h2">
-          Live your life: <span class="half"
-            >make plans, meet new people, have a better conversation.</span
-          > You know, the thing social media used to be for?
+          We're a better social network.
+          <span class="half">Because you'll have a better conversation here.</span>
         </p>
-        <p class="h2 half" data-ph>
+        <p class="h2" data-ph>
           Life's a <em>wild</em> ride.<br />
-          <span class="">Keep up on Pocketrides!</span>
+          <span class="half">Keep up on Pocketrides!</span>
         </p>
         <!-- <p class="h2" data-ph>
           <span class="half"
@@ -115,10 +119,10 @@
     <Container fill="dark" theme="teal" rounded_lg>
       <div class="card demo" data-flex="v as" data-gap="1">
         <div data-flex="v as" data-gap>
-          <h3 class="h2">Shared experiences live here.</h3>
+          <h3 class="h2">Share the moment on Worldfeed.</h3>
           <p class="half">
-            Whether it's with your friends, your city, or the world, it all happens
-            on Worldfeed:
+            A home feed for your home town and the whole world. It's called
+            Worldfeed:
           </p>
           <Button label={$selected_worldfeed_section.name} icon="unfold_more">
             <select
@@ -148,10 +152,10 @@
     <Container fill="dark" theme="sky" rounded_lg>
       <div class="card demo" data-flex="v as" data-gap="1">
         <div data-flex="v as" data-gap>
-          <h3 class="h2">Let your creativity thrive.</h3>
+          <h3 class="h2">Unlimited imagination in a Pocket.</h3>
           <p class="half">
-            A Pocket is your own corner of the internet, to use for whatever you get
-            up to:
+            Let your creativity thrive in your own social space, to use for whatever
+            you get up to:
           </p>
           <Button label={$selected_pocket_section.name} icon="unfold_more">
             <select
@@ -181,60 +185,57 @@
     <Container fill="dark" theme="lilac" rounded_lg>
       <div class="card" data-flex="v cc" data-gap="1">
         <div data-flex="v as" data-gap>
-          <h3>
-            <span class="h1">Every like pays a penny.</span>
-          </h3>
-          <p class="half small">
-            It's a new way to share the love with each other just by being creative
-            on the internet. Start a Payout in Settings when you have 500 likes.
-            That's $5!
+          <h3 class="h2">Appreciate creativity in a new way.</h3>
+          <p data-ph>
+            <strong>Likes pay a penny each.</strong>
+            <small class="half">
+              Start a Payout in Settings when you have 500 likes. That's $5!
+            </small>
           </p>
         </div>
       </div>
     </Container>
-    <WhyPocketridesContent only_get_started />
-
     <Container fill="superlight" theme="teal" rounded_lg>
-      <div class="card" data-flex="v jc" data-gap>
-        <h3>
-          <span class="half">Our objective:</span><br />
-          <span class="h1">Fund climate action.</span>
+      <div class="card" data-flex="v jc">
+        <h3 class="h2">
+          It's the hottest summer on record.
+          <span class="half">Let's do something about it.</span>
         </h3>
         <p>
-          <strong>It's the hottest summer on record.</strong>
-          <small class="half"
-            >Let's do something about it, together. Unlike other social networks, the
-            bigger we get the more good we can do for the planet. Here's our plan:</small
-          >
+          Unlike other social networks, the bigger we get the more good we can do for
+          the planet, because 100% of our profits go to Pocketchange:
         </p>
-        <div data-ph>
+        <div data-ph="lg">
           <PocketLoader pocket_id="362022120043053129" />
         </div>
       </div>
     </Container>
-
     <Container fill="light" rounded_lg>
-      <div class="card" data-flex="v jc" data-gap>
-        <h3>
-          <span class="half">Start with Free Mode.</span><br />
-          <span class="h1">Upgrade to Unlimited.</span>
+      <div class="card" data-flex="v jc">
+        <h3 class="h2">
+          A place for people.
+          <span class="half">Not spammers, trolls, or corporate advertisers.</span>
         </h3>
-        <div>
+        <p>
+          We're here to be a platform for having a great conversation, keeping up
+          with your friends, and connecting to where you live.
+        </p>
+        <div data-ph>
           <Button
             label="How pricing works"
+            icon="quiz"
             on:click={() => {
               $App.sheet_id = 'how_pricing_works';
             }}
           />
         </div>
-
-        <div data-ph>
+        <div data-ph="lg">
           <PocketLoader pocket_id="364647123794264137" />
         </div>
       </div>
     </Container>
     <div>
-      <h3 data-padded>
+      <h3 data-padded data-ph="lg">
         <span class="half">Bet you have some questions.</span><br />
         <span class="h1">Everything you need to know:</span>
       </h3>
