@@ -95,8 +95,8 @@
   <p class="half" data-ph>
     <small>
       By continuing, you acknowledge the platform
-      <a href="/privacy-policy" target="_blank">Privacy Policy</a>. Short version: we
-      <em>never</em> sell your data.
+      <a href="/privacy-policy" target="_blank">Privacy Policy</a>. (We
+      <em>never</em> sell your data.)
     </small>
   </p>
   <ButtonRow>
@@ -133,10 +133,14 @@
       Pocketrides.
     </Help>
     <Help summary="How are you different?">
-      Unlimited costs $1.99/mo and pays creators a penny per like. Hate speech is
-      never welcome. 100% of profits go to climate: <a
-        href="/pocket/362022120043053129">it's called Pocketchange</a
-      >.
+      We're free to get started. Upgrade to Unlimited after you've joined 3 pockets.
+      <a
+        href="#pricing"
+        on:click|preventDefault={() => ($App.sheet_id = 'how_pricing_works')}
+        >Here's how pricing works.</a
+      >
+      We're building a place for people, and 100% of profits go to climate:
+      <a href="/pocket/362022120043053129">it's called Pocketchange</a>.
     </Help>
     <Help summary="What if I change my number?">
       Reach out to us at <a href="mailto:hello@pocketrides.cc"

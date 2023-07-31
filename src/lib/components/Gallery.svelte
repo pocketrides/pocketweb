@@ -121,6 +121,7 @@
       flex-grow: 0;
       max-width: 720px;
       max-height: 645px;
+      display: flex;
       // min-width: 100vw;
       // max-width: 720px;
       // min-height: 480px;
@@ -137,11 +138,12 @@
       }
 
       :global(img) {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+        // width: 100%;
+        // height: 100%;
+        max-height: 645px;
+        // object-fit: cover;
 
-        aspect-ratio: 3/4;
+        // aspect-ratio: 3/4;
 
         // min-width: 100%;
         // max-width: 720px;
@@ -157,21 +159,21 @@
         // }
       }
 
-      &:has(img.landscape) {
-        // min-width: 145%;
-        // max-width: 1400px;
-        // overflow: hidden;
+      // &:has(img.landscape) {
+      // min-width: 145%;
+      // max-width: 1400px;
+      // overflow: hidden;
 
-        // @media (max-width: 640px) {
-        //   min-width: 854px;
-        // }
+      // @media (max-width: 640px) {
+      //   min-width: 854px;
+      // }
 
-        :global(img) {
-          aspect-ratio: 4/3;
-          // max-width: 850px;
-          // min-width: 100%;
-        }
-      }
+      // :global(img) {
+      // aspect-ratio: 4/3;
+      // max-width: 850px;
+      // min-width: 100%;
+      // }
+      // }
     }
 
     &.square .gallery-item {

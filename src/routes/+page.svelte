@@ -254,7 +254,6 @@
 
 <AppHelp />
 <WhyPocketrides />
-<HowPricingWorks />
 
 <style lang="scss">
   @media (min-width: 640px) {

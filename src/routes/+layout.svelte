@@ -31,6 +31,7 @@
   import Search from '$lib/sheets/search/Search.svelte';
   import AppNav from '$lib/components/AppNav.svelte';
   import GetTheApp from '$lib/sheets/GetTheApp.svelte';
+  import HowPricingWorks from '$lib/sheets/HowPricingWorks.svelte';
 
   let started: boolean = false;
   let client: MagicBellClient;
@@ -168,3 +169,4 @@
 <GetTheApp />
 <AppHelp />
 <Search />
+<HowPricingWorks />

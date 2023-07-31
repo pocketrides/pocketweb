@@ -54,10 +54,15 @@
     opacity: 0.5;
     box-shadow: none;
     transform: translate(-1px, 1px);
+    pointer-events: none;
   }
 }
 
 [data-3d*="ah"] {
   padding: 0;
   height: auto;
+}
+
+fieldset[disabled] {
+  pointer-events: none;
 }

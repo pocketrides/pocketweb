@@ -77,7 +77,7 @@
           <span class="h2 half">Start with Free Mode.</span><br />
           Upgrade to Unlimited.
         </h2>
-        <Container fill="superlight" rounded>
+        <Container fill="system-superlight" rounded>
           <p class="h3 half">First thing's first:</p>
           <Help summary="Your privacy is never for sale.">
             <p>
@@ -94,6 +94,14 @@
               up with your friends, and connect to where you live. We're a different
               kind of tech company: none of the employees or founders get personally
               rich from this. The future of ethical tech companies starts now.
+            </p>
+          </Help>
+          <Help summary="Share the love.">
+            <p>
+              When you upgrade to Unlimited, $0.50 of your subscription goes into the
+              like button. When you see great content on Pocketrides, give it a like:
+              it transfers a penny to that person. It's more important than ever to
+              support each other in small ways, even if it's just a penny at a time.
             </p>
           </Help>
         </Container>
@@ -204,7 +212,7 @@
         <Container>
           <div data-flex="v" data-gap>
             <h2>
-              <span class="h3 cs" data-fill="base">Coming Soon</span><br />
+              <span class="h3 cs" data-fill="system-base">Coming Soon</span><br />
               Turbocharge Pocketchange 🌱
             </h2>
             <div data-flex="w as" data-gap="1">
@@ -257,7 +265,7 @@
         <Container>
           <div data-flex="v" data-gap>
             <h2>
-              <span class="h3 cs" data-fill="base">Coming Soon</span><br />
+              <span class="h3 cs" data-fill="system-base">Coming Soon</span><br />
               Share even more of the love.
             </h2>
             <p id="likepacks">Buy more likes each month:</p>
