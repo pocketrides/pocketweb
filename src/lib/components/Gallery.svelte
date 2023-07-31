@@ -119,61 +119,38 @@
       scroll-snap-align: center !important;
       flex-shrink: 0;
       flex-grow: 0;
+      min-width: 100%;
+      // height: 100vh;
       max-width: 720px;
       max-height: 645px;
-      display: flex;
-      // min-width: 100vw;
-      // max-width: 720px;
-      // min-height: 480px;
-      // max-height: 640px;
       overflow: hidden;
 
-      @media (max-width: 640px) {
-        // min-width: 100%;
-      }
-
-      @media (min-width: 640px) {
-        // max-height: 80vh;
-        // min-width: 50vw;
-      }
-
       :global(img) {
-        // width: 100%;
-        // height: 100%;
+        height: 100%;
+        min-width: 100%;
         max-height: 645px;
-        // object-fit: cover;
+        object-fit: cover;
 
-        // aspect-ratio: 3/4;
-
-        // min-width: 100%;
-        // max-width: 720px;
-        // min-height: 480px;
-        // max-height: 640px;
-
-        // @media (max-width: 640px) {
-        //   min-width: 100%;
-        // }
-
-        // @media (min-width: 640px) {
-        //   max-height: 80vh;
-        // }
+        @media (min-width: 640px) {
+          max-height: none;
+          max-width: 720px;
+        }
       }
 
-      // &:has(img.landscape) {
-      // min-width: 145%;
-      // max-width: 1400px;
-      // overflow: hidden;
+      &:has(img.landscape) {
+        min-width: auto;
+        min-height: 645px;
 
-      // @media (max-width: 640px) {
-      //   min-width: 854px;
-      // }
+        :global(img) {
+          min-height: 645px;
+          max-height: 645px;
 
-      // :global(img) {
-      // aspect-ratio: 4/3;
-      // max-width: 850px;
-      // min-width: 100%;
-      // }
-      // }
+          @media (min-width: 640px) {
+            max-height: 645px;
+            max-width: none;
+          }
+        }
+      }
     }
 
     &.square .gallery-item {
