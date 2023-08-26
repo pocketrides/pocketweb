@@ -263,7 +263,7 @@
     min-height: 210px;
   }
 
-  .hero {
-    min-height: 420px;
-  }
+  // .hero {
+  //   min-height: 420px;
+  // }
 </style>
