@@ -7,7 +7,6 @@
   import SiteHeader from '$lib/components/SiteHeader.svelte';
   import PocketLoader from '$lib/components/pockets/PocketLoader.svelte';
   import AppHelp from '$lib/sheets/AppHelp.svelte';
-  import HowPricingWorks from '$lib/sheets/HowPricingWorks.svelte';
   import WhyPocketrides from '$lib/sheets/WhyPocketrides.svelte';
   import WhyPocketridesContent from '$lib/sheets/WhyPocketrides/WhyPocketridesContent.svelte';
   import { App } from '$lib/stores/app';
@@ -53,7 +52,7 @@
 
   let worldfeed_sections = [
     {
-      name: `Your city's best`,
+      name: `Your city's best…`,
       pocket_ids: [
         '368104234375184461',
         '366216518357221449',
@@ -100,20 +99,20 @@
 <Main padded={false}>
   <div class="root" data-flex="v">
     <Container fill="dark" rounded_lg>
-      <div class="card hero" data-flex="v jc" data-gap="1">
-        <p class="h2">
+      <div class="card" data-flex="v jc" data-gap="1">
+        <!-- <p class="h2">
           We're a better social network.
           <span class="half">Because you'll have a better conversation here.</span>
-        </p>
+        </p> -->
         <p class="h2" data-ph>
-          Life's a <em>wild</em> ride.<br />
+          The future's gonna be a <em>wild</em> ride.<br />
           <span class="half">Keep up on Pocketrides!</span>
         </p>
-        <!-- <p class="h2" data-ph>
+        <p class="h2" data-ph>
           <span class="half"
-            >Here's how we do it <Icon icon="arrow_downward" inline /></span
+            >A digital town square raising a billion dollars for climate action.</span
           >
-        </p> -->
+        </p>
       </div>
     </Container>
     <Container fill="dark" theme="teal" rounded_lg>
@@ -197,15 +196,13 @@
     </Container>
     <Container fill="superlight" theme="teal" rounded_lg>
       <div class="card" data-flex="v jc">
-        <h3 class="h2">
-          It's the hottest summer on record.
-          <span class="half">Let's do something about it.</span>
-        </h3>
+        <h3 class="h2">#ClimateActionNow</h3>
         <p>
-          Unlike other social networks, the bigger we get the more good we can do for
-          the planet, because 100% of our profits go to Pocketchange:
+          We have so many innovative ways of solving climate change together, so 100%
+          of our profits are used for the cause:
         </p>
-        <div data-ph="lg">
+
+        <div data-ph>
           <PocketLoader pocket_id="362022120043053129" />
         </div>
       </div>

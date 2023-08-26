@@ -17,12 +17,13 @@
   import Button from '$lib/components/Button.svelte';
   import ButtonRow from '$lib/components/ButtonRow.svelte';
   import { is_standalone } from '$lib/util/is-standalone';
+  import { afterNavigate } from '$app/navigation';
 
   export let data: PageData;
 
-  const pocket = writable(data.pocket);
-  const my_membership = writable<ClientPocketMember | undefined>(data.my_membership);
-  const page_controller = writable<FeedResponse>(blankFeedResponse());
+  let pocket = writable(data.pocket);
+  let my_membership = writable<ClientPocketMember | undefined>(data.my_membership);
+  let page_controller = writable<FeedResponse>(blankFeedResponse());
 
   $: $pocket = data.pocket;
   $: $my_membership = data.my_membership;
@@ -34,8 +35,10 @@
   let can_save_scroll = false;
   let chill = true;
 
-  onMount(async () => {
+  afterNavigate(async () => {
     if (browser) {
+      $page_controller = blankFeedResponse();
+
       await tick();
 
       loadMore().then(() => {});

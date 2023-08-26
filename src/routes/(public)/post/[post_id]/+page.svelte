@@ -243,7 +243,7 @@
               {@html content.content}
             </div>
             {#if content.links.length}
-              <LinkList padded="h">
+              <LinkList padded="vh">
                 {#each content.links as link (link)}
                   <LinkDisplay {link} />
                 {/each}

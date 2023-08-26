@@ -45,11 +45,13 @@
   const replies_loading = writable(false);
 
   let summary: HTMLDivElement;
+  $: window_width = window.innerWidth;
   $: can_read_more =
     summary &&
     summary.getBoundingClientRect().height >= 108 &&
     $post_controller?.contents?.length === 1 &&
-    $post_controller?.contents[0].content_raw.length >= 150;
+    $post_controller?.contents[0].content_raw.length >=
+      (window_width < 640 ? 150 : 250);
 
   $: should_be_hidden = $post_controller
     ? $post_controller.is_quarantined ||
@@ -198,7 +200,13 @@
       goto(`/post/${$post_controller.id}`);
     }
   };
+
+  const handleResize = () => {
+    window_width = window.innerWidth;
+  };
 </script>
+
+<svelte:window on:resize={handleResize} />
 
 {#if wrapper_mode}
   <slot
