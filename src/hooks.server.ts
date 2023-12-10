@@ -36,6 +36,13 @@ export const handleError = (({ error, event }) => {
 }) satisfies HandleServerError;
 
 export const handle = (async ({ event, resolve }) => {
+  if (event.route.id !== '/goodbye') {
+    throw redirect(302, '/goodbye');
+  }
+
+  return await resolve(event);
+
+  /*******
   Sentry.init({
     dsn: 'https://e3db4eb46baa4f43a32d1b98567638e4@o4504929428766720.ingest.sentry.io/4504929430274048',
 
@@ -80,6 +87,7 @@ export const handle = (async ({ event, resolve }) => {
   }
 
   return await resolve(event);
+  ***/
 }) satisfies Handle;
 
 type AppSecrets = {

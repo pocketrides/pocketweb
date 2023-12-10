@@ -150,7 +150,10 @@
   />
 </svelte:head>
 
-<AppNav />
+{#if $page.data.footer_disabled === undefined}
+  <AppNav />
+{/if}
+
 <slot />
 {#if $page.data.footer_disabled === undefined}
   <SiteFooter />
